@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: immich-postgres-env
+    namespace: immich
+data:
+    TZ: ENC[AES256_GCM,data:p1fvg2slGjJxVTDi,iv:MGUALhkPpmCt4bEzKVHSxFfIu2qPHcLOps6wo/5oog4=,tag:57VSdi3DhBWMLST4M7xt0w==,type:str]
+    POSTGRES_PASSWORD: ENC[AES256_GCM,data:jcg4S47dAmM6MEU=,iv:PFH16OSPBKA4K1Xln+HWIieHF5sX2aH3WltTo5jnAv8=,tag:IUbtnUNfOAsOl7w/V6S+qA==,type:str]
+    POSTGRES_USER: ENC[AES256_GCM,data:wNWEvrA=,iv:pNUvQBBV0Q+zBqV+vRwa1BqNgl0ZBFLLr56x2SzlKgI=,tag:QzglGpI0b5Uq8ePT0nXWHg==,type:str]
+    POSTGRES_DB: ENC[AES256_GCM,data:i5UoJnwB,iv:0ihHA7apkeHcIOa1RKzx8hvYfUbKEFuAV5P+1743M7w=,tag:2WXVf2aZOG2HmTBd6y/Oew==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1cndyqzwsajzxrhkj2l04hrnde90gj26klkl85emck3zc28fzlfys8cta9y
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB4a3dQR295N2ZzMHE0YVpu
+            blVVdlEyMDhjckNKdE5odDA3MkRVM0dqTVhrCjg2SXUwS2FWb0ZHRG4xYW1iK2gz
+            S2FBNkNnZndBZkNCUEdLZmJhRlNTYzAKLS0tIGY3UTJWcFcwZGYrem9DTnUvN1V1
+            Tmx6UFRLVGZsR0tETWlXQ2pwY1FFMmMKalPcsfTEGebLUuBxjDyPNq6dBSRrlrfr
+            wJImxd2bRtv3Pz1cSj6/geY3Mjs8Fgfit91j8q2nKAKTIAWxF22eVA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-23T13:35:01Z"
+    mac: ENC[AES256_GCM,data:cPACGZobJw138mjNNT0Lz49GfueI+TAcUWqdGV9WJM0ioytbo9tbAiVeMVSm56tj+sNKVw0mwMco1NQdL4m6qoLYv/8Y0bO82UuFzzt430+Itq2SPk3B/yGZFj7eLgnDLCVv6CwFuqrqBSD07hVjjBcGh/BwH6Oa6+QrrqTjE90=,iv:N24ltqsetQ7TGehmZuNrAgXMohjXCy5mzqiX+75KNHo=,tag:v6YiFXMYsJ+fGYs/p9D2YQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.9.1
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: immich-server-env
+    namespace: immich
+data:
+    TZ: ENC[AES256_GCM,data:3xt6fO2chdyxB8yD,iv:hoKkao0ku/+d7xrOxzNUKWZb01KIm104546zyG+Uu6E=,tag:7ZGT9+sy3OiUPbyZOfZfnA==,type:str]
+    DB_PASSWORD: ENC[AES256_GCM,data:UfEs2X397huS67w=,iv:by2X8cKKjydLii0Z/mkEsYnzddsOqnVFlbbrwm0ZE2A=,tag:kb2rikg2vt650LulxaD6rw==,type:str]
+    DB_USERNAME: ENC[AES256_GCM,data:j5R6BT4=,iv:DIt8TOp4vFKomeVcQyjtkGwTc8hvczkF5ofquyttTK0=,tag:nrg70tJo4JYIbwcJSzPXBQ==,type:str]
+    DB_DATABASE_NAME: ENC[AES256_GCM,data:wbfKsDLl,iv:HViDqyquepgK83daZj6LHJAQW7JX1N6fMW8kQAeCCXU=,tag:REI5i70o3I7ODXLqSMH96g==,type:str]
+    DB_HOSTNAME: ENC[AES256_GCM,data:Py8QY2TeLaKgcXz2Y28B,iv:QFewQSoncUNq014YCq2abs1b/Keis52Y5erE+FskEs4=,tag:Ptr/+ADXFjyx2QTP2nZhiw==,type:str]
+    REDIS_HOSTNAME: ENC[AES256_GCM,data:lLzmD0IGx1P5SbQe,iv:EO80UxMOET1Xqjz6hz68a9tlFkL0rb5b1Tm+QjxbE/I=,tag:5WFoyFjc1eAR0xv9iMs+og==,type:str]
+    REDIS_PORT: ENC[AES256_GCM,data:/RnJfA==,iv:Dc7ZlnABN+zw8UlsJYXGoyOxUDWWpz7i3kLA3cWJxZk=,tag:uuLUVpAoPj7USXUb8NPuhQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1cndyqzwsajzxrhkj2l04hrnde90gj26klkl85emck3zc28fzlfys8cta9y
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB4a3dQR295N2ZzMHE0YVpu
+            blVVdlEyMDhjckNKdE5odDA3MkRVM0dqTVhrCjg2SXUwS2FWb0ZHRG4xYW1iK2gz
+            S2FBNkNnZndBZkNCUEdLZmJhRlNTYzAKLS0tIGY3UTJWcFcwZGYrem9DTnUvN1V1
+            Tmx6UFRLVGZsR0tETWlXQ2pwY1FFMmMKalPcsfTEGebLUuBxjDyPNq6dBSRrlrfr
+            wJImxd2bRtv3Pz1cSj6/geY3Mjs8Fgfit91j8q2nKAKTIAWxF22eVA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-23T13:35:01Z"
+    mac: ENC[AES256_GCM,data:cPACGZobJw138mjNNT0Lz49GfueI+TAcUWqdGV9WJM0ioytbo9tbAiVeMVSm56tj+sNKVw0mwMco1NQdL4m6qoLYv/8Y0bO82UuFzzt430+Itq2SPk3B/yGZFj7eLgnDLCVv6CwFuqrqBSD07hVjjBcGh/BwH6Oa6+QrrqTjE90=,iv:N24ltqsetQ7TGehmZuNrAgXMohjXCy5mzqiX+75KNHo=,tag:v6YiFXMYsJ+fGYs/p9D2YQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.9.1

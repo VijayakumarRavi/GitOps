@@ -1,0 +1,86 @@
+# Immich Persistent Volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: smb.csi.k8s.io
+  name: pv-immich
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: smb
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+  csi:
+    driver: smb.csi.k8s.io
+    readOnly: false
+    # volumeHandle format: {smb-server-address}#{sub-dir-name}#{share-name}
+    # make sure this value is unique for every share in the cluster
+    volumeHandle: immich
+    volumeAttributes:
+      source: '//10.0.0.3/kube'
+    nodeStageSecretRef:
+      name: smbcreds
+      namespace: default
+
+# Immich Persistent Volume Claim
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-immich
+  namespace: immich
+  labels:
+    app: immich-server
+    app.kubernetes.io/instance: immich-server
+    app.kubernetes.io/name: immich-server
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: smb
+  volumeName: pv-immich
+  resources:
+    requests:
+      storage: 10Gi
+
+# Immich Machine Learning Persistent Volume Claim
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-model-cache
+  namespace: immich
+  labels:
+    app: immich-machine-learning
+    app.kubernetes.io/instance: immich-machine-learning
+    app.kubernetes.io/name: immich-machine-learning
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 5Gi
+
+# Postgres Persistent Volume Claim
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-postgres-data
+  namespace: immich
+  labels:
+    app: immich-postgres
+    app.kubernetes.io/instance: immich-postgres
+    app.kubernetes.io/name: immich-postgres
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 10Gi
