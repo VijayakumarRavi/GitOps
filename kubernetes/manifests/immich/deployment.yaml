@@ -32,7 +32,7 @@ spec:
           imagePullPolicy: IfNotPresent
           resources:
             limits:
-              gpu.intel.com/i915: '1'
+              gpu.intel.com/i915: "1"
               cpu: 4000m
             requests:
               cpu: 200m
@@ -46,7 +46,7 @@ spec:
           #   - name: IMMICH_WORKERS_INCLUDE
           #     value: 'api'
           envFrom:
-            - configMapRef:
+            - secretRef:
                 name: immich-server-env
           readinessProbe:
             httpGet:
@@ -120,7 +120,7 @@ spec:
           imagePullPolicy: IfNotPresent
           resources:
             limits:
-              gpu.intel.com/i915: '1'
+              gpu.intel.com/i915: "1"
               cpu: 3000m
             requests:
               cpu: 100m
@@ -129,9 +129,9 @@ spec:
               mountPath: /cache
           env:
             - name: MACHINE_LEARNING_REQUEST_THREADS
-              value: '-1'
+              value: "-1"
           envFrom:
-            - configMapRef:
+            - secretRef:
                 name: immich-postgres-env
           ports:
             - containerPort: 3003
@@ -207,7 +207,7 @@ spec:
         - name: immich-postgres
           image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0
           envFrom:
-            - configMapRef:
+            - secretRef:
                 name: immich-postgres-env
           volumeMounts:
             - name: postgres-data
@@ -216,20 +216,20 @@ spec:
             preStop:
               exec:
                 command:
-                  - '/usr/local/bin/pg_ctl'
-                  - 'stop'
-                  - '-D'
-                  - '/var/lib/postgresql/data -w -t 60 -m fast'
+                  - "/usr/local/bin/pg_ctl"
+                  - "stop"
+                  - "-D"
+                  - "/var/lib/postgresql/data -w -t 60 -m fast"
           readinessProbe:
             exec:
               command:
-                - 'pg_isready'
-                - '--dbname=${POSTGRES_DB}'
+                - "pg_isready"
+                - "--dbname=${POSTGRES_DB}"
           livenessProbe:
             exec:
               command:
-                - 'pg_isready'
-                - '--dbname=${POSTGRES_DB}'
+                - "pg_isready"
+                - "--dbname=${POSTGRES_DB}"
       volumes:
         - name: postgres-data
           persistentVolumeClaim:
@@ -289,10 +289,10 @@ spec:
           image: redis:6.2-alpine
           readinessProbe:
             exec:
-              command: ['redis-cli', 'ping']
+              command: ["redis-cli", "ping"]
           livenessProbe:
             exec:
-              command: ['redis-cli', 'ping']
+              command: ["redis-cli", "ping"]
 
 # Service
 ---
