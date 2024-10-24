@@ -54,7 +54,7 @@ spec:
             - name: gotify
               mountPath: /app/data
         - name: igotify
-          image: ghcr.io/androidseb25/igotify-notification-assist:sha256:c182373030474a924e7eba82fd08c0b2a198fab831540a623819d0c83e7980aa
+          image: ghcr.io/androidseb25/igotify-notification-assist:latest@sha256:c182373030474a924e7eba82fd08c0b2a198fab831540a623819d0c83e7980aa
           ports:
             - containerPort: 8080
               name: igotify
