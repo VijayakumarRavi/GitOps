@@ -11,6 +11,8 @@ spec:
   routes:
     - match: Host(`grafana.home.vijayakumar.xyz`)
       kind: Rule
+      middlewares:
+        - name: default-headers
       services:
         - name: grafana
           port: 80
