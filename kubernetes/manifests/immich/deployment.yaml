@@ -286,7 +286,7 @@ spec:
     spec:
       containers:
         - name: immich-redis
-          image: redis:6.2-alpine
+          image: redis:7.4-alpine
           readinessProbe:
             exec:
               command: ["redis-cli", "ping"]
