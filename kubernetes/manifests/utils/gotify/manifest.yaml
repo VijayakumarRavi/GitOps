@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-gotify
+  namespace: utils
+  labels:
+    app: gotify
+    app.kubernetes.io/instance: gotify
+    app.kubernetes.io/name: gotify
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gotify
+  namespace: utils
+  labels:
+    app: gotify
+    app.kubernetes.io/instance: gotify
+    app.kubernetes.io/name: gotify
+spec:
+  selector:
+    matchLabels:
+      app: gotify
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gotify
+        app.kubernetes.io/instance: gotify
+        app.kubernetes.io/name: gotify
+    spec:
+      containers:
+        - name: gotify
+          image: gotify/server:2.5.0
+          env:
+            - name: GOTIFY_DB_SQLITE
+              value: /app/data/gotify.db
+            - name: GOTIFY_PORT
+              value: "80"
+          envFrom:
+            - secretRef:
+                name: gotify-secret
+          ports:
+            - containerPort: 80
+              name: gotify
+          volumeMounts:
+            - name: gotify
+              mountPath: /app/data
+        - name: igotify
+          image: ghcr.io/androidseb25/igotify-notification-assist:sha256:c182373030474a924e7eba82fd08c0b2a198fab831540a623819d0c83e7980aa
+          ports:
+            - containerPort: 8080
+              name: igotify
+          volumeMounts:
+            - name: gotify
+              mountPath: /app/data
+      restartPolicy: Always
+      volumes:
+        - name: gotify
+          persistentVolumeClaim:
+            claimName: pvc-gotify
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gotify
+  namespace: utils
+  labels:
+    app: gotify
+    app.kubernetes.io/instance: gotify
+    app.kubernetes.io/name: gotify
+spec:
+  type: ClusterIP
+  clusterIP: 10.43.213.163
+  ports:
+    - name: gotify
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    - name: igotify
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: gotify
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: gotify
+  namespace: utils
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`gotify.home.vijayakumar.xyz`)
+      kind: Rule
+      services:
+        - name: gotify
+          port: 80
+      middlewares:
+        - name: default-headers
+    - match: Host(`igotify.home.vijayakumar.xyz`)
+      kind: Rule
+      services:
+        - name: gotify
+          port: 8080
+      middlewares:
+        - name: default-headers
+  tls:
+    secretName: home-vijayakumar-xyz

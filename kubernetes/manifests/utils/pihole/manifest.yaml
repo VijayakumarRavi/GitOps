@@ -1,0 +1,144 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-pihole
+  namespace: utils
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pihole
+    app.kubernetes.io/instance: pihole
+  name: pihole
+  namespace: utils
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      containers:
+        - image: visibilityspots/cloudflared:v2024.10.1
+          imagePullPolicy: IfNotPresent
+          name: cloudflared
+          ports:
+            - containerPort: 53
+              name: dns
+              protocol: TCP
+            - containerPort: 67
+              name: dns-udp
+              protocol: UDP
+          env:
+            - name: TUNNEL_METRICS
+              value: 127.0.0.1:3000
+        - image: pihole/pihole:2024.07.0
+          imagePullPolicy: IfNotPresent
+          name: pihole
+          env:
+            - name: TZ
+              value: "Asia/Kolkata"
+            - name: FTLCONF_REPLY_ADDR4
+              value: pihole
+            - name: PIHOLE_DNS_
+              value: 127.0.0.1#5054
+          envFrom:
+            - secretRef:
+                name: pihole-secret
+          ports:
+            - containerPort: 80
+              name: pihole-http
+              protocol: TCP
+            - containerPort: 53
+              name: dns
+              protocol: TCP
+            - containerPort: 53
+              name: dns-udp
+              protocol: UDP
+            - containerPort: 443
+              name: pihole-ssl
+              protocol: TCP
+            - containerPort: 67
+              name: client-udp
+              protocol: UDP
+          volumeMounts:
+            - mountPath: /etc/pihole
+              name: pihole
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+      restartPolicy: Always
+      volumes:
+        - name: pihole
+          persistentVolumeClaim:
+            claimName: pvc-pihole
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: pihole
+  name: pihole
+  namespace: utils
+spec:
+  ports:
+    - name: dns-udp
+      port: 53
+      protocol: UDP
+      targetPort: 53
+    - name: client-udp
+      port: 67
+      protocol: UDP
+      targetPort: 67
+    - name: pihole-http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    - name: pihole-https
+      port: 443
+      protocol: TCP
+      targetPort: 443
+    - name: dns
+      port: 53
+      protocol: TCP
+      targetPort: 53
+  selector:
+    app: pihole
+  externalTrafficPolicy: Local
+  loadBalancerIP: 10.0.2.2
+  type: LoadBalancer
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: pihole
+  namespace: utils
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`pihole.home.vijayakumar.xyz`)
+      kind: Rule
+      services:
+        - name: pihole
+          port: 80
+      middlewares:
+        - name: default-headers
+        - name: dashboard-redirect
+        - name: dashboard-prefix
+  tls:
+    secretName: home-vijayakumar-xyz

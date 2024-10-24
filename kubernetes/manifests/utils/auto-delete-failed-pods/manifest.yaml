@@ -1,0 +1,52 @@
+# Service Account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pod-cleaner-sa
+  namespace: utils
+---
+# Role with permissions to list and delete pods
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pod-cleaner-clusterrole
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["list", "delete"]
+---
+# RoleBinding to link the role to the service account
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pod-cleaner-clusterrolebinding
+subjects:
+  - kind: ServiceAccount
+    name: pod-cleaner-sa
+    namespace: utils # Make sure this matches the namespace of the service account
+roleRef:
+  kind: ClusterRole
+  name: pod-cleaner-clusterrole
+  apiGroup: rbac.authorization.k8s.io
+---
+# CronJob to delete failed pods every 15 minutes
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: delete-failed-pods
+  namespace: utils
+spec:
+  schedule: "*/15 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: pod-cleaner-sa
+          containers:
+            - name: kubectl
+              image: bitnami/kubectl:1.31.2
+              command:
+                - /bin/sh
+                - -c
+                - kubectl delete pod --field-selector=status.phase=Failed -A
+          restartPolicy: OnFailure
