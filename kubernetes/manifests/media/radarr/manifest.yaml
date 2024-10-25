@@ -32,7 +32,7 @@ spec:
         app.kubernetes.io/name: radarr
     spec:
       containers:
-        - image: ghcr.io/linuxserver/radarr:5.12.1
+        - image: ghcr.io/linuxserver/radarr:5.12.2
           imagePullPolicy: IfNotPresent
           name: radarr
           ports:
