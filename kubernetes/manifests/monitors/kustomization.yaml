@@ -5,6 +5,6 @@ resources:
 
   - ./uptime/deployment.yaml
 
-  - ./prometheus/sealed-secret.yaml
-  - ./prometheus/prometheus-helmrelease.yaml
-  - ./prometheus/ingress.yaml
+  - ./Prometheus/sealed-secret.yaml
+  - ./Prometheus/prometheus-helmrelease.yaml
+  - ./Prometheus/ingress.yaml
