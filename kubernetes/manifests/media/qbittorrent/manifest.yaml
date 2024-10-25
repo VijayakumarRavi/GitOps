@@ -32,7 +32,7 @@ spec:
         app.kubernetes.io/name: qbittorrent
     spec:
       containers:
-        - image: ghcr.io/hotio/qbittorrent:release-4.0.0
+        - image: ghcr.io/hotio/qbittorrent:release-5.0.0
           imagePullPolicy: IfNotPresent
           name: qbittorrent
           ports:
