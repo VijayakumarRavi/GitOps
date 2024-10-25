@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - default.yaml
+
+  - pv-smb.yaml
+  - pvc-smb.yaml
+
+  - jellyfin/manifest.yaml
+  - jellyfin/ingress.yaml
+
+  - jellyseerr/manifest.yaml
+  - jellyseerr/ingress.yaml
+
+  - prowlarr/manifest.yaml
+  - radarr/manifest.yaml
+  - sonarr/manifest.yaml
+  - qbittorrent/manifest.yaml

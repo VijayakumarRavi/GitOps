@@ -1,0 +1,100 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-jellyfin
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: jellyfin
+    app.kubernetes.io/instance: jellyfin
+    app.kubernetes.io/name: jellyfin
+  name: jellyfin
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+        app.kubernetes.io/name: jellyfin
+    spec:
+      containers:
+        - image: jellyfin/jellyfin:10.9.10
+          imagePullPolicy: IfNotPresent
+          name: jellyfin
+          # requesting 1 GPU
+          resources:
+            limits:
+              gpu.intel.com/i915: '1'
+          ports:
+            - containerPort: 8096
+              name: web
+              protocol: TCP
+          env:
+            - name: TZ
+              value: 'Asia/Kolkata'
+          volumeMounts:
+            - mountPath: /config
+              name: jellyfin
+              subPath: config
+            - mountPath: /cache
+              name: jellyfin
+              subPath: cache
+            - mountPath: '/data/audiobooks'
+              readOnly: false
+              name: smb
+              subPath: audiobooks
+            - mountPath: '/data/movies'
+              readOnly: false
+              name: smb
+              subPath: movies
+            - mountPath: '/data/tvshows'
+              readOnly: false
+              name: smb
+              subPath: shows
+            - mountPath: '/data/music'
+              readOnly: false
+              name: smb
+              subPath: music
+      volumes:
+        - name: jellyfin
+          persistentVolumeClaim:
+            claimName: pvc-jellyfin
+        - name: smb
+          persistentVolumeClaim:
+            claimName: pvc-media-share
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: jellyfin
+  name: jellyfin
+  namespace: media
+spec:
+  ports:
+    - name: web-tcp
+      port: 8096
+      protocol: TCP
+      targetPort: 8096
+    - name: web-udp
+      port: 8096
+      protocol: UDP
+      targetPort: 8096
+  selector:
+    app: jellyfin
+  type: ClusterIP
+  clusterIP: 10.43.157.190

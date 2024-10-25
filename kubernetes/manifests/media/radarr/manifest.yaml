@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-radarr
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 512Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: radarr
+    app.kubernetes.io/instance: radarr
+    app.kubernetes.io/name: radarr
+  name: radarr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+        app.kubernetes.io/name: radarr
+    spec:
+      containers:
+        - image: ghcr.io/linuxserver/radarr:5.12.1
+          imagePullPolicy: IfNotPresent
+          name: radarr
+          ports:
+            - containerPort: 7878
+              name: radarr-tcp
+              protocol: TCP
+          env:
+            - name: TZ
+              value: 'Asia/Kolkata'
+          volumeMounts:
+            - mountPath: /config
+              name: radarr
+              subPath: radarr-config
+            - mountPath: '/movies'
+              readOnly: false
+              name: smb
+              subPath: movies
+      volumes:
+        - name: radarr
+          persistentVolumeClaim:
+            claimName: pvc-radarr
+        - name: smb
+          persistentVolumeClaim:
+            claimName: pvc-media-share
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: radarr
+  name: radarr
+  namespace: media
+spec:
+  ports:
+    - name: radarr-tcp
+      port: 7878
+      protocol: TCP
+      targetPort: 7878
+    - name: radarr-udp
+      port: 7878
+      protocol: UDP
+      targetPort: 7878
+  selector:
+    app: radarr
+  type: ClusterIP
+  clusterIP: 10.43.157.101
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: radarr
+  namespace: media
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  tls:
+    secretName: home-vijayakumar-xyz
+  routes:
+    - match: Host(`radarr.home.vijayakumar.xyz`)
+      kind: Rule
+      services:
+        - name: radarr
+          port: 7878
+      middlewares:
+        - name: default-headers

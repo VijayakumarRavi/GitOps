@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-jellyseerr
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 512Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: jellyseerr
+    app.kubernetes.io/instance: jellyseerr
+    app.kubernetes.io/name: jellyseerr
+  name: jellyseerr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellyseerr
+  template:
+    metadata:
+      labels:
+        app: jellyseerr
+        app.kubernetes.io/name: jellyseerr
+    spec:
+      containers:
+        - image: fallenbagel/jellyseerr:2.0.0
+          imagePullPolicy: Always
+          name: jellyseerr
+          ports:
+            - containerPort: 5055
+              name: web
+              protocol: TCP
+          env:
+            - name: TZ
+              value: 'Asia/Kolkata'
+            - name: LOG_LEVEL
+              value: debug
+          volumeMounts:
+            - mountPath: /app/config
+              name: jellyseerr
+              subPath: config
+      volumes:
+        - name: jellyseerr
+          persistentVolumeClaim:
+            claimName: pvc-jellyseerr
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: jellyseerr
+  name: jellyseerr
+  namespace: media
+spec:
+  ports:
+    - name: web-tcp
+      port: 5055
+      protocol: TCP
+      targetPort: 5055
+    - name: web-udp
+      port: 5055
+      protocol: UDP
+      targetPort: 5055
+  selector:
+    app: jellyseerr
+  type: ClusterIP
+  clusterIP: 10.43.242.12

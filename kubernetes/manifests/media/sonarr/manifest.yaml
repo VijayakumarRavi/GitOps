@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-sonarr
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 512Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sonarr
+    app.kubernetes.io/instance: sonarr
+    app.kubernetes.io/name: sonarr
+  name: sonarr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+        app.kubernetes.io/name: sonarr
+    spec:
+      containers:
+        - image: ghcr.io/linuxserver/sonarr:4.0.8
+          imagePullPolicy: IfNotPresent
+          name: sonarr
+          ports:
+            - containerPort: 8989
+              name: sonarr-tcp
+              protocol: TCP
+          env:
+            - name: TZ
+              value: 'Asia/Kolkata'
+          volumeMounts:
+            - mountPath: /config
+              name: sonarr
+              subPath: sonarr-config
+            - mountPath: '/shows'
+              readOnly: false
+              name: smb
+              subPath: shows
+      volumes:
+        - name: sonarr
+          persistentVolumeClaim:
+            claimName: pvc-sonarr
+        - name: smb
+          persistentVolumeClaim:
+            claimName: pvc-media-share
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sonarr
+  name: sonarr
+  namespace: media
+spec:
+  ports:
+    - name: sonarr-tcp
+      port: 8989
+      protocol: TCP
+      targetPort: 8989
+    - name: sonarr-udp
+      port: 8989
+      protocol: UDP
+      targetPort: 8989
+  selector:
+    app: sonarr
+  type: ClusterIP
+  clusterIP: 10.43.157.102
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: sonarr
+  namespace: media
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`sonarr.home.vijayakumar.xyz`)
+      kind: Rule
+      services:
+        - name: sonarr
+          port: 8989
+      middlewares:
+        - name: default-headers
+  tls:
+    secretName: home-vijayakumar-xyz
