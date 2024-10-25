@@ -15,4 +15,3 @@ metadata:
 spec:
   ipAddressPools:
     - kube-pool
-
