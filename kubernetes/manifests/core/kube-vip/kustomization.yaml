@@ -5,5 +5,5 @@ resources:
   - metallb/metallb-helmrelease.yaml
   - metallb/ipAddressPool.yaml
   - kube-vip-cloud-controller.yaml
-  - kube-vip-usopp.yaml
+  #  - kube-vip-usopp.yaml
   - kube-vip-zoro.yaml

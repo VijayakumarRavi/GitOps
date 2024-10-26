@@ -18,8 +18,8 @@ spec:
         app.kubernetes.io/name: kube-vip-ds
         app.kubernetes.io/version: v0.8.2
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: zoro
+      # nodeSelector:
+      #   kubernetes.io/hostname: zoro
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
