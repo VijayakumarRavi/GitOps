@@ -32,7 +32,7 @@ spec:
         app.kubernetes.io/name: sonarr
     spec:
       containers:
-        - image: ghcr.io/linuxserver/sonarr:4.0.9
+        - image: ghcr.io/linuxserver/sonarr:4.0.10
           imagePullPolicy: IfNotPresent
           name: sonarr
           ports:
