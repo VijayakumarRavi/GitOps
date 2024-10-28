@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: home-vijayakumar-xyz
+  namespace: traefik
+spec:
+  secretName: home-vijayakumar-xyz-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: '*.home.vijayakumar.xyz'
+  dnsNames:
+    - 'home.vijayakumar.xyz'
+    - '*.home.vijayakumar.xyz'
