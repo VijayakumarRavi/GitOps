@@ -1,4 +1,3 @@
----
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -6,12 +5,11 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: "./jellyfin/"
+  path: './jellyfin/'
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -22,12 +20,11 @@ spec:
   dependsOn:
     - name: jellyfin
   interval: 5m
-  path: "./jellyseerr/"
+  path: './jellyseerr/'
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -38,7 +35,7 @@ spec:
   dependsOn:
     - name: jellyseerr
   interval: 5m
-  path: "./prowlarr/"
+  path: './prowlarr/'
   prune: true
   sourceRef:
     kind: GitRepository
@@ -53,7 +50,7 @@ spec:
   dependsOn:
     - name: prowlarr
   interval: 5m
-  path: "./sonarr/"
+  path: './sonarr/'
   prune: true
   sourceRef:
     kind: GitRepository
@@ -68,7 +65,7 @@ spec:
   dependsOn:
     - name: sonarr
   interval: 5m
-  path: "./radarr/"
+  path: './radarr/'
   prune: true
   sourceRef:
     kind: GitRepository
@@ -83,7 +80,7 @@ spec:
   dependsOn:
     - name: radarr
   interval: 5m
-  path: "./qbittorrent/"
+  path: './qbittorrent/'
   prune: true
   sourceRef:
     kind: GitRepository

@@ -8,11 +8,11 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/manifests
+  path: ./kubernetes/home.vijayakumar.xyz
   prune: true
   wait: true
   timeout: 5m0s
   decryption:
-  provider: sops
-  secretRef:
-    name: sops-age
+    provider: sops
+    secretRef:
+      name: sops-age
