@@ -14,6 +14,7 @@ metadata:
   namespace: cert-manager
 spec:
   interval: 30m
+  releaseName: cert-manager
   chart:
     spec:
       chart: cert-manager
@@ -35,7 +36,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    installCRDs: true
+    # installCRDs: true
     replicaCount: 3
     extraArgs:
       - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
