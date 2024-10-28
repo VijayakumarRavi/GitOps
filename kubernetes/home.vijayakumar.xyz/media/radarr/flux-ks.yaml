@@ -1,0 +1,90 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: jellyfin
+  namespace: flux-system
+spec:
+  interval: 5m
+  path: "./jellyfin/"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: jellyseerr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: jellyfin
+  interval: 5m
+  path: "./jellyseerr/"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: prowlarr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: jellyseerr
+  interval: 5m
+  path: "./prowlarr/"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: sonarr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: prowlarr
+  interval: 5m
+  path: "./sonarr/"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: radarr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: sonarr
+  interval: 5m
+  path: "./radarr/"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: qbittorrent
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: radarr
+  interval: 5m
+  path: "./qbittorrent/"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
