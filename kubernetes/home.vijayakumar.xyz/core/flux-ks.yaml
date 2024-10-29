@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: './sealed-secrets/'
+  path: './sealed-secrets/controller.yaml'
   prune: true
   sourceRef:
     kind: GitRepository
