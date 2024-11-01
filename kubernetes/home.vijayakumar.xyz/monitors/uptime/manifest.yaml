@@ -83,4 +83,4 @@ spec:
       middlewares:
         - name: default-headers
   tls:
-    secretName: home-vijayakumar-xyz-tls
+    secretName: home-vijayakumar-xyz
