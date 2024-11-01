@@ -12,3 +12,9 @@ spec:
   dnsNames:
     - 'home.vijayakumar.xyz'
     - '*.home.vijayakumar.xyz'
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: 'true'
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: '' # Control destination namespaces("" to reflect on all)
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: 'true' # Auto create reflection for matching namespaces
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: '' # Control auto-reflection namespaces("" to reflect on all)
