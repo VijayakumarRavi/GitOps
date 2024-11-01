@@ -8,5 +8,5 @@ resources:
   - ./certificates/production/home-vijayakumar-xyz.yaml
   # - ./certificates/production/certificate-reflector.yaml
   # staging
-  - ./issuers/letsencrypt-staging.yaml
-  - ./certificates/staging/home-vijayakumar-xyz.yaml
+  # - ./issuers/letsencrypt-staging.yaml
+  # - ./certificates/staging/home-vijayakumar-xyz.yaml
