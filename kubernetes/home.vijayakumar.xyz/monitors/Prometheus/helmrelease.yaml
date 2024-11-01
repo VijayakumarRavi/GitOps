@@ -171,6 +171,10 @@ spec:
           cpu: 250m
         limits:
           memory: 2048Mi
+    additionalScrapeConfigs:
+      - job_name: 'pihole'
+        static_configs:
+          - targets: ['10.0.2.2:9617']
     prometheusOperator:
       enabled: true
       prometheusConfigReloader:
