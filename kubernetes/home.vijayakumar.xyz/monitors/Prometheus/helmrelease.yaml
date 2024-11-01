@@ -174,7 +174,7 @@ spec:
     additionalScrapeConfigs:
       - job_name: 'pihole'
         static_configs:
-          - targets: ['10.0.2.2:9617']
+          - targets: ['10.43.2.136:9617']
     prometheusOperator:
       enabled: true
       prometheusConfigReloader:
