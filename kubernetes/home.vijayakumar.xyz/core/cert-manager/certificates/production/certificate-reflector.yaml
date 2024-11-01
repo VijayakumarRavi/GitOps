@@ -8,7 +8,7 @@ spec:
   commonName: home-vijayakumar-xyz
   issuerRef:
     name: letsencrypt-production
-    kind: Issuer
+    kind: ClusterIssuer
     group: cert-manager.io
   secretTemplate:
     annotations:
