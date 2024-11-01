@@ -4,7 +4,7 @@ metadata:
   name: home-vijayakumar-xyz
   namespace: traefik
 spec:
-  secretName: home-vijayakumar-xyz-staging-tls
+  secretName: home-vijayakumar-xyz-tls
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer

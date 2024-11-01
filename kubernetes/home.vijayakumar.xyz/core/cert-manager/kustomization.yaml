@@ -4,9 +4,9 @@ resources:
   - ./issuers/sealed-secret.yaml
   - ./helmrelease.yaml
   # # production
-  - ./issuers/letsencrypt-production.yaml
-  - ./certificates/production/home-vijayakumar-xyz.yaml
-  - ./certificates/production/certificate-reflector.yaml
+  # - ./issuers/letsencrypt-production.yaml
+  # - ./certificates/production/home-vijayakumar-xyz.yaml
+  # - ./certificates/production/certificate-reflector.yaml
   # staging
-  # - ./issuers/letsencrypt-staging.yaml
-  # - ./certificates/staging/home-vijayakumar-xyz.yaml
+  - ./issuers/letsencrypt-staging.yaml
+  - ./certificates/staging/home-vijayakumar-xyz.yaml
