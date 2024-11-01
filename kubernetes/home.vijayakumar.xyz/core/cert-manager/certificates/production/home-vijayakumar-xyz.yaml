@@ -5,10 +5,10 @@ metadata:
   namespace: traefik
 spec:
   secretName: home-vijayakumar-xyz-tls
+  commonName: home.vijayakumar.xyz
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: '*.home.vijayakumar.xyz'
   dnsNames:
     - 'home.vijayakumar.xyz'
     - '*.home.vijayakumar.xyz'
