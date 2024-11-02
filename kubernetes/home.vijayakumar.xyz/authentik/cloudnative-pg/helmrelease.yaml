@@ -20,5 +20,5 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: cnpg
-      version: v0.22.0
+      version: 0.22.1
   interval: 1m0s
