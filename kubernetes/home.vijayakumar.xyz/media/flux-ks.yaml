@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: './base/'
+  path: './kubernetes/home.vijayakumar.xyz/media/base/'
   prune: true
   sourceRef:
     kind: GitRepository
@@ -24,7 +24,7 @@ spec:
   dependsOn:
     - name: base
   interval: 5m
-  path: './jellyfin/'
+  path: './kubernetes/home.vijayakumar.xyz/media/jellyfin/'
   prune: true
   sourceRef:
     kind: GitRepository
@@ -43,7 +43,7 @@ spec:
   dependsOn:
     - name: jellyfin
   interval: 5m
-  path: './jellyseerr/'
+  path: './kubernetes/home.vijayakumar.xyz/media/jellyseerr/'
   prune: true
   sourceRef:
     kind: GitRepository
@@ -62,7 +62,7 @@ spec:
   dependsOn:
     - name: jellyseerr
   interval: 5m
-  path: './prowlarr/'
+  path: './kubernetes/home.vijayakumar.xyz/media/prowlarr/'
   prune: true
   sourceRef:
     kind: GitRepository
@@ -81,7 +81,7 @@ spec:
   dependsOn:
     - name: prowlarr
   interval: 5m
-  path: './sonarr/'
+  path: './kubernetes/home.vijayakumar.xyz/media/sonarr/'
   prune: true
   sourceRef:
     kind: GitRepository
@@ -100,7 +100,7 @@ spec:
   dependsOn:
     - name: sonarr
   interval: 5m
-  path: './radarr/'
+  path: './kubernetes/home.vijayakumar.xyz/media/radarr/'
   prune: true
   sourceRef:
     kind: GitRepository
@@ -119,7 +119,7 @@ spec:
   dependsOn:
     - name: radarr
   interval: 5m
-  path: './qbittorrent/'
+  path: './kubernetes/home.vijayakumar.xyz/media/qbittorrent/'
   prune: true
   sourceRef:
     kind: GitRepository
@@ -138,7 +138,7 @@ spec:
   dependsOn:
     - name: base
   interval: 5m
-  path: './immich/'
+  path: './kubernetes/home.vijayakumar.xyz/media/immich/'
   prune: true
   sourceRef:
     kind: GitRepository
