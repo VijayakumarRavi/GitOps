@@ -3,6 +3,9 @@ kind: Secret
 metadata:
   name: traefik-dashboard-auth
   namespace: traefik
+  labels:
+    encrypted-by: sops
+    encryption-method: age
 data:
   users: ENC[AES256_GCM,data:M/7BLv1cXbZ21NNVA2JrtEQXFtfBGLz38bSXY+gTmS5Vsj8+XXRojO/qP8eRZILg/6JC4wg/X4F5fINR,iv:/OVhw39tfBLm9z4h2m4jnTtnAjNdid3GVxmtTsaCILM=,tag:i1lcknZYx3jk6nOtLZWMSw==,type:str]
 type: Opaque

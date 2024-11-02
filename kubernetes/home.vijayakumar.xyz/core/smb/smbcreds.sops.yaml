@@ -3,6 +3,9 @@ kind: Secret
 metadata:
   name: smbcreds
   namespace: default
+  labels:
+    encrypted-by: sops
+    encryption-method: age
 data:
   password: ENC[AES256_GCM,data:5jdsWTs1O7EhND5kcHZPwg==,iv:ENa8DJ/toKoS4aTKScmvGFnWVGNBC/cf1Gu4hGQvMws=,tag:nuq+IOac+eRFxB5tvlf2Pg==,type:str]
   username: ENC[AES256_GCM,data:7WB1X969Wsc=,iv:PcUe8/KQu4mwxTx0m2zv6jbTcyOUP0owmyzd5RYaYkk=,tag:ue2t5UjTeqOM5BXK9MEvCA==,type:str]

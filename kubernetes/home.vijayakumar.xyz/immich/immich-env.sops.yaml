@@ -3,6 +3,9 @@ kind: Secret
 metadata:
   name: immich-postgres-env
   namespace: immich
+  labels:
+    encrypted-by: sops
+    encryption-method: age
 data:
   POSTGRES_DB: ENC[AES256_GCM,data:Ni8MJWNd8mc=,iv:iLbElHYzxTI3eUm3HmtP2skVS1rI6sH/xTFJjIlWGZU=,tag:LMd01g05ZSnK/D6HrYH0aQ==,type:str]
   POSTGRES_PASSWORD: ENC[AES256_GCM,data:4byna2nUvwW5WZhYbxxxAg==,iv:IR3fxB+p4jYvwscin6qtXVQ5U/d4rP8hiFQfxRm+ZhU=,tag:4fuRhugU6f1qcP9mrec9Kg==,type:str]
@@ -35,6 +38,9 @@ kind: Secret
 metadata:
   name: immich-server-env
   namespace: immich
+  labels:
+    encrypted-by: sops
+    encryption-method: age
 data:
   DB_DATABASE_NAME: ENC[AES256_GCM,data:MS8Pk+zO/M0=,iv:8JattBMvG2dRgcxSWJ1LfnAbkskAQjam0/FikmWgn+U=,tag:MFljQz/euyojtZLq1PGDUA==,type:str]
   DB_HOSTNAME: ENC[AES256_GCM,data:JyM0EU+7u3mD1Ug7nVg7NB1742E=,iv:vA9Y/xqtf7odCZEuYMmXBnwZMa80NjdFHnTWmaxKK6w=,tag:VrKWREPaAf1Jpo0DNL1Qjg==,type:str]
