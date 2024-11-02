@@ -1,0 +1,27 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-cluster
+  namespace: cloudnative-pg
+spec:
+  instances: 3
+  enableSuperuserAccess: true
+  storage:
+    size: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-cluster-external
+  namespace: cloudnative-pg
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.0.2.10
+  ports:
+    - name: postgres
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    cnpg.io/cluster: prod-pg-cluster
+    role: primary
