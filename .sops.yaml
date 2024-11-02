@@ -1,0 +1,6 @@
+creation_rules:
+  - path_regex: kubernetes/.*\.sops\.ya?ml
+    encrypted_regex: '^(data|stringData)$'
+    key_groups:
+      - age:
+          - 'age19654hupmjy08ge0xu43mynjca5wmrd3kmlt7wsja582waanvf4uqvv65ya'
