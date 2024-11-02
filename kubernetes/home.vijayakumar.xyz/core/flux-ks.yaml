@@ -24,7 +24,7 @@ spec:
   dependsOn:
     - name: metallb
   interval: 5m
-  path: './kubernetes/home.vijayakumar.xyz/core/metallb/ipAddressPool.yaml'
+  path: './kubernetes/home.vijayakumar.xyz/core/metallb/ip-pool/'
   prune: true
   sourceRef:
     kind: GitRepository
