@@ -3,6 +3,6 @@ kind: Kustomization
 resources:
   - ./default.yaml
   - ./helmrelease.yaml
-  - ./dashboard/sealed-secret.yaml
+  - ./dashboard/traefik-dashboard-auth.sops.yaml
   - ./dashboard/ingress.yaml
   - ./dashboard/middleware.yaml

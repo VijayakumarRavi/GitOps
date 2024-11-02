@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: smbcreds
+  namespace: default
+data:
+  password: ENC[AES256_GCM,data:5jdsWTs1O7EhND5kcHZPwg==,iv:ENa8DJ/toKoS4aTKScmvGFnWVGNBC/cf1Gu4hGQvMws=,tag:nuq+IOac+eRFxB5tvlf2Pg==,type:str]
+  username: ENC[AES256_GCM,data:7WB1X969Wsc=,iv:PcUe8/KQu4mwxTx0m2zv6jbTcyOUP0owmyzd5RYaYkk=,tag:ue2t5UjTeqOM5BXK9MEvCA==,type:str]
+type: Opaque
+sops:
+  kms: []
+  gcp_kms: []
+  azure_kv: []
+  hc_vault: []
+  age:
+    - recipient: age19654hupmjy08ge0xu43mynjca5wmrd3kmlt7wsja582waanvf4uqvv65ya
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBJSEt6aXMxV2M2KytSM2Zw
+        ZDZLaHN0TjVLdkptRmcxdTV4YmFmNXNYaUZZCmwwSGxzS2ZDdUhjbFpMNHA4VU1w
+        TW83aHJJL0ptUytlcGE2OUtkSVV6NzQKLS0tIG51WXRjMWZlV0N5ZGFtTUtpRURC
+        NWZXSCtYZTJPVldiQ093Y0ViZHd0KzgKaAB+coIFzy4F7udFv/VsgKCizeSkpXyy
+        NNMR+GdWsP64u3IPaT5OfAxAVIwaemiuSNMEnLDcqOc4r3pKwp9JsA==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: '2024-11-02T20:45:56Z'
+  mac: ENC[AES256_GCM,data:vezxvVZrTm7w4Rma33wmw2jkAbaeqkOG+Ny2Ag6OUN2iIYxRbfI38A0ugOIXzPWxtpf1b7u+dZV0zXA3IBBHdgBqBiS+sUI9hiL30rbMTkLJ6oC56/2pMVzl6qjNWVvU05Hogolo8onHKeRnMsM+wNHuvMLXV+odxmjURh8Agc4=,iv:T7rXM0vy1PLWOdcWHODD1NzTKq3FUuFkwtWuOZghG/g=,tag:InDRtaPHt/l0bfAQSznbJw==,type:str]
+  pgp: []
+  encrypted_regex: ^(data|stringData)$
+  version: 3.9.1

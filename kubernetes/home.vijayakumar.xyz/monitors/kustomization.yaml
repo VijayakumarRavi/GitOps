@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   - ./default.yaml
   - ./uptime/manifest.yaml
-  - ./Prometheus/sealed-secret.yaml
   - ./Prometheus/grafana-admin-credentials.sops.yaml
   - ./Prometheus/helmrelease.yaml
   - ./Prometheus/ingress.yaml

@@ -2,12 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./default.yaml
-
-  - ./pihole/sealed-secret.yaml
+  - ./pihole/pihole-secret.sops.yaml
   - ./pihole/middleware.yaml
   - ./pihole/manifest.yaml
-
-  - ./gotify/sealed-secret.yaml
+  - ./gotify/gotify-secret.sops.yaml
   - ./gotify/manifest.yaml
-
   - ./auto-delete-failed-pods/manifest.yaml
