@@ -1,9 +1,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: base
+  namespace: flux-system
+spec:
+  interval: 5m
+  path: './base/'
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-keys
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: jellyfin
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: base
   interval: 5m
   path: './jellyfin/'
   prune: true
@@ -101,6 +120,25 @@ spec:
     - name: radarr
   interval: 5m
   path: './qbittorrent/'
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-keys
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: immich
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: base
+  interval: 5m
+  path: './immich/'
   prune: true
   sourceRef:
     kind: GitRepository
