@@ -6,11 +6,11 @@ metadata:
 spec:
   instances: 3
   enableSuperuserAccess: true
-  bootstrap:
-    recovery:
-      database: authentik
-      owner: authentik
-      source: postgresql
+  # bootstrap:
+  #   initdb:
+  #     database: authentik
+  #     owner: authentik
+  #     source: postgresql
   storage:
     size: 1Gi
 ---
