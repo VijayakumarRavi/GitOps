@@ -13,7 +13,7 @@ metadata:
   name: authentik
   namespace: authentik
 spec:
-  interval: 60m0s
+  interval: 5m0s
   driftDetection:
     mode: enabled
   releaseName: authentik
@@ -36,7 +36,7 @@ metadata:
   name: authentik-workers
   namespace: authentik
 spec:
-  interval: 60m0s
+  interval: 5m0s
   driftDetection:
     mode: enabled
   releaseName: authentik-worker
