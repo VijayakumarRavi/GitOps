@@ -6,7 +6,7 @@ resources:
   - ./authentik-secret.sops.yaml
   - ./helmrelease.yaml
   - ./redis-helmrelease.yaml
-  - ./postgres-cluster.yaml
+  # - ./postgres-cluster.yaml
 configMapGenerator:
   - name: chart-values
     files:
