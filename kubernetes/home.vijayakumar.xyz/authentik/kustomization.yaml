@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: authentik
 resources:
   - ./namespace.yaml
+  - ./rbac.yaml
   - ./authentik-secret.sops.yaml
   - ./helmrelease.yaml
   - ./redis-helmrelease.yaml
