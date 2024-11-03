@@ -114,7 +114,7 @@ persistentVolumes: []
 #     secretName: app-keyfile
 
 ingress:
-  enabled: true
+  enabled: false
   ingressClassName: traefik-external
   hosts:
     - host: auth.home.vijayakumar.xyz

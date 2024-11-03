@@ -1,0 +1,18 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: authentik
+  namespace: authentik
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`auth.home.vijayakumar.xyz`)
+      kind: Rule
+      services:
+        - name: authentik-app
+          port: 9000
+  tls:
+    secretName: home-vijayakumar-xyz
