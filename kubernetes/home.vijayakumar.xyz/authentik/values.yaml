@@ -4,10 +4,10 @@
 
 replicaCount: 3
 image:
-  repository: ghcr.io/goauthentik/dev-server
+  repository: ghcr.io/goauthentik/server
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 'gh-version-2024.4'
+  tag: '2024.10.0'
 nameOverride: ''
 fullnameOverride: ''
 args:
