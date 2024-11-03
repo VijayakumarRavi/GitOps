@@ -1,0 +1,32 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgresql
+  namespace: authentik
+spec:
+  instances: 3
+  enableSuperuserAccess: true
+  bootstrap:
+    recovery:
+      database: authentik
+      owner: authentik
+      source: postgresql
+  storage:
+    size: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+  namespace: authentik
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.0.2.10
+  ports:
+    - name: postgres
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    cnpg.io/cluster: prod-pg-cluster
+    role: primary
