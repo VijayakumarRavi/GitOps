@@ -8,8 +8,6 @@ image:
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: '7.4.1-alpine'
-imagePullSecrets:
-  - name: registry-docker-hub
 nameOverride: ''
 fullnameOverride: ''
 secrets: []

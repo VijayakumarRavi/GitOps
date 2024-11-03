@@ -8,8 +8,6 @@ image:
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: 'gh-version-2024.4'
-imagePullSecrets:
-  - name: registry-ghcr
 nameOverride: ''
 fullnameOverride: ''
 args:
