@@ -18,6 +18,12 @@
       "matchDatasources": ["docker"],
       "matchPackagePatterns": ["minio"],
       "versioning": "regex:^RELEASE\\.(?<major>\\d+)-(?<minor>\\d+)-(?<patch>\\d+)T.*Z$"
+    },
+    {
+      "description": ["Auto merge minor and patch updates"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
     }
   ]
 }
