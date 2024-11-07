@@ -116,18 +116,18 @@ spec:
           envFrom:
             - secretRef:
                 name: immich-server-env
-          readinessProbe:
-            httpGet:
-              path: /api/server/ping
-              port: 2283
-            initialDelaySeconds: 60
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /api/server/ping
-              port: 2283
-            initialDelaySeconds: 60
-            periodSeconds: 10
+                # readinessProbe:
+                #   httpGet:
+                #     path: /api/server/ping
+                #     port: 2283
+                #   initialDelaySeconds: 60
+                #   periodSeconds: 10
+                # livenessProbe:
+                #   httpGet:
+                #     path: /api/server/ping
+                #     port: 2283
+                #   initialDelaySeconds: 60
+                #   periodSeconds: 10
       volumes:
         - name: upload-location
           persistentVolumeClaim:
