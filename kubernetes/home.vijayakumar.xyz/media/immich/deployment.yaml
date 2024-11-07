@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/instance: immich
     app.kubernetes.io/name: immich
 spec:
-  replicas: 1
+  replicas: 2
   progressDeadlineSeconds: 600
   revisionHistoryLimit: 1
   strategy:
@@ -42,9 +42,9 @@ spec:
             - name: upload-location
               mountPath: /usr/src/app/upload
               subPath: immich-library
-          # env:
-          #   - name: IMMICH_WORKERS_INCLUDE
-          #     value: 'api'
+          env:
+            - name: IMMICH_WORKERS_INCLUDE
+              value: 'api'
           envFrom:
             - secretRef:
                 name: immich-server-env
@@ -52,13 +52,81 @@ spec:
             httpGet:
               path: /api/server/ping
               port: 2283
-            initialDelaySeconds: 300
+            initialDelaySeconds: 60
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /api/server/ping
               port: 2283
-            initialDelaySeconds: 300
+            initialDelaySeconds: 60
+            periodSeconds: 10
+      volumes:
+        - name: upload-location
+          persistentVolumeClaim:
+            claimName: pvc-immich
+
+# immich-server Deployment
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: immich-worker
+  namespace: immich
+  labels:
+    app: immich
+    app.kubernetes.io/instance: immich
+    app.kubernetes.io/name: immich
+spec:
+  replicas: 3
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 50%
+  selector:
+    matchLabels:
+      app: immich-worker
+  template:
+    metadata:
+      labels:
+        app: immich-worker
+    spec:
+      dnsPolicy: ClusterFirst
+      containers:
+        - name: immich-worker
+          image: ghcr.io/immich-app/immich-server:v1.120.0
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              gpu.intel.com/i915: '1'
+              cpu: 4000m
+            requests:
+              cpu: 200m
+          ports:
+            - containerPort: 2283
+          volumeMounts:
+            - name: upload-location
+              mountPath: /usr/src/app/upload
+              subPath: immich-library
+          env:
+            - name: IMMICH_WORKERS_EXCLUDE
+              value: 'api'
+          envFrom:
+            - secretRef:
+                name: immich-server-env
+          readinessProbe:
+            httpGet:
+              path: /api/server/ping
+              port: 2283
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/server/ping
+              port: 2283
+            initialDelaySeconds: 60
             periodSeconds: 10
       volumes:
         - name: upload-location
@@ -210,8 +278,9 @@ spec:
             - secretRef:
                 name: immich-postgres-env
           volumeMounts:
-            - name: postgres-data
+            - name: upload-location
               mountPath: /var/lib/postgresql
+              subPath: immich-library/postgres-data
           lifecycle:
             preStop:
               exec:
@@ -231,9 +300,9 @@ spec:
                 - 'pg_isready'
                 - '--dbname=${POSTGRES_DB}'
       volumes:
-        - name: postgres-data
+        - name: upload-location
           persistentVolumeClaim:
-            claimName: pvc-postgres-data
+            claimName: pvc-immich
 
 # Service
 ---
