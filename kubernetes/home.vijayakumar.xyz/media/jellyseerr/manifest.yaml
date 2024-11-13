@@ -32,7 +32,7 @@ spec:
         app.kubernetes.io/name: jellyseerr
     spec:
       containers:
-        - image: fallenbagel/jellyseerr:2.0.1
+        - image: fallenbagel/jellyseerr:2.1.0
           imagePullPolicy: Always
           name: jellyseerr
           ports:
