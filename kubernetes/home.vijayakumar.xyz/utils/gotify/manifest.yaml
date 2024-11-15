@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
         - name: gotify
-          image: gotify/server:2.5.0
+          image: gotify/server:2.6.0
           env:
             - name: GOTIFY_DB_SQLITE
               value: /app/data/gotify.db
