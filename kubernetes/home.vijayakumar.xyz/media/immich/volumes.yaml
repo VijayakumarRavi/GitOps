@@ -3,7 +3,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: pvc-model-cache
+  name: model-cache-pvc
   namespace: immich
   labels:
     app: immich-machine-learning
@@ -22,7 +22,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: pvc-postgres-data
+  name: postgres-data-pvc
   namespace: immich
   labels:
     app: immich-postgres

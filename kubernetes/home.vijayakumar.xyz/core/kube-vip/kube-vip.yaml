@@ -23,7 +23,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                  - key: node-role.kubernetes.io/master
+                  - key: node-role.kubernetes.io/control-plane
                     operator: Exists
               - matchExpressions:
                   - key: node-role.kubernetes.io/control-plane
@@ -74,7 +74,7 @@ spec:
                 - NET_ADMIN
                 - NET_RAW
       hostNetwork: true
-      serviceAccountName: kube-vip
+      serviceAccountName: kube-vip-cloud-controller
       tolerations:
         - effect: NoSchedule
           operator: Exists
