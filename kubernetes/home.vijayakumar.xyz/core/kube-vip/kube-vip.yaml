@@ -18,8 +18,6 @@ spec:
         app.kubernetes.io/name: kube-vip-ds
         app.kubernetes.io/version: v0.8.2
     spec:
-      # nodeSelector:
-      #   kubernetes.io/hostname: zoro
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -39,7 +37,7 @@ spec:
             - name: port
               value: '6443'
             - name: vip_interface
-              value: 'eno2'
+              value: 'eth0'
             - name: vip_cidr
               value: '32'
             - name: cp_enable
