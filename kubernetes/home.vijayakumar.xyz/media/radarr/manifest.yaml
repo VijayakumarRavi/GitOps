@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-radarr
+  name: radarr-pvc
   namespace: media
 spec:
   accessModes:
@@ -41,22 +41,22 @@ spec:
               protocol: TCP
           env:
             - name: TZ
-              value: 'Asia/Kolkata'
+              value: "Asia/Kolkata"
           volumeMounts:
             - mountPath: /config
               name: radarr
               subPath: radarr-config
-            - mountPath: '/movies'
+            - mountPath: "/movies"
               readOnly: false
-              name: smb
-              subPath: movies
+              name: nfs
+              subPath: downloads/movies
       volumes:
         - name: radarr
           persistentVolumeClaim:
-            claimName: pvc-radarr
-        - name: smb
+            claimName: radarr-pvc
+        - name: nfs
           persistentVolumeClaim:
-            claimName: pvc-media-share
+            claimName: media-share-pvc
 ---
 apiVersion: v1
 kind: Service

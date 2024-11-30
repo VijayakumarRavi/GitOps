@@ -38,14 +38,14 @@ spec:
           # requesting 1 GPU
           resources:
             limits:
-              gpu.intel.com/i915: '1'
+              gpu.intel.com/i915: "1"
           ports:
             - containerPort: 8096
               name: web
               protocol: TCP
           env:
             - name: TZ
-              value: 'Asia/Kolkata'
+              value: "Asia/Kolkata"
           volumeMounts:
             - mountPath: /config
               name: jellyfin
@@ -53,29 +53,29 @@ spec:
             - mountPath: /cache
               name: jellyfin
               subPath: cache
-            - mountPath: '/data/audiobooks'
+            - mountPath: "/data/audiobooks"
               readOnly: false
-              name: smb
-              subPath: audiobooks
-            - mountPath: '/data/movies'
+              name: nfs
+              subPath: downloads/audiobooks
+            - mountPath: "/data/movies"
               readOnly: false
-              name: smb
-              subPath: movies
-            - mountPath: '/data/tvshows'
+              name: nfs
+              subPath: downloads/movies
+            - mountPath: "/data/tvshows"
               readOnly: false
-              name: smb
-              subPath: shows
-            - mountPath: '/data/music'
+              name: nfs
+              subPath: downloads/shows
+            - mountPath: "/data/music"
               readOnly: false
-              name: smb
-              subPath: music
+              name: nfs
+              subPath: downloads/music
       volumes:
         - name: jellyfin
           persistentVolumeClaim:
-            claimName: pvc-jellyfin
-        - name: smb
+            claimName: jellyfin-pvc
+        - name: nfs
           persistentVolumeClaim:
-            claimName: pvc-media-share
+            claimName: media-share-pvc
 ---
 apiVersion: v1
 kind: Service

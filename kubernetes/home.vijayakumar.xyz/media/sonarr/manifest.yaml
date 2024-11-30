@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-sonarr
+  name: sonarr-pvc
   namespace: media
 spec:
   accessModes:
@@ -41,22 +41,22 @@ spec:
               protocol: TCP
           env:
             - name: TZ
-              value: 'Asia/Kolkata'
+              value: "Asia/Kolkata"
           volumeMounts:
             - mountPath: /config
               name: sonarr
               subPath: sonarr-config
-            - mountPath: '/shows'
+            - mountPath: "/shows"
               readOnly: false
-              name: smb
-              subPath: shows
+              name: nfs
+              subPath: downloads/shows
       volumes:
         - name: sonarr
           persistentVolumeClaim:
-            claimName: pvc-sonarr
-        - name: smb
+            claimName: sonarr-pvc
+        - name: nfs
           persistentVolumeClaim:
-            claimName: pvc-media-share
+            claimName: media-share-pvc
 ---
 apiVersion: v1
 kind: Service

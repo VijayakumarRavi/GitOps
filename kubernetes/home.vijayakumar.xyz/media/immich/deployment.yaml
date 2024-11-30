@@ -63,7 +63,7 @@ spec:
       volumes:
         - name: upload-location
           persistentVolumeClaim:
-            claimName: pvc-immich
+            claimName: media-share-pvc
 
 # immich-server Deployment
 ---
@@ -131,7 +131,7 @@ spec:
       volumes:
         - name: upload-location
           persistentVolumeClaim:
-            claimName: pvc-immich
+            claimName: media-share-pvc
 
 # Service
 ---
@@ -302,7 +302,7 @@ spec:
       volumes:
         - name: upload-location
           persistentVolumeClaim:
-            claimName: pvc-immich
+            claimName: media-share-pvc
 
 # Service
 ---

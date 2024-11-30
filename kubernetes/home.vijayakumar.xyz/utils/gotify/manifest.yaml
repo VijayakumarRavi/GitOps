@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-gotify
+  name: gotify-pvc
   namespace: utils
   labels:
     app: gotify
@@ -65,7 +65,7 @@ spec:
       volumes:
         - name: gotify
           persistentVolumeClaim:
-            claimName: pvc-gotify
+            claimName: gotify-pvc
 ---
 apiVersion: v1
 kind: Service

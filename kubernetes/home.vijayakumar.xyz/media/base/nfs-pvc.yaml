@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: pvc-media-share
+  name: media-share-pvc
   namespace: media
 spec:
   accessModes:
@@ -9,5 +9,4 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  volumeName: pv-media-share
-  storageClassName: smb
+  volumeName: media-share-pv

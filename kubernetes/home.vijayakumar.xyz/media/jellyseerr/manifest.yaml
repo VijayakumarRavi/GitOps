@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-jellyseerr
+  name: jellyseerr-pvc
   namespace: media
 spec:
   accessModes:
@@ -51,7 +51,7 @@ spec:
       volumes:
         - name: jellyseerr
           persistentVolumeClaim:
-            claimName: pvc-jellyseerr
+            claimName: jellyseerr-pvc
 ---
 apiVersion: v1
 kind: Service

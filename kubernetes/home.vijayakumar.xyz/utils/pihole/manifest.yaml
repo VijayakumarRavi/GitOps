@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-pihole
+  name: pihole-pvc
   namespace: utils
 spec:
   accessModes:
@@ -102,7 +102,7 @@ spec:
       volumes:
         - name: pihole
           persistentVolumeClaim:
-            claimName: pvc-pihole
+            claimName: pihole-pvc
 ---
 apiVersion: v1
 kind: Service
