@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/instance: immich
     app.kubernetes.io/name: immich
 spec:
-  replicas: 2
+  replicas: 3
   progressDeadlineSeconds: 600
   revisionHistoryLimit: 1
   strategy:
@@ -63,7 +63,7 @@ spec:
       volumes:
         - name: upload-location
           persistentVolumeClaim:
-            claimName: media-share-pvc
+            claimName: immich-pvc
 
 # immich-server Deployment
 ---
@@ -131,7 +131,7 @@ spec:
       volumes:
         - name: upload-location
           persistentVolumeClaim:
-            claimName: media-share-pvc
+            claimName: immich-pvc
 
 # Service
 ---
@@ -166,7 +166,7 @@ metadata:
     app.kubernetes.io/instance: immich-machine-learning
     app.kubernetes.io/name: immich-machine-learning
 spec:
-  replicas: 2
+  replicas: 3
   progressDeadlineSeconds: 600
   revisionHistoryLimit: 1
   strategy:
@@ -278,9 +278,8 @@ spec:
             - secretRef:
                 name: immich-postgres-env
           volumeMounts:
-            - name: upload-location
+            - name: postgres-data
               mountPath: /var/lib/postgresql
-              subPath: immich-library/postgres-data
           lifecycle:
             preStop:
               exec:
@@ -300,9 +299,9 @@ spec:
                 - "pg_isready"
                 - "--dbname=${POSTGRES_DB}"
       volumes:
-        - name: upload-location
+        - name: postgres-data
           persistentVolumeClaim:
-            claimName: media-share-pvc
+            claimName: postgres-data-pvc
 
 # Service
 ---

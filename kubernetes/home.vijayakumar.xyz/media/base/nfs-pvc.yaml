@@ -10,3 +10,4 @@ spec:
     requests:
       storage: 10Gi
   volumeName: media-share-pv
+  storageClassName: ''
