@@ -1,12 +1,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: base
+  name: media-base
   namespace: flux-system
 spec:
-  interval: 5m
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
   path: './kubernetes/home.vijayakumar.xyz/media/base/'
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -22,10 +25,13 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: base
-  interval: 5m
+    - name: media-base
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
   path: './kubernetes/home.vijayakumar.xyz/media/jellyfin/'
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -42,9 +48,12 @@ metadata:
 spec:
   dependsOn:
     - name: jellyfin
-  interval: 5m
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
   path: './kubernetes/home.vijayakumar.xyz/media/jellyseerr/'
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -61,9 +70,12 @@ metadata:
 spec:
   dependsOn:
     - name: jellyseerr
-  interval: 5m
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
   path: './kubernetes/home.vijayakumar.xyz/media/prowlarr/'
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -80,9 +92,12 @@ metadata:
 spec:
   dependsOn:
     - name: prowlarr
-  interval: 5m
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
   path: './kubernetes/home.vijayakumar.xyz/media/sonarr/'
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -99,9 +114,12 @@ metadata:
 spec:
   dependsOn:
     - name: sonarr
-  interval: 5m
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
   path: './kubernetes/home.vijayakumar.xyz/media/radarr/'
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -118,9 +136,12 @@ metadata:
 spec:
   dependsOn:
     - name: radarr
-  interval: 5m
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
   path: './kubernetes/home.vijayakumar.xyz/media/qbittorrent/'
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -136,10 +157,13 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: base
-  interval: 5m
+    - name: media-base
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
   path: './kubernetes/home.vijayakumar.xyz/media/immich/'
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system

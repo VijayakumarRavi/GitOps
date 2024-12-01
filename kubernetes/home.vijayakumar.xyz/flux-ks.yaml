@@ -1,0 +1,85 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: core
+  namespace: flux-system
+spec:
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  path: './kubernetes/home.vijayakumar.xyz/core'
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-keys
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: media
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: core
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  path: './kubernetes/home.vijayakumar.xyz/media/'
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-keys
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: monitors
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: media
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  path: './kubernetes/home.vijayakumar.xyz/monitors/'
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-keys
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: utils
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: monitors
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  path: './kubernetes/home.vijayakumar.xyz/utils/'
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-keys

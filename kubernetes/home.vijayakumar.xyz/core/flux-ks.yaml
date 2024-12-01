@@ -4,9 +4,12 @@ metadata:
   name: metallb
   namespace: flux-system
 spec:
-  interval: 5m
-  path: './kubernetes/home.vijayakumar.xyz/core/metallb/'
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  path: "./kubernetes/home.vijayakumar.xyz/core/metallb/"
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -23,9 +26,12 @@ metadata:
 spec:
   dependsOn:
     - name: metallb
-  interval: 5m
-  path: './kubernetes/home.vijayakumar.xyz/core/metallb/ip-pool/'
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  path: "./kubernetes/home.vijayakumar.xyz/core/metallb/ip-pool/"
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -42,9 +48,12 @@ metadata:
 spec:
   dependsOn:
     - name: metallb-ip-pool
-  interval: 5m
-  path: './kubernetes/home.vijayakumar.xyz/core/kube-vip/'
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  path: "./kubernetes/home.vijayakumar.xyz/core/kube-vip/"
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -61,9 +70,12 @@ metadata:
 spec:
   dependsOn:
     - name: kube-vip
-  interval: 5m
-  path: './kubernetes/home.vijayakumar.xyz/core/traefik/'
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  path: "./kubernetes/home.vijayakumar.xyz/core/traefik/"
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -80,9 +92,34 @@ metadata:
 spec:
   dependsOn:
     - name: traefik
-  interval: 5m
-  path: './kubernetes/home.vijayakumar.xyz/core/cert-manager/'
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  path: "./kubernetes/home.vijayakumar.xyz/core/cert-manager/"
   prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-keys
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: certificates
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cert-manager
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  path: ./kubernetes/home.vijayakumar.xyz/core/cert-manager/certificates/
+  prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -98,10 +135,13 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: traefik
-  interval: 5m
-  path: './kubernetes/home.vijayakumar.xyz/core/intel-device-plugins/'
+    - name: certificates
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  path: "./kubernetes/home.vijayakumar.xyz/core/intel-device-plugins/"
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -118,9 +158,12 @@ metadata:
 spec:
   dependsOn:
     - name: traefik
-  interval: 5m
-  path: './kubernetes/home.vijayakumar.xyz/core/longhorn/'
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  path: "./kubernetes/home.vijayakumar.xyz/core/longhorn/"
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -137,7 +180,9 @@ spec:
 # spec:
 #   dependsOn:
 #     - name: traefik
-#   interval: 5m
+#   interval: 60m0s
+#   timeout: 10m0s
+#   retryInterval: 2m0s
 #   path: './kubernetes/home.vijayakumar.xyz/core/smb/'
 #   prune: true
 #   sourceRef:
@@ -155,8 +200,10 @@ spec:
 #   namespace: flux-system
 # spec:
 #   dependsOn:
-#     - name: traefik
-#   interval: 1h
+#     - name: longhorn
+#   interval: 60m0s
+#   timeout: 10m0s
+#   retryInterval: 2m0s
 #   targetNamespace: cnpg-system
 #   path: './kubernetes/home.vijayakumar.xyz/core/cnpg/'
 #   prune: true
