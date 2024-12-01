@@ -32,7 +32,7 @@ spec:
           imagePullPolicy: IfNotPresent
           resources:
             limits:
-              gpu.intel.com/i915: "1"
+              gpu.intel.com/i915: '1'
               cpu: 4000m
             requests:
               cpu: 200m
@@ -44,7 +44,7 @@ spec:
               subPath: immich-library
           env:
             - name: IMMICH_WORKERS_INCLUDE
-              value: "api"
+              value: 'api'
           envFrom:
             - secretRef:
                 name: immich-server-env
@@ -100,7 +100,7 @@ spec:
           imagePullPolicy: IfNotPresent
           resources:
             limits:
-              gpu.intel.com/i915: "1"
+              gpu.intel.com/i915: '1'
               cpu: 4000m
             requests:
               cpu: 200m
@@ -112,22 +112,22 @@ spec:
               subPath: immich-library
           env:
             - name: IMMICH_WORKERS_EXCLUDE
-              value: "api"
+              value: 'api'
           envFrom:
             - secretRef:
                 name: immich-server-env
-                # readinessProbe:
-                #   httpGet:
-                #     path: /api/server/ping
-                #     port: 2283
-                #   initialDelaySeconds: 60
-                #   periodSeconds: 10
-                # livenessProbe:
-                #   httpGet:
-                #     path: /api/server/ping
-                #     port: 2283
-                #   initialDelaySeconds: 60
-                #   periodSeconds: 10
+                readinessProbe:
+                  httpGet:
+                    path: /api/server/ping
+                    port: 2283
+                  initialDelaySeconds: 60
+                  periodSeconds: 10
+                livenessProbe:
+                  httpGet:
+                    path: /api/server/ping
+                    port: 2283
+                  initialDelaySeconds: 60
+                  periodSeconds: 10
       volumes:
         - name: upload-location
           persistentVolumeClaim:
@@ -188,7 +188,7 @@ spec:
           imagePullPolicy: IfNotPresent
           resources:
             limits:
-              gpu.intel.com/i915: "1"
+              gpu.intel.com/i915: '1'
               cpu: 3000m
             requests:
               cpu: 100m
@@ -197,7 +197,7 @@ spec:
               mountPath: /cache
           env:
             - name: MACHINE_LEARNING_REQUEST_THREADS
-              value: "-1"
+              value: '-1'
           envFrom:
             - secretRef:
                 name: immich-postgres-env
@@ -284,20 +284,20 @@ spec:
             preStop:
               exec:
                 command:
-                  - "/usr/local/bin/pg_ctl"
-                  - "stop"
-                  - "-D"
-                  - "/var/lib/postgresql/data -w -t 60 -m fast"
+                  - '/usr/local/bin/pg_ctl'
+                  - 'stop'
+                  - '-D'
+                  - '/var/lib/postgresql/data -w -t 60 -m fast'
           readinessProbe:
             exec:
               command:
-                - "pg_isready"
-                - "--dbname=${POSTGRES_DB}"
+                - 'pg_isready'
+                - '--dbname=${POSTGRES_DB}'
           livenessProbe:
             exec:
               command:
-                - "pg_isready"
-                - "--dbname=${POSTGRES_DB}"
+                - 'pg_isready'
+                - '--dbname=${POSTGRES_DB}'
       volumes:
         - name: postgres-data
           persistentVolumeClaim:
@@ -357,10 +357,10 @@ spec:
           image: redis:7.4-alpine
           readinessProbe:
             exec:
-              command: ["redis-cli", "ping"]
+              command: ['redis-cli', 'ping']
           livenessProbe:
             exec:
-              command: ["redis-cli", "ping"]
+              command: ['redis-cli', 'ping']
 
 # Service
 ---
