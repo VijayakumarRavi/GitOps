@@ -61,8 +61,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: longhorn
+  storageClassName: longhorn-local
   resources:
     requests:
       storage: 10Gi
-      dataLocality: "strict-local"

@@ -1,0 +1,34 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: longhorn-local
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+parameters:
+  numberOfReplicas: "3"
+  staleReplicaTimeout: "2880"
+  dataLocality: "strict-local"
+#  mkfsParams: ""
+#  migratable: false
+#  encrypted: false
+#  dataLocality: "disabled"
+#  replicaAutoBalance: "ignored"
+#  diskSelector: "ssd,fast"
+#  nodeSelector: "storage,fast"
+#  recurringJobSelector: '[{"name":"snap-group", "isGroup":true},
+#                          {"name":"backup", "isGroup":false}]'
+#  backingImageName: ""
+#  backingImageChecksum: ""
+#  backingImageDataSourceType: ""
+#  backingImageDataSourceParameters: ""
+#  unmapMarkSnapChainRemoved: "ignored"
+#  disableRevisionCounter: false
+#  replicaSoftAntiAffinity: "ignored"
+#  replicaZoneSoftAntiAffinity: "ignored"
+#  replicaDiskSoftAntiAffinity: "ignored"
+#  nfsOptions: "soft,timeo=150,retrans=3"
+#  v1DataEngine: true
+#  v2DataEngine: false
+#  freezeFSForSnapshot: "ignored"
