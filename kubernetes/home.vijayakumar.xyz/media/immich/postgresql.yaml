@@ -17,7 +17,7 @@ spec:
         name: db-credentials
       postInitApplicationSQL:
         - ALTER SYSTEM SET search_path TO "$user", public, vectors;
-        - ALTER USER "$user" WITH SUPERUSER;;
+        - ALTER USER immich WITH SUPERUSER;
   # configure storage types used
   storage:
     storageClass: longhorn-local
