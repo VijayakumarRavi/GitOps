@@ -15,7 +15,7 @@ spec:
         name: db-credentials
       database: immich
       backup:
-        name: immich-db
+        name: immich
         # # in case you're rebuilding
         # initdb:
         #   database: immich
