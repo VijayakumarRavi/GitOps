@@ -25,13 +25,13 @@ spec:
       labels:
         app: immich-server
     spec:
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app: immich-server
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: immich-server
+              topologyKey: kubernetes.io/hostname
       dnsPolicy: ClusterFirst
       containers:
         - name: immich-server
@@ -114,13 +114,13 @@ spec:
       labels:
         app: immich-worker
     spec:
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app: immich-worker
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: immich-worker
+              topologyKey: kubernetes.io/hostname
       dnsPolicy: ClusterFirst
       containers:
         - name: immich-worker
@@ -224,13 +224,13 @@ spec:
       labels:
         app: immich-machine-learning
     spec:
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app: immich-machine-learning
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: immich-machine-learning
+              topologyKey: kubernetes.io/hostname
       containers:
         - name: immich-machine-learning
           image: ghcr.io/immich-app/immich-machine-learning:v1.121.0-openvino
