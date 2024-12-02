@@ -12,7 +12,6 @@ spec:
   nfs:
     path: /media
     server: 10.0.0.3
-
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -26,7 +25,7 @@ spec:
     requests:
       storage: 10Gi
   volumeName: immich-pv
-  storageClassName: ""
+  storageClassName: ''
 
 # Immich Machine Learning Persistent Volume Claim
 ---
@@ -46,22 +45,3 @@ spec:
   resources:
     requests:
       storage: 5Gi
-
-# Postgres Persistent Volume Claim
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: postgres-data-pvc
-  namespace: immich
-  labels:
-    app: immich-postgres
-    app.kubernetes.io/instance: immich-postgres
-    app.kubernetes.io/name: immich-postgres
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn-local
-  resources:
-    requests:
-      storage: 10Gi

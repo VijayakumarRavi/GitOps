@@ -1,0 +1,46 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: immich-db
+  namespace: immich
+spec:
+  instances: 3
+  description: 'Immich DB'
+  imageName: 'ghcr.io/cloudnative-pg/postgresql:16.3-bullseye'
+  primaryUpdateStrategy: unsupervised
+  bootstrap:
+    initdb:
+      database: immich
+      owner: immich
+      secret:
+        name: db-credentials
+  # configure storage types used
+  storage:
+    storageClass: longhorn-local
+    size: 10Gi
+  walStorage:
+    storageClass: longhorn-local
+    size: 10Gi
+  # prometheus
+  monitoring:
+    enablePodMonitor: true
+  # see https://cloudnative-pg.io/documentation/1.22/kubernetes_upgrade/
+  nodeMaintenanceWindow:
+    reusePVC: false # rebuild from other replica instead
+  # backup:
+  #   retentionPolicy: '60d'
+  #   barmanObjectStore:
+  #     destinationPath: s3://databases/immich-db
+  #     endpointURL: https://your-s3-minio-or-aws-url
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: barman-credentials
+  #         key: access-key-id
+  #       secretAccessKey:
+  #         name: barman-credentials
+  #         key: secret-access-key
+  #     wal:
+  #       compression: gzip # this saves a lot of storage
+  #     data:
+  #       compression: gzip
+  #       jobs: 2
