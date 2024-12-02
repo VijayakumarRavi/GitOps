@@ -8,17 +8,24 @@ spec:
   description: 'Immich DB'
   imageName: 'ghcr.io/tensorchord/cloudnative-pgvecto.rs:14-v0.2.0'
   primaryUpdateStrategy: unsupervised
-  enableSuperuserAccess: true
   bootstrap:
-    initdb:
-      database: immich
+    recovery:
       owner: immich
       secret:
         name: db-credentials
-      postInitApplicationSQL:
-        - ALTER SYSTEM SET search_path TO "$user", public, vectors;
-        - ALTER USER immich WITH SUPERUSER;
-  # configure storage types used
+      database: immich
+      backup:
+        name: immich-db
+        # # in case you're rebuilding
+        # initdb:
+        #   database: immich
+        #   owner: immich
+        #   secret:
+        #     name: db-credentials
+        #   postInitApplicationSQL:
+        #     - CREATE EXTENSION cube;
+        #     - CREATE EXTENSION earthdistance;
+        #     - CREATE EXTENSION vectors; # configure storage types used
   storage:
     storageClass: longhorn-local
     size: 10Gi
