@@ -5,8 +5,8 @@ metadata:
   namespace: immich
 spec:
   instances: 3
-  description: "Immich DB"
-  imageName: "ghcr.io/tensorchord/cloudnative-pgvecto.rs:14-v0.2.0"
+  description: 'Immich DB'
+  imageName: 'ghcr.io/tensorchord/cloudnative-pgvecto.rs:14-v0.2.0'
   primaryUpdateStrategy: unsupervised
   bootstrap:
     # recovery:
@@ -18,11 +18,8 @@ spec:
       secret:
         name: db-credentials
       postInitApplicationSQL:
-        - CREATE EXTENSION cube;
-        - CREATE EXTENSION earthdistance;
-        - CREATE EXTENSION vectors;
-        - GRANT ALL ON SCHEMA vectors TO immich;
-        - ALTER SCHEMA vectors OWNER to immich;
+        - ALTER SYSTEM SET search_path TO "$user", public, vectors;
+        - ALTER USER immich WITH SUPERUSER;
       dataChecksums: true
       encoding: 'UTF8'
   storage:
@@ -39,7 +36,7 @@ spec:
     reusePVC: false # rebuild from other replica instead
   postgresql:
     shared_preload_libraries:
-      - "vectors.so"
+      - 'vectors.so'
   # otherwise postgres crashes with hugepages enabled
   resources:
     requests:
