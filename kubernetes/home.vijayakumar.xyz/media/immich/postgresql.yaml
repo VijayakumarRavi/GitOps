@@ -9,18 +9,18 @@ spec:
   imageName: 'ghcr.io/tensorchord/cloudnative-pgvecto.rs:14-v0.2.0'
   primaryUpdateStrategy: unsupervised
   bootstrap:
-    recovery:
-      source: immich-db
-      # # in case you're rebuilding
-      # initdb:
-      #   database: immich
-      #   owner: immich
-      #   secret:
-      #     name: db-credentials
-      #   postInitApplicationSQL:
-      #     - CREATE EXTENSION cube;
-      #     - CREATE EXTENSION earthdistance;
-      #     - CREATE EXTENSION vectors; # configure storage types used
+    # recovery:
+    #   source: immich-db
+    # # in case you're rebuilding
+    initdb:
+      database: immich
+      owner: immich
+      secret:
+        name: db-credentials
+      postInitApplicationSQL:
+        - CREATE EXTENSION cube;
+        - CREATE EXTENSION earthdistance;
+        - CREATE EXTENSION vectors; # configure storage types used
   storage:
     storageClass: longhorn-local
     size: 10Gi
@@ -46,6 +46,7 @@ spec:
       hugepages-2Mi: 100Mi
   backup:
     retentionPolicy: '7d'
+    retentionPolicy: '7d'
     barmanObjectStore:
       destinationPath: s3://databases/immich-db
       endpointURL: https://4fc118cc61e84408cd4335a7544714bd.r2.cloudflarestorage.com
@@ -61,6 +62,18 @@ spec:
       data:
         compression: gzip
         jobs: 2
+  externalClusters:
+    - name: immich-db
+      barmanObjectStore:
+        destinationPath: s3://databases/immich-db
+        endpointURL: https://4fc118cc61e84408cd4335a7544714bd.r2.cloudflarestorage.com
+        s3Credentials:
+          accessKeyId:
+            name: barman-credentials
+            key: access-key-id
+          secretAccessKey:
+            name: barman-credentials
+            key: secret-access-key
   externalClusters:
     - name: immich-db
       barmanObjectStore:
