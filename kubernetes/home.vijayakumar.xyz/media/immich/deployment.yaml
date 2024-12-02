@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/instance: immich
     app.kubernetes.io/name: immich
 spec:
-  replicas: 2
+  replicas: 3
   progressDeadlineSeconds: 600
   revisionHistoryLimit: 1
   strategy:
@@ -25,6 +25,13 @@ spec:
       labels:
         app: immich-server
     spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: immich-server
       dnsPolicy: ClusterFirst
       containers:
         - name: immich-server
@@ -91,7 +98,7 @@ metadata:
     app.kubernetes.io/instance: immich
     app.kubernetes.io/name: immich
 spec:
-  replicas: 2
+  replicas: 3
   progressDeadlineSeconds: 600
   revisionHistoryLimit: 1
   strategy:
@@ -107,6 +114,13 @@ spec:
       labels:
         app: immich-worker
     spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: immich-worker
       dnsPolicy: ClusterFirst
       containers:
         - name: immich-worker
@@ -210,6 +224,13 @@ spec:
       labels:
         app: immich-machine-learning
     spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: immich-machine-learning
       containers:
         - name: immich-machine-learning
           image: ghcr.io/immich-app/immich-machine-learning:v1.121.0-openvino
