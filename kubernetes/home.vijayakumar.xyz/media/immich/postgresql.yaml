@@ -5,8 +5,8 @@ metadata:
   namespace: immich
 spec:
   instances: 3
-  description: 'Immich DB'
-  imageName: 'ghcr.io/tensorchord/cloudnative-pgvecto.rs:14-v0.2.0'
+  description: "Immich DB"
+  imageName: "ghcr.io/tensorchord/cloudnative-pgvecto.rs:14-v0.2.0"
   primaryUpdateStrategy: unsupervised
   bootstrap:
     # recovery:
@@ -35,7 +35,7 @@ spec:
     reusePVC: false # rebuild from other replica instead
   postgresql:
     shared_preload_libraries:
-      - 'vectors.so'
+      - "vectors.so"
   # otherwise postgres crashes with hugepages enabled
   resources:
     requests:
@@ -45,8 +45,7 @@ spec:
       memory: 1Gi
       hugepages-2Mi: 100Mi
   backup:
-    retentionPolicy: '7d'
-    retentionPolicy: '7d'
+    retentionPolicy: "7d"
     barmanObjectStore:
       destinationPath: s3://databases/immich-db
       endpointURL: https://4fc118cc61e84408cd4335a7544714bd.r2.cloudflarestorage.com
@@ -62,18 +61,6 @@ spec:
       data:
         compression: gzip
         jobs: 2
-  externalClusters:
-    - name: immich-db
-      barmanObjectStore:
-        destinationPath: s3://databases/immich-db
-        endpointURL: https://4fc118cc61e84408cd4335a7544714bd.r2.cloudflarestorage.com
-        s3Credentials:
-          accessKeyId:
-            name: barman-credentials
-            key: access-key-id
-          secretAccessKey:
-            name: barman-credentials
-            key: secret-access-key
   externalClusters:
     - name: immich-db
       barmanObjectStore:
