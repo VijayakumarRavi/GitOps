@@ -6,7 +6,7 @@ metadata:
 spec:
   instances: 3
   description: 'Immich DB'
-  imageName: 'ghcr.io/bo0tzz/cnpgvecto.rs:14.10-v0.1.11'
+  imageName: 'ghcr.io/tensorchord/cloudnative-pgvecto.rs:17.2'
   primaryUpdateStrategy: unsupervised
   bootstrap:
     initdb:
@@ -14,6 +14,9 @@ spec:
       owner: immich
       secret:
         name: db-credentials
+      postInitSQL:
+        - ALTER SYSTEM SET search_path TO "$user", public, vectors;
+        - CREATE EXTENSION IF NOT EXISTS "vectors";
   # configure storage types used
   storage:
     storageClass: longhorn-local
@@ -38,20 +41,32 @@ spec:
     limits:
       memory: 1Gi
       hugepages-2Mi: 100Mi
-  # backup:
-  #   retentionPolicy: '60d'
-  #   barmanObjectStore:
-  #     destinationPath: s3://databases/immich-db
-  #     endpointURL: https://your-s3-minio-or-aws-url
-  #     s3Credentials:
-  #       accessKeyId:
-  #         name: barman-credentials
-  #         key: access-key-id
-  #       secretAccessKey:
-  #         name: barman-credentials
-  #         key: secret-access-key
-  #     wal:
-  #       compression: gzip # this saves a lot of storage
-  #     data:
-  #       compression: gzip
-  #       jobs: 2
+  backup:
+    retentionPolicy: '60d'
+    barmanObjectStore:
+      destinationPath: s3://databases/immich-db
+      endpointURL: https://4fc118cc61e84408cd4335a7544714bd.r2.cloudflarestorage.com
+      s3Credentials:
+        accessKeyId:
+          name: barman-credentials
+          key: access-key-id
+        secretAccessKey:
+          name: barman-credentials
+          key: secret-access-key
+      wal:
+        compression: gzip # this saves a lot of storage
+      data:
+        compression: gzip
+        jobs: 2
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: immich
+  namespace: default
+spec:
+  immediate: true
+  schedule: 0 */30 * * * *
+  backupOwnerReference: self
+  cluster:
+    name: immich-db

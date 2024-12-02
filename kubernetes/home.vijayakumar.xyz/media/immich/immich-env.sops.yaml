@@ -25,8 +25,41 @@ sops:
             MFMxNFFvRVRCbGloYTZBU2RSUUc5MncKFwA9iei1rRgVeSR0+tkaZDL9O3SLF2CD
             I3bBwFSnM0YjyrjCuH10gfaqibnCSwoJ62DnCy+IqtbyhgUGwSTPCA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-12-02T01:46:12Z"
-    mac: ENC[AES256_GCM,data:v7oG47zOk54AWM3GNqCCC4f5dhHPN+C7XnIt+n8rU+uGmL6B4bM20ipWslhedZn7QZ4QQBX/WT+aTOCrcySgErjRUd5zW26/EpI9E9+EsEPWnoKwGj6ESDL45e54Ev2TIY5irNli+AOhSOv8fbMwQqgeARx37ptzZIYV1V1eIJw=,iv:hxe7sU8v/BtT455WH7o1Qb/rdeZ2gLwV1RfXqJseT1U=,tag:n9p22bCsXgIHowYuSOI50w==,type:str]
+    lastmodified: "2024-12-02T04:27:28Z"
+    mac: ENC[AES256_GCM,data:x3Q7KMqJ2m5w+hFCMP/TxI9gFrpJGNZnfcZ+UkDb9n76kA2xZb8qvax+ENDrkUnQJ/we4sh6LPCLcRKSr+lrM/N8cvGq/Q9SyN4nuH2yUHTq+XJ0h0L0niaMt3StmC2PPBajtuyGgyCrThFIb5y4H8sWM1gulHTZZ/YG8d7dseY=,iv:+mg038RuylAIzE8DCfQPLdAd85PN/CY2iyaVV24cZVI=,tag:Uj9JOsfwIfhLQjmMhChbMg==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.9.1
+---
+apiVersion: v1
+type: kubernetes.io/basic-auth
+kind: Secret
+metadata:
+    name: barman-credentials
+    namespace: immich
+    labels:
+        encrypted-by: sops
+        encryption-method: age
+stringData:
+    accessKeyId: ENC[AES256_GCM,data:eGsp+FmbZdI096AQgsVL2Il4r5xy6QT6EPqEIJ/CGj0=,iv:R1uJZqhpMpCT9k/P1wHjNnRG/SuRYucmu44zmeso++E=,tag:WOcqR+KOsV9GngnR+SMKTw==,type:str]
+    secretAccessKey: ENC[AES256_GCM,data:arSsWYL356LiVAarzbBNRY8nK9InkrzkWv+VQyG58d9kAmlUBi01qEAl+teZg6sCJ5fSOUDai5k6T0/cnuxM5HU=,iv:d70Ug29iurF0GcRtf8/fK1qkwGJI+zXk6pyAY4nrPZo=,tag:dFGx0hHkVp80bD4Qk6Sp2A==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1xhw4tl54k0dpsx8gkk3vkd2g6l8wng5xpvfysqke6rknz40cpyjq3ljlt6
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBxaklJcUdtZDhpTURqV3c4
+            TTg5bFlHZTY2MERPTTJoT2I0MDlMemY4ZUdRCktMNU5GVktha2ZFbUtxdmJPTEZG
+            YWIwbUhMVUt5MnRlTTRCS1JSZmVLT2MKLS0tIGpjcjVnUS9qUEwyTkczR2RrNFg4
+            MFMxNFFvRVRCbGloYTZBU2RSUUc5MncKFwA9iei1rRgVeSR0+tkaZDL9O3SLF2CD
+            I3bBwFSnM0YjyrjCuH10gfaqibnCSwoJ62DnCy+IqtbyhgUGwSTPCA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-12-02T04:27:28Z"
+    mac: ENC[AES256_GCM,data:x3Q7KMqJ2m5w+hFCMP/TxI9gFrpJGNZnfcZ+UkDb9n76kA2xZb8qvax+ENDrkUnQJ/we4sh6LPCLcRKSr+lrM/N8cvGq/Q9SyN4nuH2yUHTq+XJ0h0L0niaMt3StmC2PPBajtuyGgyCrThFIb5y4H8sWM1gulHTZZ/YG8d7dseY=,iv:+mg038RuylAIzE8DCfQPLdAd85PN/CY2iyaVV24cZVI=,tag:Uj9JOsfwIfhLQjmMhChbMg==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.9.1
@@ -63,8 +96,8 @@ sops:
             MFMxNFFvRVRCbGloYTZBU2RSUUc5MncKFwA9iei1rRgVeSR0+tkaZDL9O3SLF2CD
             I3bBwFSnM0YjyrjCuH10gfaqibnCSwoJ62DnCy+IqtbyhgUGwSTPCA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-12-02T01:46:12Z"
-    mac: ENC[AES256_GCM,data:v7oG47zOk54AWM3GNqCCC4f5dhHPN+C7XnIt+n8rU+uGmL6B4bM20ipWslhedZn7QZ4QQBX/WT+aTOCrcySgErjRUd5zW26/EpI9E9+EsEPWnoKwGj6ESDL45e54Ev2TIY5irNli+AOhSOv8fbMwQqgeARx37ptzZIYV1V1eIJw=,iv:hxe7sU8v/BtT455WH7o1Qb/rdeZ2gLwV1RfXqJseT1U=,tag:n9p22bCsXgIHowYuSOI50w==,type:str]
+    lastmodified: "2024-12-02T04:27:28Z"
+    mac: ENC[AES256_GCM,data:x3Q7KMqJ2m5w+hFCMP/TxI9gFrpJGNZnfcZ+UkDb9n76kA2xZb8qvax+ENDrkUnQJ/we4sh6LPCLcRKSr+lrM/N8cvGq/Q9SyN4nuH2yUHTq+XJ0h0L0niaMt3StmC2PPBajtuyGgyCrThFIb5y4H8sWM1gulHTZZ/YG8d7dseY=,iv:+mg038RuylAIzE8DCfQPLdAd85PN/CY2iyaVV24cZVI=,tag:Uj9JOsfwIfhLQjmMhChbMg==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.9.1
