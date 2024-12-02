@@ -15,7 +15,7 @@ spec:
       owner: immich
       secret:
         name: db-credentials
-      postInitSQL:
+      postInitApplicationSQL:
         - ALTER SYSTEM SET search_path TO "$user", public, vectors;
         - CREATE EXTENSION IF NOT EXISTS "vectors";
   # configure storage types used
