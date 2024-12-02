@@ -21,5 +21,25 @@ patches:
               "name": "sops-keys"
             }
           }
+        },
+        {
+          "op": "add",
+          "path": "/spec/interval",
+          "value": "60m0s"
+        },
+        {
+          "op": "add",
+          "path": "/spec/timeout",
+          "value": "15m0s"
+        },
+        {
+          "op": "add",
+          "path": "/spec/retryInterval",
+          "value": "2m0s"
+        },
+        {
+          "op": "add",
+          "path": "/spec/wait",
+          "value": true
         }
       ]
