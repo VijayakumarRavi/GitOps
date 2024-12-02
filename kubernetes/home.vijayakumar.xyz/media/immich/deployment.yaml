@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/instance: immich
     app.kubernetes.io/name: immich
 spec:
-  replicas: 3
+  replicas: 2
   progressDeadlineSeconds: 600
   revisionHistoryLimit: 1
   strategy:
@@ -33,7 +33,7 @@ spec:
           resources:
             limits:
               gpu.intel.com/i915: '1'
-              cpu: 4000m
+              cpu: 3000m
             requests:
               cpu: 200m
           ports:
@@ -91,7 +91,7 @@ metadata:
     app.kubernetes.io/instance: immich
     app.kubernetes.io/name: immich
 spec:
-  replicas: 3
+  replicas: 2
   progressDeadlineSeconds: 600
   revisionHistoryLimit: 1
   strategy:
@@ -115,7 +115,7 @@ spec:
           resources:
             limits:
               gpu.intel.com/i915: '1'
-              cpu: 4000m
+              cpu: 3000m
             requests:
               cpu: 200m
           ports:
@@ -225,7 +225,7 @@ spec:
               mountPath: /cache
           env:
             - name: MACHINE_LEARNING_REQUEST_THREADS
-              value: '-1'
+              value: '1'
             - name: DB_HOSTNAME
               value: immich-db-rw.immich.svc.cluster.local
             - name: DB_DATABASE_NAME
