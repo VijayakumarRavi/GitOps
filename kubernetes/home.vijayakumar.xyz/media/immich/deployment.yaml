@@ -45,26 +45,20 @@ spec:
           env:
             - name: IMMICH_WORKERS_INCLUDE
               value: 'api'
+            - name: DB_HOSTNAME
+              value: immich-db-rw.immich.svc.cluster.local
+            - name: DB_DATABASE_NAME
+              value: immich-db
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgresql-app
+                  name: db-credentials
                   key: password
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: postgresql-app
+                  name: db-credentials
                   key: username
-            - name: DB_HOSTNAME
-              valueFrom:
-                secretKeyRef:
-                  name: postgresql-app
-                  key: host
-            - name: DB_DATABASE_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: postgresql-app
-                  key: dbname
           envFrom:
             - secretRef:
                 name: immich-server-env
@@ -133,26 +127,20 @@ spec:
           env:
             - name: IMMICH_WORKERS_EXCLUDE
               value: 'api'
+            - name: DB_HOSTNAME
+              value: immich-db-rw.immich.svc.cluster.local
+            - name: DB_DATABASE_NAME
+              value: immich-db
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgresql-app
+                  name: db-credentials
                   key: password
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: postgresql-app
+                  name: db-credentials
                   key: username
-            - name: DB_HOSTNAME
-              valueFrom:
-                secretKeyRef:
-                  name: postgresql-app
-                  key: host
-            - name: DB_DATABASE_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: postgresql-app
-                  key: dbname
           envFrom:
             - secretRef:
                 name: immich-server-env
@@ -238,26 +226,20 @@ spec:
           env:
             - name: MACHINE_LEARNING_REQUEST_THREADS
               value: '-1'
+            - name: DB_HOSTNAME
+              value: immich-db-rw.immich.svc.cluster.local
+            - name: DB_DATABASE_NAME
+              value: immich-db
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgresql-app
+                  name: db-credentials
                   key: password
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: postgresql-app
+                  name: db-credentials
                   key: username
-            - name: DB_HOSTNAME
-              valueFrom:
-                secretKeyRef:
-                  name: postgresql-app
-                  key: host
-            - name: DB_DATABASE_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: postgresql-app
-                  key: dbname
           ports:
             - containerPort: 3003
               # readinessProbe:
@@ -300,6 +282,86 @@ spec:
   type: ClusterIP
   clusterIP: 10.43.150.102
 
+# # PostgreSQL Deployment
+# ---
+# kind: Deployment
+# apiVersion: apps/v1
+# metadata:
+#   name: immich-postgres
+#   namespace: immich
+#   labels:
+#     app: immich-postgres
+#     app.kubernetes.io/instance: immich-postgres
+#     app.kubernetes.io/name: immich-postgres
+# spec:
+#   replicas: 1
+#   progressDeadlineSeconds: 600
+#   revisionHistoryLimit: 1
+#   strategy:
+#     type: RollingUpdate
+#     rollingUpdate:
+#       maxUnavailable: 25%
+#       maxSurge: 50%
+#   selector:
+#     matchLabels:
+#       app: immich-postgres
+#   template:
+#     metadata:
+#       labels:
+#         app: immich-postgres
+#     spec:
+#       containers:
+#         - name: immich-postgres
+#           image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0
+#           envFrom:
+#             - secretRef:
+#                 name: immich-postgres-env
+#           volumeMounts:
+#             - name: postgres-data
+#               mountPath: /var/lib/postgresql
+#           lifecycle:
+#             preStop:
+#               exec:
+#                 command:
+#                   - '/usr/local/bin/pg_ctl'
+#                   - 'stop'
+#                   - '-D'
+#                   - '/var/lib/postgresql/data -w -t 60 -m fast'
+#           readinessProbe:
+#             exec:
+#               command:
+#                 - 'pg_isready'
+#                 - '--dbname=${POSTGRES_DB}'
+#           livenessProbe:
+#             exec:
+#               command:
+#                 - 'pg_isready'
+#                 - '--dbname=${POSTGRES_DB}'
+#       volumes:
+#         - name: postgres-data
+#           persistentVolumeClaim:
+#             claimName: postgres-data-pvc
+#
+# # Service
+# ---
+# kind: Service
+# apiVersion: v1
+# metadata:
+#   name: immich-postgres
+#   namespace: immich
+#   labels:
+#     app: immich-postgres
+#     app.kubernetes.io/instance: immich-postgres
+#     app.kubernetes.io/name: immich-postgres
+# spec:
+#   selector:
+#     app: immich-postgres
+#   ports:
+#     - protocol: TCP
+#       port: 5432
+#       targetPort: 5432
+#   type: ClusterIP
+#   clusterIP: 10.43.150.104
 # # PostgreSQL Deployment
 # ---
 # kind: Deployment
