@@ -4,6 +4,8 @@ metadata:
   name: media-base
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: core
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
@@ -25,6 +27,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: core
     - name: media-base
   interval: 60m0s
   timeout: 10m0s
@@ -47,6 +50,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: core
     - name: jellyfin
   interval: 60m0s
   timeout: 10m0s
@@ -69,6 +73,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: core
     - name: jellyseerr
   interval: 60m0s
   timeout: 10m0s
@@ -91,6 +96,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: core
     - name: prowlarr
   interval: 60m0s
   timeout: 10m0s
@@ -113,6 +119,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: core
     - name: sonarr
   interval: 60m0s
   timeout: 10m0s
@@ -135,6 +142,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: core
     - name: radarr
   interval: 60m0s
   timeout: 10m0s
@@ -157,6 +165,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: core
     - name: media-base
   interval: 60m0s
   timeout: 10m0s
