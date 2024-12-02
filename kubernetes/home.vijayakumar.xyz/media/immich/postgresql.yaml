@@ -6,7 +6,7 @@ metadata:
 spec:
   instances: 3
   description: 'Immich DB'
-  imageName: 'ghcr.io/cloudnative-pg/postgresql:16.3-bullseye'
+  imageName: 'ghcr.io/bo0tzz/cnpgvecto.rs:14.10-v0.1.11'
   primaryUpdateStrategy: unsupervised
   bootstrap:
     initdb:
