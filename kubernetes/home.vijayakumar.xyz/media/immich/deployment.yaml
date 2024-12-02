@@ -48,7 +48,7 @@ spec:
             - name: DB_HOSTNAME
               value: immich-db-rw.immich.svc.cluster.local
             - name: DB_DATABASE_NAME
-              value: immich-db
+              value: immich
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -130,7 +130,7 @@ spec:
             - name: DB_HOSTNAME
               value: immich-db-rw.immich.svc.cluster.local
             - name: DB_DATABASE_NAME
-              value: immich-db
+              value: immich
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -229,7 +229,7 @@ spec:
             - name: DB_HOSTNAME
               value: immich-db-rw.immich.svc.cluster.local
             - name: DB_DATABASE_NAME
-              value: immich-db
+              value: immich
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
