@@ -10,22 +10,17 @@ spec:
   primaryUpdateStrategy: unsupervised
   bootstrap:
     recovery:
-      owner: immich
-      secret:
-        name: db-credentials
-      database: immich
-      backup:
-        name: immich
-        # # in case you're rebuilding
-        # initdb:
-        #   database: immich
-        #   owner: immich
-        #   secret:
-        #     name: db-credentials
-        #   postInitApplicationSQL:
-        #     - CREATE EXTENSION cube;
-        #     - CREATE EXTENSION earthdistance;
-        #     - CREATE EXTENSION vectors; # configure storage types used
+      source: immich-db
+      # # in case you're rebuilding
+      # initdb:
+      #   database: immich
+      #   owner: immich
+      #   secret:
+      #     name: db-credentials
+      #   postInitApplicationSQL:
+      #     - CREATE EXTENSION cube;
+      #     - CREATE EXTENSION earthdistance;
+      #     - CREATE EXTENSION vectors; # configure storage types used
   storage:
     storageClass: longhorn-local
     size: 10Gi
@@ -50,7 +45,7 @@ spec:
       memory: 1Gi
       hugepages-2Mi: 100Mi
   backup:
-    retentionPolicy: '60d'
+    retentionPolicy: '7d'
     barmanObjectStore:
       destinationPath: s3://databases/immich-db
       endpointURL: https://4fc118cc61e84408cd4335a7544714bd.r2.cloudflarestorage.com
@@ -66,6 +61,18 @@ spec:
       data:
         compression: gzip
         jobs: 2
+  externalClusters:
+    - name: immich-db
+      barmanObjectStore:
+        destinationPath: s3://databases/immich-db
+        endpointURL: https://4fc118cc61e84408cd4335a7544714bd.r2.cloudflarestorage.com
+        s3Credentials:
+          accessKeyId:
+            name: barman-credentials
+            key: access-key-id
+          secretAccessKey:
+            name: barman-credentials
+            key: secret-access-key
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
