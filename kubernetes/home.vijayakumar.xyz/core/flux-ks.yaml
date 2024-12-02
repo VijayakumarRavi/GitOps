@@ -7,7 +7,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: "./kubernetes/home.vijayakumar.xyz/core/metallb/"
+  path: './kubernetes/home.vijayakumar.xyz/core/metallb/'
   prune: true
   wait: true
   sourceRef:
@@ -29,7 +29,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: "./kubernetes/home.vijayakumar.xyz/core/metallb/ip-pool/"
+  path: './kubernetes/home.vijayakumar.xyz/core/metallb/ip-pool/'
   prune: true
   wait: true
   sourceRef:
@@ -51,7 +51,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: "./kubernetes/home.vijayakumar.xyz/core/kube-vip/"
+  path: './kubernetes/home.vijayakumar.xyz/core/kube-vip/'
   prune: true
   wait: true
   sourceRef:
@@ -73,7 +73,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: "./kubernetes/home.vijayakumar.xyz/core/traefik/"
+  path: './kubernetes/home.vijayakumar.xyz/core/traefik/'
   prune: true
   wait: true
   sourceRef:
@@ -95,7 +95,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: "./kubernetes/home.vijayakumar.xyz/core/cert-manager/"
+  path: './kubernetes/home.vijayakumar.xyz/core/cert-manager/'
   prune: true
   wait: true
   sourceRef:
@@ -139,7 +139,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: "./kubernetes/home.vijayakumar.xyz/core/intel-device-plugins/"
+  path: './kubernetes/home.vijayakumar.xyz/core/intel-device-plugins/'
   prune: true
   wait: true
   sourceRef:
@@ -161,7 +161,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: "./kubernetes/home.vijayakumar.xyz/core/longhorn/"
+  path: './kubernetes/home.vijayakumar.xyz/core/longhorn/'
   prune: true
   wait: true
   sourceRef:
@@ -171,6 +171,25 @@ spec:
     provider: sops
     secretRef:
       name: sops-keys
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cnpg
+  namespace: cnpg-system
+spec:
+  dependsOn:
+    - name: longhorn
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  targetNamespace: cnpg-system
+  path: './kubernetes/home.vijayakumar.xyz/core/cnpg/'
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    namespace: flux-system
+    name: flux-system
 # ---
 # apiVersion: kustomize.toolkit.fluxcd.io/v1
 # kind: Kustomization
@@ -192,22 +211,3 @@ spec:
 #     provider: sops
 #     secretRef:
 #       name: sops-keys
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: cnpg
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#     - name: longhorn
-#   interval: 60m0s
-#   timeout: 10m0s
-#   retryInterval: 2m0s
-#   targetNamespace: cnpg-system
-#   path: './kubernetes/home.vijayakumar.xyz/core/cnpg/'
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     namespace: flux-system
-#     name: flux-system
