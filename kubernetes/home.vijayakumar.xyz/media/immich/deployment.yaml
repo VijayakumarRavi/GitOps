@@ -15,7 +15,7 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 25%
+      maxUnavailable: 2
       maxSurge: 50%
   selector:
     matchLabels:
@@ -27,7 +27,7 @@ spec:
     spec:
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
+          preferredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
                   app: immich-server
@@ -104,7 +104,7 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 25%
+      maxUnavailable: 2
       maxSurge: 50%
   selector:
     matchLabels:
@@ -116,7 +116,7 @@ spec:
     spec:
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
+          preferredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
                   app: immich-worker
@@ -214,7 +214,7 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 25%
+      maxUnavailable: 2
       maxSurge: 50%
   selector:
     matchLabels:
@@ -226,7 +226,7 @@ spec:
     spec:
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
+          preferredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
                   app: immich-machine-learning
@@ -321,7 +321,7 @@ spec:
 #   strategy:
 #     type: RollingUpdate
 #     rollingUpdate:
-#       maxUnavailable: 25%
+#       maxUnavailable: 2
 #       maxSurge: 50%
 #   selector:
 #     matchLabels:
@@ -401,7 +401,7 @@ spec:
 #   strategy:
 #     type: RollingUpdate
 #     rollingUpdate:
-#       maxUnavailable: 25%
+#       maxUnavailable: 2
 #       maxSurge: 50%
 #   selector:
 #     matchLabels:
@@ -482,7 +482,7 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 25%
+      maxUnavailable: 2
       maxSurge: 50%
   selector:
     matchLabels:
