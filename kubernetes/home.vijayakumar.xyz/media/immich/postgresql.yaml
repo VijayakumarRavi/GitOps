@@ -9,19 +9,19 @@ spec:
   imageName: 'ghcr.io/tensorchord/cloudnative-pgvecto.rs:14-v0.2.0'
   primaryUpdateStrategy: unsupervised
   bootstrap:
-    # recovery:
-    #   source: immich-db
-    # # in case you're rebuilding
-    initdb:
-      database: immich
-      owner: immich
-      secret:
-        name: db-credentials
-      postInitApplicationSQL:
-        - ALTER SYSTEM SET search_path TO "$user", public, vectors;
-        - ALTER USER immich WITH SUPERUSER;
-      dataChecksums: true
-      encoding: 'UTF8'
+    recovery:
+      source: immich-db
+  # # # in case you're rebuilding
+  # initdb:
+  #   database: immich
+  #   owner: immich
+  #   secret:
+  #     name: db-credentials
+  #   postInitApplicationSQL:
+  #     - ALTER SYSTEM SET search_path TO "$user", public, vectors;
+  #     - ALTER USER immich WITH SUPERUSER;
+  #   dataChecksums: true
+  #   encoding: 'UTF8'
   storage:
     storageClass: longhorn-local
     size: 10Gi
