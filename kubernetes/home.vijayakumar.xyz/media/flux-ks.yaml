@@ -167,6 +167,7 @@ spec:
   dependsOn:
     - name: core
     - name: media-base
+    - name: cnpg
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
