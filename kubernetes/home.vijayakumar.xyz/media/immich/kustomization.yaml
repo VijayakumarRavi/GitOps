@@ -4,5 +4,5 @@ resources:
   - ./default.yaml
   - ./immich-env.sops.yaml
   - ./volumes.yaml
-  # - ./postgresql.yaml
+  - ./postgresql.yaml
   - ./deployment.yaml
