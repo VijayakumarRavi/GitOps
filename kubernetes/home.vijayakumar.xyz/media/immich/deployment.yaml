@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/instance: immich
     app.kubernetes.io/name: immich
 spec:
-  replicas: 3
+  replicas: 2
   progressDeadlineSeconds: 600
   revisionHistoryLimit: 1
   strategy:
@@ -98,7 +98,7 @@ metadata:
     app.kubernetes.io/instance: immich
     app.kubernetes.io/name: immich
 spec:
-  replicas: 3
+  replicas: 2
   progressDeadlineSeconds: 600
   revisionHistoryLimit: 1
   strategy:
@@ -208,7 +208,7 @@ metadata:
     app.kubernetes.io/instance: immich-machine-learning
     app.kubernetes.io/name: immich-machine-learning
 spec:
-  replicas: 3
+  replicas: 2
   progressDeadlineSeconds: 600
   revisionHistoryLimit: 1
   strategy:
