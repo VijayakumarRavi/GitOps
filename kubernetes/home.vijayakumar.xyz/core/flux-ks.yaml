@@ -87,6 +87,25 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: tailscale
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: kube-vip
+  interval: 60m0s
+  timeout: 10m0s
+  retryInterval: 2m0s
+  targetNamespace: tailscale
+  path: './kubernetes/home.vijayakumar.xyz/core/tailscale'
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    namespace: flux-system
+    name: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: cert-manager
   namespace: flux-system
 spec:
