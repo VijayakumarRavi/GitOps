@@ -43,7 +43,7 @@ spec:
             - name: GOTIFY_DB_SQLITE
               value: /app/data/gotify.db
             - name: GOTIFY_PORT
-              value: "80"
+              value: '80'
           envFrom:
             - secretRef:
                 name: gotify-secret
@@ -91,30 +91,48 @@ spec:
   selector:
     app: gotify
 ---
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: gotify
   namespace: utils
   annotations:
-    kubernetes.io/ingress.class: traefik-external
+    tailscale.com/funnel: 'true'
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`gotify.home.vijayakumar.xyz`)
-      kind: Rule
-      services:
-        - name: gotify
-          port: 80
-      middlewares:
-        - name: default-headers
-    - match: Host(`igotify.home.vijayakumar.xyz`)
-      kind: Rule
-      services:
-        - name: gotify
-          port: 8080
-      middlewares:
-        - name: default-headers
+  ingressClassName: tailscale
   tls:
-    secretName: home-vijayakumar-xyz
+    - hosts:
+        - gotify
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gotify
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: igotify
+  namespace: utils
+  annotations:
+    tailscale.com/funnel: 'true'
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - igotify
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gotify
+                port:
+                  number: 8080
