@@ -1,0 +1,20 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: authentik
+resources:
+  - ./namespace.yaml
+  - ./rbac.yaml
+  - ./authentik-secret.sops.yaml
+  - ./helmrelease.yaml
+  - ./redis-helmrelease.yaml
+  - ./ingress.yaml
+  - ./postgres-cluster.yaml
+configMapGenerator:
+  - name: chart-values
+    files: [values.yaml=values.yaml]
+  - name: redis-chart-values
+    files: [values.yaml=redis-values.yaml]
+  - name: authentik-worker-chart-values
+    files: [values.yaml=worker-values.yaml]
+configurations: [kustomizeconfig.yaml]

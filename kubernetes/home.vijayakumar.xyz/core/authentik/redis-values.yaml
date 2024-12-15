@@ -1,0 +1,26 @@
+---
+replicaCount: 1
+image:
+  repository: redis
+  pullPolicy: IfNotPresent
+  tag: 7.4.1-alpine
+service:
+  type: ClusterIP
+  ports:
+    - name: redis
+      port: 6379
+ingress:
+  enabled: false
+probes:
+  liveness:
+    tcpSocket:
+      port: 6379
+  readiness:
+    tcpSocket:
+      port: 6379
+resources:
+  limits:
+    memory: 50Mi
+  requests:
+    memory: 30Mi
+    cpu: 20m

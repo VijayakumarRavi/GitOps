@@ -1,0 +1,80 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: authentik-db
+  namespace: authentik
+spec:
+  instances: 3
+  description: Authentik DB
+  primaryUpdateStrategy: unsupervised
+  bootstrap:
+    # recovery:
+    #   source: authentik-db
+    #  # in case you're rebuilding
+    initdb:
+      database: authentik
+      owner: authentik
+      dataChecksums: true
+      encoding: UTF8
+  storage:
+    storageClass: longhorn-local
+    size: 10Gi
+  walStorage:
+    storageClass: longhorn-local
+    size: 10Gi
+  # prometheus
+  monitoring:
+    enablePodMonitor: true
+  # see https://cloudnative-pg.io/documentation/1.22/kubernetes_upgrade/
+  nodeMaintenanceWindow:
+    reusePVC: false  # rebuild from other replica instead
+  # otherwise postgres crashes with hugepages enabled
+  resources:
+    requests:
+      memory: 100Mi
+      hugepages-2Mi: 100Mi
+    limits:
+      memory: 1Gi
+      hugepages-2Mi: 100Mi
+  backup:
+    retentionPolicy: 7d
+    barmanObjectStore:
+      destinationPath: s3://databases/authentik-db
+      endpointURL: https://4fc118cc61e84408cd4335a7544714bd.r2.cloudflarestorage.com
+      s3Credentials:
+        accessKeyId:
+          name: barman-credentials
+          key: access-key-id
+        secretAccessKey:
+          name: barman-credentials
+          key: secret-access-key
+      wal:
+        compression: gzip  # this saves a lot of storage
+      data:
+        compression: gzip
+        jobs: 2
+  externalClusters:
+    - name: authentik-db
+      barmanObjectStore:
+        destinationPath: s3://databases/authentik-db
+        endpointURL: https://4fc118cc61e84408cd4335a7544714bd.r2.cloudflarestorage.com
+        s3Credentials:
+          accessKeyId:
+            name: barman-credentials
+            key: access-key-id
+          secretAccessKey:
+            name: barman-credentials
+            key: secret-access-key
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: authentik
+  namespace: authentik
+spec:
+  immediate: true
+  schedule: 0 */30 * * * *
+  backupOwnerReference: self
+  cluster:
+    name: authentik-db

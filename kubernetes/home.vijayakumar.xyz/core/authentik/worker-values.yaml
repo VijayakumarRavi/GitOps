@@ -1,0 +1,49 @@
+---
+replicaCount: 3
+image:
+  repository: ghcr.io/goauthentik/server
+  pullPolicy: IfNotPresent
+  tag: 2024.10.4
+nameOverride: ''
+fullnameOverride: ''
+selectorLabels: [app.kubernetes.io/component=worker]
+args: [worker]
+serviceAccountName: rbac-authentik-remote-cluster
+deploymentStrategy:
+  rollingUpdate:
+    maxUnavailable: 1
+  type: RollingUpdate
+envFrom:
+  - secretRef:
+      name: authentik-secrets
+  - configMapRef:
+      name: authentik-config
+env:
+  - name: AUTHENTIK_POSTGRESQL__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: authentik-db-app
+        key: password
+  - name: AUTHENTIK_POSTGRESQL__USER
+    valueFrom:
+      secretKeyRef:
+        name: authentik-db-app
+        key: username
+  - name: AUTHENTIK_POSTGRESQL__HOST
+    valueFrom:
+      secretKeyRef:
+        name: authentik-db-app
+        key: host
+  - name: AUTHENTIK_POSTGRESQL__NAME
+    valueFrom:
+      secretKeyRef:
+        name: authentik-db-app
+        key: dbname
+ingress:
+  enabled: false
+resources:
+  limits:
+    memory: 500Mi
+  requests:
+    cpu: 10m
+    memory: 300Mi
