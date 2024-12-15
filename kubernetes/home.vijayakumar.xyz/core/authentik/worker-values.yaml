@@ -3,7 +3,7 @@ replicaCount: 3
 image:
   repository: ghcr.io/goauthentik/server
   pullPolicy: IfNotPresent
-  tag: 2024.10.4
+  tag: 2024.10.5
 nameOverride: ''
 fullnameOverride: ''
 selectorLabels: [app.kubernetes.io/component=worker]
