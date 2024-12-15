@@ -1,3 +1,4 @@
+---
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -5,13 +6,13 @@ metadata:
   namespace: immich
 spec:
   instances: 3
-  description: 'Immich DB'
-  imageName: 'ghcr.io/tensorchord/cloudnative-pgvecto.rs:14-v0.2.0'
+  description: Immich DB
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:14-v0.2.0
   primaryUpdateStrategy: unsupervised
   bootstrap:
     # recovery:
     #   source: immich-db
-    # # in case you're rebuilding
+    #  # in case you're rebuilding
     initdb:
       database: immich
       owner: immich
@@ -21,7 +22,7 @@ spec:
         - ALTER SYSTEM SET search_path TO "$user", public, vectors;
         - ALTER USER immich WITH SUPERUSER;
       dataChecksums: true
-      encoding: 'UTF8'
+      encoding: UTF8
   storage:
     storageClass: longhorn-local
     size: 10Gi
@@ -33,10 +34,10 @@ spec:
     enablePodMonitor: true
   # see https://cloudnative-pg.io/documentation/1.22/kubernetes_upgrade/
   nodeMaintenanceWindow:
-    reusePVC: false # rebuild from other replica instead
+    reusePVC: false  # rebuild from other replica instead
   postgresql:
     shared_preload_libraries:
-      - 'vectors.so'
+      - vectors.so
   # otherwise postgres crashes with hugepages enabled
   resources:
     requests:
@@ -46,7 +47,7 @@ spec:
       memory: 1Gi
       hugepages-2Mi: 100Mi
   backup:
-    retentionPolicy: '7d'
+    retentionPolicy: 7d
     barmanObjectStore:
       destinationPath: s3://databases/immich-db
       endpointURL: https://4fc118cc61e84408cd4335a7544714bd.r2.cloudflarestorage.com
@@ -58,7 +59,7 @@ spec:
           name: barman-credentials
           key: secret-access-key
       wal:
-        compression: gzip # this saves a lot of storage
+        compression: gzip  # this saves a lot of storage
       data:
         compression: gzip
         jobs: 2

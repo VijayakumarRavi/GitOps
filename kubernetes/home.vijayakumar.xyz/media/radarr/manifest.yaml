@@ -1,11 +1,11 @@
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: radarr-pvc
   namespace: media
 spec:
-  accessModes:
-    - ReadWriteOnce
+  accessModes: [ReadWriteOnce]
   storageClassName: longhorn
   resources:
     requests:
@@ -41,12 +41,12 @@ spec:
               protocol: TCP
           env:
             - name: TZ
-              value: "Asia/Kolkata"
+              value: Asia/Kolkata
           volumeMounts:
             - mountPath: /config
               name: radarr
               subPath: radarr-config
-            - mountPath: "/movies"
+            - mountPath: /movies
               readOnly: false
               name: nfs
               subPath: downloads/movies
@@ -88,8 +88,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik-external
 spec:
-  entryPoints:
-    - websecure
+  entryPoints: [websecure]
   tls:
     secretName: home-vijayakumar-xyz
   routes:

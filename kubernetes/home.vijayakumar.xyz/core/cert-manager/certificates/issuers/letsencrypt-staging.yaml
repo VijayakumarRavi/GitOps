@@ -1,3 +1,4 @@
+---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -16,5 +17,4 @@ spec:
               name: cloudflare-token-secret
               key: cloudflare-token
         selector:
-          dnsZones:
-            - 'vijayakumar.xyz'
+          dnsZones: [vijayakumar.xyz]

@@ -1,0 +1,73 @@
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        stages: [pre-commit]
+      - id: check-merge-conflict
+        stages: [pre-commit]
+      - id: check-added-large-files
+        stages: [pre-commit]
+      # - id: detect-aws-credentials
+      #   stages: [pre-commit]
+      - id: detect-private-key
+        stages: [pre-commit]
+      - id: end-of-file-fixer
+        stages: [pre-commit]
+  # - repo: https://github.com/ansible-community/ansible-lint.git
+  #   rev: v6.19.0  # put latest release tag from https://github.com/ansible-community/ansible-lint/releases/
+  #   hooks:
+  #     - id: ansible-lint
+  #       args: [--write]
+  #       files: \.(yaml|yml)$
+  #       stages: [commit]
+  - repo: https://github.com/lyz-code/yamlfix/
+    rev: 1.17.0
+    hooks:
+      - id: yamlfix
+        args: [-c=.yamllint]
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: [-c=.yamllint]
+        stages: [pre-commit]
+  - repo: https://github.com/bridgecrewio/checkov.git
+    rev: 3.2.334
+    hooks:
+      - id: checkov
+        args: [--directory, .]
+  - repo: https://github.com/Agilicus/pre-commit-hook-k8svalidate.git
+    rev: v0.2.0
+    hooks:
+      - id: k8svalidate
+        files: .yaml$
+  - repo: local
+    hooks:
+      - id: post-commit-local
+        name: validate flux
+        entry: ./scripts/flux-validate.sh
+        language: system
+        stages: [pre-commit]
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: [--disable-plugin, KeywordDetector]
+        exclude: .*\.sops.yaml$
+# - repo: https://github.com/robertdebock/pre-commit
+#   rev: v1.5.3
+#   hooks:
+#     - id: ansible_role_find_unused_variable
+#       stages: [pre-commit]
+#     - id: ansible_role_find_empty_files
+#       stages: [pre-commit]
+#     - id: ansible_role_find_empty_directories
+#       stages: [pre-commit]
+#     - id: ansible_role_find_undefined_handlers
+#       stages: [pre-commit]
+#     - id: ansible_role_find_unquoted_values
+#       stages: [pre-commit]
+#     - id: ansible_role_find_horizontal_when
+#       stages: [pre-commit]

@@ -1,11 +1,11 @@
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: jellyfin-pvc
   namespace: media
 spec:
-  accessModes:
-    - ReadWriteOnce
+  accessModes: [ReadWriteOnce]
   storageClassName: longhorn
   resources:
     requests:
@@ -38,14 +38,14 @@ spec:
           # requesting 1 GPU
           resources:
             limits:
-              gpu.intel.com/i915: "1"
+              gpu.intel.com/i915: '1'
           ports:
             - containerPort: 8096
               name: web
               protocol: TCP
           env:
             - name: TZ
-              value: "Asia/Kolkata"
+              value: Asia/Kolkata
           volumeMounts:
             - mountPath: /config
               name: jellyfin
@@ -53,19 +53,19 @@ spec:
             - mountPath: /cache
               name: jellyfin
               subPath: cache
-            - mountPath: "/data/audiobooks"
+            - mountPath: /data/audiobooks
               readOnly: false
               name: nfs
               subPath: downloads/audiobooks
-            - mountPath: "/data/movies"
+            - mountPath: /data/movies
               readOnly: false
               name: nfs
               subPath: downloads/movies
-            - mountPath: "/data/tvshows"
+            - mountPath: /data/tvshows
               readOnly: false
               name: nfs
               subPath: downloads/shows
-            - mountPath: "/data/music"
+            - mountPath: /data/music
               readOnly: false
               name: nfs
               subPath: downloads/music

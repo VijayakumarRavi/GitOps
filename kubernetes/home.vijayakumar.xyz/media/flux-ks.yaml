@@ -1,3 +1,4 @@
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -7,7 +8,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/media/base/'
+  path: ./kubernetes/home.vijayakumar.xyz/media/base/
   prune: true
   wait: true
   sourceRef:
@@ -29,7 +30,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/media/jellyfin/'
+  path: ./kubernetes/home.vijayakumar.xyz/media/jellyfin/
   prune: true
   wait: true
   sourceRef:
@@ -51,7 +52,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/media/jellyseerr/'
+  path: ./kubernetes/home.vijayakumar.xyz/media/jellyseerr/
   prune: true
   wait: true
   sourceRef:
@@ -73,7 +74,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/media/prowlarr/'
+  path: ./kubernetes/home.vijayakumar.xyz/media/prowlarr/
   prune: true
   wait: true
   sourceRef:
@@ -95,7 +96,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/media/sonarr/'
+  path: ./kubernetes/home.vijayakumar.xyz/media/sonarr/
   prune: true
   wait: true
   sourceRef:
@@ -117,7 +118,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/media/radarr/'
+  path: ./kubernetes/home.vijayakumar.xyz/media/radarr/
   prune: true
   wait: true
   sourceRef:
@@ -139,7 +140,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/media/qbittorrent/'
+  path: ./kubernetes/home.vijayakumar.xyz/media/qbittorrent/
   prune: true
   wait: true
   sourceRef:
@@ -162,7 +163,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/media/immich/'
+  path: ./kubernetes/home.vijayakumar.xyz/media/immich/
   prune: true
   wait: true
   sourceRef:

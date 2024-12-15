@@ -1,3 +1,4 @@
+---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
@@ -22,8 +23,7 @@ spec:
         kind: HelmRepository
         name: traefik
         namespace: traefik
-      valuesFiles:
-        - values.yaml
+      valuesFiles: [values.yaml]
   maxHistory: 2
   install:
     remediation:
@@ -36,11 +36,11 @@ spec:
     keepHistory: false
   values:
     globalArguments:
-      - '--global.sendanonymoususage=false'
-      - '--global.checknewversion=false'
+      - --global.sendanonymoususage=false
+      - --global.checknewversion=false
     additionalArguments:
-      - '--serversTransport.insecureSkipVerify=true'
-      - '--log.level=INFO'
+      - --serversTransport.insecureSkipVerify=true
+      - --log.level=INFO
     deployment:
       enabled: true
       replicas: 2
@@ -80,6 +80,6 @@ spec:
       annotations: {}
       labels: {}
       spec:
-        loadBalancerIP: 10.0.2.1 # this should be an IP in the Kube-VIP range
+        loadBalancerIP: 10.0.2.1  # this should be an IP in the Kube-VIP range
       loadBalancerSourceRanges: []
       externalIPs: []

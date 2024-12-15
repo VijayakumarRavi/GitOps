@@ -1,7 +1,8 @@
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  creationTimestamp: null
+  creationTimestamp:
   labels:
     app.kubernetes.io/name: kube-vip-ds
     app.kubernetes.io/version: v0.8.2
@@ -13,7 +14,7 @@ spec:
       app.kubernetes.io/name: kube-vip-ds
   template:
     metadata:
-      creationTimestamp: null
+      creationTimestamp:
       labels:
         app.kubernetes.io/name: kube-vip-ds
         app.kubernetes.io/version: v0.8.2
@@ -29,15 +30,14 @@ spec:
                   - key: node-role.kubernetes.io/control-plane
                     operator: Exists
       containers:
-        - args:
-            - manager
+        - args: [manager]
           env:
             - name: vip_arp
               value: 'true'
             - name: port
               value: '6443'
             - name: vip_interface
-              value: 'eth0'
+              value: eth0
             - name: vip_cidr
               value: '32'
             - name: cp_enable
@@ -70,9 +70,7 @@ spec:
           resources: {}
           securityContext:
             capabilities:
-              add:
-                - NET_ADMIN
-                - NET_RAW
+              add: [NET_ADMIN, NET_RAW]
       hostNetwork: true
       serviceAccountName: kube-vip-cloud-controller
       tolerations:

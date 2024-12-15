@@ -1,3 +1,4 @@
+---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
@@ -22,8 +23,7 @@ spec:
         kind: HelmRepository
         name: intel
         namespace: kube-system
-      valuesFiles:
-        - values.yaml
+      valuesFiles: [values.yaml]
   maxHistory: 2
   install:
     remediation:
@@ -50,8 +50,7 @@ spec:
         kind: HelmRepository
         name: intel
         namespace: kube-system
-      valuesFiles:
-        - values.yaml
+      valuesFiles: [values.yaml]
   maxHistory: 2
   install:
     remediation:

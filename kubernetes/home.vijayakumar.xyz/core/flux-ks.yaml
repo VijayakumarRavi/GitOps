@@ -1,3 +1,4 @@
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -7,7 +8,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/core/metallb/'
+  path: ./kubernetes/home.vijayakumar.xyz/core/metallb/
   prune: true
   wait: true
   sourceRef:
@@ -29,7 +30,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/core/metallb/ip-pool/'
+  path: ./kubernetes/home.vijayakumar.xyz/core/metallb/ip-pool/
   prune: true
   wait: true
   sourceRef:
@@ -51,7 +52,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/core/kube-vip/'
+  path: ./kubernetes/home.vijayakumar.xyz/core/kube-vip/
   prune: true
   wait: true
   sourceRef:
@@ -73,7 +74,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/core/traefik/'
+  path: ./kubernetes/home.vijayakumar.xyz/core/traefik/
   prune: true
   wait: true
   sourceRef:
@@ -96,7 +97,7 @@ spec:
   timeout: 10m0s
   retryInterval: 2m0s
   targetNamespace: tailscale
-  path: './kubernetes/home.vijayakumar.xyz/core/tailscale'
+  path: ./kubernetes/home.vijayakumar.xyz/core/tailscale
   prune: true
   sourceRef:
     kind: GitRepository
@@ -118,7 +119,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/core/cert-manager/'
+  path: ./kubernetes/home.vijayakumar.xyz/core/cert-manager/
   prune: true
   wait: true
   sourceRef:
@@ -162,7 +163,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/core/intel-device-plugins/'
+  path: ./kubernetes/home.vijayakumar.xyz/core/intel-device-plugins/
   prune: true
   wait: true
   sourceRef:
@@ -184,7 +185,7 @@ spec:
   interval: 60m0s
   timeout: 10m0s
   retryInterval: 2m0s
-  path: './kubernetes/home.vijayakumar.xyz/core/longhorn/'
+  path: ./kubernetes/home.vijayakumar.xyz/core/longhorn/
   prune: true
   wait: true
   sourceRef:
@@ -207,7 +208,7 @@ spec:
   timeout: 10m0s
   retryInterval: 2m0s
   targetNamespace: cnpg-system
-  path: './kubernetes/home.vijayakumar.xyz/core/cnpg/'
+  path: ./kubernetes/home.vijayakumar.xyz/core/cnpg/
   prune: true
   sourceRef:
     kind: GitRepository

@@ -1,3 +1,4 @@
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -9,6 +10,4 @@ spec:
     name: letsencrypt-production
     kind: ClusterIssuer
   commonName: '*.home.vijayakumar.xyz'
-  dnsNames:
-    - 'home.vijayakumar.xyz'
-    - '*.home.vijayakumar.xyz'
+  dnsNames: [home.vijayakumar.xyz, '*.home.vijayakumar.xyz']

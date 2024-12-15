@@ -1,3 +1,4 @@
+---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
@@ -11,8 +12,8 @@ reclaimPolicy: Delete
 volumeBindingMode: WaitForFirstConsumer
 parameters:
   numberOfReplicas: '1'
-  staleReplicaTimeout: '1440' # 1 day
-  dataLocality: 'strict-local'
+  staleReplicaTimeout: '1440'  # 1 day
+  dataLocality: strict-local
 #  mkfsParams: ""
 #  migratable: false
 #  encrypted: false

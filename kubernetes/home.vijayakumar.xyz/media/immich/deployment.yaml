@@ -1,3 +1,4 @@
+---
 # immich-server Deployment
 kind: Deployment
 apiVersion: apps/v1
@@ -51,7 +52,7 @@ spec:
               subPath: immich-library
           env:
             - name: IMMICH_WORKERS_INCLUDE
-              value: 'api'
+              value: api
             - name: DB_HOSTNAME
               value: immich-db-rw.immich.svc.cluster.local
             - name: DB_DATABASE_NAME
@@ -85,7 +86,6 @@ spec:
         - name: upload-location
           persistentVolumeClaim:
             claimName: immich-pvc
-
 # immich-server Deployment
 ---
 kind: Deployment
@@ -140,7 +140,7 @@ spec:
               subPath: immich-library
           env:
             - name: IMMICH_WORKERS_EXCLUDE
-              value: 'api'
+              value: api
             - name: DB_HOSTNAME
               value: immich-db-rw.immich.svc.cluster.local
             - name: DB_DATABASE_NAME
@@ -174,7 +174,6 @@ spec:
         - name: upload-location
           persistentVolumeClaim:
             claimName: immich-pvc
-
 # Service
 ---
 kind: Service
@@ -195,7 +194,6 @@ spec:
       targetPort: 2283
   type: ClusterIP
   clusterIP: 10.43.150.101
-
 # immich-machine-learning Deployment
 ---
 kind: Deployment
@@ -281,7 +279,6 @@ spec:
         - name: model-cache
           persistentVolumeClaim:
             claimName: model-cache-pvc
-
 # Service
 ---
 kind: Service
@@ -302,7 +299,6 @@ spec:
       targetPort: 3003
   type: ClusterIP
   clusterIP: 10.43.150.102
-
 # # PostgreSQL Deployment
 # ---
 # kind: Deployment
@@ -497,11 +493,10 @@ spec:
           image: redis:7.4-alpine
           readinessProbe:
             exec:
-              command: ['redis-cli', 'ping']
+              command: [redis-cli, ping]
           livenessProbe:
             exec:
-              command: ['redis-cli', 'ping']
-
+              command: [redis-cli, ping]
 # Service
 ---
 kind: Service
@@ -522,7 +517,6 @@ spec:
       targetPort: 6379
   type: ClusterIP
   clusterIP: 10.43.150.103
-
 # Immich ingress
 ---
 kind: IngressRoute
@@ -533,8 +527,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik-external
 spec:
-  entryPoints:
-    - websecure
+  entryPoints: [websecure]
   routes:
     - match: Host(`immich.home.vijayakumar.xyz`)
       kind: Rule
@@ -556,8 +549,7 @@ metadata:
 spec:
   ingressClassName: tailscale
   tls:
-    - hosts:
-        - immich
+    - hosts: [immich]
   rules:
     - http:
         paths:

@@ -1,3 +1,4 @@
+---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
@@ -22,8 +23,7 @@ spec:
         kind: HelmRepository
         name: nfd
         namespace: kube-system
-      valuesFiles:
-        - values.yaml
+      valuesFiles: [values.yaml]
   maxHistory: 2
   install:
     remediation:
