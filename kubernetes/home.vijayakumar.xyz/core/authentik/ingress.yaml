@@ -16,3 +16,25 @@ spec:
           port: 9000
   tls:
     secretName: home-vijayakumar-xyz
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: authentik
+  namespace: authentik
+  annotations:
+    tailscale.com/funnel: 'true'
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts: [authentik]
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: authentik-app
+                port:
+                  number: 9000

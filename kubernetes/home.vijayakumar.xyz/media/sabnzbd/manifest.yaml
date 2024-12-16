@@ -1,0 +1,117 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sabnzbd-pvc
+  namespace: media
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sabnzbd
+    app.kubernetes.io/instance: sabnzbd
+    app.kubernetes.io/name: sabnzbd
+  name: sabnzbd
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sabnzbd
+  template:
+    metadata:
+      labels:
+        app: sabnzbd
+        app.kubernetes.io/name: sabnzbd
+    spec:
+      containers:
+        - image: ghcr.io/linuxserver/sabnzbd:4.4.0
+          imagePullPolicy: IfNotPresent
+          name: sabnzbd
+          ports:
+            - containerPort: 8080
+              name: web-tcp
+              protocol: TCP
+            - containerPort: 8080
+              name: web-udp
+              protocol: UDP
+          env:
+            - name: TZ
+              value: Asia/Kolkata
+          volumeMounts:
+            - mountPath: /config
+              name: sabnzbd
+              subPath: sabnzbd-config
+            - mountPath: /downloads
+              readOnly: false
+              name: nfs
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+      volumes:
+        - name: sabnzbd
+          persistentVolumeClaim:
+            claimName: sabnzbd-pvc
+        - name: nfs
+          persistentVolumeClaim:
+            claimName: media-share-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sabnzbd
+  name: sabnzbd
+  namespace: media
+spec:
+  ports:
+    - name: web-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: web-udp
+      port: 8080
+      protocol: UDP
+      targetPort: 8080
+  selector:
+    app: sabnzbd
+  type: ClusterIP
+  clusterIP: 10.43.157.104
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: sabnzbd
+  namespace: media
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints: [websecure]
+  tls:
+    secretName: home-vijayakumar-xyz
+  routes:
+    - match: Host(`sabnzbd.home.vijayakumar.xyz`)
+      kind: Rule
+      services:
+        - name: sabnzbd
+          port: 8080
+      middlewares:
+        - name: default-headers
