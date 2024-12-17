@@ -223,7 +223,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cpng
+    - name: cnpg
   interval: 5m
   path: ./kubernetes/home.vijayakumar.xyz/authentik/
   prune: true
