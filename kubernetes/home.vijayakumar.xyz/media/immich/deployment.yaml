@@ -36,7 +36,7 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
         - name: immich-server
-          image: ghcr.io/immich-app/immich-server:v1.122.3
+          image: ghcr.io/immich-app/immich-server:v1.123.0
           imagePullPolicy: IfNotPresent
           resources:
             limits:
@@ -124,7 +124,7 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
         - name: immich-worker
-          image: ghcr.io/immich-app/immich-server:v1.122.3
+          image: ghcr.io/immich-app/immich-server:v1.123.0
           imagePullPolicy: IfNotPresent
           resources:
             limits:
