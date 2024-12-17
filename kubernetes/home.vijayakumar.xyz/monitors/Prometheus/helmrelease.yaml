@@ -76,6 +76,8 @@ spec:
       forceDeployDashboards: false
       defaultDashboardsEnabled: true
       defaultDashboardsTimezone: utc
+      ingress:
+        enabled: false
       serviceMonitor:
         enabled: true
       admin:

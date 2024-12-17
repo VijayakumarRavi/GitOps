@@ -225,7 +225,7 @@ spec:
   dependsOn:
     - name: cnpg
   interval: 5m
-  path: ./kubernetes/home.vijayakumar.xyz/authentik/
+  path: ./kubernetes/home.vijayakumar.xyz/core/authentik/
   prune: true
   sourceRef:
     kind: GitRepository
