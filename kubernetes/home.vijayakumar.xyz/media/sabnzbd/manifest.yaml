@@ -115,6 +115,7 @@ spec:
           port: 8080
       middlewares:
         - name: default-headers
+          namespace: traefik
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

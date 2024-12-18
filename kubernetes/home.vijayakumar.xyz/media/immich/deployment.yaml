@@ -536,6 +536,7 @@ spec:
           port: 2283
       middlewares:
         - name: default-headers
+          namespace: traefik
   tls:
     secretName: home-vijayakumar-xyz
 ---

@@ -158,6 +158,7 @@ spec:
           port: 80
       middlewares:
         - name: default-headers
+          namespace: traefik
         - name: dashboard-redirect
         - name: dashboard-prefix
   tls:

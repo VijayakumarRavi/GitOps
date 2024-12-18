@@ -81,5 +81,8 @@ spec:
           port: 3001
       middlewares:
         - name: default-headers
+          namespace: traefik
+        - name: authentik-auth-proxy
+          namespace: authentik
   tls:
     secretName: home-vijayakumar-xyz
