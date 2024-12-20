@@ -30,7 +30,7 @@ spec:
         app: uptime-kuma
     spec:
       containers:
-        - image: louislam/uptime-kuma:1.23.15-alpine
+        - image: louislam/uptime-kuma:1.23.16-alpine
           imagePullPolicy: IfNotPresent
           name: uptime-kuma
           ports:
