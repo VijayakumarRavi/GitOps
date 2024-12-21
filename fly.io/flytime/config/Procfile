@@ -1,0 +1,3 @@
+tailscale-up: /start.sh
+uptime-kuma: cd /app && node server/server.js
+tailscale-daemon: tailscaled --port 41641 --state=mem: --tun=userspace-networking --socks5-server=localhost:1055
