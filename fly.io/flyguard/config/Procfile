@@ -1,0 +1,3 @@
+tailscale-daemon: /app/tailscaled --port 41641 --state=mem: --tun=userspace-networking --socks5-server=localhost:1055 --statedir=/data/tailscale --socket=/var/run/tailscale/tailscaled.sock
+adguard: /opt/adguardhome/AdGuardHome --no-check-update -c /data/AdGuardHome/AdGuardHome.yaml -h 0.0.0.0 -w /data/AdGuardHome
+ping-status: /start.sh
