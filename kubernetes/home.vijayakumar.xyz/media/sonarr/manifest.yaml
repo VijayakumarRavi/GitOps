@@ -97,6 +97,5 @@ spec:
           port: 8989
       middlewares:
         - name: default-headers
-          namespace: traefik
   tls:
     secretName: home-vijayakumar-xyz
