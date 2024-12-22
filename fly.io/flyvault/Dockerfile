@@ -1,4 +1,4 @@
-FROM vaultwarden/server:1.32.6
+FROM vaultwarden/server:1.32.7
 
 ARG DOMAIN
 
