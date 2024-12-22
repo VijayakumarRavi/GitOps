@@ -5,3 +5,4 @@ metadata:
   name: longhorn-system
   labels:
     app: longhorn
+    kustomize.toolkit.fluxcd.io/prune: disabled

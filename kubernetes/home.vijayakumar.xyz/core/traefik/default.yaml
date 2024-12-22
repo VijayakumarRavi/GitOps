@@ -1,9 +1,4 @@
 ---
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: traefik
----
 apiVersion: traefik.io/v1alpha1  # traefik.containo.us/v1alpha1 depreciated in Traefik v3
 kind: Middleware
 metadata:
