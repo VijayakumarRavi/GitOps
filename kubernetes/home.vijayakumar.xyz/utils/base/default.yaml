@@ -1,9 +1,4 @@
 ---
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: utils
----
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
