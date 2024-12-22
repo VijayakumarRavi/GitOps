@@ -16,6 +16,5 @@ spec:
           port: 8096
       middlewares:
         - name: default-headers
-          namespace: traefik
   tls:
     secretName: home-vijayakumar-xyz

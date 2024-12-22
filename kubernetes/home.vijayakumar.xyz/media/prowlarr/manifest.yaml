@@ -105,6 +105,5 @@ spec:
           port: 9696
       middlewares:
         - name: default-headers
-          namespace: traefik
   tls:
     secretName: home-vijayakumar-xyz
