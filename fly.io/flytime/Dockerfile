@@ -1,4 +1,4 @@
-ARG TSVERSION=v1.78.1
+ARG TSVERSION=v1.78.3
 ARG UPVERSION=1.23.16-alpine
 
 # Tailscale stage to fetch the latest Tailscale package

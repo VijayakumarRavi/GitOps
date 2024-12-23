@@ -1,4 +1,4 @@
-ARG TSVERSION=v1.78.1
+ARG TSVERSION=v1.78.3
 ARG VWVERSION=1.32.7
 
 # Tailscale stage to fetch the latest Tailscale package
