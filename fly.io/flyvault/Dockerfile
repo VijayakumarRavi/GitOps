@@ -1,4 +1,11 @@
-FROM vaultwarden/server:1.32.7
+ARG TSVERSION=v1.78.1
+ARG VWVERSION=1.32.7
+
+# Tailscale stage to fetch the latest Tailscale package
+FROM tailscale/tailscale:${TSVERSION} as tailscale
+
+# vaultwarden build stage
+FROM vaultwarden/server:${VWVERSION}
 
 ARG DOMAIN
 
@@ -55,7 +62,7 @@ ENV TZ="Asia/Kolkata" \
 VOLUME /
 # Install runtime dependencies
 RUN apt-get update \
-    && apt-get install -y sqlite3 libnss3-tools libpq5 wget curl tar lsof jq gpg ca-certificates openssl tmux procps neovim rclone \
+    && apt-get install -y  iptables ip6tables iproute2 sqlite3 libnss3-tools libpq5 wget curl tar lsof jq gpg ca-certificates openssl tmux procps neovim rclone \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the timezone to Riga at runtime
@@ -90,6 +97,15 @@ RUN curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/r
 
 # Delete downloaded archives
 RUN rm -rf overmind.gz web-vault.tar.gz cloudflared.deb caddy.tar.gz
+
+# creating directories for tailscale
+RUN mkdir -p /var/run/tailscale
+RUN mkdir -p /var/cache/tailscale
+RUN mkdir -p /var/lib/tailscale
+
+# Copy binary to production image
+COPY --from=tailscale /usr/local/bin/tailscaled /usr/local/bin/tailscaled
+COPY --from=tailscale /usr/local/bin/tailscale /usr/local/bin/tailscale
 
 # Copy files to docker
 COPY config/crontab /crontab

@@ -1,16 +1,10 @@
-ARG TSVERSION=1.78.1
+ARG TSVERSION=v1.78.1
 ARG UPVERSION=1.23.16-alpine
-ARG TSFILE=tailscale_${TSVERSION}_amd64.tgz
 
-FROM alpine:latest as tailscale
-ARG TSFILE
-WORKDIR /app
+# Tailscale stage to fetch the latest Tailscale package
+FROM tailscale/tailscale:${TSVERSION} as tailscale
 
-RUN wget https://pkgs.tailscale.com/stable/${TSFILE} && \
-  tar xzf ${TSFILE} --strip-components=1
-
-# https://docs.docker.com/develop/develop-images/multistage-build/#use-multi-stage-builds
-# https://github.com/AdguardTeam/AdGuardHome/blob/master/docker/Dockerfile
+# Uptime Kuma build stage
 FROM louislam/uptime-kuma:${UPVERSION}
 RUN apk update && apk add bash ca-certificates iptables ip6tables iproute2 wget curl tar lsof openssl tmux procps neovim jq && rm -rf /var/cache/apk/*
 
@@ -22,8 +16,8 @@ RUN mkdir -p /var/cache/tailscale
 RUN mkdir -p /var/lib/tailscale
 
 # Copy binary to production image
-COPY --from=tailscale /app/tailscaled /usr/bin/tailscaled
-COPY --from=tailscale /app/tailscale /usr/bin/tailscale
+COPY --from=tailscale /usr/local/bin/tailscaled /usr/local/bin/tailscaled
+COPY --from=tailscale /usr/local/bin/tailscale /usr/local/bin/tailscale
 
 # Copy files to docker
 COPY config/start.sh /start.sh
