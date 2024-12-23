@@ -1,0 +1,130 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homepage
+  namespace: utils
+  labels:
+    app: homepage
+    app.kubernetes.io/instance: homepage
+    app.kubernetes.io/name: homepage
+spec:
+  selector:
+    matchLabels:
+      app: homepage
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: homepage
+        app.kubernetes.io/instance: homepage
+        app.kubernetes.io/name: homepage
+    spec:
+      serviceAccountName: homepage
+      containers:
+        - name: homepage
+          image: ghcr.io/gethomepage/homepage:v0.10.2
+          resources:
+            requests:
+              memory: 400Mi
+              cpu: 400m
+            limits:
+              memory: 900Mi
+              cpu: 900m
+          env:
+            - name: LOG_LEVEL
+              value: debug
+          envFrom:
+            - secretRef:
+                name: homepage-secrets
+          ports:
+            - containerPort: 3000
+              name: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 5
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+          volumeMounts:
+            - mountPath: /app/config/custom.js
+              name: homepage-config
+              subPath: custom.js
+            - mountPath: /app/config/custom.css
+              name: homepage-config
+              subPath: custom.css
+            - mountPath: /app/config/bookmarks.yaml
+              name: homepage-config
+              subPath: bookmarks.yaml
+            - mountPath: /app/config/docker.yaml
+              name: homepage-config
+              subPath: docker.yaml
+            - mountPath: /app/config/kubernetes.yaml
+              name: homepage-config
+              subPath: kubernetes.yaml
+            - mountPath: /app/config/services.yaml
+              name: homepage-config
+              subPath: services.yaml
+            - mountPath: /app/config/settings.yaml
+              name: homepage-config
+              subPath: settings.yaml
+            - mountPath: /app/config/widgets.yaml
+              name: homepage-config
+              subPath: widgets.yaml
+            - mountPath: /app/config/logs
+              name: logs
+      volumes:
+        - name: homepage-config
+          configMap:
+            name: homepage
+        - name: logs
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homepage
+  namespace: utils
+  labels:
+    app: homepage
+    app.kubernetes.io/instance: homepage
+    app.kubernetes.io/name: homepage
+spec:
+  type: ClusterIP
+  clusterIP: 10.43.213.164
+  ports:
+    - name: homepage
+      port: 80
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    app: homepage
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: homepage
+  namespace: utils
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints: [websecure]
+  routes:
+    - match: Host(`dash.home.vijayakumar.xyz`)
+      kind: Rule
+      services:
+        - name: homepage
+          port: 80
+      middlewares:
+        - name: default-headers
+  tls:
+    secretName: home-vijayakumar-xyz

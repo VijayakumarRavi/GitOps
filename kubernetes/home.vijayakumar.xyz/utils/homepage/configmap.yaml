@@ -1,0 +1,203 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage
+  namespace: utils
+  labels:
+    app: homepage
+data:
+  kubernetes.yaml: |
+    mode: cluster
+  settings.yaml: |
+    title: Vijay's Homepage
+    background:
+      image: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
+      blur: sm
+      saturate: 50
+      brightness: 50
+      opacity: 50
+    favicon: https://vijayakumar.xyz/favicon.png
+    theme: dark
+    color: slate
+    target: _blank
+    quicklaunch:
+      searchDescriptions: true
+      hideInternetSearch: true
+      showSearchSuggestions: true
+      hideVisitURL: true
+    hideVersion: true
+    showStats: true
+    providers:
+      longhorn:
+        url: http://longhorn-frontend.longhorn-system.svc.cluster.local
+  custom.css: ''
+  custom.js: ''
+  bookmarks.yaml: |
+    - Dashboards:
+          - cloudflare dash:
+            - icon: "https://dash.cloudflare.com/favicon.ico"
+              href: "{{HOMEPAGE_VAR_CLOUDFLAREDASH_URL}}"
+          - Cloudflare zero trust:
+            - icon: "https://dash.cloudflare.com/favicon.ico"
+              href: "{{HOMEPAGE_VAR_CLOUDFLAREZERO_URL}}"
+          - Fly.io dash:
+            - icon: "https://fly.io/phx/ui/images/favicon/favicon-595d1312b35dfe32838befdf8505515e.ico?vsn=d"
+              href: "{{HOMEPAGE_VAR_FLYIO_URL}}"
+          - Render Dashboard:
+            - icon: "https://dashboard.render.com/favicon-dark.png"
+              href: "{{HOMEPAGE_VAR_RENDER_URL}}"
+    - Services:
+          - Sanji Restic (Backrest):
+            - icon: restic.png
+              href: "{{HOMEPAGE_VAR_RESTIC_SANJI_URL}}"
+              ping: "{{HOMEPAGE_VAR_RESTIC_SANJI_URL}}"
+          - Nami Restic (Backrest):
+            - icon: restic.png
+              href: "{{HOMEPAGE_VAR_RESTIC_NAMI_URL}}"
+              ping: "{{HOMEPAGE_VAR_RESTIC_NAMI_URL}}"
+          - Hastebin:
+            - icon: "https://d4.alternativeto.net/EDR07C2WpQ33nHPI6-sx2_t-DHAXlmWUbjq7dqKZ3rk/rs:fit:280:280:0/g:ce:0:0/exar:1/YWJzOi8vZGlzdC9pY29ucy9oYXN0ZWJpbl85MTA3My5wbmc.png"
+              href: "https://bin.vijayakumar.xyz/"
+          - Gotify:
+            - icon: gotify.png
+              href: "{{HOMEPAGE_VAR_GOTIFY_URL}}"
+          - Onelink:
+            - icon: "https://dub.co/favicon-32x32.png"
+              href: "{{HOMEPAGE_VAR_ONELINK_URL}}"
+  services.yaml: |
+    - one:
+          - Immich Preview:
+                icon: immich-kiosk.png
+                description: "A web slideshot for Immich"
+                href: "{{HOMEPAGE_VAR_IMMICHPREVIEW_URL}}"
+          - Immich:
+                icon: immich.png
+                description: "Google photos alternative"
+                href: "{{HOMEPAGE_VAR_IMMICH_URL}}"
+                ping: "{{HOMEPAGE_VAR_IMMICH_URL}}"
+                widget:
+                      type: immich
+                      fields: ["photos", "videos", "storage"]
+                      url: "{{HOMEPAGE_VAR_IMMICH_URL}}"
+                      key: "{{HOMEPAGE_VAR_IMMICH_API_KEY}}"
+                      version: 2
+          - Flytime:
+                icon: uptime-kuma.png
+                description: "self-hosted monitoring tool"
+                href: "{{HOMEPAGE_VAR_FLYTIME_URL}}"
+                ping: "{{HOMEPAGE_VAR_FLYTIME_URL}}"
+                widget:
+                      type: uptimekuma
+                      url: "{{HOMEPAGE_VAR_FLYTIME_URL}}"
+                      slug: all
+          - Jellyfin:
+                icon: jellyfin.png
+                description: "Self-hosted media streaming system"
+                href: "{{HOMEPAGE_VAR_JELLYFIN_URL}}"
+                ping: "{{HOMEPAGE_VAR_JELLYFIN_URL}}"
+                widget:
+                      type: jellyfin
+                      url: "{{HOMEPAGE_VAR_JELLYFIN_URL}}"
+                      key: "{{HOMEPAGE_VAR_JELLYFIN_API_TOKEN}}"
+                      enableBlocks: true  # optional, defaults to false
+                      enableNowPlaying: false  # optional, defaults to true
+    - two:
+          - Pihole:
+                icon: pi-hole.png
+                description: "Dns ad blocker"
+                href: "{{HOMEPAGE_VAR_PIHOLE_URL}}"
+                widget:
+                      type: pihole
+                      url: "{{HOMEPAGE_VAR_PIHOLE_API_URL}}"
+                      key: "{{HOMEPAGE_VAR_PIHOLE_KEY}}"
+          - Jellyseerr:
+                icon: jellyseerr.png
+                description: "Media requesting system"
+                href: "{{HOMEPAGE_VAR_JELLYSEERR_URL}}"
+                ping: "{{HOMEPAGE_VAR_JELLYSEERR_URL}}"
+                widget:
+                      type: jellyseerr
+                      url: "{{HOMEPAGE_VAR_JELLYSEERR_URL}}"
+                      key: "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}"
+          - QBittorrent:
+                icon: qbittorrent.png
+                description: "Torrent downloader"
+                href: "{{HOMEPAGE_VAR_QBITTORRENT_URL}}"
+                ping: "{{HOMEPAGE_VAR_QBITTORRENT_URL}}"
+                widget:
+                      type: qbittorrent
+                      url: "{{HOMEPAGE_VAR_QBITTORRENT_URL}}"
+                      username: "{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}"
+                      password: "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}"
+    - three:
+          - Bitwarden:
+                icon: bitwarden.png
+                description: "Password manager"
+                href: "{{HOMEPAGE_VAR_BITWARDEN_URL}}"
+                ping: "{{HOMEPAGE_VAR_BITWARDEN_URL}}"
+          - Sonarr:
+                icon: sonarr.png
+                description: "Series management"
+                href: "{{HOMEPAGE_VAR_SONARR_URL}}"
+                ping: "{{HOMEPAGE_VAR_SONARR_URL}}"
+                widget:
+                      type: sonarr
+                      fields: ["series", "wanted", "queued"]
+                      url: "{{HOMEPAGE_VAR_SONARR_URL}}"
+                      key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
+                      enableQueue: true  # optional, defaults to false
+          - Radarr:
+                icon: radarr.png
+                description: "Movie management"
+                href: "{{HOMEPAGE_VAR_RADARR_URL}}"
+                ping: "{{HOMEPAGE_VAR_RADARR_URL}}"
+                widget:
+                      type: radarr
+                      fields: ["movies", "wanted", "queued"]
+                      url: "{{HOMEPAGE_VAR_RADARR_URL}}"
+                      key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
+                        # enableQueue: true  #  optional, defaults to false
+          - Prowlarr:
+                icon: prowlarr.png
+                description: "Index management"
+                href: "{{HOMEPAGE_VAR_PROWLARR_URL}}"
+                ping: "{{HOMEPAGE_VAR_PROWLARR_URL}}"
+                widget:
+                      type: prowlarr
+                        # fields: []
+                      url: "{{HOMEPAGE_VAR_PROWLARR_URL}}"
+                      key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
+  widgets.yaml: |
+    - openmeteo:
+        label: Bangalore
+        latitude: 13.036815088643934
+        longitude: 77.61750411521813
+        timezone: Asia/Kolkata
+        units: metric
+        cache: 5
+    - logo:
+        # icon:
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "Home cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+    - longhorn:
+        expanded: true
+        total: true
+        labels: true
+        nodes: true
+    - search:
+        provider: duckduckgo
+        target: _blank
+        focus: true
+        showSearchSuggestions: true
+  docker.yaml: ''
