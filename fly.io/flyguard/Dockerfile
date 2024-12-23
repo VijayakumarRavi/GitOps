@@ -1,13 +1,8 @@
-ARG TSVERSION=1.78.1
+ARG TSVERSION=v1.78.1
 ARG AGVERSION=v0.107.55
-ARG TSFILE=tailscale_${TSVERSION}_amd64.tgz
 
-FROM alpine:latest as tailscale
-ARG TSFILE
-WORKDIR /app
-
-RUN wget https://pkgs.tailscale.com/stable/${TSFILE} && \
-  tar xzf ${TSFILE} --strip-components=1
+#
+FROM tailscale/tailscale:${TSVERSION} as tailscale
 
 # https://docs.docker.com/develop/develop-images/multistage-build/#use-multi-stage-builds
 # https://github.com/AdguardTeam/AdGuardHome/blob/master/docker/Dockerfile
@@ -19,9 +14,9 @@ RUN mkdir -p /var/run/tailscale
 RUN mkdir -p /var/cache/tailscale
 RUN mkdir -p /var/lib/tailscale
 
-# Copy binary to production image
-COPY --from=tailscale /app/tailscaled /app/tailscaled
-COPY --from=tailscale /app/tailscale /app/tailscale
+# Copy Tailscale bins from the Tailscale stage into the container
+COPY --from=tailscale /usr/local/bin/tailscaled /usr/local/bin/tailscaled
+COPY --from=tailscale /usr/local/bin/tailscale /usr/local/bin/tailscale
 
 # Copy files to docker
 COPY config/start.sh /start.sh

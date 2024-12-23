@@ -14,7 +14,7 @@ get_status() {
     # Node name to check
     TARGET_NODE=${PING_HOST}
     # Get the status of all Tailscale nodes in JSON format
-    tailscale_status=$(/app/tailscale status --json)
+    tailscale_status=$(/usr/local/bin/tailscale status --json)
     if [[ $? -ne 0 ]]; then
         echo -e "${RED}Error: Failed to get Tailscale status${NC}"
         exit 1
@@ -32,7 +32,7 @@ get_status() {
     fi
 }
 
-/app/tailscale up \
+/usr/local/bin/tailscale up \
   --accept-routes \
   --accept-dns=false \
   --advertise-exit-node \
@@ -41,7 +41,7 @@ get_status() {
   --advertise-routes=172.19.0.0/16 \
   --authkey=${OAUTH_CLIENT_SECRET}?preauthorized=true
 
-hostname=$(/app/tailscale whois --json $(/app/tailscale ip | grep 100) | jq -r '.Node.Name | rtrimstr(".")')
+hostname=$(/usr/local/bin/tailscale whois --json $(/usr/local/bin/tailscale ip | grep 100) | jq -r '.Node.Name | rtrimstr(".")')
 apikey=$(curl -s -d "client_id=${OAUTH_CLIENT_ID}" -d "client_secret=${OAUTH_CLIENT_SECRET}" "https://api.tailscale.com/api/v2/oauth/token" | jq .access_token | tr -d '"')
 targetid="$(curl -s "https://api.tailscale.com/api/v2/tailnet/-/devices" -u "$apikey:" | jq -r --arg name "$hostname" '.devices[] | select(.name == $name) | .id')"
 
@@ -64,10 +64,7 @@ else
 fi
 
 
-/app/tailscale cert $hostname
+/usr/local/bin/tailscale cert $hostname
 
 # Infinite loop to check the connection status
-while true; do
-   get_status
-   sleep 60
-done
+tail -f /dev/null
