@@ -38,7 +38,6 @@ get_status() {
   --advertise-exit-node \
   --hostname=${FLY_APP_NAME} \
   --advertise-tags=tag:fly-exit \
-  --advertise-routes=172.19.0.0/16 \
   --authkey=${OAUTH_CLIENT_SECRET}?preauthorized=true
 
 hostname=$(/usr/local/bin/tailscale whois --json $(/usr/local/bin/tailscale ip | grep 100) | jq -r '.Node.Name | rtrimstr(".")')

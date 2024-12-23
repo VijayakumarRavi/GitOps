@@ -62,7 +62,7 @@ ENV TZ="Asia/Kolkata" \
 VOLUME /
 # Install runtime dependencies
 RUN apt-get update \
-    && apt-get install -y  iptables ip6tables iproute2 sqlite3 libnss3-tools libpq5 wget curl tar lsof jq gpg ca-certificates openssl tmux procps neovim rclone \
+    && apt-get install -y  iptables iproute2 sqlite3 libnss3-tools libpq5 wget curl tar lsof jq gpg ca-certificates openssl tmux procps neovim rclone \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the timezone to Riga at runtime

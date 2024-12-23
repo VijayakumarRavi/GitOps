@@ -3,7 +3,7 @@
   "packageRules": [
     {
       "description": ["1Password Connect Group"],
-      "groupName": "1Password Connnect",
+      "groupName": "1Password Connect",
       "matchPackagePatterns": ["1password/connect"],
       "matchDatasources": ["docker"],
       "group": {

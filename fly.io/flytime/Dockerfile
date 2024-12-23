@@ -19,13 +19,9 @@ RUN mkdir -p /var/lib/tailscale
 COPY --from=tailscale /usr/local/bin/tailscaled /usr/local/bin/tailscaled
 COPY --from=tailscale /usr/local/bin/tailscale /usr/local/bin/tailscale
 
-# Copy files to docker
-COPY config/start.sh /start.sh
+# Copy files to docker & change permission
 COPY config/Procfile /Procfile
 COPY config/entrypoint.sh /entrypoint.sh
-
-# Chmod the scripts
-RUN chmod +x /start.sh
 RUN chmod +x /entrypoint.sh
 
 # Download and extract Overmind (latest release)
