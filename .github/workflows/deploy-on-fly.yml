@@ -14,7 +14,9 @@ jobs:
         app: [flyguard, flytime, flyvault]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Install Flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Determine Modified Files
