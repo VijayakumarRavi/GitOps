@@ -1,0 +1,30 @@
+---
+name: Deploy Fly.io Apps on Dependency Updates
+on:
+  push:
+    paths: [fly.io/**]
+jobs:
+  deploy-fly-app:
+    runs-on: ubuntu-latest
+    if: >
+      github.event.commits[0].author.name == 'renovate[bot]' ||
+      github.event.commits[0].author.email == 'bot@renovateapp.com'
+    strategy:
+      matrix:
+        app: [flyguard, flytime, flyvault]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Determine Modified Files
+        id: changes
+        run: |
+          echo "MODIFIED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})" >> "$GITHUB_ENV"
+      - name: Deploy Fly.io App
+        if: contains(env.MODIFIED_FILES, format('fly.io/{0}/', matrix.app))
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |-
+          echo "Deploying ${{ matrix.app }} to Fly.io..."
+          flyctl deploy --remote-only fly.io/${{ matrix.app }}/
