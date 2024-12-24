@@ -1,6 +1,15 @@
 ARG TSVERSION=v1.78.3
 ARG UPVERSION=1.23.16-alpine
 
+# Builder image
+FROM docker.io/alpine as BUILDER
+
+RUN apk add --no-cache curl jq tar
+
+RUN export LITESTREAM_VERSION=$(curl --silent https://api.github.com/repos/benbjohnson/litestream/releases/latest | jq -r .tag_name) && \
+    curl -L https://github.com/benbjohnson/litestream/releases/download/${LITESTREAM_VERSION}/litestream-${LITESTREAM_VERSION}-linux-amd64.tar.gz -o litestream.tar.gz && \
+    tar xzvf litestream.tar.gz
+
 # Tailscale stage to fetch the latest Tailscale package
 FROM tailscale/tailscale:${TSVERSION} as tailscale
 
@@ -18,6 +27,10 @@ RUN mkdir -p /var/lib/tailscale
 # Copy binary to production image
 COPY --from=tailscale /usr/local/bin/tailscaled /usr/local/bin/tailscaled
 COPY --from=tailscale /usr/local/bin/tailscale /usr/local/bin/tailscale
+
+# Copy litestream binary
+COPY --from=BUILDER /litestream /usr/local/bin/litestream
+COPY config/litestream.yaml /etc/litestream.yaml
 
 # Copy files to docker & change permission
 COPY config/Procfile /Procfile
