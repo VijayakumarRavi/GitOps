@@ -23,7 +23,7 @@ jobs:
         id: changes
         run: |
           echo "MODIFIED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})" >> "$GITHUB_ENV"
-          echo "$MODIFIED_FILES"
+          echo $MODIFIED_FILES
       - name: Deploy Fly.io App
         if: contains(env.MODIFIED_FILES, format('fly.io/{0}/', matrix.app))
         env:
