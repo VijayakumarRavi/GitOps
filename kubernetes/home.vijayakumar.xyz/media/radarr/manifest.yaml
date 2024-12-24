@@ -46,10 +46,9 @@ spec:
             - mountPath: /config
               name: radarr
               subPath: radarr-config
-            - mountPath: /movies
+            - mountPath: /media
               readOnly: false
               name: nfs
-              subPath: downloads/movies
       volumes:
         - name: radarr
           persistentVolumeClaim:

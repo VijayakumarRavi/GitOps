@@ -46,10 +46,9 @@ spec:
             - mountPath: /config
               name: sonarr
               subPath: sonarr-config
-            - mountPath: /shows
+            - mountPath: /media
               readOnly: false
               name: nfs
-              subPath: downloads/shows
       volumes:
         - name: sonarr
           persistentVolumeClaim:

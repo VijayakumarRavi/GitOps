@@ -61,7 +61,7 @@ spec:
             - mountPath: /config
               name: qbittorrent
               subPath: qbittorrent-config
-            - mountPath: /downloads
+            - mountPath: /media
               readOnly: false
               name: nfs
       volumes:
