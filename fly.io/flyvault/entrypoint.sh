@@ -61,5 +61,8 @@ curl -s "https://api.tailscale.com/api/v2/tailnet/-/devices" -u "$apikey:" | jq 
     fi
   done
 
+# litestream database restore
+litestream restore -if-db-not-exists -if-replica-exists -config /etc/litestream.yaml /data/db.sqlite3
+
 # Execute the CMD
 exec "$@"

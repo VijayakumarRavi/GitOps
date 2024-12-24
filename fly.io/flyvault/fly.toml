@@ -13,6 +13,11 @@ swap_size_mb = 512
 [build.args]
   DOMAIN = "vault.vijayakumar.xyz"
 
+[env]
+  LITESTREAM_BUCKET="litestream"
+  LITESTREAM_PATH="flyvault"
+  LITESTREAM_REGION="us-east-1"
+
 [mounts]
   source = "vw_data"
   destination = "/data"

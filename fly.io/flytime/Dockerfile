@@ -1,7 +1,7 @@
 ARG TSVERSION=v1.78.3
 ARG UPVERSION=1.23.16-alpine
 
-# Builder image
+# Builder image for litestream
 FROM docker.io/alpine as BUILDER
 
 RUN apk add --no-cache curl jq tar
