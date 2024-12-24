@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Install Flyctl
-        uses: superfly/flyctl-actions/setup-flyctl@v1.4
+        uses: superfly/flyctl-actions/setup-flyctl@1.5
       - name: Determine Modified Files
         id: changes
         run: |
