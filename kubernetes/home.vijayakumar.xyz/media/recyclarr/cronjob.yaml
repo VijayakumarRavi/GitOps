@@ -1,0 +1,36 @@
+---
+# CronJob to sync TRaSH Guide using Recyclarr
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: recyclarr
+  namespace: media
+spec:
+  schedule: '@daily'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: recyclarr
+              image: ghcr.io/recyclarr/recyclarr:7.4.0
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: TZ
+                  value: Asia/Kolkata
+                - name: COMPlus_EnableDiagnostics
+                  value: '0'
+              envFrom:
+                - secretRef:
+                    name: recyclarr-secret
+              command: [/bin/sh, -c, recyclarr, sync]
+              volumeMounts:
+                - mountPath: /config/recyclarr.yaml
+                  name: recyclarr-config
+                  subPath: recyclarr.yaml
+                  readOnly: true
+          volumes:
+            - name: recyclarr-config
+              configMap:
+                name: recyclarr
+          restartPolicy: OnFailure
