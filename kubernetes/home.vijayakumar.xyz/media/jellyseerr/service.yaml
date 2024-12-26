@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: jellyseerr
+  name: jellyseerr
+  namespace: media
+spec:
+  ports:
+    - name: web-tcp
+      port: 5055
+      protocol: TCP
+      targetPort: 5055
+    - name: web-udp
+      port: 5055
+      protocol: UDP
+      targetPort: 5055
+  selector:
+    app: jellyseerr
+  type: ClusterIP
+  clusterIP: 10.43.242.12

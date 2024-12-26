@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sonarr
+  name: sonarr
+  namespace: media
+spec:
+  ports:
+    - name: sonarr-tcp
+      port: 8989
+      protocol: TCP
+      targetPort: 8989
+    - name: sonarr-udp
+      port: 8989
+      protocol: UDP
+      targetPort: 8989
+  selector:
+    app: sonarr
+  type: ClusterIP
+  clusterIP: 10.43.157.102
