@@ -5,7 +5,7 @@ resources:
   - gotk-components.yaml
   - gotk-sync.yaml
   - notification.yaml
-  - discord-webhook.sops.yaml
+  - notification.sops.yaml
 patches:
   - target:
       group: kustomize.toolkit.fluxcd.io

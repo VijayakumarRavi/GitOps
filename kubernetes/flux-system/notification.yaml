@@ -2,7 +2,7 @@
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
 metadata:
-  name: discord-provider
+  name: discord
   namespace: flux-system
 spec:
   type: discord
@@ -13,12 +13,12 @@ spec:
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
-  name: kustomization-errors
+  name: discord-kustomization-errors
   namespace: flux-system
 spec:
   summary: Error in reconciling flux kustomization
   providerRef:
-    name: discord-provider
+    name: discord
   eventSeverity: error
   eventSources:
     - kind: Kustomization
@@ -32,7 +32,50 @@ metadata:
 spec:
   summary: Home Cluster Update
   providerRef:
-    name: discord-provider
+    name: discord
+  eventSeverity: info
+  eventSources:
+    - kind: GitRepository
+      name: '*'
+    - kind: HelmRelease
+      name: '*'
+    - kind: HelmRepository
+      name: '*'
+    - kind: HelmChart
+      name: '*'
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Provider
+metadata:
+  name: gotify
+  namespace: flux-system
+spec:
+  type: generic
+  secretRef:
+    name: gotify-secret
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: gotify-kustomization-errors
+  namespace: flux-system
+spec:
+  providerRef:
+    name: gotify
+  eventSeverity: error
+  eventSources:
+    - kind: Kustomization
+      name: '*'
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: gotify-alert
+  namespace: flux-system
+spec:
+  summary: Home Cluster Update
+  providerRef:
+    name: gotify
   eventSeverity: info
   eventSources:
     - kind: GitRepository
