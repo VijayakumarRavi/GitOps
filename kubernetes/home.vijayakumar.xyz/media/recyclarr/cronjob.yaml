@@ -23,7 +23,7 @@ spec:
               envFrom:
                 - secretRef:
                     name: recyclarr-secret
-              command: [/bin/sh, -c, recyclarr, sync]
+              args: [sync]
               volumeMounts:
                 - mountPath: /config/recyclarr.yaml
                   name: recyclarr-config
