@@ -1,0 +1,45 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Provider
+metadata:
+  name: discord-provider
+  namespace: flux-system
+spec:
+  type: discord
+  channel: fluxcd
+  secretRef:
+    name: discord-webhook
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: kustomization-errors
+  namespace: flux-system
+spec:
+  summary: Error in reconciling flux kustomization
+  providerRef:
+    name: discord-provider
+  eventSeverity: error
+  eventSources:
+    - kind: Kustomization
+      name: '*'
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: discord-alert
+  namespace: flux-system
+spec:
+  summary: Home Cluster Update
+  providerRef:
+    name: discord-provider
+  eventSeverity: info
+  eventSources:
+    - kind: GitRepository
+      name: '*'
+    - kind: HelmRelease
+      name: '*'
+    - kind: HelmRepository
+      name: '*'
+    - kind: HelmChart
+      name: '*'
