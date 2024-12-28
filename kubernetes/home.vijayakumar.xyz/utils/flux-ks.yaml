@@ -8,7 +8,7 @@ spec:
   dependsOn:
     - name: cnpg
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/utils/base/
   prune: true
@@ -30,7 +30,7 @@ spec:
   dependsOn:
     - name: utils-base
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/utils/pihole/
   prune: true
@@ -52,7 +52,7 @@ spec:
   dependsOn:
     - name: pihole
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/utils/gotify/
   prune: true

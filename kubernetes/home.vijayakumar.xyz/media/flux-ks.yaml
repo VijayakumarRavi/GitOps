@@ -8,7 +8,7 @@ spec:
   dependsOn:
     - name: cnpg
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/media/base/
   prune: true
@@ -30,7 +30,7 @@ spec:
   dependsOn:
     - name: media-base
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/media/jellyfin/
   prune: true
@@ -52,7 +52,7 @@ spec:
   dependsOn:
     - name: jellyfin
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/media/jellyseerr/
   prune: true
@@ -74,7 +74,7 @@ spec:
   dependsOn:
     - name: jellyseerr
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/media/prowlarr/
   prune: true
@@ -96,7 +96,7 @@ spec:
   dependsOn:
     - name: prowlarr
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/media/sonarr/
   prune: true
@@ -118,7 +118,7 @@ spec:
   dependsOn:
     - name: sonarr
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/media/radarr/
   prune: true
@@ -140,7 +140,7 @@ spec:
   dependsOn:
     - name: radarr
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/media/qbittorrent/
   prune: true
@@ -163,7 +163,7 @@ spec:
     - name: cnpg
     - name: media-base
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/media/immich/
   prune: true

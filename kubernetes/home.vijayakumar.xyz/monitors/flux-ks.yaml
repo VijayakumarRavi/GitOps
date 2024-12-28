@@ -8,7 +8,7 @@ spec:
   dependsOn:
     - name: cnpg
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/monitors/base/
   prune: true
@@ -30,7 +30,7 @@ spec:
   dependsOn:
     - name: monitors-base
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/monitors/uptime/
   prune: true
@@ -52,7 +52,7 @@ spec:
   dependsOn:
     - name: uptime-kuma
   interval: 60m0s
-  timeout: 10m0s
+  timeout: 30m0s
   retryInterval: 2m0s
   path: ./kubernetes/home.vijayakumar.xyz/monitors/prometheus/
   prune: true
