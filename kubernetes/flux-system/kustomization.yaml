@@ -33,7 +33,7 @@ patches:
         {
           "op": "add",
           "path": "/spec/timeout",
-          "value": "15m0s"
+          "value": "60m0s"
         },
         {
           "op": "add",
