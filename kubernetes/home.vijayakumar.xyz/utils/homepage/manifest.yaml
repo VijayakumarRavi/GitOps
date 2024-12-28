@@ -23,7 +23,7 @@ spec:
       serviceAccountName: homepage
       containers:
         - name: homepage
-          image: ghcr.io/gethomepage/homepage:v0.10.5
+          image: ghcr.io/gethomepage/homepage:v0.10.6
           resources:
             requests:
               memory: 400Mi
