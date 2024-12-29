@@ -30,19 +30,6 @@ spec:
         app: pihole
     spec:
       containers:
-        - image: visibilityspots/cloudflared:v2024.12.2
-          imagePullPolicy: IfNotPresent
-          name: cloudflared
-          ports:
-            - containerPort: 53
-              name: dns
-              protocol: TCP
-            - containerPort: 67
-              name: dns-udp
-              protocol: UDP
-          env:
-            - name: TUNNEL_METRICS
-              value: 127.0.0.1:3000
         - image: ekofr/pihole-exporter:latest@sha256:a6059c70ca4154b638ec3b20b33128a0dd8763cad108aaeaf71f98527e3d8354
           name: pihole-exporter
           imagePullPolicy: IfNotPresent
@@ -53,7 +40,7 @@ spec:
           env:
             - name: TZ
               value: Asia/Kolkata
-            - name: PIHOLE_API_TOKEN
+            - name: PIHOLE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: pihole-secret
@@ -62,7 +49,7 @@ spec:
               value: 10.0.2.2,10.0.0.2
             - name: PIHOLE_PORT
               value: '80'
-        - image: pihole/pihole:2024.07.0
+        - image: ghcr.io/vijayakumarravi/pihole-unbound:2024.07.0
           imagePullPolicy: IfNotPresent
           name: pihole
           env:
@@ -71,7 +58,19 @@ spec:
             - name: FTLCONF_REPLY_ADDR4
               value: pihole
             - name: PIHOLE_DNS_
-              value: 127.0.0.1#5054
+              value: 127.0.0.1#5335  # Hardcoded to our Unbound server
+            - name: REV_SERVER
+              value: 'true'
+            - name: REV_SERVER_TARGET
+              value: 10.0.0.1
+            - name: REV_SERVER_DOMAIN
+              value: local
+            - name: REV_SERVER_CIDR
+              value: 10.0.0.0/16
+            - name: DNSSEC
+              value: 'true'  # Enable DNSSEC
+            - name: DNSMASQ_LISTENING
+              value: single
           envFrom:
             - secretRef:
                 name: pihole-secret
