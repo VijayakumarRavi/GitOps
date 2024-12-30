@@ -27,7 +27,7 @@ metadata:
 spec:
   interval: 60m0s
   timeout: 60m0s
-  path: ./kubernetes/flux
+  path: ./kubernetes/luffy/flux
   prune: true
   wait: false
   sourceRef:

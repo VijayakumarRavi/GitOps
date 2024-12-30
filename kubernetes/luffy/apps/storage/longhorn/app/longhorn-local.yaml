@@ -12,7 +12,7 @@ reclaimPolicy: Delete
 volumeBindingMode: WaitForFirstConsumer
 parameters:
   numberOfReplicas: '1'
-  staleReplicaTimeout: '1440'  # 1 day
+  staleReplicaTimeout: '1440' # 1 day
   dataLocality: strict-local
 #  mkfsParams: ""
 #  migratable: false
