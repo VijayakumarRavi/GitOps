@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - actions-runner-controller.yaml
+  - bjw-s.yaml
+  - cnpg.yaml
+  - ingress-traefik.yaml
+  - intel.yaml
+  - jetstack.yaml
+  - kubernetes-sigs-nfd.yaml
+  - longhorn.yaml
+  - metallb.yaml
+  - prometheus-community.yaml
+  - stakater.yaml
+  - tailscale.yaml
+  - usa-reddragon.yaml

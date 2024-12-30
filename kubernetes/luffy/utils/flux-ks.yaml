@@ -1,0 +1,54 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: utils-base
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cnpg
+  interval: 60m0s
+  timeout: 30m0s
+  retryInterval: 2m0s
+  path: ./kubernetes/luffy/utils/base/
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pihole
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: utils-base
+  interval: 60m0s
+  timeout: 30m0s
+  retryInterval: 2m0s
+  path: ./kubernetes/luffy/utils/pihole/
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: gotify
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: pihole
+  interval: 60m0s
+  timeout: 30m0s
+  retryInterval: 2m0s
+  path: ./kubernetes/luffy/utils/gotify/
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops

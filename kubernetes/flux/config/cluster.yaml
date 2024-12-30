@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: home-ops
+  namespace: flux-system
+spec:
+  interval: 30m
+  ref:
+    branch: master
+  url: ssh://git@github.com/VijayakumarRavi/GitOps.git
+  secretRef:
+    name: github-deploy-key
+  ignore: |
+    # exclude all
+    /*
+    # include gitops dirs
+    !/kubernetes
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster
+  namespace: flux-system
+spec:
+  interval: 60m0s
+  timeout: 60m0s
+  path: ./kubernetes/flux
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age

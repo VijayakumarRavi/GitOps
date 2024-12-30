@@ -1,0 +1,145 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: media-base
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cnpg
+  interval: 60m0s
+  timeout: 30m0s
+  retryInterval: 2m0s
+  path: ./kubernetes/luffy/media/base/
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: jellyfin
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: media-base
+  interval: 60m0s
+  timeout: 30m0s
+  retryInterval: 2m0s
+  path: ./kubernetes/luffy/media/jellyfin/
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: jellyseerr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: jellyfin
+  interval: 60m0s
+  timeout: 30m0s
+  retryInterval: 2m0s
+  path: ./kubernetes/luffy/media/jellyseerr/
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: prowlarr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: jellyseerr
+  interval: 60m0s
+  timeout: 30m0s
+  retryInterval: 2m0s
+  path: ./kubernetes/luffy/media/prowlarr/
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: sonarr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: prowlarr
+  interval: 60m0s
+  timeout: 30m0s
+  retryInterval: 2m0s
+  path: ./kubernetes/luffy/media/sonarr/
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: radarr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: sonarr
+  interval: 60m0s
+  timeout: 30m0s
+  retryInterval: 2m0s
+  path: ./kubernetes/luffy/media/radarr/
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: qbittorrent
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: radarr
+  interval: 60m0s
+  timeout: 30m0s
+  retryInterval: 2m0s
+  path: ./kubernetes/luffy/media/qbittorrent/
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: immich
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cnpg
+    - name: media-base
+  interval: 60m0s
+  timeout: 30m0s
+  retryInterval: 2m0s
+  path: ./kubernetes/luffy/media/immich/
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops
