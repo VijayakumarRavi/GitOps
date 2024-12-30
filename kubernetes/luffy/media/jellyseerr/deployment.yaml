@@ -20,7 +20,7 @@ spec:
         app.kubernetes.io/name: jellyseerr
     spec:
       containers:
-        - image: fallenbagel/jellyseerr:2.2.2
+        - image: fallenbagel/jellyseerr:2.2.3
           imagePullPolicy: Always
           name: jellyseerr
           ports:
