@@ -2,40 +2,6 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: metallb
-  namespace: flux-system
-spec:
-  interval: 60m0s
-  timeout: 30m0s
-  retryInterval: 2m0s
-  path: ./kubernetes/luffy/core/metallb/
-  prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: home-ops
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: metallb-ip-pool
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: metallb
-  interval: 60m0s
-  timeout: 30m0s
-  retryInterval: 2m0s
-  path: ./kubernetes/luffy/core/metallb/ip-pool/
-  prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: home-ops
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: kube-vip
   namespace: flux-system
 spec:
@@ -86,42 +52,6 @@ spec:
   sourceRef:
     kind: GitRepository
     namespace: flux-system
-    name: home-ops
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cert-manager
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: traefik
-  interval: 60m0s
-  timeout: 30m0s
-  retryInterval: 2m0s
-  path: ./kubernetes/luffy/core/cert-manager/
-  prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: home-ops
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: certificates
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: cert-manager
-  interval: 60m0s
-  timeout: 30m0s
-  retryInterval: 2m0s
-  path: ./kubernetes/luffy/core/cert-manager/certificates/
-  prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
     name: home-ops
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
