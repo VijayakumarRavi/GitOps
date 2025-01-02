@@ -6,7 +6,7 @@ ARG LITESTREAM_VERSION=0.3.13
 FROM alpine as overmind
 
 # renovate: datasource=github-releases depName=DarthSim/overmind
-ARG OVERMIND_VERSION=v2.4.0
+ARG OVERMIND_VERSION=v2.5.1
 
 # install dependencies
 RUN apk add --no-cache wget gzip
