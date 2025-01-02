@@ -23,7 +23,7 @@ jobs:
       - name: Determine Modified Files
         id: changes
         run: |-
-          MODIFIED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          MODIFIED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | tr '\n' ' ')
           echo "MODIFIED_FILES=$MODIFIED_FILES" >> "$GITHUB_ENV"
           echo "Modified Files: $MODIFIED_FILES"
       - name: Deploy Fly.io App
@@ -33,3 +33,4 @@ jobs:
         run: |-
           echo "Deploying ${{ matrix.app }} to Fly.io..."
           flyctl deploy --remote-only fly.io/${{ matrix.app }}/
+          flyctl -a ${{ matrix.app }} machine start "$(flyctl -a ${{ matrix.app }} machine list -j | jq -r '.[] |  "\(.id)"')"

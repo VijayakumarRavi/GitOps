@@ -1,22 +1,42 @@
-ARG TSVERSION=v1.78.3
-ARG AGVERSION=v0.107.55
+ARG ADGUARD_VERSION=v0.107.55
+ARG TAILSCALE_VERSION=v1.78.3
+ARG LITESTREAM_VERSION=0.3.13
+
+# Builder for Overmind download
+FROM alpine as overmind
+
+# renovate: datasource=github-releases depName=DarthSim/overmind
+ARG OVERMIND_VERSION=v2.4.0
+
+# install dependencies
+RUN apk add --no-cache wget gzip
+
+# Download and extract Overmind (latest release)
+RUN wget -O overmind.gz "https://github.com/DarthSim/overmind/releases/download/$OVERMIND_VERSION/overmind-${OVERMIND_VERSION}-linux-amd64.gz" \
+    && gunzip overmind.gz \
+    && chmod +x overmind \
+    && mv overmind /usr/local/bin/
 
 # Tailscale stage to fetch the latest Tailscale package
-FROM tailscale/tailscale:${TSVERSION} as tailscale
+FROM tailscale/tailscale:${TAILSCALE_VERSION} as tailscale
 
-# https://docs.docker.com/develop/develop-images/multistage-build/#use-multi-stage-builds
-# https://github.com/AdguardTeam/AdGuardHome/blob/master/docker/Dockerfile
-FROM adguard/adguardhome:${AGVERSION}
-RUN apk update && apk add bash ca-certificates iptables ip6tables iproute2 wget curl tar lsof gpg openssl tmux procps neovim jq && rm -rf /var/cache/apk/*
+# Pull adguard image
+FROM adguard/adguardhome:${ADGUARD_VERSION}
+
+# install required dependencies
+RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq bash curl
 
 # creating directories for tailscale
 RUN mkdir -p /var/run/tailscale
 RUN mkdir -p /var/cache/tailscale
 RUN mkdir -p /var/lib/tailscale
 
-# Copy Tailscale bins from the Tailscale stage into the container
+# Copy tailscale binary
 COPY --from=tailscale /usr/local/bin/tailscaled /usr/local/bin/tailscaled
 COPY --from=tailscale /usr/local/bin/tailscale /usr/local/bin/tailscale
+
+# Copy Overmind binary
+COPY --from=overmind /usr/local/bin/overmind /usr/local/bin/overmind
 
 # Copy files to docker
 COPY config/start.sh /start.sh
@@ -26,16 +46,6 @@ COPY config/entrypoint.sh /entrypoint.sh
 # Chmod the scripts
 RUN chmod +x /start.sh
 RUN chmod +x /entrypoint.sh
-
-# Download and extract Overmind (latest release)
-RUN OVERMIND_VERSION=$(curl -s https://api.github.com/repos/DarthSim/overmind/releases/latest | jq -r '.tag_name') \
-    && wget -O overmind.gz "https://github.com/DarthSim/overmind/releases/download/$OVERMIND_VERSION/overmind-${OVERMIND_VERSION}-linux-amd64.gz" \
-    && gunzip overmind.gz \
-    && chmod +x overmind \
-    && mv overmind /usr/local/bin/
-
-# Delete downloaded archives
-RUN rm -rf overmind.gz
 
 HEALTHCHECK \
 	--interval=30s \
