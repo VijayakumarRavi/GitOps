@@ -24,7 +24,17 @@ FROM tailscale/tailscale:${TAILSCALE_VERSION} as tailscale
 FROM adguard/adguardhome:${ADGUARD_VERSION}
 
 # install required dependencies
-RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq bash curl
+RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq bash curl py3-pip
+
+# install certbot dependencies
+RUN pip install --upgrade --break-system-packages pip \
+  && pip install --break-system-packages certbot certbot-dns-cloudflare
+
+ENV CERTBOT_DOMAIN="" \
+    CERTBOT_EMAIL="" \
+    CERTBOT_KEY_TYPE="ecdsa" \
+    CLOUDFLARE_API_TOKEN="" \
+    RENEWAL_INTERVAL=43200
 
 # creating directories for tailscale
 RUN mkdir -p /var/run/tailscale
@@ -39,12 +49,12 @@ COPY --from=tailscale /usr/local/bin/tailscale /usr/local/bin/tailscale
 COPY --from=overmind /usr/local/bin/overmind /usr/local/bin/overmind
 
 # Copy files to docker
-COPY config/start.sh /start.sh
+COPY config/certbot.sh /certbot.sh
 COPY config/Procfile /Procfile
 COPY config/entrypoint.sh /entrypoint.sh
 
 # Chmod the scripts
-RUN chmod +x /start.sh
+RUN chmod +x /certbot.sh
 RUN chmod +x /entrypoint.sh
 
 HEALTHCHECK \
