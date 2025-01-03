@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: prowlarr
+  name: sabnzbd
 spec:
   interval: 30m
   chart:
@@ -15,11 +15,13 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+
   values:
     controllers:
-      prowlarr:
+      sabnzbd:
         annotations:
           reloader.stakater.com/auto: 'true'
+
         pod:
           securityContext:
             runAsUser: 2000
@@ -27,23 +29,37 @@ spec:
             runAsNonRoot: true
             fsGroup: 2000
             fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 65542 # gladius:external-services
+
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/prowlarr-develop
-              tag: 1.29.1.4903@sha256:aa0f5743b6b0a0d6e321dd55af0b78088199347e3cd1a7e5d635e4f4829adb6d
+              repository: ghcr.io/onedr0p/sabnzbd
+              tag: 4.4.1@sha256:4188d3c29c53de1018edcfd5dc2d0a0c7955b9a239b91ff6c859626abd3494dc
             env:
-              COMPlus_EnableDiagnostics: '0'
-              PROWLARR__INSTANCE_NAME: Prowlarr
-              PROWLARR__PORT: &port 9696
-              PROWLARR__LOG_LEVEL: info
-              PROWLARR__ANALYTICS_ENABLED: 'False'
-              PROWLARR__AUTHENTICATION_METHOD: External
-              PROWLARR__API_KEY:
+              SABNZBD__PORT: &port 8080
+              SABNZBD__HOST_WHITELIST_ENTRIES: >-
+                sabnzbd, sabnzbd.downloads, sabnzbd.downloads.svc, sabnzbd.downloads.svc.cluster, sabnzbd.downloads.svc.cluster.local, sabnzbd.home.vijayakumar.xyz
+
+
+              SABNZBD__API_KEY:
                 valueFrom:
                   secretKeyRef:
-                    name: prowlarr-secret
+                    name: sabnzbd-secret
                     key: api_key
+              SABNZBD__NZB_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: sabnzbd-secret
+                    key: nzb_key
+              # XSEED_HOST: cross-seed.downloads.svc.cluster.local
+              # XSEED_PORT: 2468
+              # XSEED_APIKEY:
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: sabnzbd-secret
+              #       key: xseed_api_key
             probes:
               liveness:
                 enabled: true
@@ -56,41 +72,59 @@ spec:
                   periodSeconds: 5
             resources:
               requests:
-                cpu: 18m
-                memory: 128Mi
+                cpu: 5m
+                memory: 1024Mi
               limits:
-                memory: 512Mi
+                memory: 6144Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
-                drop: [ALL]
+                drop:
+                  - ALL
+
     service:
       app:
-        controller: prowlarr
+        controller: sabnzbd
         ports:
           http:
             port: *port
+
     ingress:
       app:
         className: traefik
         hosts:
-          - host: prowlarr.home.vijayakumar.xyz
+          - host: sabnzbd.home.vijayakumar.xyz
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
+
     persistence:
       config:
-        existingClaim: prowlarr-pvc
-      add-ons:
-        type: emptyDir
-      tmp:
-        type: emptyDir
-      media:
+        existingClaim: sabnzbd-pvc
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /config
+      downloads:
         type: nfs
         server: 10.0.0.3
         path: /media
         globalMounts:
-          - path: /data/nas-media
+          - path: /data/nas-media/
+      temp:
+        type: emptyDir
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /tmp
+      scripts:
+        type: configMap
+        name: sabnzbd-scripts
+        defaultMode: 0775
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /config/scripts
