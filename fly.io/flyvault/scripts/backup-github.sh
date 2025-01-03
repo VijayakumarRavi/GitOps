@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sqlite3 /data/db.sqlite3 '.backup /data/db.bak'
-tar -cvzf /backup.tar.gz /data
+tar -czf /backup.tar.gz /data
 
 #Encrypt File and Upload to GitHub
 echo "$PASS" | gpg --batch --yes --passphrase-fd 0 --cipher-algo AES256 --symmetric backup.tar.gz
@@ -40,5 +40,5 @@ rm *.tar.gz
 
 # Ping healthchecks.io for monitoring
 if [[ -n "$GITHUB_HC_PING_URL" ]]; then
-    wget "${GITHUB_HC_PING_URL}" -O /dev/null
+  curl -fsS -m 10 --retry 5 -o /dev/null "${GITHUB_HC_PING_URL}"
 fi

@@ -91,9 +91,9 @@ COPY config/crontab /crontab
 COPY config/Procfile /Procfile
 COPY scripts/backup-rclone.sh /backup-rclone.sh
 COPY scripts/cleanup-backups.sh /cleanup-backups.sh
-COPY scripts/backup-data-github.sh /backup-data-github.sh
+COPY scripts/backup-github.sh /backup-github.sh
 COPY scripts/restore-data.sh /restore-data.sh
-COPY scripts/restore-data-github.sh /restore-data-github.sh
+COPY scripts/restore-github.sh /restore-github.sh
 COPY config/Caddyfile /etc/caddy/Caddyfile
 COPY config/litestream.yaml /etc/litestream.yaml
 COPY entrypoint.sh /entrypoint.sh
@@ -101,9 +101,9 @@ COPY entrypoint.sh /entrypoint.sh
 # Chmod the scripts
 RUN chmod +x /backup-rclone.sh
 RUN chmod +x /cleanup-backups.sh
-RUN chmod +x /backup-data-github.sh
+RUN chmod +x /backup-github.sh
 RUN chmod +x /restore-data.sh
-RUN chmod +x /restore-data-github.sh
+RUN chmod +x /restore-github.sh
 RUN chmod +x /entrypoint.sh
 
 # Set the entrypoint script as the entrypoint for the container

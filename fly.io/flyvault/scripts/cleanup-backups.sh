@@ -32,5 +32,5 @@ process_remote "Cloudflare:vaultwarden"
 
 # Ping healthchecks.io for monitoring
 if [[ -n "$CLEANUP_HC_PING_URL" ]]; then
-    wget "${CLEANUP_HC_PING_URL}" -O /dev/null
+    curl -fsS -m 10 --retry 5 -o /dev/null "${CLEANUP_HC_PING_URL}"
 fi
