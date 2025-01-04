@@ -13,7 +13,7 @@ spec:
   path: './kubernetes/luffy/apps/system/generic-device-plugin/app'
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
+    name: home-ops
   interval: 30m
   timeout: 5m
   prune: true

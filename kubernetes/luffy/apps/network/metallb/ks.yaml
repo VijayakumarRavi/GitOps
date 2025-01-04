@@ -6,7 +6,7 @@ metadata:
   name: &appname metallb
   namespace: flux-system
 spec:
-  targetNamespace: metallb-system
+  targetNamespace: network
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
@@ -27,7 +27,7 @@ metadata:
   name: &appname metallb-ip-pool
   namespace: flux-system
 spec:
-  targetNamespace: metallb-system
+  targetNamespace: network
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname

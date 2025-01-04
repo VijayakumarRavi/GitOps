@@ -1,12 +1,11 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: cert-manager
-  namespace: cert-manager
 spec:
   interval: 30m
-  releaseName: cert-manager
   chart:
     spec:
       chart: cert-manager
@@ -14,20 +13,15 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: jetstack
-        namespace: cert-manager
-      valuesFiles: [values.yaml]
-  maxHistory: 2
+        namespace: flux-system
+      interval: 30m
+
   install:
-    remediation:
-      retries: 3
+    crds: CreateReplace
   upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
+    crds: CreateReplace
+
   values:
-    replicaCount: 3
     crds:
       enabled: true
     dns01RecursiveNameservers: https://1.1.1.1:443/dns-query,https://1.0.0.1:443/dns-query
