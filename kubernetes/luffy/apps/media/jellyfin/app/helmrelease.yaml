@@ -40,15 +40,23 @@ spec:
             env:
               TZ: Asia/Kolkata
             probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 32400
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
               startup:
-                enabled: false
-                # spec:
-                #   failureThreshold: 30
-                #   periodSeconds: 5
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -58,9 +66,9 @@ spec:
             resources:
               requests:
                 cpu: 100m
-              # limits:
-              #   gpu.intel.com/i915: 1
-              #   memory: 9248M
+              limits:
+                gpu.intel.com/i915: 1
+                memory: 9248M
 
     service:
       app:
@@ -101,4 +109,3 @@ spec:
           jellyfin:
             app:
               - path: /data/nas-media/
-                subPath: Library
