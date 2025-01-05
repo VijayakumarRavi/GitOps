@@ -6,3 +6,11 @@ resources:
   - ./helmrelease.yaml
   - ./pvc.yaml
 #  - ./externalsecret.yaml
+configMapGenerator:
+  - name: autobrr-config
+    files:
+      - config/config.toml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

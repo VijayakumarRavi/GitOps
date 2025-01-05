@@ -92,5 +92,11 @@ spec:
           autobrr:
             app:
               - path: /config
+      config-file:
+        type: configMap
+        name: autobrr-config
+        globalMounts:
+          - path: /config/config.toml
+            subPath: config.toml
       tmp:
         type: emptyDir
