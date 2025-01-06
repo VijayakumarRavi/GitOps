@@ -6,6 +6,7 @@ resources:
   - ./actions-runner-controller.yaml
   - ./backube.yaml
   - ./bjw-s.yaml
+  - ./crunchy-userinit.yaml
   - ./intel.yaml
   - ./jetstack.yaml
   - ./k8tz.yaml

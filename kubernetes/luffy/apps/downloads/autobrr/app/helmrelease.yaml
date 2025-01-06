@@ -38,12 +38,12 @@ spec:
               AUTOBRR__HOST: 0.0.0.0
               AUTOBRR__PORT: &port 7474
               AUTOBRR__LOG_LEVEL: DEBUG
-              AUTOBRR__DATABASE_TYPE: sqlite
-            # envFrom:
-            #   - secretRef:
-            #       name: autobrr-secret
-            #   - secretRef:
-            #       name: autobrr-db-secret
+              AUTOBRR__DATABASE_TYPE: postgress
+            envFrom:
+              - secretRef:
+                  name: autobrr-secret
+              - secretRef:
+                  name: autobrr-db-secret
             probes:
               liveness:
                 enabled: true
@@ -86,17 +86,5 @@ spec:
                   port: http
 
     persistence:
-      config:
-        existingClaim: autobrr-pvc
-        advancedMounts:
-          autobrr:
-            app:
-              - path: /config
-      config-file:
-        type: configMap
-        name: autobrr-config
-        globalMounts:
-          - path: /config/config.toml
-            subPath: config.toml
       tmp:
         type: emptyDir
