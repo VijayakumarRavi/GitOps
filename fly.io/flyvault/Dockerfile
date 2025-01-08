@@ -13,7 +13,7 @@ ARG SUPERCRONIC_VERSION=v0.2.33
 # renovate: datasource=github-releases depName=dani-garcia/bw_web_builds
 ARG VAULT_VERSION=v2024.6.2c
 # renovate: datasource=github-releases depName=caddyserver/caddy
-ARG CADDY_VERSION=v2.9.0
+ARG CADDY_VERSION=v2.9.1
 
 # install dependencies
 RUN apk add --no-cache wget gzip
