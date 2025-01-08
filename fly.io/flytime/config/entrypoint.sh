@@ -6,10 +6,15 @@ RED='\033[0;31m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
-
 echo -e "${GREEN}Info: Starting up...${NC}"
 
+# creating tailscale data folder
 mkdir -pv /data/tailscale
+
+#Set dnsproxy as dns server and starting it
+echo "nameserver 127.0.0.1" > /etc/resolv.conf && \
+  overmind start -l dnsproxy -f /Procfile -s /data/overmind.dns.sock &
+echo -e "${GREEN}Info: Changed dns to dnsproxy(127.0.0.1)"
 
 # error: adding [-i tailscale0 -j MARK --set-mark 0x40000] in v4/filter/ts-forward: running [/sbin/iptables -t filter -A ts-forward -i tailscale0 -j MARK --set-mark 0x40000 --wait]: exit status 2: iptables v1.8.6 (legacy): unknown option "--set-mark"
 modprobe xt_mark
@@ -20,7 +25,6 @@ sysctl -p /etc/sysctl.conf
 
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-
 
 # Deleting old fly node from tailnet
 apikey=$(curl -s -d "client_id=${OAUTH_CLIENT_ID}" -d "client_secret=${OAUTH_CLIENT_SECRET}" "https://api.tailscale.com/api/v2/oauth/token" | jq .access_token | tr -d '"')

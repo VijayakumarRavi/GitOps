@@ -10,5 +10,5 @@ dbs:
         endpoint: ${LITESTREAM_URL}
         region: ${LITESTREAM_REGION}
         retention: 72h
-        snapshot-interval: 12h
+        snapshot-interval: 1h
         validation-interval: 6h

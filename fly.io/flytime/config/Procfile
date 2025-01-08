@@ -1,4 +1,5 @@
 uptime-kuma: cd /app && node server/server.js
 litestream: litestream replicate -config /etc/litestream.yaml
-tailscale-daemon: /usr/local/bin/tailscaled --port 41641 --state=mem: --tun=userspace-networking --statedir=/data/tailscale --socket=/var/run/tailscale/tailscaled.sock
-tailscale: /usr/local/bin/tailscale up --accept-routes --advertise-exit-node --hostname=${FLY_APP_NAME} --advertise-tags=tag:fly-exit --authkey=${OAUTH_CLIENT_SECRET}?preauthorized=true && tail -f /dev/null
+dnsproxy: dnsproxy -u https://dns.vijayakumar.xyz/dns-query/uptime-kuma -b 1.1.1.1 -f 1.1.1.1 --cache
+tailscale-daemon: tailscaled --port 41641 --state=mem: --statedir=/data/tailscale --socket=/var/run/tailscale/tailscaled.sock
+tailscale: tailscale up --accept-dns=false --accept-routes --advertise-exit-node --hostname=${FLY_APP_NAME} --advertise-tags=tag:fly-exit --authkey=${OAUTH_CLIENT_SECRET}?preauthorized=true
