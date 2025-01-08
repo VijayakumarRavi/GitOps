@@ -27,7 +27,11 @@ FROM litestream/litestream:${LITESTREAM_VERSION} as litestream
 FROM sissbruecker/linkding:${LINKDING_VERSION}
 
 # install required dependencies
-RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq bash
+RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq bash tzdata
+
+# Timezone settings
+ENV TZ=Asia/Kolkata
+RUN cp /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 
 # creating directories for tailscale
 RUN mkdir -p /var/run/tailscale

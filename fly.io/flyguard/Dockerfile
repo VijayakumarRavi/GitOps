@@ -24,7 +24,11 @@ FROM tailscale/tailscale:${TAILSCALE_VERSION} as tailscale
 FROM adguard/adguardhome:${ADGUARD_VERSION}
 
 # install required dependencies
-RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq bash curl py3-pip
+RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq bash curl py3-pip tzdata
+
+# Timezone settings
+ENV TZ=Asia/Kolkata
+RUN cp /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 
 # install certbot dependencies
 RUN pip install --upgrade --break-system-packages pip \

@@ -30,7 +30,11 @@ FROM adguard/dnsproxy:${DNSPROXY_VERSION} as dnsproxy
 FROM louislam/uptime-kuma:${UPTIME_VERSION}
 
 # install required dependencies
-RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq curl bash
+RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq curl bash tzdata
+
+# Timezone settings
+ENV TZ=Asia/Kolkata
+RUN cp /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 
 # creating directories for tailscale
 RUN mkdir -p /var/run/tailscale
