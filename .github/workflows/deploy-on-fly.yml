@@ -7,9 +7,9 @@ on:
 jobs:
   deploy-fly-app:
     runs-on: ubuntu-latest
-    if: >
-      github.event.commits[0].author.name == 'renovate[bot]' ||
-      github.event.commits[0].author.email == 'bot@renovateapp.com'
+    # if: >
+    #   github.event.commits[0].author.name == 'renovate[bot]' ||
+    #   github.event.commits[0].author.email == 'bot@renovateapp.com'
     strategy:
       matrix:
         app: [flyguard, flytime, flyvault, flylink]
