@@ -4,19 +4,18 @@ kind: PersistentVolumeClaim
 metadata:
   name: jellyfin-pvc
 spec:
-  accessModes: ['ReadWriteOnce']
+  accessModes: [ReadWriteOnce]
   resources:
     requests:
-      storage: 1Gi
+      storage: 5Gi
   storageClassName: longhorn
-
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: jellyfin-cache-pvc
 spec:
-  accessModes: ['ReadWriteOnce']
+  accessModes: [ReadWriteOnce]
   resources:
     requests:
       storage: 20Gi
