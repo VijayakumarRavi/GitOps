@@ -65,6 +65,15 @@ spec:
               readOnlyRootFilesystem: true
               capabilities:
                 drop: [ALL]
+          flaresolverr:
+            image:
+              repository: ghcr.io/flaresolverr/flaresolverr
+              tag: v3.3.21
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop: [ALL]
     service:
       app:
         controller: prowlarr
@@ -88,6 +97,10 @@ spec:
         type: emptyDir
       tmp:
         type: emptyDir
+      # flaresolverr:
+      #   type: emptyDir
+      #   advancedMounts:
+      #     - path: /
       media:
         type: nfs
         server: 10.0.0.3
