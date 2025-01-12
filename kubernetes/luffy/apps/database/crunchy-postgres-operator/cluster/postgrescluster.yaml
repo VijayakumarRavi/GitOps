@@ -86,9 +86,9 @@ spec:
         - miniflux
       password:
         type: AlphaNumeric
-    - name: piped
+    - name: linkding
       databases:
-        - piped
+        - linkding
       password:
         type: AlphaNumeric
     - name: wallabag
@@ -105,20 +105,13 @@ spec:
       global: &backupFlag
         compress-type: 'bz2'
         compress-level: '9'
-        # Minio
-        repo1-block: 'y'
-        repo1-bundle: 'y'
-        repo1-path: /crunchy-pgo
-        repo1-retention-full: '30' # days
-        repo1-retention-full-type: 'time'
-        repo1-s3-uri-style: path
         # R2
-        repo2-block: 'y'
-        repo2-bundle: 'y'
-        repo2-path: /crunchy-pgo
-        repo2-retention-full: '7' # days
-        repo2-retention-full-type: time
-        repo2-s3-uri-style: path
+        repo1-bundle: 'y'
+        repo1-block: 'y'
+        repo1-path: /crunchy-pgo
+        repo1-retention-full: '7' # days
+        repo1-retention-full-type: time
+        repo1-s3-uri-style: path
       manual:
         repoName: repo1
         options:
@@ -127,19 +120,10 @@ spec:
         labels:
           app.kubernetes.io/name: crunchy-postgres-backup
       repos:
-        - name: repo1 # Minio
-          s3: &minio
-            bucket: 'crunchy-postgres'
-            endpoint: 'http://10.0.0.3:9001'
-            region: 'us-east-1'
-          schedules:
-            full: '0 1 * * 0' # Sunday at 01:00
-            differential: '0 1 * * 1-6' # Mon-Sat at 01:00
-            incremental: '0 2-23 * * *' # Every hour except 01:00
-        - name: repo2 # R2
+        - name: repo1 # R2
           s3: &r2
             bucket: 'crunchy-postgres'
-            endpoint: ${CLUSTER_SECRET_CPGO_R2_ENDPOINT}
+            endpoint: https://4fc118cc61e84408cd4335a7544714bd.r2.cloudflarestorage.com
             region: 'us-east-1'
           schedules:
             full: '0 2 * * 0' # Sunday at 02:00
@@ -152,7 +136,7 @@ spec:
       global: *backupFlag
       repo:
         name: 'repo1'
-        s3: *minio
+        s3: *r2
 
   monitoring:
     pgmonitor:
