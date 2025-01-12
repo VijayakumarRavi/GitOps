@@ -36,6 +36,12 @@ curl -s "https://api.tailscale.com/api/v2/tailnet/-/devices" -u "$apikey:" | jq 
 
 # litestream database restore
 litestream restore -if-db-not-exists -if-replica-exists -config /etc/litestream.yaml /etc/linkding/data/db.sqlite3
+if [ $? -eq 0 ]; then
+  echo -e "${GREEN}Info: Database restored successfully${NC}"
+else
+  echo -e "${RED}Error: Database restore failed${NC}"
+  exit 1
+fi
 
 # Execute the CMD
 exec "$@"
