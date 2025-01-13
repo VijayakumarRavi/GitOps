@@ -15,22 +15,19 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-
   values:
     controllers:
       qbittorrent:
         annotations:
           configmap.reloader.stakater.com/reload: qbittorrent-scripts,qbittorrent-dnsdist
           secret.reloader.stakater.com/reload: qbittorrent-secret
-
         pod:
           securityContext:
             fsGroup: 2000
-            fsGroupChangePolicy: 'OnRootMismatch'
+            fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
-              - 65542 # gladius:external-services
+              - 65542  # gladius:external-services
           terminationGracePeriodSeconds: 120
-
         containers:
           app:
             nameOverride: qbittorrent
@@ -70,15 +67,13 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
-                drop:
-                  - ALL
+                drop: [ALL]
     service:
       app:
         controller: qbittorrent
         ports:
           http:
             port: *port
-
     ingress:
       app:
         className: traefik
@@ -89,7 +84,6 @@ spec:
                 service:
                   identifier: app
                   port: http
-
     persistence:
       config:
         enabled: true
@@ -101,10 +95,9 @@ spec:
       media:
         type: nfs
         server: 10.0.0.3
-        path: /media
+        path: /mnt/tank/Media
         globalMounts:
           - path: /data/nas-media
-
       scripts:
         type: configMap
         name: qbittorrent-scripts

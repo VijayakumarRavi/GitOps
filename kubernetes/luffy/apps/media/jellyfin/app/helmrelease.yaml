@@ -29,7 +29,7 @@ spec:
             supplementalGroups:
               - 44
               - 109
-              - 65542 # gladius:external-services
+              - 65542  # gladius:external-services
         containers:
           app:
             image:
@@ -98,7 +98,7 @@ spec:
       nfs-nas-media:
         type: nfs
         server: 10.0.0.3
-        path: /media
+        path: /mnt/tank/Media
         advancedMounts:
           jellyfin:
             app:
