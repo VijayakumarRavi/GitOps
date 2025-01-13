@@ -18,6 +18,7 @@ swap_size_mb = 1024
   LITESTREAM_BUCKET="litestream"
   LITESTREAM_PATH="flylink"
   LITESTREAM_REGION="us-east-1"
+  LD_ENABLE_OIDC="True"
 
 [services]
   protocol = "tcp"
@@ -43,7 +44,7 @@ swap_size_mb = 1024
   [[services.tcp_checks]]
     interval = "15s"
     timeout = "2s"
-    grace_period = "10s"
+    grace_period = "60s"
 
 [[vm]]
   size = 'shared-cpu-1x'
