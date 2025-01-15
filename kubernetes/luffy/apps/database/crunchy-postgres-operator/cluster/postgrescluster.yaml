@@ -8,21 +8,21 @@ spec:
   postgresVersion: 16
   metadata:
     labels:
-      crunchy-userinit.ramblurr.github.com/enabled: 'true'
+      crunchy-userinit.ramblurr.github.com/enabled: "true"
       crunchy-userinit.ramblurr.github.com/superuser: postgres
   databaseInitSQL:
     name: crunchy-postgres-config
     key: init.sql
   service:
     type: LoadBalancer
-  patroni:  # turn on sync writes to at least 1 other replica
+  patroni: # turn on sync writes to at least 1 other replica
     dynamicConfiguration:
       synchronous_mode: true
       postgresql:
         max_wal_size: 5GB
-        synchronous_commit: 'on'
+        synchronous_commit: "on"
         pg_hba:
-          - hostnossl all all 10.43.0.0/16 md5  # Needed because dbman does not support SSL yet
+          - hostnossl all all 10.43.0.0/16 md5 # Needed because dbman does not support SSL yet
           - hostssl all all all md5
   instances:
     - name: postgres
@@ -73,14 +73,21 @@ spec:
             name: crunchy-postgres-secret
       global: &backupFlag
         compress-type: bz2
-        compress-level: '9'
-        # R2
-        repo1-bundle: y
-        repo1-block: y
+        compress-level: "9"
+        # Minio
+        repo1-bundle: "y"
+        repo1-block: "y"
         repo1-path: /crunchy-pgo
-        repo1-retention-full: '7'  # days
+        repo1-retention-full: "30" # days
         repo1-retention-full-type: time
         repo1-s3-uri-style: path
+        # R2
+        repo2-block: "y"
+        repo2-bundle: "y"
+        repo2-path: /crunchy-pgo
+        repo2-retention-full: "7" # days
+        repo2-retention-full-type: time
+        repo2-s3-uri-style: path
       manual:
         repoName: repo1
         options: [--type=full]
@@ -88,14 +95,23 @@ spec:
         labels:
           app.kubernetes.io/name: crunchy-postgres-backup
       repos:
-        - name: repo1  # R2
+        - name: repo1 # Minio
+          s3: &minio
+            bucket: crunchy-postgres
+            endpoint: http://10.0.0.3:9002
+            region: us-east-1
+          schedules:
+            full: 0 1 * * 0 # Sunday at 01:00
+            differential: 0 1 * * 1-6 # Mon-Sat at 01:00
+            incremental: 0 2-23 * * * # Every hour except 01:00
+        - name: repo2 # R2
           s3: &r2
             bucket: crunchy-postgres
             endpoint: https://4fc118cc61e84408cd4335a7544714bd.r2.cloudflarestorage.com
             region: us-east-1
           schedules:
-            full: 0 2 * * 0  # Sunday at 02:00
-            incremental: 0 2 * * 1-6/2  # Mon-Sat at 02:00, every 2nd day
+            full: 0 2 * * 0 # Sunday at 02:00
+            incremental: 0 2 * * 1-6/2 # Mon-Sat at 02:00, every 2nd day
   dataSource:
     pgbackrest:
       stanza: db
@@ -103,7 +119,7 @@ spec:
       global: *backupFlag
       repo:
         name: repo1
-        s3: *r2
+        s3: *minio
   monitoring:
     pgmonitor:
       exporter:
@@ -122,7 +138,7 @@ spec:
           app.kubernetes.io/name: crunchy-postgres-pgbouncer
       config:
         global:
-          pool_mode: transaction  # pgBouncer is set to transaction for Authentik. Grafana requires session https://github.com/grafana/grafana/issues/74260#issuecomment-1702795311. Everything else is happy with transaction
+          pool_mode: transaction # pgBouncer is set to transaction for Authentik. Grafana requires session https://github.com/grafana/grafana/issues/74260#issuecomment-1702795311. Everything else is happy with transaction
           client_tls_sslmode: prefer
       topologySpreadConstraints:
         - maxSkew: 1
