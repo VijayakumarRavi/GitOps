@@ -46,11 +46,9 @@ spec:
               postgres-operator.crunchydata.com/data: postgres
   users:
     # Superuser
-    - name: postgres
+    - name: vijay
       databases: [postgres]
       options: SUPERUSER
-      password:
-        type: AlphaNumeric
     # Applications
     - name: atuin
       databases: [atuin]
