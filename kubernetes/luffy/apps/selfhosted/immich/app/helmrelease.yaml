@@ -26,7 +26,7 @@ spec:
     controllers:
       immich-server:
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         replicas: 2
         containers:
           app:
@@ -47,11 +47,11 @@ spec:
               requests:
                 cpu: 200m
               limits:
-                gpu.intel.com/i915: '1'
+                gpu.intel.com/i915: "1"
                 cpu: 3000m
       immich-worker:
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         replicas: 3
         containers:
           app:
@@ -71,7 +71,7 @@ spec:
             resources: *resources
       immich-machine-learning:
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         replicas: 3
         containers:
           app:
@@ -79,7 +79,7 @@ spec:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v1.124.2-openvino
             env:
-              MACHINE_LEARNING_REQUEST_THREADS: '1'
+              MACHINE_LEARNING_REQUEST_THREADS: "1"
             envFrom:
               - secretRef:
                   name: immich-env
@@ -87,7 +87,7 @@ spec:
             resources: *resources
       immich-redis:
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -118,7 +118,7 @@ spec:
             port: 6379
     ingress:
       app:
-        className: traefik
+        className: nginx
         hosts:
           - host: immich.home.vijayakumar.xyz
             paths:

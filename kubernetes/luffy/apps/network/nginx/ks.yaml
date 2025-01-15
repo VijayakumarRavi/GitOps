@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname traefik-certificates
+  name: &appname nginx-certificates
   namespace: flux-system
 spec:
   targetNamespace: network
@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: './kubernetes/luffy/apps/network/traefik/certificates'
+  path: "./kubernetes/luffy/apps/network/nginx/certificates"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -25,7 +25,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname traefik
+  name: &appname nginx
   namespace: flux-system
 spec:
   targetNamespace: network
@@ -34,34 +34,11 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: './kubernetes/luffy/apps/network/traefik/app'
+  path: "./kubernetes/luffy/apps/network/nginx/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops
-  wait: true
+  wait: false
   dependsOn:
-    - name: traefik-certificates
-
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &appname traefik-dashboard
-  namespace: flux-system
-spec:
-  targetNamespace: network
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *appname
-  interval: 30m
-  timeout: 5m
-  path: ./kubernetes/luffy/apps/network/traefik/dashboard
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-ops
-  wait: true
-  dependsOn:
-    - name: traefik
+    - name: nginx-certificates

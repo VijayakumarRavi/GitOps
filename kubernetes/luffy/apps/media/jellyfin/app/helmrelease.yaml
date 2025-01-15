@@ -19,7 +19,7 @@ spec:
     controllers:
       jellyfin:
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         pod:
           securityContext:
             runAsUser: 2000
@@ -29,7 +29,7 @@ spec:
             supplementalGroups:
               - 44
               - 109
-              - 65542  # gladius:external-services
+              - 65542 # gladius:external-services
         containers:
           app:
             image:
@@ -74,7 +74,7 @@ spec:
             port: *port
     ingress:
       app:
-        className: traefik
+        className: nginx
         hosts:
           - host: jellyfin.home.vijayakumar.xyz
             paths:

@@ -19,7 +19,7 @@ spec:
     controllers:
       prowlarr:
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         pod:
           securityContext:
             fsGroup: 568
@@ -30,11 +30,11 @@ spec:
               repository: ghcr.io/onedr0p/prowlarr-develop
               tag: 1.30.0.4920@sha256:d204db1e4b73aa61600162da74ec85062acc54b0a7ee4f44444fab9b68816509
             env:
-              COMPlus_EnableDiagnostics: '0'
+              COMPlus_EnableDiagnostics: "0"
               PROWLARR__INSTANCE_NAME: Prowlarr
               PROWLARR__PORT: &port 9696
               PROWLARR__LOG_LEVEL: info
-              PROWLARR__ANALYTICS_ENABLED: 'False'
+              PROWLARR__ANALYTICS_ENABLED: "False"
               PROWLARR__AUTHENTICATION_METHOD: External
               PROWLARR__API_KEY:
                 valueFrom:
@@ -79,7 +79,7 @@ spec:
             port: *port
     ingress:
       app:
-        className: traefik
+        className: nginx
         hosts:
           - host: prowlarr.home.vijayakumar.xyz
             paths:

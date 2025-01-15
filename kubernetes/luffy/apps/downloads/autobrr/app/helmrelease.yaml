@@ -76,7 +76,7 @@ spec:
 
     ingress:
       app:
-        className: traefik
+        className: nginx
         hosts:
           - host: autobrr.home.vijayakumar.xyz
             paths:

@@ -5,7 +5,7 @@ metadata:
   name: pgadmin
   namespace: database
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   rules:
     - host: pgadmin.home.vijayakumar.xyz
       http:

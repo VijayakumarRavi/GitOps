@@ -8,4 +8,4 @@ resources:
   # Flux-Kustomizations
   - ./kube-vip/ks.yaml
   - ./metallb/ks.yaml
-  - ./traefik/ks.yaml
+  - ./nginx/ks.yaml

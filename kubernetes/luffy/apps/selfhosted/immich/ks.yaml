@@ -20,5 +20,5 @@ spec:
   wait: false
   dependsOn:
     - name: longhorn
-    - name: traefik
+    - name: nginx
     - name: volsync

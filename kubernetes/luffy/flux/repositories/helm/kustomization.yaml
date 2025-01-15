@@ -17,4 +17,4 @@ resources:
   - ./piraeus.yaml
   - ./prometheus-community.yaml
   - ./stakater.yaml
-  - ./traefik.yaml
+  - ./nginx.yaml
