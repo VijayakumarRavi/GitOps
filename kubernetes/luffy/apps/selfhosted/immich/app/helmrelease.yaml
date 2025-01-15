@@ -24,7 +24,7 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     controllers:
-      immich-server:
+      server:
         annotations:
           reloader.stakater.com/auto: "true"
         replicas: 2
@@ -49,7 +49,7 @@ spec:
               limits:
                 gpu.intel.com/i915: "1"
                 cpu: 3000m
-      immich-worker:
+      worker:
         annotations:
           reloader.stakater.com/auto: "true"
         replicas: 3
@@ -69,7 +69,7 @@ spec:
               readiness:
                 enabled: false
             resources: *resources
-      immich-machine-learning:
+      machine-learning:
         annotations:
           reloader.stakater.com/auto: "true"
         replicas: 3
@@ -85,7 +85,7 @@ spec:
                   name: immich-env
             probes: *probes
             resources: *resources
-      immich-redis:
+      redis:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -96,23 +96,23 @@ spec:
             probes: *probes
             resources: *resources
     service:
-      immich-server:
-        controller: immich-server
+      server:
+        controller: server
         ports:
           http:
             port: 2283
-      immich-worker:
-        controller: immich-worker
+      worker:
+        controller: worker
         ports:
           http:
             port: 2283
-      immich-machine-learning:
-        controller: immich-machine-learning
+      machine-learning:
+        controller: machine-learning
         ports:
           http:
             port: 3003
-      immich-redis:
-        controller: immich-redis
+      redis:
+        controller: redis
         ports:
           http:
             port: 6379
@@ -124,18 +124,19 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: immich-server
+                  identifier: server
                   port: http
     persistence:
       model-cache:
-        type: emptyDir
+        existingClaim: model-cache-pvc
         advancedMounts:
-          immich-machine-learning:
+          machine-learning:
             app:
               - path: /cache
-          immich-redis:
-            app:
-              - path: /data
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /data
       media:
         type: nfs
         server: 10.0.0.3
