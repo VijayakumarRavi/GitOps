@@ -8,6 +8,7 @@ resources:
   - ./bjw-s.yaml
   - ./crunchydata.yaml
   - ./crunchy-userinit.yaml
+  - ./external-secrets.yaml
   - ./intel.yaml
   - ./jameswynn.yaml
   - ./jetstack.yaml
