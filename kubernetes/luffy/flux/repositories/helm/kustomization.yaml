@@ -9,6 +9,7 @@ resources:
   - ./crunchydata.yaml
   - ./crunchy-userinit.yaml
   - ./intel.yaml
+  - ./jameswynn.yaml
   - ./jetstack.yaml
   - ./k8tz.yaml
   - ./kubernetes-sigs-nfd.yaml

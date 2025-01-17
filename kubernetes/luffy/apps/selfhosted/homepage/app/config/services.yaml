@@ -1,0 +1,119 @@
+---
+- one:
+    - Immich Preview:
+        icon: immich-kiosk.png
+        description: A web slideshot for Immich
+        href: '{{HOMEPAGE_VAR_IMMICHPREVIEW_URL}}'
+    - Immich:
+        icon: immich.png
+        description: Google photos alternative
+        href: '{{HOMEPAGE_VAR_IMMICH_URL}}'
+        widget:
+          type: immich
+          fields: [photos, videos, storage]
+          url: '{{HOMEPAGE_VAR_IMMICH_URL}}'
+          key: '{{HOMEPAGE_VAR_IMMICH_API_KEY}}'
+          version: 2
+    - Jellyfin:
+        icon: jellyfin.png
+        description: Self-hosted media streaming system
+        href: '{{HOMEPAGE_VAR_JELLYFIN_URL}}'
+        widget:
+          type: jellyfin
+          url: '{{HOMEPAGE_VAR_JELLYFIN_URL}}'
+          key: '{{HOMEPAGE_VAR_JELLYFIN_API_TOKEN}}'
+          enableBlocks: true  # optional, defaults to false
+          enableNowPlaying: false  # optional, defaults to true
+    - Jellyseerr:
+        icon: jellyseerr.png
+        description: Media requesting system
+        href: '{{HOMEPAGE_VAR_JELLYSEERR_URL}}'
+        widget:
+          type: jellyseerr
+          url: '{{HOMEPAGE_VAR_JELLYSEERR_URL}}'
+          key: '{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}'
+    - Tank:
+        icon: truenas.png
+        description: Media requesting system
+        href: '{{HOMEPAGE_VAR_TRUENAS_URL}}'
+        widget:
+          type: truenas
+          url: '{{HOMEPAGE_VAR_TRUENAS_URL}}'
+          key: '{{HOMEPAGE_VAR_TRUENAS_API_KEY}}'
+          enablePools: true  # optional, defaults to false
+- two:
+    - Linkding:
+        icon: linkding.png
+        description: Bookmarks manager
+        href: '{{HOMEPAGE_VAR_LINKDING_URL}}'
+    - Adguard Home:
+        icon: adguard-home.png
+        description: Dns ad blocker
+        href: '{{HOMEPAGE_VAR_ADGUARD_URL}}'
+        widget:
+          type: adguard
+          url: '{{HOMEPAGE_VAR_ADGUARD_URL}}'
+          username: '{{HOMEPAGE_VAR_ADGUARD_USERNAME}}'
+          password: '{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}'
+    - Flytime:
+        icon: uptime-kuma.png
+        description: self-hosted monitoring tool
+        href: '{{HOMEPAGE_VAR_FLYTIME_URL}}'
+        widget:
+          type: uptimekuma
+          url: '{{HOMEPAGE_VAR_FLYTIME_URL}}'
+          slug: cluster
+    - QBittorrent:
+        icon: qbittorrent.png
+        description: Torrent downloader
+        href: '{{HOMEPAGE_VAR_QBITTORRENT_URL}}'
+        widget:
+          type: qbittorrent
+          url: '{{HOMEPAGE_VAR_QBITTORRENT_URL}}'
+          username: '{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}'
+          password: '{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}'
+    - SABnzbd:
+        icon: sabnzbd.png
+        description: NZB downloader
+        href: '{{HOMEPAGE_VAR_SABNZBD_URL}}'
+        widget:
+          type: sabnzbd
+          url: '{{HOMEPAGE_VAR_SABNZBD_URL}}'
+          key: '{{HOMEPAGE_VAR_SABNZBD_API_KEY}}'
+- three:
+    - Vaultwarden:
+        icon: bitwarden.png
+        description: Password manager
+        href: '{{HOMEPAGE_VAR_VAULTWARDEN_URL}}'
+    - Sonarr:
+        icon: sonarr.png
+        description: Series management
+        href: '{{HOMEPAGE_VAR_SONARR_URL}}'
+        widget:
+          type: sonarr
+          url: '{{HOMEPAGE_VAR_SONARR_URL}}'
+          key: '{{HOMEPAGE_VAR_SONARR_API_KEY}}'
+    - Radarr:
+        icon: radarr.png
+        description: Movie management
+        href: '{{HOMEPAGE_VAR_RADARR_URL}}'
+        widget:
+          type: radarr
+          url: '{{HOMEPAGE_VAR_RADARR_URL}}'
+          key: '{{HOMEPAGE_VAR_RADARR_API_KEY}}'
+    - Prowlarr:
+        icon: prowlarr.png
+        description: Index management
+        href: '{{HOMEPAGE_VAR_PROWLARR_URL}}'
+        widget:
+          type: prowlarr
+          url: '{{HOMEPAGE_VAR_PROWLARR_URL}}'
+          key: '{{HOMEPAGE_VAR_PROWLARR_API_KEY}}'
+    - Bazarr:
+        icon: bazarr.png
+        description: Subtittle management
+        href: '{{HOMEPAGE_VAR_BAZARR_URL}}'
+        widget:
+          type: bazarr
+          url: '{{HOMEPAGE_VAR_BAZARR_URL}}'
+          key: '{{HOMEPAGE_VAR_BAZARR_API_KEY}}'

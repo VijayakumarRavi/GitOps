@@ -1,0 +1,44 @@
+---
+#$schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: homepage
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: homepage
+      version: 2.0.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: jameswynn
+        namespace: flux-system
+  values:
+    controller:
+      homepage:
+        annotations:
+          confimap.reloader.stakater.com/reload: homepage-configs
+          secret.reloader.stakater.com/reload: homepage-secrets
+    image:
+      repository: ghcr.io/gethomepage/homepage
+      tag: v0.10.9
+    serviceAccount:
+      create: true
+      name: homepage
+    enableRbac: true
+    ingress:
+      app:
+        enabled: true
+        ingressClassName: nginx
+        hosts:
+          - host: dash.home.vijayakumar.xyz
+            paths:
+              - path: /
+                pathType: Prefix
+    config:
+      useExistingConfigMap: homepage-configs
+    envFrom:
+      - secretRef:
+          name: homepage-secrets
