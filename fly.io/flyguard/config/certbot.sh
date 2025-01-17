@@ -38,10 +38,10 @@ get_status() {
   --advertise-exit-node \
   --hostname=${FLY_APP_NAME} \
   --advertise-tags=tag:fly-exit \
-  --authkey=${OAUTH_CLIENT_SECRET}?preauthorized=true
+  --authkey=${TS_OAUTH_CLIENT_SECRET}?preauthorized=true
 
 hostname=$(/usr/local/bin/tailscale whois --json $(/usr/local/bin/tailscale ip | grep 100) | jq -r '.Node.Name | rtrimstr(".")')
-apikey=$(curl -s -d "client_id=${OAUTH_CLIENT_ID}" -d "client_secret=${OAUTH_CLIENT_SECRET}" "https://api.tailscale.com/api/v2/oauth/token" | jq .access_token | tr -d '"')
+apikey=$(curl -s -d "client_id=${TS_OAUTH_CLIENT_ID}" -d "client_secret=${TS_OAUTH_CLIENT_SECRET}" "https://api.tailscale.com/api/v2/oauth/token" | jq .access_token | tr -d '"')
 targetid="$(curl -s "https://api.tailscale.com/api/v2/tailnet/-/devices" -u "$apikey:" | jq -r --arg name "$hostname" '.devices[] | select(.name == $name) | .id')"
 
 IP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \

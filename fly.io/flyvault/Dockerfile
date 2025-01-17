@@ -29,7 +29,7 @@ RUN wget -O /usr/local/bin/supercronic "https://github.com/aptible/supercronic/r
     && chmod +x /usr/local/bin/supercronic
 
 # Download and extract Caddy (latest release)
-RUN wget -O caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/$CADDY_VERSION/caddy_${CADDY_VERSION#v}_linux_amd64.tar.gz"  \
+RUN wget -O caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/${CADDY_VERSION}/caddy_${CADDY_VERSION#v}_linux_amd64.tar.gz"  \
     && tar -xzf caddy.tar.gz -C /usr/local/bin/ caddy
 
 # Download and install Last Web-Vault (latest release)
@@ -91,9 +91,7 @@ COPY config/crontab /crontab
 COPY config/Procfile /Procfile
 COPY scripts/backup-rclone.sh /backup-rclone.sh
 COPY scripts/cleanup-backups.sh /cleanup-backups.sh
-COPY scripts/backup-github.sh /backup-github.sh
 COPY scripts/restore-data.sh /restore-data.sh
-COPY scripts/restore-github.sh /restore-github.sh
 COPY config/Caddyfile /etc/caddy/Caddyfile
 COPY config/litestream.yaml /etc/litestream.yaml
 COPY entrypoint.sh /entrypoint.sh
@@ -101,9 +99,7 @@ COPY entrypoint.sh /entrypoint.sh
 # Chmod the scripts
 RUN chmod +x /backup-rclone.sh
 RUN chmod +x /cleanup-backups.sh
-RUN chmod +x /backup-github.sh
 RUN chmod +x /restore-data.sh
-RUN chmod +x /restore-github.sh
 RUN chmod +x /entrypoint.sh
 
 # Set the entrypoint script as the entrypoint for the container

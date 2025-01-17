@@ -1,3 +1,2 @@
 1 * * * * /backup-rclone.sh
-0 */6 * * * /backup-github.sh
 0 0 * * * /cleanup-backups.sh
