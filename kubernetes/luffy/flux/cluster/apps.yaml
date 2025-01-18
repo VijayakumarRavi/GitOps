@@ -18,3 +18,14 @@ spec:
       name: sops-age
   dependsOn:
     - name: cluster-meta
+  patches:
+    - patch: |-
+        - op: add
+          path: /spec/decryption
+          value:
+            provider: sops
+            secretRef:
+              name: sops-age
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        kind: Kustomization
