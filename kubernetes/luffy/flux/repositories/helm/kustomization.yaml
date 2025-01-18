@@ -9,6 +9,7 @@ resources:
   - ./crunchydata.yaml
   - ./crunchy-userinit.yaml
   - ./external-secrets.yaml
+  - ./grafana.yaml
   - ./intel.yaml
   - ./jameswynn.yaml
   - ./jetstack.yaml
