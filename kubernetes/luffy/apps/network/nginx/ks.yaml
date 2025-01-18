@@ -16,7 +16,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
   wait: true
   dependsOn:
     - name: cert-manager-issuers
@@ -38,7 +38,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
   wait: false
   dependsOn:
     - name: nginx-certificates

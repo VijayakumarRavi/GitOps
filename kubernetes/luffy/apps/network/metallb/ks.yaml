@@ -12,11 +12,11 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: './kubernetes/luffy/apps/network/metallb/app'
+  path: "./kubernetes/luffy/apps/network/metallb/app"
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
   wait: true
 
 ---
@@ -37,7 +37,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
   wait: true
   dependsOn:
     - name: metallb

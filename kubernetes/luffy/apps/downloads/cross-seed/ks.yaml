@@ -12,11 +12,11 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: './kubernetes/luffy/apps/downloads/cross-seed/app'
+  path: "./kubernetes/luffy/apps/downloads/cross-seed/app"
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
   wait: false
   dependsOn:
     - name: qbittorrent

@@ -10,10 +10,10 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: './kubernetes/luffy/apps/system/irqbalance/app'
+  path: "./kubernetes/luffy/apps/system/irqbalance/app"
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
   interval: 30m
   timeout: 5m
   prune: true

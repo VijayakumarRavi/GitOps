@@ -15,7 +15,7 @@ spec:
   prune: false # Never delete this
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
     namespace: flux-system
   wait: false
 ---
@@ -35,7 +35,7 @@ spec:
   prune: false # Never delete this
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
     namespace: flux-system
   wait: false
 ---
@@ -55,7 +55,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
     namespace: flux-system
   wait: true
   dependsOn:

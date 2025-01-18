@@ -12,9 +12,9 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: './kubernetes/luffy/apps/network/kube-vip/app'
+  path: "./kubernetes/luffy/apps/network/kube-vip/app"
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
   wait: true

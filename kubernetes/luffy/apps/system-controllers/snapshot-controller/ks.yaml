@@ -12,11 +12,11 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: './kubernetes/luffy/apps/system-controllers/snapshot-controller/app'
+  path: "./kubernetes/luffy/apps/system-controllers/snapshot-controller/app"
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
   wait: true
   dependsOn:
     - name: cert-manager

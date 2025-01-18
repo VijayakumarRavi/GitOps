@@ -12,11 +12,11 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: './kubernetes/luffy/apps/cert-manager/cert-manager/app'
+  path: "./kubernetes/luffy/apps/cert-manager/cert-manager/app"
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
   wait: true
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
@@ -32,11 +32,11 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: './kubernetes/luffy/apps/cert-manager/cert-manager/issuers'
+  path: "./kubernetes/luffy/apps/cert-manager/cert-manager/issuers"
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
   wait: true
   dependsOn:
     - name: cert-manager
