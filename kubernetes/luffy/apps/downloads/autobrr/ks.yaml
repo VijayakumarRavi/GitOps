@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: './kubernetes/luffy/apps/downloads/autobrr/app'
+  path: "./kubernetes/luffy/apps/downloads/autobrr/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -20,11 +20,5 @@ spec:
   wait: false
   dependsOn:
     - name: nginx
-  #   - name: volsync
-  #   - name: external-secrets-stores
-  # postBuild:
-  #   substitute:
-  #     APP: *appname
-  #     APP_UID: '2000'
-  #     APP_GID: '2000'
-  #     VOLSYNC_CLAIM: prowlarr-config
+    - name: longhorn
+    - name: external-secrets-stores

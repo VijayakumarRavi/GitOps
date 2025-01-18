@@ -18,10 +18,8 @@ spec:
   values:
     controllers:
       autobrr:
-        # annotations:
-        #   secret.reloader.stakater.com/reload: autobrr-secret,autobrr-db-secret
-        #   configmap.reloader.stakater.com/reload: autobrr-configmap
-
+        annotations:
+          secret.reloader.stakater.com/reload: autobrr-secret
         pod:
           securityContext:
             runAsUser: 2000
@@ -34,16 +32,13 @@ spec:
               repository: ghcr.io/autobrr/autobrr
               tag: v1.57.0
             env:
-              AUTOBRR__CHECK_FOR_UPDATES: 'false'
+              AUTOBRR__CHECK_FOR_UPDATES: "false"
               AUTOBRR__HOST: 0.0.0.0
               AUTOBRR__PORT: &port 7474
               AUTOBRR__LOG_LEVEL: DEBUG
-              AUTOBRR__DATABASE_TYPE: postgress
             envFrom:
               - secretRef:
                   name: autobrr-secret
-              - secretRef:
-                  name: autobrr-db-secret
             probes:
               liveness:
                 enabled: true
@@ -86,5 +81,13 @@ spec:
                   port: http
 
     persistence:
+      config:
+        existingClaim: autobrr-pvc
+        globalMounts:
+          - path: /config
+      log:
+        type: emptyDir
+        globalMounts:
+          - path: /config/log
       tmp:
         type: emptyDir
