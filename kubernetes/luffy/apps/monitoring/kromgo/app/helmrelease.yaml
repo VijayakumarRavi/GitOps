@@ -85,7 +85,7 @@ spec:
             port: *hport
     ingress:
       app:
-        className: "external-nginx"
+        className: nginx
         hosts:
           - host: kromgo.home.vijayakumar.xyz
             paths:
