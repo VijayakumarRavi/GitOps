@@ -111,7 +111,8 @@ spec:
             region: us-east-1
           schedules:
             full: 0 2 * * 0 # Sunday at 02:00
-            incremental: 0 2 * * 1-6/2 # Mon-Sat at 02:00, every 2nd day
+            differential: 0 1 * * 1-6 # Mon-Sat at 01:00
+            incremental:  0 2-23 * * * # Every hour except 01:00 #### 0 2 * * 1-6/2 # Mon-Sat at 02:00, every 2nd day
   dataSource:
     pgbackrest:
       stanza: db
