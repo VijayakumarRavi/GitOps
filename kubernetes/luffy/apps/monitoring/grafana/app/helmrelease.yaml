@@ -27,14 +27,14 @@ spec:
       dashboardproviders.yaml:
         apiVersion: 1
         providers:
-          # - name: default
-          #   disableDeletion: false
-          #   editable: true
-          #   folder: ''
-          #   options:
-          #     path: /var/lib/grafana/dashboards/default
-          #   orgId: 1
-          #   type: file
+          - name: default
+            disableDeletion: false
+            editable: true
+            folder: ""
+            options:
+              path: /var/lib/grafana/dashboards/default
+            orgId: 1
+            type: file
           # - name: ceph
           #   orgId: 1
           #   folder: Ceph
@@ -97,12 +97,17 @@ spec:
           gnetId: 1860
           revision: 37
           datasource: Prometheus
+        container-log-dashboard:
+          # renovate: dashboardName="Container Log Dashboard"
+          gnetId: 16966
+          revision: 1
+          datasource: Prometheus
         smartctl-exporter:
           # renovate: depName="SMARTctl Exporter Dashboard"
           gnetId: 22604
           revision: 2
           datasource:
-            - {name: DS_PROMETHEUS, value: Prometheus}
+            - { name: DS_PROMETHEUS, value: Prometheus }
         volsync:
           # removate: dashboardName="VolSync Dashboard"
           gnetId: 21356
@@ -112,11 +117,11 @@ spec:
               value: Prometheus
             - name: VAR_REPLICATIONDESTNAME
               value: .*-bootstrap
-        # zfs:
-        #   # renovate: dashboardName="ZFS"
-        #   gnetId: 7845
-        #   revision: 4
-        #   datasource: Prometheus
+        zfs:
+          # renovate: dashboardName="ZFS"
+          gnetId: 7845
+          revision: 4
+          datasource: Prometheus
       flux:
         flux-cluster:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
@@ -125,7 +130,7 @@ spec:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
           datasource: Prometheus
         flux-logs:
-          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
+          url: https://raw.githubusercontent.com/razvanphp/flux2-monitoring-example/refs/heads/fix-grafana-dashboard-level-filter/monitoring/configs/dashboards/logs.json
           datasource: Prometheus
       kubernetes:
         k8s-system-api-server:
@@ -270,7 +275,7 @@ spec:
       datasources:
         enabled: true
         searchNamespace: ALL
-        labelValue: ''
+        labelValue: ""
     testFramework:
       enabled: false
     topologySpreadConstraints:
