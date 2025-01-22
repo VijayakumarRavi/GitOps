@@ -22,3 +22,9 @@ spec:
     - name: nginx
     - name: longhorn
     - name: external-secrets-stores
+    - name: volsync
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *appname
