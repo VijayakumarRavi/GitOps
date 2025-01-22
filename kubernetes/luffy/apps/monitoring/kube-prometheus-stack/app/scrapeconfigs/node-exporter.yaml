@@ -7,7 +7,22 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - gladius.home.vijayakumar.xyz:9100
+        - tank:9100
+  metricsPath: /metrics
+  relabelings:
+    - action: replace
+      targetLabel: job
+      replacement: *name
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: &name opnsense-firewall
+spec:
+  staticConfigs:
+    - targets:
+        - firewall:9100
   metricsPath: /metrics
   relabelings:
     - action: replace

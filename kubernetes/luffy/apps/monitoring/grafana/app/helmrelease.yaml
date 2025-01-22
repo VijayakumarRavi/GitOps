@@ -101,7 +101,7 @@ spec:
           # renovate: dashboardName="Container Log Dashboard"
           gnetId: 16966
           revision: 1
-          datasource: Prometheus
+          datasource: Loki
         smartctl-exporter:
           # renovate: depName="SMARTctl Exporter Dashboard"
           gnetId: 22604
@@ -131,7 +131,7 @@ spec:
           datasource: Prometheus
         flux-logs:
           url: https://raw.githubusercontent.com/razvanphp/flux2-monitoring-example/refs/heads/fix-grafana-dashboard-level-filter/monitoring/configs/dashboards/logs.json
-          datasource: Prometheus
+          datasource: Loki
       kubernetes:
         k8s-system-api-server:
           # renovate: dashboardName="Kubernetes / System / API Server"
