@@ -19,6 +19,13 @@ spec:
     name: flux-system
   wait: false
   dependsOn:
-    - name: longhorn
-    - name: volsync
     - name: nginx
+    - name: volsync
+    - name: longhorn
+    - name: external-secrets-stores
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *appname
+      VOLSYNC_CLAIM: jellyseerr-config

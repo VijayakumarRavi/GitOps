@@ -95,14 +95,14 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: sabnzbd-pvc
+        existingClaim: sabnzbd-config
         advancedMounts:
           sabnzbd:
             app:
               - path: /config
       downloads:
         type: nfs
-        server: 10.0.0.3
+        server: tank.home.vijayakumar.xyz
         path: /mnt/tank/Media
         globalMounts:
           - path: /data/nas-media/

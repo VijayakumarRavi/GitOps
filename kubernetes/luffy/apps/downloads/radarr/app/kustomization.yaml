@@ -5,4 +5,3 @@ kind: Kustomization
 resources:
   - ./radarr-secret.sops.yaml
   - ./helmrelease.yaml
-  - ./pvc.yaml

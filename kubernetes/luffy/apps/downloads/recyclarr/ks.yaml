@@ -20,11 +20,12 @@ spec:
   wait: false
   dependsOn:
     - name: nginx
-  #   - name: volsync
-  #   - name: external-secrets-stores
-  # postBuild:
-  #   substitute:
-  #     APP: *appname
-  #     APP_UID: '2000'
-  #     APP_GID: '2000'
-  #     VOLSYNC_CLAIM: prowlarr-config
+    - name: volsync
+    - name: longhorn
+    - name: external-secrets-stores
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *appname
+      VOLSYNC_CLAIM: recyclarr-config

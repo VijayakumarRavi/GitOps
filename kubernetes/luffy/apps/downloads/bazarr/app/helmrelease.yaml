@@ -19,7 +19,7 @@ spec:
     controllers:
       bazarr:
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         pod:
           securityContext:
             runAsUser: 2000
@@ -79,10 +79,10 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: bazarr-pvc
+        existingClaim: bazarr-config
       media:
         type: nfs
-        server: 10.0.0.3
+        server: tank.home.vijayakumar.xyz
         path: /mnt/tank/Media
         globalMounts:
           - path: /data/nas-media

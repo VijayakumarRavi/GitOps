@@ -86,14 +86,14 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: sonarr-pvc
+        existingClaim: sonarr-config
       add-ons:
         type: emptyDir
       tmp:
         type: emptyDir
       media:
         type: nfs
-        server: 10.0.0.3
+        server: tank.home.vijayakumar.xyz
         path: /mnt/tank/Media
         globalMounts:
           - path: /data/nas-media

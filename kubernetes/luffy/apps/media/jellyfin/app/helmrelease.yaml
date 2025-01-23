@@ -84,20 +84,20 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: jellyfin-pvc
+        existingClaim: jellyfin-config
         advancedMounts:
           jellyfin:
             app:
               - path: /config
       jellyfin-cache:
-        existingClaim: jellyfin-cache-pvc
+        existingClaim: jellyfin-cache
         advancedMounts:
           jellyfin:
             app:
               - path: /cache
       nfs-nas-media:
         type: nfs
-        server: 10.0.0.3
+        server: tank.home.vijayakumar.xyz
         path: /mnt/tank/Media
         advancedMounts:
           jellyfin:

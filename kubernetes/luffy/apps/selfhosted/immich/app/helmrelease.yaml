@@ -139,7 +139,7 @@ spec:
           - path: /data
       media:
         type: nfs
-        server: 10.0.0.3
+        server: tank.home.vijayakumar.xyz
         path: /mnt/tank/Kubernetes/immich
         globalMounts:
           - path: /usr/src/app/upload

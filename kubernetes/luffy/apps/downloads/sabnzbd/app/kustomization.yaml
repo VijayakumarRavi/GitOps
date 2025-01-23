@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./sabnzbd-secret.sops.yaml
-  - ./pvc.yaml
 configMapGenerator:
   - name: sabnzbd-scripts
     files:

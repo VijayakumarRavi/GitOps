@@ -87,14 +87,14 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: qbittorrent-pvc
+        existingClaim: qbittorrent-config
         advancedMounts:
           qbittorrent:
             app:
               - path: /config
       media:
         type: nfs
-        server: 10.0.0.3
+        server: tank.home.vijayakumar.xyz
         path: /mnt/tank/Media
         globalMounts:
           - path: /data/nas-media

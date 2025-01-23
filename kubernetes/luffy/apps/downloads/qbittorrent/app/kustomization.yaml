@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./qbittorrent-secret.sops.yaml
   - ./helmrelease.yaml
-  - ./pvc.yaml
 configMapGenerator:
   - name: qbittorrent-scripts
     files:
