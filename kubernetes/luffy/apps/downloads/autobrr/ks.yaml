@@ -19,8 +19,6 @@ spec:
     name: flux-system
   wait: false
   dependsOn:
-    - name: nginx
-    - name: longhorn
     - name: external-secrets-stores
     - name: volsync
   components:

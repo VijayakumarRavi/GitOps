@@ -19,6 +19,5 @@ spec:
     name: flux-system
   wait: false
   dependsOn:
-    - name: longhorn
     - name: nginx
     - name: external-secrets-stores

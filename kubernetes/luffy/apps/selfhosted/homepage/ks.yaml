@@ -19,6 +19,4 @@ spec:
     name: flux-system
   wait: false
   dependsOn:
-    - name: longhorn
-    - name: volsync
     - name: nginx

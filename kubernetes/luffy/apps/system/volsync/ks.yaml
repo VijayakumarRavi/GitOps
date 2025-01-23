@@ -17,6 +17,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+  wait: true
   dependsOn:
     - name: snapshot-controller
-  wait: false
+    - name: longhorn
