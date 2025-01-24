@@ -39,6 +39,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
+  wait: true
   dependsOn:
     - name: nginx-certificates
+    - name: metallb-ip-pool

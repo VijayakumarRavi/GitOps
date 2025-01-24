@@ -11,6 +11,7 @@ resources:
   - ./crunchy-userinit.yaml
   - ./external-secrets.yaml
   - ./fluent.yaml
+  - ./fluxcd-kustomize-mutating-webhook.yaml
   - ./grafana.yaml
   - ./intel.yaml
   - ./jameswynn.yaml
