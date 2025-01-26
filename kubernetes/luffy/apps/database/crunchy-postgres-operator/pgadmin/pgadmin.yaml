@@ -6,10 +6,10 @@ metadata:
   namespace: database
 spec:
   users:
-    - username: pg@admin.com
+    - username: im@vijayakumar.xyz
       role: Administrator
       passwordRef:
-        name: pgadmin-password-secret
+        name: pgadmin-password
         key: pgadmin-password
   dataVolumeClaimSpec:
     accessModes: [ReadWriteOnce]
@@ -19,9 +19,3 @@ spec:
   serverGroups:
     - name: supply
       postgresClusterSelector: {}
-  config:
-    settings:
-      files:
-        secret:
-          key: pgadmin-config
-          path: /etc/pgadmin/config_system.py
