@@ -26,7 +26,7 @@ spec:
       metadata:
         labels:
           app.kubernetes.io/name: crunchy-postgres
-      replicas: &replica 2
+      replicas: &replica 3
       dataVolumeClaimSpec:
         storageClassName: longhorn-local
         accessModes: [ReadWriteOnce]

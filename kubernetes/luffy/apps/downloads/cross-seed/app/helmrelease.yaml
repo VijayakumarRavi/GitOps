@@ -67,7 +67,7 @@ spec:
             port: 2468
     persistence:
       config:
-        type: emptyDir
+        existingClaim: cross-seed
       config-file:
         type: secret
         name: cross-seed-secret

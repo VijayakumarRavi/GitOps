@@ -19,4 +19,12 @@ spec:
     name: flux-system
   wait: false
   dependsOn:
-    - name: qbittorrent
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: volsync
+      namespace: system
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *appname
