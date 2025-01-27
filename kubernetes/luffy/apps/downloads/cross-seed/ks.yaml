@@ -19,10 +19,8 @@ spec:
     name: flux-system
   wait: false
   dependsOn:
-    - name: onepassword-store
-      namespace: external-secrets
     - name: volsync
-      namespace: system
+    - name: external-secrets-stores
   components:
     - ../../../../components/volsync
   postBuild:
