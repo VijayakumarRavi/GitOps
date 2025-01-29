@@ -20,7 +20,7 @@ spec:
       homepage:
         annotations:
           confimap.reloader.stakater.com/reload: homepage-configs
-          secret.reloader.stakater.com/reload: homepage-secrets
+          secret.reloader.stakater.com/reload: homepage-env
     image:
       repository: ghcr.io/gethomepage/homepage
       tag: v0.10.9
@@ -41,4 +41,4 @@ spec:
       useExistingConfigMap: homepage-configs
     envFrom:
       - secretRef:
-          name: homepage-secrets
+          name: homepage-env

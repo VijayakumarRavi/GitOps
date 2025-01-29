@@ -62,7 +62,7 @@
         widget:
           type: uptimekuma
           url: '{{HOMEPAGE_VAR_FLYTIME_URL}}'
-          slug: cluster
+          slug: lab
     - QBittorrent:
         icon: qbittorrent.png
         description: Torrent downloader
