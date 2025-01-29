@@ -38,6 +38,10 @@ curl -s "https://api.tailscale.com/api/v2/tailnet/-/devices" -u "$apikey:" | jq 
     fi
   done
 
+# status page logo
+mkdir -pv /app/data/upload
+curl -L https://s3.vijayakumar.xyz/luffy.png -o /app/data/upload/logo1.png
+
 # litestream database restore
 litestream restore -if-db-not-exists -if-replica-exists -config /etc/litestream.yaml /app/data/kuma.db
 
