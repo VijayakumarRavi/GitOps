@@ -75,10 +75,6 @@ spec:
           - path: /config/config.js
             subPath: config.js
             readOnly: true
-      qbittorrent:
-        existingClaim: qbittorrent-config
-        globalMounts:
-          - path: /qbittorrent
       media:
         type: nfs
         server: tank.home.vijayakumar.xyz
