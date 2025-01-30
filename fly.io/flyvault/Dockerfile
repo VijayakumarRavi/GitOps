@@ -11,7 +11,7 @@ ARG OVERMIND_VERSION=v2.5.1
 # renovate: datasource=github-releases depName=aptible/supercronic
 ARG SUPERCRONIC_VERSION=v0.2.33 
 # renovate: datasource=github-releases depName=dani-garcia/bw_web_builds
-ARG VAULT_VERSION=v2024.6.2c
+ARG VAULT_VERSION=v2025.1.1
 # renovate: datasource=github-releases depName=caddyserver/caddy
 ARG CADDY_VERSION=v2.9.1
 
