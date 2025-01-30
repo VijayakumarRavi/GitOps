@@ -35,6 +35,7 @@ spec:
               tag: v1.125.7
             env:
               IMMICH_WORKERS_INCLUDE: api
+              IMMICH_CONFIG_FILE: &configfile /config/immich.config.json
             envFrom:
               - secretRef:
                   name: immich-env
@@ -60,6 +61,7 @@ spec:
               tag: v1.125.7
             env:
               IMMICH_WORKERS_EXCLUDE: api
+              IMMICH_CONFIG_FILE: *configfile
             envFrom:
               - secretRef:
                   name: immich-env
@@ -80,19 +82,10 @@ spec:
               tag: v1.125.7-openvino
             env:
               MACHINE_LEARNING_REQUEST_THREADS: "1"
+              IMMICH_CONFIG_FILE: *configfile
             envFrom:
               - secretRef:
                   name: immich-env
-            probes: *probes
-            resources: *resources
-      redis:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          app:
-            image:
-              repository: redis
-              tag: 7.4-alpine
             probes: *probes
             resources: *resources
     service:
@@ -111,11 +104,6 @@ spec:
         ports:
           http:
             port: 3003
-      redis:
-        controller: redis
-        ports:
-          http:
-            port: 6379
     ingress:
       app:
         className: nginx
@@ -133,10 +121,12 @@ spec:
           machine-learning:
             app:
               - path: /cache
-      data:
-        type: emptyDir
+      config:
+        enabled: true
+        type: secret
+        name: immich-config-secret
         globalMounts:
-          - path: /data
+          - path: /config
       media:
         type: nfs
         server: tank.home.vijayakumar.xyz
