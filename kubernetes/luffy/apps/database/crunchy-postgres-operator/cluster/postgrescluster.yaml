@@ -51,8 +51,8 @@ spec:
       databases: [atuin]
       password:
         type: AlphaNumeric
-    - name: autobrr
-      databases: [autobrr]
+    - name: authentik
+      databases: [authentik]
       password:
         type: AlphaNumeric
     - name: immich
