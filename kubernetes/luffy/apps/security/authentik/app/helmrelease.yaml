@@ -26,11 +26,22 @@ spec:
             name: authentik-secret
         - secretRef:
             name: authentik-db-secret
-        - secretRef:
-            name: authentik-minio-secret
+      volumeMounts:
+        - mountPath: /media
+          name: authentik-media
+      volumes:
+        - name: authentik-media
+          nfs:
+            server: tank.home.vijayakumar.xyz
+            path: /mnt/tank/Kubernetes/authentik
+            readOnly: false
 
     authentik:
       log_level: info
+      error_reporting:
+        enabled: false
+      disable_update_check: true
+      disable_startup_analytics: true
       redis:
         host: "authentik-redis.security.svc.cluster.local"
         password: ""
@@ -57,20 +68,12 @@ spec:
         ingressClassName: nginx
         hosts:
           - auth.home.vijayakumar.xyz
-        tls:
-          - hosts:
-              - auth.home.vijayakumar.xyz
         rules:
           - host: auth.home.vijayakumar.xyz
             http:
               paths:
                 - path: /
                   pathType: Prefix
-                  backend:
-                    service:
-                      name: authentik-server
-                      port:
-                        number: 80
 
       metrics:
         prometheus:
