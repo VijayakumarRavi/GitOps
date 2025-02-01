@@ -19,7 +19,7 @@ spec:
     controllers:
       radarr:
         annotations:
-          reloader.stakater.com/auto: "true"
+          reloader.stakater.com/auto: 'true'
         pod:
           securityContext:
             runAsUser: 2000
@@ -28,14 +28,14 @@ spec:
             fsGroup: 2000
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
-              - 65542 # gladius:external-services
+              - 65542  # gladius:external-services
         containers:
           app:
             image:
               repository: ghcr.io/onedr0p/radarr-develop
               tag: 5.18.1.9612@sha256:64364aa80c8e7bb1350c77a0400dcf7da298cf06c44c84081937955bbbd01e4c
             env:
-              COMPlus_EnableDiagnostics: "0"
+              COMPlus_EnableDiagnostics: '0'
               RADARR__INSTANCE_NAME: Radarr
               RADARR__PORT: &port 7878
               RADARR__AUTHENTICATION_METHOD: External
@@ -76,6 +76,16 @@ spec:
             port: *port
     ingress:
       app:
+        enabled: true
+        annotations:
+          nginx.ingress.kubernetes.io/auth-url: |-
+            http://ak-outpost-authentik-embedded-outpost.security.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
+          nginx.ingress.kubernetes.io/auth-signin: |-
+            https://radarr.home.vijayakumar.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+          nginx.ingress.kubernetes.io/auth-response-headers: |-
+            Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+          nginx.ingress.kubernetes.io/auth-snippet: |
+            proxy_set_header X-Forwarded-Host $http_host;
         className: nginx
         hosts:
           - host: radarr.home.vijayakumar.xyz

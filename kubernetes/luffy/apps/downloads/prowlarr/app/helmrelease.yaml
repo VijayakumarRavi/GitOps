@@ -19,7 +19,7 @@ spec:
     controllers:
       prowlarr:
         annotations:
-          reloader.stakater.com/auto: "true"
+          reloader.stakater.com/auto: 'true'
         pod:
           securityContext:
             fsGroup: 568
@@ -30,11 +30,11 @@ spec:
               repository: ghcr.io/onedr0p/prowlarr-develop
               tag: 1.30.2.4939@sha256:1cf5d5e553719085f4bffd5fab6377e7b72a6ad055a5eeaac951b2a097f3e669
             env:
-              COMPlus_EnableDiagnostics: "0"
+              COMPlus_EnableDiagnostics: '0'
               PROWLARR__INSTANCE_NAME: Prowlarr
               PROWLARR__PORT: &port 9696
               PROWLARR__LOG_LEVEL: info
-              PROWLARR__ANALYTICS_ENABLED: "False"
+              PROWLARR__ANALYTICS_ENABLED: 'False'
               PROWLARR__AUTHENTICATION_METHOD: External
               PROWLARR__API_KEY:
                 valueFrom:
@@ -79,6 +79,16 @@ spec:
             port: *port
     ingress:
       app:
+        enabled: true
+        annotations:
+          nginx.ingress.kubernetes.io/auth-url: |-
+            http://ak-outpost-authentik-embedded-outpost.security.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
+          nginx.ingress.kubernetes.io/auth-signin: |-
+            https://prowlarr.home.vijayakumar.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+          nginx.ingress.kubernetes.io/auth-response-headers: |-
+            Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+          nginx.ingress.kubernetes.io/auth-snippet: |
+            proxy_set_header X-Forwarded-Host $http_host;
         className: nginx
         hosts:
           - host: prowlarr.home.vijayakumar.xyz

@@ -19,7 +19,7 @@ spec:
     controllers:
       sonarr:
         annotations:
-          reloader.stakater.com/auto: "true"
+          reloader.stakater.com/auto: 'true'
         pod:
           securityContext:
             runAsUser: 2000
@@ -28,14 +28,14 @@ spec:
             fsGroup: 2000
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
-              - 65542 # gladius:external-services
+              - 65542  # gladius:external-services
         containers:
           app:
             image:
               repository: ghcr.io/onedr0p/sonarr-develop
               tag: 4.0.12.2900@sha256:e4de8879c00d0d5ac2d616e325259cf0afef0b3715fcdcf081292c25c5072760
             env:
-              COMPlus_EnableDiagnostics: "0"
+              COMPlus_EnableDiagnostics: '0'
               SONARR__APP__INSTANCENAME: Sonarr
               SONARR__AUTH__APIKEY:
                 valueFrom:
@@ -76,6 +76,16 @@ spec:
             port: *port
     ingress:
       app:
+        enabled: true
+        annotations:
+          nginx.ingress.kubernetes.io/auth-url: |-
+            http://ak-outpost-authentik-embedded-outpost.security.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
+          nginx.ingress.kubernetes.io/auth-signin: |-
+            https://sonarr.home.vijayakumar.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+          nginx.ingress.kubernetes.io/auth-response-headers: |-
+            Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+          nginx.ingress.kubernetes.io/auth-snippet: |
+            proxy_set_header X-Forwarded-Host $http_host;
         className: nginx
         hosts:
           - host: sonarr.home.vijayakumar.xyz
