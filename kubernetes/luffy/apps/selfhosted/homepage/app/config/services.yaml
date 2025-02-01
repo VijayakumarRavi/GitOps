@@ -78,7 +78,7 @@
         href: '{{HOMEPAGE_VAR_SABNZBD_URL}}'
         widget:
           type: sabnzbd
-          url: '{{HOMEPAGE_VAR_SABNZBD_URL}}'
+          url: http://sabnzbd.downloads.svc:8080
           key: '{{HOMEPAGE_VAR_SABNZBD_API_KEY}}'
 - three:
     - Vaultwarden:
@@ -91,7 +91,7 @@
         href: '{{HOMEPAGE_VAR_SONARR_URL}}'
         widget:
           type: sonarr
-          url: '{{HOMEPAGE_VAR_SONARR_URL}}'
+          url: http://sonarr.downloads.svc:8989
           key: '{{HOMEPAGE_VAR_SONARR_API_KEY}}'
     - Radarr:
         icon: radarr.png
@@ -99,7 +99,7 @@
         href: '{{HOMEPAGE_VAR_RADARR_URL}}'
         widget:
           type: radarr
-          url: '{{HOMEPAGE_VAR_RADARR_URL}}'
+          url: http://radarr.downloads.svc:7878
           key: '{{HOMEPAGE_VAR_RADARR_API_KEY}}'
     - Prowlarr:
         icon: prowlarr.png
@@ -107,7 +107,7 @@
         href: '{{HOMEPAGE_VAR_PROWLARR_URL}}'
         widget:
           type: prowlarr
-          url: '{{HOMEPAGE_VAR_PROWLARR_URL}}'
+          url: http://prowlarr.downloads.svc:9696
           key: '{{HOMEPAGE_VAR_PROWLARR_API_KEY}}'
     - Bazarr:
         icon: bazarr.png
@@ -115,5 +115,5 @@
         href: '{{HOMEPAGE_VAR_BAZARR_URL}}'
         widget:
           type: bazarr
-          url: '{{HOMEPAGE_VAR_BAZARR_URL}}'
+          url: http://bazarr.downloads.svc:6767
           key: '{{HOMEPAGE_VAR_BAZARR_API_KEY}}'
