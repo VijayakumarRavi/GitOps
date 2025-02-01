@@ -9,20 +9,9 @@
   "ffmpeg": {
     "accel": "qsv",
     "accelDecode": true,
-    "acceptedAudioCodecs": [
-      "aac",
-      "mp3",
-      "libopus",
-      "pcm_s16le"
-    ],
-    "acceptedContainers": [
-      "mov",
-      "ogg",
-      "webm"
-    ],
-    "acceptedVideoCodecs": [
-      "h264"
-    ],
+    "acceptedAudioCodecs": ["aac", "mp3", "libopus", "pcm_s16le"],
+    "acceptedContainers": ["mov", "ogg", "webm"],
+    "acceptedVideoCodecs": ["h264"],
     "bframes": -1,
     "cqMode": "auto",
     "crf": 23,
@@ -119,9 +108,7 @@
       "minScore": 0.7,
       "modelName": "antelopev2"
     },
-    "urls": [
-      "http://immich-machine-learning.selfhosted.svc.cluster.local:3003"
-    ]
+    "urls": ["http://immich-machine-learning.selfhosted.svc.cluster.local:3003"]
   },
   "map": {
     "darkStyle": "https://tiles.immich.cloud/v1/style/dark.json",
@@ -153,12 +140,12 @@
   "oauth": {
     "autoLaunch": true,
     "autoRegister": true,
-    "buttonText": "Login with Auth0",
+    "buttonText": "Login with Authentik",
     "clientId": "{{ .immich_oauth_client_id }}",
     "clientSecret": "{{ .immich_oauth_client_secret }}",
     "defaultStorageQuota": 0,
     "enabled": true,
-    "issuerUrl": "https://auth.vijayakumar.xyz/",
+    "issuerUrl": "https://auth.home.vijayakumar.xyz/application/o/immich/",
     "mobileOverrideEnabled": false,
     "mobileRedirectUri": "",
     "profileSigningAlgorithm": "none",
