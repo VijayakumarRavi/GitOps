@@ -1,5 +1,5 @@
-ARG UPTIME_VERSION=1.23.16-alpine
-ARG TAILSCALE_VERSION=v1.80.0
+ARG GATUS_VERSION=v5.15.0
+ARG TAILSCALE_VERSION=v1.78.3
 ARG LITESTREAM_VERSION=0.3.13
 ARG DNSPROXY_VERSION=v0.75.0
 # Builder for Overmind download
@@ -26,8 +26,10 @@ FROM litestream/litestream:${LITESTREAM_VERSION} as litestream
 # Fetch the latest dnsproxy package from it's official Docker image
 FROM adguard/dnsproxy:${DNSPROXY_VERSION} as dnsproxy
 
-# Uptime Kuma build stage
-FROM louislam/uptime-kuma:${UPTIME_VERSION}
+# Gatus Kuma build stage
+FROM twinproduction/gatus:${GATUS_VERSION} as gatus
+
+FROM alpine as final
 
 # install required dependencies
 RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq curl bash tzdata
@@ -60,14 +62,19 @@ COPY config/Procfile /Procfile
 COPY config/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Expose necessary port for the application
-EXPOSE 3001
+# Copy Gatus binary and configuration file
+COPY --from=gatus /gatus /usr/local/bin/gatus
+COPY --from=gatus /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY gatus /config
+ENV GATUS_CONFIG_PATH="/config"
+ENV GATUS_LOG_LEVEL="INFO"
+ENV PORT="8080"
 
-# Define health check commands for Uptime Kuma
-HEALTHCHECK --interval=60s --timeout=30s --start-period=180s --retries=5 CMD extra/healthcheck
+# Expose necessary port for the application
+EXPOSE 8080
 
 # Set the entrypoint script as the entrypoint for the container
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Start Overmind
-CMD ["overmind", "start","-f", "/Procfile", "-c", "tailscale", "-x", "dnsproxy", "-r", "all", "-s", "/data/overmind.uptime.sock"]
+CMD ["overmind", "start","-f", "/Procfile", "-c", "tailscale", "-x", "dnsproxy", "-r", "all", "-s", "/data/overmind.Gatus.sock"]

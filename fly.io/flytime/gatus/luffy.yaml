@@ -1,0 +1,49 @@
+---
+luffy-default-endpoint: &luffy-defaults
+  group: luffy
+  interval: 1m
+  client:
+    timeout: 30s
+  conditions: ['[STATUS] < 300', '[CERTIFICATE_EXPIRATION] > 48h']
+  alerts:
+    - type: pushover
+endpoints:
+  - name: Alert manager
+    url: https://alertmanager.home.vijayakumar.xyz
+    <<: *luffy-defaults
+  - name: Prometheus
+    url: https://prometheus.home.vijayakumar.xyz
+    <<: *luffy-defaults
+  - name: Grafana
+    url: https://grafana.home.vijayakumar.xyz
+    <<: *luffy-defaults
+  - name: Immich
+    url: https://immich.home.vijayakumar.xyz
+    <<: *luffy-defaults
+  - name: Bazarr
+    url: https://bazarr.home.vijayakumar.xyz
+    <<: *luffy-defaults
+  - name: Qbittorrent
+    url: https://torrent.home.vijayakumar.xyz
+    <<: *luffy-defaults
+  - name: Sabnzbd
+    url: https://sabnzbd.home.vijayakumar.xyz
+    <<: *luffy-defaults
+  - name: Jellyfin
+    url: https://jellyfin.home.vijayakumar.xyz
+    <<: *luffy-defaults
+  - name: Jellyseerr
+    url: https://Jellyseerr.home.vijayakumar.xyz
+    <<: *luffy-defaults
+  - name: Prowlarr
+    url: https://prowlarr.home.vijayakumar.xyz
+    <<: *luffy-defaults
+  - name: Radarr
+    url: https://radarr.home.vijayakumar.xyz
+    <<: *luffy-defaults
+  - name: Sonarr
+    url: https://sonarr.home.vijayakumar.xyz
+    <<: *luffy-defaults
+  - name: Longhorn
+    url: https://longhorn.home.vijayakumar.xyz
+    <<: *luffy-defaults

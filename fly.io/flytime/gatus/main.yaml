@@ -1,0 +1,34 @@
+---
+metrics: true
+ui:
+  header: Vijay's lab
+  link: https://flytime.fly.dev
+  logo: https://s3.vijayakumar.xyz/luffy.png
+alerting:
+  pushover:
+    application-token: ${PUSHOVER_APPLICATION_TOKEN}
+    user-key: ${PUSHOVER_USER_KEY}
+    priority: 1
+    default-alert:
+      send-on-resolved: true
+      failure-threshold: 5
+      success-threshold: 5
+storage:
+  type: sqlite
+  caching: true
+  path: /config/data.db
+endpoints:
+  - name: Blog
+    group: core
+    url: https://vijayakumar.xyz
+    interval: 1m
+    conditions: ['[STATUS] < 300', '[CERTIFICATE_EXPIRATION] > 48h']
+    alerts:
+      - type: pushover
+  - name: bin.vijayakumar.xyz
+    group: core
+    url: https://bin.vijayakumar.xyz
+    interval: 1m
+    conditions: ['[STATUS] < 300', '[CERTIFICATE_EXPIRATION] > 48h']
+    alerts:
+      - type: pushover

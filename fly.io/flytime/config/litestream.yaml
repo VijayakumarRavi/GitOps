@@ -1,6 +1,6 @@
 ---
 dbs:
-  - path: /app/data/kuma.db
+  - path: /config/data.db
     replicas:
       - type: s3
         access-key-id: ${LITESTREAM_ACCESS_KEY_ID}
@@ -12,3 +12,4 @@ dbs:
         retention: 72h
         snapshot-interval: 1h
         validation-interval: 6h
+        force-path-style: true

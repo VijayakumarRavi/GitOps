@@ -1,0 +1,31 @@
+---
+servers-default-endpoint: &servers-defaults
+  group: servers
+  interval: 1m
+  client:
+    timeout: 30s
+  conditions: ['[CONNECTED] == true']
+  alerts:
+    - type: pushover
+endpoints:
+  - name: firewall
+    url: icmp://10.0.0.1
+    <<: *servers-defaults
+  - name: proxmox
+    url: icmp://10.0.0.2
+    <<: *servers-defaults
+  - name: tank
+    url: icmp://10.0.0.3
+    <<: *servers-defaults
+  - name: nami
+    url: icmp://10.0.0.4
+    <<: *servers-defaults
+  - name: zoro
+    url: icmp://10.0.1.101
+    <<: *servers-defaults
+  - name: usopp
+    url: icmp://10.0.1.102
+    <<: *servers-defaults
+  - name: chopper
+    url: icmp://10.0.1.103
+    <<: *servers-defaults

@@ -14,6 +14,7 @@ mkdir -pv /data/tailscale
 #Set dnsproxy as dns server and starting it
 echo "nameserver 127.0.0.1" > /etc/resolv.conf && \
   overmind start -l dnsproxy -f /Procfile -s /data/overmind.dns.sock &
+sleep 5
 echo -e "${GREEN}Info: Changed dns to dnsproxy(127.0.0.1)"
 
 # error: adding [-i tailscale0 -j MARK --set-mark 0x40000] in v4/filter/ts-forward: running [/sbin/iptables -t filter -A ts-forward -i tailscale0 -j MARK --set-mark 0x40000 --wait]: exit status 2: iptables v1.8.6 (legacy): unknown option "--set-mark"
@@ -37,20 +38,6 @@ curl -s "https://api.tailscale.com/api/v2/tailnet/-/devices" -u "$apikey:" | jq 
       curl -s -X DELETE "https://api.tailscale.com/api/v2/device/$id" -u "$apikey:"
     fi
   done
-
-# status page logo
-mkdir -pv /app/data/upload
-curl -L https://s3.vijayakumar.xyz/luffy.png -o /app/data/upload/logo1.png
-
-# litestream database restore
-litestream restore -if-db-not-exists -if-replica-exists -config /etc/litestream.yaml /app/data/kuma.db
-
-if [ $? -eq 0 ]; then
-  echo -e "${GREEN}Info: Database restored successfully${NC}"
-else
-  echo -e "${RED}Error: Database restore failed${NC}"
-  exit 1
-fi
 
 # Execute the CMD
 exec "$@"

@@ -18,9 +18,9 @@ swap_size_mb = 1024
 
 [env]
   UPTIME_KUMA_PORT=8080
-  LITESTREAM_BUCKET="litestream"
-  LITESTREAM_PATH="flytime"
-  LITESTREAM_REGION="us-east-1"
+  LITESTREAM_BUCKET="backuprest"
+  LITESTREAM_PATH="litestream/flytime"
+  LITESTREAM_REGION="us-west-004"
 
 [services]
   protocol = "tcp"

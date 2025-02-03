@@ -1,0 +1,25 @@
+---
+tank-default-endpoint: &tank-defaults
+  group: Tank
+  interval: 1m
+  client:
+    timeout: 30s
+  conditions: ['[STATUS] < 300', '[CERTIFICATE_EXPIRATION] > 48h']
+  alerts:
+    - type: pushover
+endpoints:
+  - name: Truenas
+    url: https://tank.home.vijayakumar.xyz
+    <<: *tank-defaults
+  - name: Backrest backup
+    url: https://backrest.tank.home.vijayakumar.xyz
+    <<: *tank-defaults
+  - name: Minio
+    url: https://Minio.tank.home.vijayakumar.xyz
+    <<: *tank-defaults
+  - name: Tank browser
+    url: https://files.tank.home.vijayakumar.xyz
+    <<: *tank-defaults
+  - name: NPM proxy
+    url: https://proxy.tank.home.vijayakumar.xyz
+    <<: *tank-defaults

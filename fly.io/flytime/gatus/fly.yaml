@@ -1,0 +1,22 @@
+---
+fly-default-endpoint: &fly-defaults
+  group: Fly.io
+  interval: 1m
+  client:
+    timeout: 30s
+  conditions: ['[STATUS] < 300', '[CERTIFICATE_EXPIRATION] > 48h']
+  alerts:
+    - type: pushover
+endpoints:
+  - name: Fly vault
+    url: https://flyvault.fly.dev
+    <<: *fly-defaults
+  - name: Fly vault dns
+    url: https://vault.vijayakumar.xyz
+    <<: *fly-defaults
+  - name: Fly guard
+    url: https://dns.vijayakumar.xyz
+    <<: *fly-defaults
+  - name: Fly link
+    url: https://flylink.fly.dev
+    <<: *fly-defaults
