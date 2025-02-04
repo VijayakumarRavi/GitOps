@@ -1,4 +1,4 @@
 gatus: gatus
-dnsproxy: dnsproxy -u https://dns.vijayakumar.xyz/dns-query/uptime-kuma -b 1.1.1.1 -f 1.1.1.1 --cache
+dnsproxy: dnsproxy -u https://dns.vijayakumar.xyz/dns-query/gatus -b 1.1.1.1 -f 1.1.1.1 --cache
 tailscale-daemon: tailscaled --port 41641 --state=mem: --statedir=/data/tailscale --socket=/var/run/tailscale/tailscaled.sock
 tailscale: tailscale up --accept-dns=false --accept-routes --advertise-exit-node --hostname=${FLY_APP_NAME} --advertise-tags=tag:fly-exit --authkey=${TS_OAUTH_CLIENT_SECRET}?preauthorized=true

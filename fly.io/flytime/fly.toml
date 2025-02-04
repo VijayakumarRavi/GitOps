@@ -12,15 +12,8 @@ swap_size_mb = 1024
 [build]
   dockerfile = "Dockerfile"
 
-# [mounts]
-#   source="kuma_data"
-#   destination="/app/data"
-
 [env]
-  UPTIME_KUMA_PORT=8080
-  LITESTREAM_BUCKET="backuprest"
-  LITESTREAM_PATH="litestream/flytime"
-  LITESTREAM_REGION="us-west-004"
+  GATUS_DELAY_START_SECONDS="5"
 
 [services]
   protocol = "tcp"

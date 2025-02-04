@@ -1,6 +1,5 @@
 ARG GATUS_VERSION=v5.15.0
 ARG TAILSCALE_VERSION=v1.80.0
-ARG LITESTREAM_VERSION=0.3.13
 ARG DNSPROXY_VERSION=v0.75.0
 # Builder for Overmind download
 FROM alpine as overmind
@@ -19,9 +18,6 @@ RUN wget -O overmind.gz "https://github.com/DarthSim/overmind/releases/download/
 
 # Fetch the latest tailscale package from it's official Docker image
 FROM tailscale/tailscale:${TAILSCALE_VERSION} as tailscale
-
-# Fetch the latest litestream package from it's official Docker image
-FROM litestream/litestream:${LITESTREAM_VERSION} as litestream
 
 # Fetch the latest dnsproxy package from it's official Docker image
 FROM adguard/dnsproxy:${DNSPROXY_VERSION} as dnsproxy
@@ -47,9 +43,6 @@ RUN mkdir -p /var/lib/tailscale
 COPY --from=tailscale /usr/local/bin/tailscaled /usr/local/bin/tailscaled
 COPY --from=tailscale /usr/local/bin/tailscale /usr/local/bin/tailscale
 
-# Copy litestream binary
-COPY --from=litestream /usr/local/bin/litestream /usr/local/bin/litestream
-
 # Copy dnsproxy binary
 COPY --from=dnsproxy /opt/dnsproxy/dnsproxy /usr/local/bin/dnsproxy
 
@@ -57,7 +50,6 @@ COPY --from=dnsproxy /opt/dnsproxy/dnsproxy /usr/local/bin/dnsproxy
 COPY --from=overmind /usr/local/bin/overmind /usr/local/bin/overmind
 
 # Copy files to docker & change permission
-COPY config/litestream.yaml /etc/litestream.yaml
 COPY config/Procfile /Procfile
 COPY config/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

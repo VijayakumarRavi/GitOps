@@ -1,5 +1,4 @@
 ---
-metrics: true
 ui:
   header: Vijay's lab
   link: https://flytime.fly.dev
@@ -13,10 +12,12 @@ alerting:
       send-on-resolved: true
       failure-threshold: 5
       success-threshold: 5
+disable-monitoring-lock: true
+metrics: true
 storage:
-  type: sqlite
+  type: postgres
   caching: true
-  path: /config/data.db
+  path: ${DATABASE_URL}
 endpoints:
   - name: Blog
     group: core
