@@ -108,7 +108,7 @@
       "minScore": 0.7,
       "modelName": "antelopev2"
     },
-    "urls": ["http://immich-machine-learning.selfhosted.svc.cluster.local:3003"]
+    "urls": ["http://immich-machine-learning.media.svc.cluster.local:3003"]
   },
   "map": {
     "darkStyle": "https://tiles.immich.cloud/v1/style/dark.json",
@@ -140,12 +140,12 @@
   "oauth": {
     "autoLaunch": true,
     "autoRegister": true,
-    "buttonText": "Login with Authentik",
+    "buttonText": "Login with Auth0",
     "clientId": "{{ .immich_oauth_client_id }}",
     "clientSecret": "{{ .immich_oauth_client_secret }}",
     "defaultStorageQuota": 0,
     "enabled": true,
-    "issuerUrl": "https://auth.home.vijayakumar.xyz/application/o/immich/",
+    "issuerUrl": "{{ .immich_oauth_issuer_url }}",
     "mobileOverrideEnabled": false,
     "mobileRedirectUri": "",
     "profileSigningAlgorithm": "none",
@@ -155,7 +155,7 @@
     "storageQuotaClaim": "immich_quota"
   },
   "passwordLogin": {
-    "enabled": false
+    "enabled": true
   },
   "reverseGeocoding": {
     "enabled": true

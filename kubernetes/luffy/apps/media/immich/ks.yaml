@@ -6,13 +6,13 @@ metadata:
   name: &appname immich-redis
   namespace: flux-system
 spec:
-  targetNamespace: selfhosted
+  targetNamespace: media
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: ./kubernetes/luffy/apps/selfhosted/immich/redis
+  path: ./kubernetes/luffy/apps/media/immich/redis
   prune: true
   sourceRef:
     kind: GitRepository
@@ -26,13 +26,13 @@ metadata:
   name: &appname immich
   namespace: flux-system
 spec:
-  targetNamespace: selfhosted
+  targetNamespace: media
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: ./kubernetes/luffy/apps/selfhosted/immich/app
+  path: ./kubernetes/luffy/apps/media/immich/app
   prune: true
   sourceRef:
     kind: GitRepository
