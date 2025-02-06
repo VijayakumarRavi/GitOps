@@ -12,7 +12,7 @@ jobs:
     #   github.event.commits[0].author.email == 'bot@renovateapp.com'
     strategy:
       matrix:
-        app: [flyguard, flytime, flyvault, flylink]
+        app: [flyguard, gatusfly, flyvault, flylink]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

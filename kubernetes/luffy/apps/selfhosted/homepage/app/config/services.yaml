@@ -55,14 +55,13 @@
           url: '{{HOMEPAGE_VAR_ADGUARD_URL}}'
           username: '{{HOMEPAGE_VAR_ADGUARD_USERNAME}}'
           password: '{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}'
-    - Flytime:
-        icon: uptime-kuma.png
+    - Gatusfly:
+        icon: gatus.png
         description: self-hosted monitoring tool
-        href: '{{HOMEPAGE_VAR_FLYTIME_URL}}'
+        href: '{{HOMEPAGE_VAR_GATUSFLY_URL}}'
         widget:
-          type: uptimekuma
-          url: '{{HOMEPAGE_VAR_FLYTIME_URL}}'
-          slug: lab
+          type: gatus
+          url: '{{HOMEPAGE_VAR_GATUSFLY_URL}}'
     - QBittorrent:
         icon: qbittorrent.png
         description: Torrent downloader

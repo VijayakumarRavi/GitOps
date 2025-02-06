@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for flytime on 2023-08-01T12:28:26+05:30
+# fly.toml app configuration file generated for gatusfly on 2023-08-01T12:28:26+05:30
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "flytime"
+app = 'gatusfly'
 primary_region = "iad"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
