@@ -4,4 +4,4 @@ litestream: litestream replicate -config /etc/litestream.yaml
 caddy: caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
 cf_tunnel: cloudflared tunnel --no-autoupdate run --token "$CF_TOKEN"
 tailscale-daemon: /usr/local/bin/tailscaled --port 41641 --state=mem: --tun=userspace-networking --statedir=/data/tailscale --socket=/var/run/tailscale/tailscaled.sock
-tailscale: sleep 20 && /usr/local/bin/tailscale up --accept-routes --advertise-exit-node --hostname=${FLY_APP_NAME} --advertise-tags=tag:fly-exit --authkey=${TS_OAUTH_CLIENT_SECRET}?preauthorized=true && tail -f /dev/null
+tailscale: sleep 20 && /usr/local/bin/tailscale up --accept-routes --advertise-exit-node --hostname=${FLY_APP_NAME} --advertise-tags=tag:fly-exit --authkey=${TS_OAUTH_CLIENT_SECRET}?preauthorized=true

@@ -7,11 +7,9 @@ ARG CLOUDFLARED_VERSION=2025.2.0
 FROM alpine as builder
 
 # renovate: datasource=github-releases depName=DarthSim/overmind
-ARG OVERMIND_VERSION=v2.5.1
+ARG OVERMIND_VERSION=v2.5.0
 # renovate: datasource=github-releases depName=aptible/supercronic
-ARG SUPERCRONIC_VERSION=v0.2.33 
-# renovate: datasource=github-releases depName=dani-garcia/bw_web_builds
-ARG VAULT_VERSION=v2025.1.1
+ARG SUPERCRONIC_VERSION=v0.2.33
 # renovate: datasource=github-releases depName=caddyserver/caddy
 ARG CADDY_VERSION=v2.9.1
 
@@ -32,10 +30,6 @@ RUN wget -O /usr/local/bin/supercronic "https://github.com/aptible/supercronic/r
 RUN wget -O caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/${CADDY_VERSION}/caddy_${CADDY_VERSION#v}_linux_amd64.tar.gz"  \
     && tar -xzf caddy.tar.gz -C /usr/local/bin/ caddy
 
-# Download and install Last Web-Vault (latest release)
-RUN wget -O web-vault.tar.gz "https://github.com/dani-garcia/bw_web_builds/releases/download/${VAULT_VERSION}/bw_web_${VAULT_VERSION}.tar.gz" \
-    && tar -xzf web-vault.tar.gz -C /
-
 # Tailscale stage to fetch the latest Tailscale package
 FROM tailscale/tailscale:${TAILSCALE_VERSION} as tailscale
 
@@ -47,8 +41,6 @@ FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
 
 # vaultwarden build stage
 FROM vaultwarden/server:${VAULTWARDEN_VERSION}
-
-VOLUME /
 
 # Install runtime dependencies
 RUN apt-get update \
@@ -82,10 +74,6 @@ COPY --from=builder /usr/local/bin/supercronic /usr/local/bin/supercronic
 # Copy Caddy binary 
 COPY --from=builder /usr/local/bin/caddy /usr/local/bin/caddy
 
-# Copy Web-Vault 
-RUN rm -rfv /web-vault
-COPY --from=builder /web-vault /web-vault
-
 # Copy configs files to docker
 COPY config/crontab /crontab
 COPY config/Procfile /Procfile
@@ -106,4 +94,4 @@ RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Start Overmind
-CMD ["overmind", "start"]
+CMD ["overmind", "start","-f", "/Procfile", "-c", "tailscale", "-r", "all", "-s", "/overmind.vault.sock"]

@@ -9,7 +9,7 @@ fly-default-endpoint: &fly-defaults
     - type: pushover
 endpoints:
   - name: Fly vault
-    url: https://flyvault.fly.dev
+    url: https://vaultfly.fly.dev
     <<: *fly-defaults
   - name: Fly vault dns
     url: https://vault.vijayakumar.xyz

@@ -12,7 +12,7 @@ jobs:
     #   github.event.commits[0].author.email == 'bot@renovateapp.com'
     strategy:
       matrix:
-        app: [flyguard, gatusfly, flyvault, flylink]
+        app: [flyguard, gatusfly, vaultfly, flylink]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,11 +26,10 @@ jobs:
           MODIFIED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | tr '\n' ' ')
           echo "MODIFIED_FILES=$MODIFIED_FILES" >> "$GITHUB_ENV"
           echo "Modified Files: $MODIFIED_FILES"
-      - name: Deploy Fly.io App
+      - name: Deploy ${{ matrix.app }}
         if: contains(env.MODIFIED_FILES, format('fly.io/{0}/', matrix.app))
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |-
           echo "Deploying ${{ matrix.app }} to Fly.io..."
-          flyctl deploy --remote-only fly.io/${{ matrix.app }}/
-          flyctl -a ${{ matrix.app }} machine start "$(flyctl -a ${{ matrix.app }} machine list -j | jq -r '.[] |  "\(.id)"')"
+          flyctl -a ${{ matrix.app }} deploy --remote-only --now --no-public-ips --strategy immediate --no-cache fly.io/${{ matrix.app }}/

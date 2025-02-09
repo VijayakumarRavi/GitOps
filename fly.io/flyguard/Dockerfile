@@ -1,6 +1,5 @@
 ARG ADGUARD_VERSION=v0.107.56
 ARG TAILSCALE_VERSION=v1.80.0
-ARG LITESTREAM_VERSION=0.3.13
 
 # Builder for Overmind download
 FROM alpine as overmind
@@ -71,4 +70,4 @@ HEALTHCHECK \
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Start Overmind
-CMD ["overmind", "start" ,"-f", "/Procfile"]
+CMD ["overmind", "start","-f", "/Procfile", "-c", "tailscale", "-r", "all", "-s", "/data/overmind.AGH.sock"]
