@@ -2,7 +2,7 @@
 ui:
   header: Vijay's lab
   link: https://gatusfly.fly.dev
-  logo: https://s3.vijayakumar.xyz/luffy.png
+  logo: https://s3.vijayakumar.xyz/assets/luffy.png
 alerting:
   pushover:
     application-token: ${PUSHOVER_APPLICATION_TOKEN}
