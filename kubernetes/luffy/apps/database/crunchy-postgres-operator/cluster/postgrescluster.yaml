@@ -59,6 +59,10 @@ spec:
       databases: [immich]
       password:
         type: AlphaNumeric
+    - name: linkwarden
+      databases: [linkwarden]
+      password:
+        type: AlphaNumeric
     - name: vaultwarden
       databases: [vaultwarden]
       password:
