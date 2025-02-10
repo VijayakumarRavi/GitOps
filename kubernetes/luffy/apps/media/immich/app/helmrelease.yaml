@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.125.7
+              tag: v1.126.0
             env:
               IMMICH_WORKERS_INCLUDE: api
               IMMICH_CONFIG_FILE: &configfile /config/immich.config.json
@@ -58,7 +58,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.125.7
+              tag: v1.126.0
             env:
               IMMICH_WORKERS_EXCLUDE: api
               IMMICH_CONFIG_FILE: *configfile
