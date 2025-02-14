@@ -35,9 +35,7 @@ spec:
 
     service:
       main:
+        controller: main
         ports:
           http:
-            enabled: false
-          redis:
-            enabled: true
             port: 6379
