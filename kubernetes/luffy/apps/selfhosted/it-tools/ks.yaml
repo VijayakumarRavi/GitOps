@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname searxng
+  name: &appname it-tools
   namespace: flux-system
 spec:
   targetNamespace: selfhosted
@@ -12,16 +12,10 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/luffy/apps/selfhosted/searxng/app"
+  path: "./kubernetes/luffy/apps/selfhosted/it-tools/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   wait: false
-  dependsOn:
-    - name: onepassword-store
-      namespace: external-secrets
-  postBuild:
-    substitute:
-      APP: *appname

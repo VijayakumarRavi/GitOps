@@ -7,5 +7,6 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./homepage/ks.yaml
+  - ./it-tools/ks.yaml
   - ./linkwarden/ks.yaml
   - ./searxng/ks.yaml
