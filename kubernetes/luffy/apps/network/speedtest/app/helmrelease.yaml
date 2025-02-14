@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: speedtest
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+    controllers:
+      speedtest:
+        containers:
+          app:
+            image:
+              repository: lscr.io/linuxserver/speedtest-tracker
+              tag: v1.2.3-ls77
+            env:
+              PUID: "1000"
+              PGID: "1000"
+              PUBLIC_DASHBOARD: "true"
+              APP_TIMEZONE: "Asia/Kolkata"
+              DISPLAY_TIMEZONE: "Asia/Kolkata"
+              SPEEDTEST_SCHEDULE: "6 * * * *"
+              PRUNE_RESULTS_OLDER_THAN: "90"
+              APP_URL: "https://speedtest.home.vijayakumar.xyz"
+              ASSET_URL: "https://speedtest.home.vijayakumar.xyz"
+            envFrom:
+              - secretRef:
+                  name: speedtest-secret
+              - secretRef:
+                  name: speedtest-db
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/healthcheck
+                    port: 80
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+    service:
+      app:
+        controller: speedtest
+        ports:
+          http:
+            port: 80
+
+    ingress:
+      app:
+        className: nginx
+        hosts:
+          - host: speedtest.home.vijayakumar.xyz
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        existingClaim: speedtest-config
+        globalMounts:
+          - path: /config

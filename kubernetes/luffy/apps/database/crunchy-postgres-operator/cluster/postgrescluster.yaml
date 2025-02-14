@@ -63,6 +63,10 @@ spec:
       databases: [linkwarden]
       password:
         type: AlphaNumeric
+    - name: speedtest
+      databases: [speedtest]
+      password:
+        type: AlphaNumeric
     - name: vaultwarden
       databases: [vaultwarden]
       password:
