@@ -8,3 +8,4 @@ resources:
   # Flux-Kustomizations
   - ./homepage/ks.yaml
   - ./linkwarden/ks.yaml
+  - ./searxng/ks.yaml

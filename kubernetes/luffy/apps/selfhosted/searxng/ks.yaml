@@ -3,29 +3,25 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname linkwarden
-  namespace: flux-system
+  name: &appname searxng
+  namespace: &namespace selfhosted
 spec:
-  targetNamespace: selfhosted
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/luffy/apps/selfhosted/linkwarden/app"
+  path: "./kubernetes/luffy/apps/selfhosted/searxng/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   wait: false
   dependsOn:
-    - name: nginx
-    - name: volsync
-    - name: external-secrets-stores
-    - name: crunchy-postgres-operator-secretstore
-  components:
-    - ../../../../components/volsync
+    - name: onepassword-store
+      namespace: external-secrets
   postBuild:
     substitute:
       APP: *appname
-      VOLSYNC_CLAIM: linkwarden-data
