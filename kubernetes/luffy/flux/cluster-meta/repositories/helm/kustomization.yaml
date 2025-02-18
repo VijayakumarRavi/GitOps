@@ -8,8 +8,8 @@ resources:
   - ./backube.yaml
   - ./bjw-s.yaml
   - ./controlplaneio.yaml
-  - ./crunchydata.yaml
   - ./crunchy-userinit.yaml
+  - ./crunchydata.yaml
   - ./external-secrets.yaml
   - ./fluent.yaml
   - ./fluxcd-kustomize-mutating-webhook.yaml
@@ -21,7 +21,8 @@ resources:
   - ./kubernetes-sigs-nfd.yaml
   - ./longhorn.yaml
   - ./metallb.yaml
+  - ./nginx.yaml
   - ./piraeus.yaml
   - ./prometheus-community.yaml
   - ./stakater.yaml
-  - ./nginx.yaml
+  - ./tailscale.yaml

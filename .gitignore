@@ -13,3 +13,5 @@ kubeconfig
 
 # Temp
 kubernetes/deprecated/
+
+.vscode
