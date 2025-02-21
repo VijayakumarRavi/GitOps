@@ -29,7 +29,6 @@ metadata:
   name: &appname tailscale-funnels
   namespace: flux-system
 spec:
-  targetNamespace: network
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
