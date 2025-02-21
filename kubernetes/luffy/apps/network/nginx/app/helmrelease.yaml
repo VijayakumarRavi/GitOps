@@ -30,6 +30,7 @@ spec:
       service:
         enabled: true
         type: LoadBalancer
+        externalTrafficPolicy: Local
         loadBalancerIP: 10.0.2.1
 
       publishService:
@@ -57,6 +58,7 @@ spec:
         enable-brotli: "true"
         enable-ocsp: "true"
         enable-real-ip: "true"
+        compute-full-forwarded-for: "true"
         force-ssl-redirect: "true"
         hide-headers: Server,X-Powered-By
         hsts-max-age: 31449600
