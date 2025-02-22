@@ -140,7 +140,7 @@
   "oauth": {
     "autoLaunch": true,
     "autoRegister": true,
-    "buttonText": "Login with Auth0",
+    "buttonText": "Login with Authentik",
     "clientId": "{{ .immich_oauth_client_id }}",
     "clientSecret": "{{ .immich_oauth_client_secret }}",
     "defaultStorageQuota": 0,
