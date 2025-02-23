@@ -1,0 +1,81 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: immich-worker
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/component
+                    operator: In
+                    values:
+                      - worker
+              topologyKey: "kubernetes.io/hostname"
+    controllers:
+      immich-worker:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        replicas: 3
+        containers:
+          app:
+            image:
+              repository: ghcr.io/immich-app/immich-server
+              tag: v1.126.1
+            env:
+              IMMICH_WORKERS_EXCLUDE: api
+              IMMICH_CONFIG_FILE: /config/immich.config.json
+            envFrom:
+              - secretRef:
+                  name: immich-env
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+            resources:
+              requests:
+                cpu: 200m
+              limits:
+                gpu.intel.com/i915: "1"
+                cpu: 3000m
+    service:
+      immich-worker:
+        controller: immich-worker
+        ports:
+          http:
+            port: 2283
+    persistence:
+      config:
+        enabled: true
+        type: secret
+        name: immich-config-secret
+        globalMounts:
+          - path: /config
+      media:
+        type: nfs
+        server: tank.home.vijayakumar.xyz
+        path: /mnt/tank/Kubernetes/immich
+        globalMounts:
+          - path: /usr/src/app/upload
