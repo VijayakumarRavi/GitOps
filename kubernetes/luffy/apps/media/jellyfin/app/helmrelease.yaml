@@ -95,6 +95,12 @@ spec:
           jellyfin:
             app:
               - path: /cache
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          jellyfin:
+            app:
+              - path: /tmp
       nfs-nas-media:
         type: nfs
         server: tank.home.vijayakumar.xyz
