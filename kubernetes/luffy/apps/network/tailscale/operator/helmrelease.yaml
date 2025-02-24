@@ -27,5 +27,3 @@ spec:
         cpu: 20m
       limits:
         memory: 1Gi
-    proxyConfig:
-      defaultProxyClass: "luffy-ts-proxy"

@@ -5,6 +5,7 @@ metadata:
   namespace: selfhosted
   annotations:
     tailscale.com/funnel: "true"
+    tailscale.com/proxy-class: "luffy-ts-proxy"
 spec:
   defaultBackend:
     service:

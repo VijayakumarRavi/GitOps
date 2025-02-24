@@ -6,6 +6,7 @@ metadata:
   namespace: flux-system
   annotations:
     tailscale.com/funnel: "true"
+    tailscale.com/proxy-class: "luffy-ts-proxy"
 spec:
   ingressClassName: tailscale
   rules:
