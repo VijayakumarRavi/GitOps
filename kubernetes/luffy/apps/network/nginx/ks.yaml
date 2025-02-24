@@ -42,4 +42,4 @@ spec:
   wait: true
   dependsOn:
     - name: nginx-certificates
-    - name: metallb-ip-pool
+    - name: cilium-config

@@ -15,7 +15,7 @@ spec:
           cloudflare:
             email: vijayravi2998@gmail.com
             apiTokenSecretRef:
-              name: cloudflare-token-secret
+              name: cloudflare-api-token
               key: api-token
         selector:
           dnsZones: [vijayakumar.xyz]

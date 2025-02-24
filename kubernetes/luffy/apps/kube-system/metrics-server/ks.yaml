@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname kube-vip
+  name: &appname metrics-server
   namespace: flux-system
 spec:
   targetNamespace: kube-system
@@ -12,9 +12,10 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/luffy/apps/network/kube-vip/app"
+  path: "./kubernetes/luffy/apps/kube-system/metrics-server/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
+    namespace: flux-system
+  wait: false

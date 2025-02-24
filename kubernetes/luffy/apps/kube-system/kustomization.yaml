@@ -6,5 +6,6 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./nginx/ks.yaml
-  - ./tailscale/ks.yaml
+  - ./cilium/ks.yaml
+  - ./coredns/ks.yaml
+  - ./metrics-server/ks.yaml

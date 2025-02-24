@@ -7,7 +7,9 @@ resources:
   - ./authentik.yaml
   - ./backube.yaml
   - ./bjw-s.yaml
+  - ./cilium.yaml
   - ./controlplaneio.yaml
+  - ./coredns.yaml
   - ./crunchy-userinit.yaml
   - ./crunchydata.yaml
   - ./external-secrets.yaml
@@ -18,6 +20,7 @@ resources:
   - ./jameswynn.yaml
   - ./jetstack.yaml
   - ./k8tz.yaml
+  - ./kubernetes-sigs-metrics-server.yaml
   - ./kubernetes-sigs-nfd.yaml
   - ./longhorn.yaml
   - ./metallb.yaml
