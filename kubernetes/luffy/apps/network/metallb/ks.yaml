@@ -3,43 +3,41 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname cilium
+  name: &appname metallb
   namespace: flux-system
 spec:
-  targetNamespace: kube-system
+  targetNamespace: network
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/luffy/apps/kube-system/cilium/app"
-  prune: false # Never delete this
+  path: "./kubernetes/luffy/apps/network/metallb/app"
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-    namespace: flux-system
   wait: true
+
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cilium-config
+  name: &appname metallb-ip-pool
   namespace: flux-system
 spec:
-  targetNamespace: kube-system
+  targetNamespace: network
   commonMetadata:
     labels:
-      app.kubernetes.io/name: cilium
-      app.kubernetes.io/component: config
+      app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/luffy/apps/kube-system/cilium/config"
-  prune: false # Never delete this
+  path: ./kubernetes/luffy/apps/network/metallb/ip-pool
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-    namespace: flux-system
-  wait: false
+  wait: true
   dependsOn:
-    - name: cilium
+    - name: metallb

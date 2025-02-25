@@ -31,8 +31,7 @@ spec:
         enabled: true
         type: LoadBalancer
         externalTrafficPolicy: Local
-        annotations:
-          lbipam.cilium.io/ips: 10.0.2.1
+        LoadBalancerIP: 10.0.2.1
 
       publishService:
         enabled: false

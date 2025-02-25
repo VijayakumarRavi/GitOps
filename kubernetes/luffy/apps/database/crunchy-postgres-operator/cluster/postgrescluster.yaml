@@ -12,9 +12,7 @@ spec:
       crunchy-userinit.ramblurr.github.com/superuser: postgres
   service:
     type: LoadBalancer
-    metadata:
-      annotations:
-        lbipam.cilium.io/ips: 10.0.2.2
+
   patroni: # turn on sync writes to at least 1 other replica
     dynamicConfiguration:
       synchronous_mode: true

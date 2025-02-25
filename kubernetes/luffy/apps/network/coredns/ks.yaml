@@ -6,13 +6,13 @@ metadata:
   name: &appname coredns
   namespace: flux-system
 spec:
-  targetNamespace: kube-system
+  targetNamespace: network
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/luffy/apps/kube-system/coredns/app"
+  path: "./kubernetes/luffy/apps/network/coredns/app"
   prune: false # Never delete this
   sourceRef:
     kind: GitRepository
