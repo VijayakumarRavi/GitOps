@@ -23,7 +23,7 @@ nodes:
     ipAddress: 10.0.1.101
     controlPlane: true
     installDiskSelector:
-      size: "> 256GB"
+      model: CONSISTENT NVME S6 128GB
     networkInterfaces:
       - deviceSelector:
           physical: true
@@ -37,7 +37,7 @@ nodes:
     ipAddress: 10.0.1.102
     controlPlane: true
     installDiskSelector:
-      size: "> 256GB"
+      model: CONSISTENT NVME S6 128GB
     networkInterfaces:
       - deviceSelector:
           physical: true
@@ -51,7 +51,7 @@ nodes:
     ipAddress: 10.0.1.103
     controlPlane: true
     installDiskSelector:
-      size: "> 256GB"
+      model: CONSISTENT NVME S6 128GB
     networkInterfaces:
       - deviceSelector:
           physical: true
@@ -84,6 +84,7 @@ controlPlane:
           - siderolabs/intel-ucode
           - siderolabs/mei
           - siderolabs/intel-ice-firmware
+          - siderolabs/iscsi-tools
 
   patches:
     # Configure containerd
