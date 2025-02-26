@@ -25,12 +25,10 @@ hubble:
     rollOutPods: true
     ingress:
       enabled: true
-      className: internal
+      className: nginx
       hosts:
-        - &host hubble.luffy.vijayakumar.xyz
-      tls:
-        - hosts:
-            - *host
+        - hubble.luffy.vijayakumar.xyz
+
   metrics:
     enabled:
       - dns:query
