@@ -1,0 +1,59 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: longhorn
+spec:
+  chart:
+    spec:
+      chart: longhorn
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: longhorn
+        namespace: flux-system
+      version: 1.8.0
+  interval: 1m0s
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      host: longhorn.home.vijayakumar.xyz
+      path: /
+    persistence:
+      defaultClass: true
+      defaultClassReplicaCount: 3
+      reclaimPolicy: Retain
+      recurringJobSelector:
+        enable: false
+    preUpgradeChecker.jobEnabled: false
+    metrics:
+      serviceMonitor:
+        enabled: true
+    defaultSettings:
+      orphanAutoDeletion: true
+      concurrentAutomaticEngineUpgradePerNodeLimit: 3
+      defaultDataPath: /var/mnt/extra/longhorn
+      defaultDataLocality: best-effort
+      defaultLonghornStaticStorageClass: longhorn
+      storageMinimalAvailablePercentage: 0
+      storageReservedPercentageForDefaultDisk: 0
+      nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+      allowRecurringJobWhileVolumeDetached: false
+      autoCleanupSystemGeneratedSnapshot: true
+      autoDeletePodWhenVolumeDetachedUnexpectedly: true
+      disableSchedulingOnCordonedNode: true
+      defaultReplicaCount: 3
+      engineReplicaTimeout: 8
+      failedBackupTTL: 1440
+      restoreVolumeRecurringJobs: true
+      snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: false
+      snapshotDataIntegrityCronjob: 0 8 */7 * *
+      upgradeChecker: false
+      v2DataEngine: false

@@ -5,4 +5,5 @@ metadata:
   name: system-controllers
   labels:
     kustomize.toolkit.fluxcd.io/prune: disabled
-    k8tz.io/controller-namespace: "true"
+    k8tz.io/controller-namespace: 'true'
+    volsync.backube/privileged-movers: 'true'

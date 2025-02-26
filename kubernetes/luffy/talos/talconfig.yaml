@@ -117,14 +117,14 @@ controlPlane:
             resolveMemberNames: true
             forwardKubeDNSToHost: false
 
-    # Mount longhorn-hostpath in kubelet
+    # Mount longhorn and openebs hostpath in kubelet
     - |-
       machine:
         kubelet:
           extraMounts:
-            - destination: /var/lib/longhorn
+            - destination: /var/mnt/extra
               type: bind
-              source: /var/lib/longhorn
+              source: /var/mnt/extra
               options:
                 - rbind
                 - rshared
