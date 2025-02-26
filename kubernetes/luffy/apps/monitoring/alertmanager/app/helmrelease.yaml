@@ -30,7 +30,7 @@ spec:
             args:
               - "--storage.path=/alertmanager"
               - "--config.file=/etc/alertmanager/alertmanager.yml"
-              - "--web.external-url=https://alertmanager.home.vijayakumar.xyz"
+              - "--web.external-url=https://alertmanager.luffy.vijayakumar.xyz"
             ports:
               - name: http
                 containerPort: 9093
@@ -62,7 +62,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: alertmanager.home.vijayakumar.xyz
+          - host: alertmanager.luffy.vijayakumar.xyz
             paths:
               - path: /
                 service:

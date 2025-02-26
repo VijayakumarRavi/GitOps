@@ -8,18 +8,18 @@ spec:
   postgresVersion: 16
   metadata:
     labels:
-      crunchy-userinit.ramblurr.github.com/enabled: 'true'
+      crunchy-userinit.ramblurr.github.com/enabled: "true"
       crunchy-userinit.ramblurr.github.com/superuser: postgres
   service:
     type: LoadBalancer
-  patroni:  # turn on sync writes to at least 1 other replica
+  patroni: # turn on sync writes to at least 1 other replica
     dynamicConfiguration:
       synchronous_mode: true
       postgresql:
         max_wal_size: 5GB
-        synchronous_commit: 'on'
+        synchronous_commit: "on"
         pg_hba:
-          - hostnossl all all 10.43.0.0/16 md5  # Needed because dbman does not support SSL yet
+          - hostnossl all all 10.43.0.0/16 md5 # Needed because dbman does not support SSL yet
           - hostssl all all all md5
   instances:
     - name: postgres
@@ -82,12 +82,12 @@ spec:
             name: crunchy-postgres-secret
       global: &backupFlag
         compress-type: bz2
-        compress-level: '9'
+        compress-level: "9"
         # Minio
         repo1-bundle: y
         repo1-block: y
         repo1-path: /crunchy-pgo
-        repo1-retention-full: '30'  # days
+        repo1-retention-full: "30" # days
         repo1-retention-full-type: time
         repo1-s3-uri-style: path
       manual:
@@ -97,15 +97,15 @@ spec:
         labels:
           app.kubernetes.io/name: crunchy-postgres-backup
       repos:
-        - name: repo1  # Minio
+        - name: repo1 # Minio
           s3: &minio
             bucket: crunchy-postgres
             endpoint: https://s3.tank.home.vijayakumar.xyz
             region: us-east-1
           schedules:
-            full: 0 1 * * 0  # Sunday at 01:00
-            differential: 0 1 * * 1-6  # Mon-Sat at 01:00
-            incremental: 0 2-23 * * *  # Every hour except 01:00
+            full: 0 1 * * 0 # Sunday at 01:00
+            differential: 0 1 * * 1-6 # Mon-Sat at 01:00
+            incremental: 0 2-23 * * * # Every hour except 01:00
   dataSource:
     pgbackrest:
       stanza: db
@@ -132,7 +132,7 @@ spec:
           app.kubernetes.io/name: crunchy-postgres-pgbouncer
       config:
         global:
-          pool_mode: transaction  # pgBouncer is set to transaction for Authentik. Grafana requires session https://github.com/grafana/grafana/issues/74260#issuecomment-1702795311. Everything else is happy with transaction
+          pool_mode: transaction # pgBouncer is set to transaction for Authentik. Grafana requires session https://github.com/grafana/grafana/issues/74260#issuecomment-1702795311. Everything else is happy with transaction
           client_tls_sslmode: prefer
       topologySpreadConstraints:
         - maxSkew: 1

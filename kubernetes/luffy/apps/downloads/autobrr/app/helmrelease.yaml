@@ -73,7 +73,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: autobrr.home.vijayakumar.xyz
+          - host: autobrr.luffy.vijayakumar.xyz
             paths:
               - path: /
                 service:

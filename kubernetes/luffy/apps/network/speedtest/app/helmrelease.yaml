@@ -32,8 +32,8 @@ spec:
               DISPLAY_TIMEZONE: "Asia/Kolkata"
               SPEEDTEST_SCHEDULE: "6 * * * *"
               PRUNE_RESULTS_OLDER_THAN: "90"
-              APP_URL: "https://speedtest.home.vijayakumar.xyz"
-              ASSET_URL: "https://speedtest.home.vijayakumar.xyz"
+              APP_URL: "https://speedtest.luffy.vijayakumar.xyz"
+              ASSET_URL: "https://speedtest.luffy.vijayakumar.xyz"
             envFrom:
               - secretRef:
                   name: speedtest-secret
@@ -65,7 +65,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: speedtest.home.vijayakumar.xyz
+          - host: speedtest.luffy.vijayakumar.xyz
             paths:
               - path: /
                 service:

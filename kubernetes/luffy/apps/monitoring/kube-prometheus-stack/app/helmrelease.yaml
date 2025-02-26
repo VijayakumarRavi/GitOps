@@ -110,7 +110,7 @@ spec:
         enabled: true
         ingressClassName: nginx
         hosts:
-          - prometheus.home.vijayakumar.xyz
+          - prometheus.luffy.vijayakumar.xyz
         pathType: Prefix
 
       prometheusSpec:

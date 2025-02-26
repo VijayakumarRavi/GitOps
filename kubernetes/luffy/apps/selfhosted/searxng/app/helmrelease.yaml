@@ -29,8 +29,8 @@ spec:
               repository: docker.io/searxng/searxng
               tag: 2024.6.30-39aaac40d
             env:
-              SEARXNG_BASE_URL: https://search.home.vijayakumar.xyz
-              SEARXNG_URL: https://search.home.vijayakumar.xyz
+              SEARXNG_BASE_URL: https://search.luffy.vijayakumar.xyz
+              SEARXNG_URL: https://search.luffy.vijayakumar.xyz
               SEARXNG_PORT: &httpPort 8080
               SEARXNG_REDIS_URL: redis://searxng-redis.selfhosted.svc.cluster.local:6379/0
             envFrom:
@@ -112,7 +112,7 @@ spec:
       app:
         className: "nginx"
         hosts:
-          - host: search.home.vijayakumar.xyz
+          - host: search.luffy.vijayakumar.xyz
             paths:
               - path: /
                 service:

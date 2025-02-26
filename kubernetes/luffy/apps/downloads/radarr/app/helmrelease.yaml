@@ -19,7 +19,7 @@ spec:
     controllers:
       radarr:
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         pod:
           securityContext:
             runAsUser: 2000
@@ -28,19 +28,19 @@ spec:
             fsGroup: 2000
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
-              - 65542  # gladius:external-services
+              - 65542 # gladius:external-services
         containers:
           app:
             image:
               repository: ghcr.io/onedr0p/radarr-develop
               tag: 5.19.3.9730@sha256:dd64f1786f50ae79013822ce196e3e7bd20db369bd51d63d63c42f7821b77317
             env:
-              COMPlus_EnableDiagnostics: '0'
+              COMPlus_EnableDiagnostics: "0"
               RADARR__INSTANCE_NAME: Radarr
               RADARR__PORT: &port 7878
               RADARR__AUTHENTICATION_METHOD: External
               RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-              RADARR__APPLICATION_URL: https://radarr.home.vijayakumar.xyz
+              RADARR__APPLICATION_URL: https://radarr.luffy.vijayakumar.xyz
               RADARR__LOG_LEVEL: info
               RADARR__API_KEY:
                 valueFrom:
@@ -81,14 +81,14 @@ spec:
           nginx.ingress.kubernetes.io/auth-url: |-
             http://ak-outpost-authentik-embedded-outpost.security.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
           nginx.ingress.kubernetes.io/auth-signin: |-
-            https://radarr.home.vijayakumar.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+            https://radarr.luffy.vijayakumar.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
           nginx.ingress.kubernetes.io/auth-response-headers: |-
             Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
           nginx.ingress.kubernetes.io/auth-snippet: |
             proxy_set_header X-Forwarded-Host $http_host;
         className: nginx
         hosts:
-          - host: radarr.home.vijayakumar.xyz
+          - host: radarr.luffy.vijayakumar.xyz
             paths:
               - path: /
                 service:

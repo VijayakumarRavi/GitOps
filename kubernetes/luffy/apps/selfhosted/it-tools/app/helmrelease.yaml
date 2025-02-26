@@ -61,7 +61,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: it-tools.home.vijayakumar.xyz
+          - host: it-tools.luffy.vijayakumar.xyz
             paths:
               - path: /
                 service:

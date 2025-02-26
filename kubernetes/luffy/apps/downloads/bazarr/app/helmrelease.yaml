@@ -71,7 +71,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: bazarr.home.vijayakumar.xyz
+          - host: bazarr.luffy.vijayakumar.xyz
             paths:
               - path: /
                 service:

@@ -67,9 +67,9 @@ spec:
         enabled: true
         ingressClassName: nginx
         hosts:
-          - auth.home.vijayakumar.xyz
+          - auth.luffy.vijayakumar.xyz
         rules:
-          - host: auth.home.vijayakumar.xyz
+          - host: auth.luffy.vijayakumar.xyz
             http:
               paths:
                 - path: /

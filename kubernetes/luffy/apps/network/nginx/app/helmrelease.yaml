@@ -87,8 +87,8 @@ spec:
             any: true
 
       extraArgs:
-        default-ssl-certificate: "network/home-vijayakumar-xyz-tls"
-        publish-status-address: home.vijayakumar.xyz
+        default-ssl-certificate: "network/luffy.vijayakumar.xyz-tls"
+        publish-status-address: luffy.vijayakumar.xyz
 
       topologySpreadConstraints:
         - maxSkew: 1

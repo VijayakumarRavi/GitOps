@@ -70,7 +70,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: immich.home.vijayakumar.xyz
+          - host: immich.luffy.vijayakumar.xyz
             paths:
               - path: /
                 service:

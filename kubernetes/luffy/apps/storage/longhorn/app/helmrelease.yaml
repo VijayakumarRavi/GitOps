@@ -24,7 +24,7 @@ spec:
     ingress:
       enabled: true
       ingressClassName: nginx
-      host: longhorn.home.vijayakumar.xyz
+      host: longhorn.luffy.vijayakumar.xyz
       path: /
     persistence:
       defaultClass: true
