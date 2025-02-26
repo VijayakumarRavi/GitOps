@@ -29,9 +29,11 @@ spec:
     persistence:
       defaultClass: true
       defaultClassReplicaCount: 3
-      reclaimPolicy: Retain
+      reclaimPolicy: Delete
+      defaultDataLocality: best-effort
       recurringJobSelector:
         enable: false
+      removeSnapshotsDuringFilesystemTrim: enabled
     preUpgradeChecker.jobEnabled: false
     metrics:
       serviceMonitor:
