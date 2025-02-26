@@ -24,6 +24,7 @@ resources:
   - ./longhorn.yaml
   - ./metallb.yaml
   - ./nginx.yaml
+  - ./openebs.yaml
   - ./piraeus.yaml
   - ./prometheus-community.yaml
   - ./stakater.yaml
