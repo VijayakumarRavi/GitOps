@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: ./kubernetes/luffy/apps/longhorn/app
+  path: ./kubernetes/luffy/apps/storage/longhorn/app
   prune: true
   wait: true
   sourceRef:
@@ -34,7 +34,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: ./kubernetes/luffy/apps/longhorn/classes
+  path: ./kubernetes/luffy/apps/storage/longhorn/storageclass
   prune: true
   wait: true
   sourceRef:
