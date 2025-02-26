@@ -1,7 +1,0 @@
----
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: kube-pool
-spec:
-  addresses: [10.0.2.1-10.0.2.200]

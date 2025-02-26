@@ -7,6 +7,6 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./coredns/ks.yaml
-  - ./metallb/ks.yaml
+  - ./cilium/ks.yaml
   - ./nginx/ks.yaml
   - ./tailscale/ks.yaml
