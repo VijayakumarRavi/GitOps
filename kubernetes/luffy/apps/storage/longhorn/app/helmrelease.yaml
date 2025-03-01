@@ -20,42 +20,6 @@ spec:
   upgrade:
     remediation:
       retries: 3
-  values:
-    ingress:
-      enabled: true
-      ingressClassName: nginx
-      host: longhorn.luffy.vijayakumar.xyz
-      path: /
-    persistence:
-      defaultClass: true
-      defaultClassReplicaCount: 3
-      reclaimPolicy: Delete
-      defaultDataLocality: best-effort
-      recurringJobSelector:
-        enable: false
-      removeSnapshotsDuringFilesystemTrim: enabled
-    preUpgradeChecker.jobEnabled: false
-    metrics:
-      serviceMonitor:
-        enabled: true
-    defaultSettings:
-      orphanAutoDeletion: true
-      concurrentAutomaticEngineUpgradePerNodeLimit: 3
-      defaultDataPath: /var/mnt/extra/longhorn
-      defaultDataLocality: best-effort
-      defaultLonghornStaticStorageClass: longhorn
-      storageMinimalAvailablePercentage: 0
-      storageReservedPercentageForDefaultDisk: 0
-      nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
-      allowRecurringJobWhileVolumeDetached: false
-      autoCleanupSystemGeneratedSnapshot: true
-      autoDeletePodWhenVolumeDetachedUnexpectedly: true
-      disableSchedulingOnCordonedNode: true
-      defaultReplicaCount: 3
-      engineReplicaTimeout: 8
-      failedBackupTTL: 1440
-      restoreVolumeRecurringJobs: true
-      snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: false
-      snapshotDataIntegrityCronjob: 0 8 */7 * *
-      upgradeChecker: false
-      v2DataEngine: false
+  valuesFrom:
+    - kind: ConfigMap
+      name: longhorn-values
