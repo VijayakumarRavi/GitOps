@@ -68,7 +68,7 @@ spec:
       replicas: 1
       persistence:
         enabled: true
-        storageClass: longhorn-cache
+        storageClass: openebs-hostpath
         size: 20Gi
     test:
       enabled: false
