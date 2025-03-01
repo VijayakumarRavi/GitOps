@@ -7,7 +7,7 @@ ingress:
 persistence:
   defaultClass: true
   defaultClassReplicaCount: 3
-  reclaimPolicy: Delete
+  reclaimPolicy: Retain
   defaultDataLocality: best-effort
   recurringJobSelector:
     enable: false

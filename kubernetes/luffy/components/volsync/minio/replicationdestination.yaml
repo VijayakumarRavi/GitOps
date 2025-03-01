@@ -8,11 +8,11 @@ spec:
   trigger:
     manual: restore-once
   restic:
-    accessModes: ['${VOLSYNC_SNAP_ACCESSMODES:-ReadWriteOnce}']
-    cacheAccessModes: ['${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}']
+    accessModes: ["${VOLSYNC_SNAP_ACCESSMODES:-ReadWriteOnce}"]
+    cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
     volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=longhorn-snapclass}
-    cacheStorageClassName: ${VOLSYNC_CACHE_SNAPSHOTCLASS:=openebs-hostpath}
-    storageClassName: ${VOLSYNC_STORAGECLASS:=openebs-hostpath}
+    cacheStorageClassName: ${VOLSYNC_CACHE_SNAPSHOTCLASS:=longhorn-cache}
+    storageClassName: ${VOLSYNC_STORAGECLASS:=longhorn-snapshot}
     capacity: ${VOLSYNC_CAPACITY:-1Gi}
     cleanupCachePVC: true
     cleanupTempPVC: true

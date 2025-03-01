@@ -20,3 +20,4 @@ spec:
   wait: false
   dependsOn:
     - name: external-secrets-stores
+    - name: nginx
