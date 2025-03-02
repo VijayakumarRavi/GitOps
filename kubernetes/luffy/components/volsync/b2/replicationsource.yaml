@@ -3,11 +3,11 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: ${APP}
+  name: ${APP}-b2
 spec:
-  sourcePVC: ${VOLSYNC_CLAIM:-${APP}}
+  sourcePVC: "${VOLSYNC_CLAIM:-${APP}}"
   trigger:
-    schedule: 0 * * * *
+    schedule: "0 0 * * *"
   restic:
     accessModes: ["${VOLSYNC_SNAP_ACCESSMODES:-ReadWriteOnce}"]
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
@@ -21,7 +21,6 @@ spec:
       runAsGroup: ${APP_GID:-2000}
       fsGroup: ${APP_GID:-2000}
     pruneIntervalDays: 7
-    repository: ${APP}-volsync-minio
+    repository: ${APP}-volsync-b2
     retain:
-      hourly: 24
       daily: 7

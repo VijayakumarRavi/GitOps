@@ -11,3 +11,4 @@ resources:
   - ./linkwarden/ks.yaml
   - ./searxng/ks.yaml
   - ./vaultwarden/ks.yaml
+  - ./redlib/ks.yaml
