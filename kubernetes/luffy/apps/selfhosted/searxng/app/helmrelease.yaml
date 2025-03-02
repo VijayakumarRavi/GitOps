@@ -32,7 +32,7 @@ spec:
               SEARXNG_BASE_URL: https://search.luffy.vijayakumar.xyz
               SEARXNG_URL: https://search.luffy.vijayakumar.xyz
               SEARXNG_PORT: &httpPort 8080
-              SEARXNG_REDIS_URL: redis://searxng-redis.selfhosted.svc.cluster.local:6379/0
+              SEARXNG_REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379?db=2
             envFrom:
               - secretRef:
                   name: searxng-secret
@@ -67,46 +67,12 @@ spec:
                   - SETUID
                   - DAC_OVERRIDE
 
-      redis:
-        pod:
-          securityContext:
-            runAsUser: 65534
-            runAsGroup: 65534
-        strategy: RollingUpdate
-        containers:
-          redis:
-            image:
-              repository: docker.io/valkey/valkey
-              tag: 8.0.2
-            args:
-              - --save
-              - ""
-              - --appendonly
-              - "no"
-            resources:
-              requests:
-                cpu: 5m
-                memory: 32Mi
-              limits:
-                memory: 128Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
-
     service:
       app:
         controller: searxng
         ports:
           http:
             port: *httpPort
-      redis:
-        controller: redis
-        ports:
-          http:
-            port: 6379
 
     ingress:
       app:

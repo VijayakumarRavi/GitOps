@@ -1,24 +1,3 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &appname immich-redis
-  namespace: flux-system
-spec:
-  targetNamespace: media
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *appname
-  interval: 30m
-  timeout: 5m
-  path: ./kubernetes/luffy/apps/media/immich/redis
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: true
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -40,6 +19,6 @@ spec:
   wait: false
   dependsOn:
     - name: nginx
-    - name: immich-redis
+    - name: dragonfly-cluster
     - name: external-secrets-stores
     - name: crunchy-postgres-operator-secretstore
