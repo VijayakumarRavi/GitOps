@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   # Pre Funnel Resources
   - ./proxyclass.yaml
+  - ./connector.yaml
   # Funnel Resources
   - ./flux-webhook-receiver.yaml
   - ./immich.yaml

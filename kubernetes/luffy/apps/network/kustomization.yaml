@@ -9,4 +9,5 @@ resources:
   - ./coredns/ks.yaml
   - ./cilium/ks.yaml
   - ./nginx/ks.yaml
+  - ./speedtest/ks.yaml
   - ./tailscale/ks.yaml

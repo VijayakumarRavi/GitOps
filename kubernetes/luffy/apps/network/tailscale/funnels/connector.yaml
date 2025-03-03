@@ -1,0 +1,11 @@
+apiVersion: tailscale.com/v1alpha1
+kind: Connector
+metadata:
+  name: luffy-pod-cidrs
+spec:
+  hostname: luffy-pod-cidrs
+  exitNode: true
+  subnetRouter:
+    advertiseRoutes:
+      - "10.0.0.0/16"
+      - "172.16.0.0/12"
