@@ -1,0 +1,87 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: navidrome
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  interval: 30m
+  values:
+    controllers:
+      navidrome:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          securityContext:
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
+            supplementalGroups:
+              - 65542 # gladius:external-services
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/navidrome/navidrome
+              tag: 0.54.5
+            env:
+              ND_DATAFOLDER: /data
+              ND_ENABLEDOWNLOADS: "true"
+              ND_ENABLEEXTERNALSERVICES: "false"
+              ND_ENABLESHARING: "false"
+              ND_ENABLESTARRATING: "false"
+              ND_LOGLEVEL: info
+              ND_MUSICFOLDER: /data/nas-media/music
+              ND_PORT: &port 4533
+              ND_SCANSCHEDULE: 30m
+            resources:
+              requests:
+                cpu: 5m
+                memory: 799M
+              limits:
+                memory: 799M
+
+    service:
+      app:
+        controller: navidrome
+        ports:
+          http:
+            port: *port
+
+    ingress:
+      app:
+        className: nginx
+        hosts:
+          - host: navidrome.luffy.vijayakumar.xyz
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+
+    persistence:
+      data:
+        existingClaim: navidrome-config
+        advancedMounts:
+          navidrome:
+            app:
+              - path: /data
+
+      nfs-nas-media:
+        type: nfs
+        server: tank.home.vijayakumar.xyz
+        path: /mnt/tank/Media
+        advancedMounts:
+          navidrome:
+            app:
+              - path: /data/nas-media/
