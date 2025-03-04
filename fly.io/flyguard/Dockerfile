@@ -1,5 +1,5 @@
 ARG ADGUARD_VERSION=v0.107.57
-ARG TAILSCALE_VERSION=v1.80.0
+ARG TAILSCALE_VERSION=v1.80.3
 
 # Builder for Overmind download
 FROM alpine as overmind
