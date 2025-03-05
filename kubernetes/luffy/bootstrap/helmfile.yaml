@@ -41,7 +41,7 @@ releases:
   - name: longhorn
     namespace: storage
     chart: longhorn/longhorn
-    version: 1.8.0
+    version: 1.8.1
     values:
       - ../apps/storage/longhorn/app/values.yaml
     needs:
