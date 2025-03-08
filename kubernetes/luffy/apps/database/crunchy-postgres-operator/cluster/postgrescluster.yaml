@@ -84,6 +84,7 @@ spec:
         - secret:
             name: crunchy-postgres-secret
       global: &backupFlag
+        archive-async: "y"
         compress-type: bz2
         compress-level: "9"
         # NFS
@@ -91,8 +92,8 @@ spec:
         repo1-retention-full: "30" # days
         repo1-retention-full-type: "time"
         # B2
-        repo2-bundle: y
-        repo2-block: y
+        repo2-bundle: "y"
+        repo2-block: "y"
         repo2-path: /crunchy-pgo
         repo2-retention-full: "7" # days
         repo2-retention-full-type: time
