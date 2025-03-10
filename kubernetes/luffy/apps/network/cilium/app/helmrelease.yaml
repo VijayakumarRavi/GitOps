@@ -18,3 +18,11 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: cilium-values
+  values:
+    hubble:
+      ui:
+        ingress:
+          enabled: true
+          className: nginx
+          hosts:
+            - hubble.${CLUSTER_DOMAIN}
