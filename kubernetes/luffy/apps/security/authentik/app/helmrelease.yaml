@@ -29,12 +29,19 @@ spec:
       volumeMounts:
         - mountPath: /media
           name: authentik-media
+        - mountPath: /web/dist/custom.css
+          name: custom-css
+          subPath: custom.css
       volumes:
         - name: authentik-media
           nfs:
             server: ${NFS_STORAGE_SERVER}
             path: /mnt/tank/Kubernetes/authentik
             readOnly: false
+        - name: custom-css
+          configMap:
+            name: custom-css
+            readOnly: true
 
     authentik:
       log_level: info
