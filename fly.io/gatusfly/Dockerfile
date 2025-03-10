@@ -1,6 +1,6 @@
 ARG GATUS_VERSION=v5.16.0
 ARG TAILSCALE_VERSION=v1.80.3
-ARG DNSPROXY_VERSION=v0.75.0
+ARG DNSPROXY_VERSION=v0.75.1
 # Builder for Overmind download
 FROM alpine as overmind
 
