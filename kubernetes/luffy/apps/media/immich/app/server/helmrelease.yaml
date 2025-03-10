@@ -70,7 +70,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: immich.luffy.vijayakumar.xyz
+          - host: immich.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:
@@ -85,7 +85,7 @@ spec:
           - path: /config
       media:
         type: nfs
-        server: tank.home.vijayakumar.xyz
+        server: ${NFS_STORAGE_SERVER}
         path: /mnt/tank/Kubernetes/immich
         globalMounts:
           - path: /usr/src/app/upload

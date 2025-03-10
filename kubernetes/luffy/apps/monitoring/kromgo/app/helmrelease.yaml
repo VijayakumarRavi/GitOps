@@ -87,7 +87,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: kromgo.luffy.vijayakumar.xyz
+          - host: kromgo.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

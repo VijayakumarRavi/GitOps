@@ -73,7 +73,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: autobrr.luffy.vijayakumar.xyz
+          - host: autobrr.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

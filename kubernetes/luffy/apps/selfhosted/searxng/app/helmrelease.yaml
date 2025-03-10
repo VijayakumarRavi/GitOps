@@ -29,8 +29,8 @@ spec:
               repository: docker.io/searxng/searxng
               tag: 2024.6.30-39aaac40d
             env:
-              SEARXNG_BASE_URL: https://search.luffy.vijayakumar.xyz
-              SEARXNG_URL: https://search.luffy.vijayakumar.xyz
+              SEARXNG_BASE_URL: https://search.${CLUSTER_DOMAIN}
+              SEARXNG_URL: https://search.${CLUSTER_DOMAIN}
               SEARXNG_PORT: &httpPort 8080
               SEARXNG_REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379?db=2
             envFrom:
@@ -78,7 +78,7 @@ spec:
       app:
         className: "nginx"
         hosts:
-          - host: search.luffy.vijayakumar.xyz
+          - host: search.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

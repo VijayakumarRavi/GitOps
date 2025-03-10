@@ -79,7 +79,7 @@ spec:
         enabled: true
         className: nginx
         hosts:
-          - host: sonarr.luffy.vijayakumar.xyz
+          - host: sonarr.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:
@@ -94,7 +94,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: tank.home.vijayakumar.xyz
+        server: ${NFS_STORAGE_SERVER}
         path: /mnt/tank/Media
         globalMounts:
           - path: /data/nas-media

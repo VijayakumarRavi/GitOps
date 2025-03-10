@@ -90,7 +90,7 @@ spec:
               value: Object.spec.template.spec.volumes{
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
-                  server: "tank.home.vijayakumar.xyz",
+                  server: "${NFS_STORAGE_SERVER}",
                   path: "/mnt/tank/Kubernetes/Backup/Volsync"
                 }
               }

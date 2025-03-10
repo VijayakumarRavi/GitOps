@@ -61,7 +61,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: it-tools.luffy.vijayakumar.xyz
+          - host: it-tools.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

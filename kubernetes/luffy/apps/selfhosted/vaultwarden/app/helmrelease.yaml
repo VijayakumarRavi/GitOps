@@ -15,14 +15,6 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     controllers:
       vaultwarden:
@@ -63,7 +55,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: vault.luffy.vijayakumar.xyz
+          - host: vault.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

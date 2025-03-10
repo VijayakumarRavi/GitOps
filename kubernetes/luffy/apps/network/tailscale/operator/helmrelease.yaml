@@ -15,10 +15,6 @@ spec:
         kind: HelmRepository
         name: tailscale
         namespace: flux-system
-  install:
-    crds: Create
-  upgrade:
-    crds: CreateReplace
   values:
     hostname: luffy-tailscale-operator
     resources:

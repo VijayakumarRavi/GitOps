@@ -85,6 +85,7 @@ spec:
             name: crunchy-postgres-secret
       global: &backupFlag
         archive-async: "y"
+        archive-push-queue-max: 5GiB
         compress-type: bz2
         compress-level: "9"
         # NFS

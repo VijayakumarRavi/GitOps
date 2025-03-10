@@ -32,7 +32,7 @@ spec:
       volumes:
         - name: authentik-media
           nfs:
-            server: tank.home.vijayakumar.xyz
+            server: ${NFS_STORAGE_SERVER}
             path: /mnt/tank/Kubernetes/authentik
             readOnly: false
 
@@ -66,9 +66,9 @@ spec:
         enabled: true
         ingressClassName: nginx
         hosts:
-          - auth.luffy.vijayakumar.xyz
+          - auth.${CLUSTER_DOMAIN}
         rules:
-          - host: auth.luffy.vijayakumar.xyz
+          - host: auth.${CLUSTER_DOMAIN}
             http:
               paths:
                 - path: /

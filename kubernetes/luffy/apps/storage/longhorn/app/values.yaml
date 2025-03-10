@@ -2,7 +2,7 @@
 ingress:
   enabled: true
   ingressClassName: nginx
-  host: longhorn.luffy.vijayakumar.xyz
+  host: longhorn.${CLUSTER_DOMAIN}
   path: /
 persistence:
   defaultClass: true

@@ -15,10 +15,6 @@ spec:
         name: kubernetes-sigs-nfd
         namespace: flux-system
       interval: 30m
-  install:
-    crds: CreateReplace
-  upgrade:
-    crds: CreateReplace
   values:
     prometheus:
       enable: true

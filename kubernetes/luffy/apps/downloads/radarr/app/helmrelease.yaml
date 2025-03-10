@@ -40,7 +40,7 @@ spec:
               RADARR__PORT: &port 7878
               RADARR__AUTHENTICATION_METHOD: External
               RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-              RADARR__APPLICATION_URL: https://radarr.luffy.vijayakumar.xyz
+              RADARR__APPLICATION_URL: https://radarr.${CLUSTER_DOMAIN}
               RADARR__LOG_LEVEL: info
               RADARR__API_KEY:
                 valueFrom:
@@ -79,7 +79,7 @@ spec:
         enabled: true
         className: nginx
         hosts:
-          - host: radarr.luffy.vijayakumar.xyz
+          - host: radarr.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:
@@ -94,7 +94,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: tank.home.vijayakumar.xyz
+        server: ${NFS_STORAGE_SERVER}
         path: /mnt/tank/Media
         globalMounts:
           - path: /data/nas-media

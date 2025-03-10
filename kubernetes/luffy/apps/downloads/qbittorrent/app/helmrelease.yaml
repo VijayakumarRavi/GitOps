@@ -78,7 +78,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: torrent.luffy.vijayakumar.xyz
+          - host: torrent.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:
@@ -94,7 +94,7 @@ spec:
               - path: /config
       media:
         type: nfs
-        server: tank.home.vijayakumar.xyz
+        server: ${NFS_STORAGE_SERVER}
         path: /mnt/tank/Media
         globalMounts:
           - path: /data/nas-media

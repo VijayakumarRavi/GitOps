@@ -28,12 +28,12 @@ spec:
               PUID: "1000"
               PGID: "1000"
               PUBLIC_DASHBOARD: "true"
-              APP_TIMEZONE: "Asia/Kolkata"
-              DISPLAY_TIMEZONE: "Asia/Kolkata"
+              APP_TIMEZONE: "${TIMEZONE}"
+              DISPLAY_TIMEZONE: "${TIMEZONE}"
               SPEEDTEST_SCHEDULE: "6 * * * *"
               PRUNE_RESULTS_OLDER_THAN: "90"
-              APP_URL: "https://speedtest.luffy.vijayakumar.xyz"
-              ASSET_URL: "https://speedtest.luffy.vijayakumar.xyz"
+              APP_URL: "https://speedtest.${CLUSTER_DOMAIN}"
+              ASSET_URL: "https://speedtest.${CLUSTER_DOMAIN}"
             envFrom:
               - secretRef:
                   name: speedtest-secret
@@ -65,7 +65,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: speedtest.luffy.vijayakumar.xyz
+          - host: speedtest.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

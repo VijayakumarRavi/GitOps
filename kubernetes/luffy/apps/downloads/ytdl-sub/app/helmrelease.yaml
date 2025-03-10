@@ -76,7 +76,7 @@ spec:
                 readOnly: true
       nfs-nas-media:
         type: nfs
-        server: tank.home.vijayakumar.xyz
+        server: ${NFS_STORAGE_SERVER}
         path: /mnt/tank/Media
         advancedMounts:
           ytdl-sub:

@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-settings
+  namespace: flux-system
+data:
+  TIMEZONE: Asia/Kolkata
+  # SAN (iSCSI & NFS)
+  NFS_STORAGE_SERVER: tank.home.vijayakumar.xyz

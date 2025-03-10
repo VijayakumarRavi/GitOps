@@ -87,8 +87,8 @@ spec:
             any: true
 
       extraArgs:
-        default-ssl-certificate: "network/luffy.vijayakumar.xyz-tls"
-        publish-status-address: luffy.vijayakumar.xyz
+        default-ssl-certificate: "network/${CLUSTER_DOMAIN}-tls"
+        publish-status-address: ${CLUSTER_DOMAIN}
 
       topologySpreadConstraints:
         - maxSkew: 1

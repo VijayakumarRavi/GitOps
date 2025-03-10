@@ -161,7 +161,7 @@
     "enabled": true
   },
   "server": {
-    "externalDomain": "https://immich.luffy.vijayakumar.xyz",
+    "externalDomain": "https://immich.${CLUSTER_DOMAIN}",
     "loginPageMessage": "Welcome to Vijay's gallery",
     "publicUsers": true
   },

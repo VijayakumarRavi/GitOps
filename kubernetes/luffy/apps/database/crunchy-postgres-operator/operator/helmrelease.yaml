@@ -15,10 +15,6 @@ spec:
         name: crunchydata
         namespace: flux-system
       interval: 5m
-  install:
-    crds: CreateReplace
-  upgrade:
-    crds: CreateReplace
   values:
     install:
       clusterLabels:

@@ -13,13 +13,7 @@ spec:
         name: longhorn
         namespace: flux-system
       version: 1.8.1
-  interval: 1m0s
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    remediation:
-      retries: 3
+  interval: 30m
   valuesFrom:
     - kind: ConfigMap
       name: longhorn-values

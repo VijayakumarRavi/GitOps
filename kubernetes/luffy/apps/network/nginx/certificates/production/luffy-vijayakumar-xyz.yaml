@@ -2,11 +2,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: luffy.vijayakumar.xyz
+  name: ${CLUSTER_DOMAIN}
 spec:
-  secretName: luffy.vijayakumar.xyz-tls
+  secretName: ${CLUSTER_DOMAIN}-tls
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "*.luffy.vijayakumar.xyz"
-  dnsNames: ["*.luffy.vijayakumar.xyz"]
+  commonName: "*.${CLUSTER_DOMAIN}"
+  dnsNames: ["*.${CLUSTER_DOMAIN}"]

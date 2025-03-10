@@ -14,36 +14,7 @@ k8sClientRateLimit:
   burst: 32
 # devices: { enp+, eth+ }
 hubble:
-  enabled: true
-  relay:
-    enabled: true
-    prometheus:
-      serviceMonitor:
-        enabled: true
-  ui:
-    enabled: true
-    rollOutPods: true
-    ingress:
-      enabled: true
-      className: nginx
-      hosts:
-        - hubble.luffy.vijayakumar.xyz
-
-  metrics:
-    enabled:
-      - dns:query
-      - drop
-      - tcp
-      - flow
-      - port-distribution
-      - icmp
-      - http
-    serviceMonitor:
-      enabled: true
-    dashboards:
-      enabled: true
-      annotations:
-        grafana_folder: Cilium
+  enabled: false
 
 operator:
   prometheus:
