@@ -13,7 +13,8 @@ resources:
   - ./kube-state-metrics/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./loki/ks.yaml
-  - ./metrics-server/ks.yaml  
+  - ./metrics-server/ks.yaml
   - ./node-exporter/ks.yaml
   - ./prometheus-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
+  - ./uptime/ks.yaml
