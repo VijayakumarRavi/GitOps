@@ -32,8 +32,8 @@ spec:
         containers:
           uptime:
             image:
-              repository: louislam/uptime-kuma
-              tag: 1.23.16
+              repository: ghcr.io/louislam/uptime-kuma
+              tag: beta-rootless@sha256:25c038d0a1de52ecbf9e387f71b062f7da5ec4098b6ea9877f14d01e40233d5c
             ports:
               - name: http
                 containerPort: 3001
