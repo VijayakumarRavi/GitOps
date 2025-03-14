@@ -10,16 +10,17 @@ spec:
   restic:
     accessModes: ["${VOLSYNC_SNAP_ACCESSMODES:-ReadWriteOnce}"]
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
-    volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=longhorn-snapclass}
-    cacheStorageClassName: ${VOLSYNC_CACHE_SNAPSHOTCLASS:=longhorn-cache}
-    storageClassName: ${VOLSYNC_STORAGECLASS:=longhorn-snapshot}
-    capacity: ${VOLSYNC_CAPACITY:-1Gi}
+    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
+    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-openebs-hostpath}"
+    capacity: "${VOLSYNC_CAPACITY:-1Gi}"
     cleanupCachePVC: true
     cleanupTempPVC: true
     enableFileDeletion: true
-    copyMethod: ${VOLSYNC_COPYMETHOD:-Snapshot}
+    copyMethod: "${VOLSYNC_COPYMETHOD:-Snapshot}"
     moverSecurityContext:
       runAsUser: ${APP_UID:-2000}
       runAsGroup: ${APP_GID:-2000}
       fsGroup: ${APP_GID:-2000}
-    repository: ${APP}-volsync-nfs
+    repository: "${APP}-volsync-nfs"
+    storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
+    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}"
