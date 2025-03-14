@@ -41,7 +41,7 @@ spec:
   dependsOn:
     - name: crunchy-postgres-operator
     - name: external-secrets
-    - name: longhorn
+    - name: rook-ceph-cluster
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -109,4 +109,4 @@ spec:
   wait: true
   dependsOn:
     - name: crunchy-postgres-operator-cluster
-    - name: longhorn
+    - name: rook-ceph-cluster

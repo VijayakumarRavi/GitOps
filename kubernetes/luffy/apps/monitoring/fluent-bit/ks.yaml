@@ -20,5 +20,5 @@ spec:
   wait: true
   dependsOn:
     - name: external-secrets-stores
-    - name: longhorn
+    - name: rook-ceph-cluster
     - name: loki

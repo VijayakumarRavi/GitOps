@@ -6,6 +6,5 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./longhorn/ks.yaml
   - ./rook-ceph/ks.yaml
   - ./openebs/ks.yaml

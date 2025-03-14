@@ -20,4 +20,4 @@ spec:
   wait: true
   dependsOn:
     - name: alertmanager
-    - name: longhorn
+    - name: rook-ceph-cluster

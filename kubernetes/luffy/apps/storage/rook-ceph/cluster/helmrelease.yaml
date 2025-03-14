@@ -26,7 +26,7 @@ spec:
       dashboard:
         ingressClassName: nginx
         host:
-          name: rook.luffy.vijayakumar.xyz #${CLUSTER_DOMAIN}
+          name: rook.${CLUSTER_DOMAIN}
           path: "/"
     toolbox:
       enabled: true
@@ -91,7 +91,7 @@ spec:
         storageClass:
           enabled: true
           name: ceph-block
-          isDefault: false # change me
+          isDefault: true # change me
           reclaimPolicy: Delete
           allowVolumeExpansion: true
           volumeBindingMode: Immediate

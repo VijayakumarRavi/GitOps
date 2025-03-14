@@ -67,8 +67,8 @@ spec:
       replicas: 1
       persistence:
         enabled: true
-        storageClass: longhorn-cache
-        size: 20Gi
+        storageClass: ceph-block
+        size: 50Gi
     test:
       enabled: false
     write:

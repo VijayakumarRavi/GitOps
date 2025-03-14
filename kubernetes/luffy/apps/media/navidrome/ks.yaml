@@ -18,7 +18,7 @@ spec:
     name: flux-system
   wait: true
   dependsOn:
-    - name: longhorn
+    - name: rook-ceph-cluster
     - name: volsync
     - name: external-secrets-stores
   components:

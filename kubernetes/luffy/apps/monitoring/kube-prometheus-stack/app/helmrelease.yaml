@@ -134,7 +134,7 @@ spec:
           limits:
             memory: 2000M
         retention: 14d
-        retentionSize: 15GB
+        retentionSize: 50GB
         ruleSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
@@ -142,8 +142,8 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: longhorn-local
+              storageClassName: ceph-block
               resources:
                 requests:
-                  storage: 20Gi
+                  storage: 55Gi
         walCompression: true

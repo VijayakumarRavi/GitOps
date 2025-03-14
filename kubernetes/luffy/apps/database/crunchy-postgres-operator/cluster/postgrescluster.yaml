@@ -31,11 +31,11 @@ spec:
           app.kubernetes.io/name: crunchy-postgres
       replicas: &replica 3
       dataVolumeClaimSpec:
-        storageClassName: longhorn-local
+        storageClassName: openebs-hostpath
         accessModes: [ReadWriteOnce]
         resources:
           requests:
-            storage: 20Gi
+            storage: 50Gi
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
