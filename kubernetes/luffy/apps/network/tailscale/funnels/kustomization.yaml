@@ -5,7 +5,8 @@ kind: Kustomization
 resources:
   # Pre Funnel Resources
   - ./proxyclass.yaml
-  - ./connector.yaml
+  - ./luffy-exit-node.yaml
+  - ./luffy-app-connector.yaml
   # Funnel Resources
   - ./flux-webhook-receiver.yaml
   - ./immich.yaml
