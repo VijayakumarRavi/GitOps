@@ -6,7 +6,7 @@ metadata:
   namespace: selfhosted
 spec:
   accessModes: [ReadWriteMany]
-  storageClassName: ceph-block
+  storageClassName: ceph-filesystem
   resources:
     requests:
       storage: 5Gi
