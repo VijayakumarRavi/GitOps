@@ -23,7 +23,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname crunchy-postgres-operator-cluster
+  name: &appname crunchy-postgres-cluster
   namespace: flux-system
 spec:
   targetNamespace: database
@@ -47,7 +47,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname crunchy-postgres-operator-secretstore
+  name: &appname crunchy-postgres-secretstore
   namespace: flux-system
 spec:
   targetNamespace: database
@@ -63,7 +63,7 @@ spec:
     name: flux-system
   wait: true
   dependsOn:
-    - name: crunchy-postgres-operator-cluster
+    - name: crunchy-postgres-cluster
     - name: external-secrets
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -86,7 +86,7 @@ spec:
     name: flux-system
   wait: true
   dependsOn:
-    - name: crunchy-postgres-operator-cluster
+    - name: crunchy-postgres-cluster
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -108,5 +108,5 @@ spec:
     name: flux-system
   wait: true
   dependsOn:
-    - name: crunchy-postgres-operator-cluster
+    - name: crunchy-postgres-cluster
     - name: rook-ceph-cluster

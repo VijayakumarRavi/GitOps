@@ -18,7 +18,6 @@ spec:
     name: flux-system
   wait: true
   dependsOn:
-    - name: crunchy-postgres-operator-cluster
-    - name: crunchy-postgres-operator-secretstore
-    - name: dragonfly-cluster
     - name: nginx
+    - name: dragonfly-cluster
+    - name: crunchy-postgres-secretstore
