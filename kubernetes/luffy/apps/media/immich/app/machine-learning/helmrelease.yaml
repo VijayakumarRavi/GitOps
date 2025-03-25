@@ -42,7 +42,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v1.129.0-openvino
+              tag: v1.130.0-openvino
             env:
               IMMICH_CONFIG_FILE: /config/immich.config.json
             envFrom:
