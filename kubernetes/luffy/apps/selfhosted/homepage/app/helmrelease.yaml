@@ -33,12 +33,15 @@ spec:
         enabled: true
         ingressClassName: nginx
         hosts:
-          - host: dash.${CLUSTER_DOMAIN}
+          - host: &host dash.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
     config:
       useExistingConfigMap: homepage-configs
+    env:
+      - name: HOMEPAGE_ALLOWED_HOSTS
+        value: *host
     envFrom:
       - secretRef:
           name: homepage-env

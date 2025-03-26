@@ -20,10 +20,6 @@
           cpu: true
           memory: true
           showLabel: true
-- longhorn:
-      expanded: true
-      total: true
-      labels: true
 - search:
       provider: duckduckgo
       target: _blank
