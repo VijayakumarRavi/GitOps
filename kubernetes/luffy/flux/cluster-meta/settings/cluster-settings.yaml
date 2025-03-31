@@ -7,4 +7,4 @@ metadata:
 data:
   TIMEZONE: Asia/Kolkata
   # SAN (iSCSI & NFS)
-  NFS_STORAGE_SERVER: tank.home.vijayakumar.xyz
+  NFS_STORAGE_SERVER: tank
