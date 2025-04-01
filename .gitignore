@@ -1,17 +1,31 @@
+# Folders
+ignore/
+logs/
+testing/
+.vscode/
+
 # Trash
 .DS_Store
 Thumbs.db
-# k8s
-kubeconfig
-.decrypted~*.yaml
-.config.env
+
+# Sops
+.decrypted~*
 *.agekey
 *.pub
 *.key
-# Ansible
-.venv*
 
-# Temp
-kubernetes/deprecated/
+# Terraform
+## Local .terraform directories
+**/.terraform/*
 
-.vscode
+## .tfstate files
+*.tfstate
+*.tfstate.*
+
+## terraform plan output
+*tfplan*
+
+# Other files
+kubeconfig
+talosconfig
+.pre-commit-config.yaml
