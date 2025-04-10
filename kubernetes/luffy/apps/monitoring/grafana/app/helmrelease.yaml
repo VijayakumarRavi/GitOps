@@ -34,14 +34,14 @@ spec:
               path: /var/lib/grafana/dashboards/default
             orgId: 1
             type: file
-          # - name: ceph
-          #   orgId: 1
-          #   folder: Ceph
-          #   type: file
-          #   disableDeletion: false
-          #   editable: true
-          #   options:
-          #     path: /var/lib/grafana/dashboards/ceph
+          - name: ceph
+            orgId: 1
+            folder: Ceph
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/ceph
           - name: flux
             orgId: 1
             folder: Flux
@@ -81,13 +81,6 @@ spec:
           gnetId: 20842
           revision: 3
           datasource: Prometheus
-        cloudflared:
-          # renovate: dashboardName="Cloudflare Tunnels (cloudflared)"
-          gnetId: 17457
-          revision: 6
-          datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
         external-secrets:
           url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
           datasource: Prometheus
@@ -121,6 +114,24 @@ spec:
           gnetId: 7845
           revision: 4
           datasource: Prometheus
+
+      ceph:
+        ceph-cluster:
+          # renovate: dashboardName="Ceph Cluster"
+          gnetId: 2842
+          revision: 18
+          datasource: Prometheus
+        ceph-osd:
+          # renovate: dashboardName="Ceph - OSD (Single)"
+          gnetId: 5336
+          revision: 9
+          datasource: Prometheus
+        ceph-pools:
+          # renovate: dashboardName="Ceph - Pools"
+          gnetId: 5342
+          revision: 9
+          datasource: Prometheus
+
       flux:
         flux-cluster:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
