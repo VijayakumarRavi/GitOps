@@ -13,6 +13,10 @@ swap_size_mb = 1024
   dockerfile = "Dockerfile"
 
 [env]
+  PORT="8080"
+  TZ="Asia/Kolkata"
+  GATUS_LOG_LEVEL="INFO"
+  GATUS_CONFIG_PATH="/config"
   GATUS_DELAY_START_SECONDS="5"
 
 [services]

@@ -4,21 +4,27 @@ servers-default-endpoint: &servers-defaults
   interval: 1m
   client:
     timeout: 30s
-  conditions: ['[CONNECTED] == true']
+  conditions: ["[CONNECTED] == true"]
   alerts:
     - type: pushover
 endpoints:
-  - name: firewall
-    url: icmp://10.0.0.1
-    <<: *servers-defaults
   - name: proxmox
     url: icmp://10.0.0.2
     <<: *servers-defaults
   - name: tank
     url: icmp://10.0.0.3
     <<: *servers-defaults
-  - name: nami
+  - name: tinypilot
     url: icmp://10.0.0.4
+    <<: *servers-defaults
+  - name: nami
+    url: icmp://10.0.0.5
+    <<: *servers-defaults
+  - name: dnsproxy lxc
+    url: icmp://10.0.0.10
+    <<: *servers-defaults
+  - name: tailscale lxc
+    url: icmp://10.0.0.251
     <<: *servers-defaults
   - name: zoro
     url: icmp://10.0.1.101
@@ -28,4 +34,7 @@ endpoints:
     <<: *servers-defaults
   - name: chopper
     url: icmp://10.0.1.103
+    <<: *servers-defaults
+  - name: gluetun
+    url: icmp://10.0.1.104
     <<: *servers-defaults

@@ -13,13 +13,13 @@ alerting:
       failure-threshold: 5
       success-threshold: 5
 disable-monitoring-lock: true
-security:
-  oidc:
-    issuer-url: ${OIDC_ISSUER_URL}
-    client-id: ${OIDC_CLIENT_ID}
-    client-secret: ${OIDC_CLIENT_SECRET}
-    redirect-url: https://gatusfly.fly.dev/authorization-code/callback
-    scopes: [openid]
+# security:
+#   oidc:
+#     issuer-url: ${OIDC_ISSUER_URL}
+#     client-id: ${OIDC_CLIENT_ID}
+#     client-secret: ${OIDC_CLIENT_SECRET}
+#     redirect-url: https://gatusfly.fly.dev/authorization-code/callback
+#     scopes: [openid]
 metrics: true
 storage:
   type: postgres

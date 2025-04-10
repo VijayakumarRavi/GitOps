@@ -30,10 +30,6 @@ FROM alpine as final
 # install required dependencies
 RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq curl bash tzdata
 
-# Timezone settings
-ENV TZ=Asia/Kolkata
-RUN cp /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
-
 # creating directories for tailscale
 RUN mkdir -p /var/run/tailscale
 RUN mkdir -p /var/cache/tailscale
@@ -58,12 +54,9 @@ RUN chmod +x /entrypoint.sh
 COPY --from=gatus /gatus /usr/local/bin/gatus
 COPY --from=gatus /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY gatus /config
-ENV GATUS_CONFIG_PATH="/config"
-ENV GATUS_LOG_LEVEL="INFO"
-ENV PORT="8080"
 
 # Expose necessary port for the application
-EXPOSE 8080
+EXPOSE ${PORT}
 
 # Set the entrypoint script as the entrypoint for the container
 ENTRYPOINT ["/entrypoint.sh"]

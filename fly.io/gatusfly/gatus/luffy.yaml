@@ -11,6 +11,9 @@ endpoints:
   - name: Alert manager
     url: https://alertmanager.luffy.vijayakumar.xyz
     <<: *luffy-defaults
+  - name: Authentik
+    url: https://auth.luffy.vijayakumar.xyz
+    <<: *luffy-defaults
   - name: Prometheus
     url: https://prometheus.luffy.vijayakumar.xyz
     <<: *luffy-defaults
@@ -44,6 +47,9 @@ endpoints:
   - name: Sonarr
     url: https://sonarr.luffy.vijayakumar.xyz
     <<: *luffy-defaults
-  - name: Longhorn
-    url: https://longhorn.luffy.vijayakumar.xyz
+  - name: Rook ceph
+    url: https://rook.luffy.vijayakumar.xyz
+    <<: *luffy-defaults
+  - name: Vault
+    url: https://vault.luffy.vijayakumar.xyz
     <<: *luffy-defaults
