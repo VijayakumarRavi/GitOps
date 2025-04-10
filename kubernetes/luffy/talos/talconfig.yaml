@@ -22,6 +22,8 @@ nodes:
   - hostname: zoro
     ipAddress: 10.0.1.101
     controlPlane: true
+    nodeLabels:
+      intel.feature.node.kubernetes.io/gpu: "true"
     installDiskSelector:
       model: CONSISTENT NVME S6 128GB
     networkInterfaces:
@@ -36,6 +38,8 @@ nodes:
   - hostname: usopp
     ipAddress: 10.0.1.102
     controlPlane: true
+    nodeLabels:
+      intel.feature.node.kubernetes.io/gpu: "true"
     installDiskSelector:
       model: CONSISTENT NVME S6 128GB
     networkInterfaces:
@@ -50,6 +54,8 @@ nodes:
   - hostname: chopper
     ipAddress: 10.0.1.103
     controlPlane: true
+    nodeLabels:
+      intel.feature.node.kubernetes.io/gpu: "true"
     installDiskSelector:
       model: CONSISTENT NVME S6 128GB
     networkInterfaces:
@@ -83,8 +89,6 @@ controlPlane:
           - siderolabs/i915
           - siderolabs/intel-ucode
           - siderolabs/mei
-          - siderolabs/intel-ice-firmware
-          - siderolabs/iscsi-tools
 
   patches:
     # Configure containerd
@@ -118,7 +122,7 @@ controlPlane:
             resolveMemberNames: true
             forwardKubeDNSToHost: false
 
-    # Mount longhorn and openebs hostpath in kubelet
+    # Mount openebs-hostpath in kubelet
     - |-
       machine:
         kubelet:
