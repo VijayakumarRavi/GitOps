@@ -1,4 +1,5 @@
 tailscale-daemon: /usr/local/bin/tailscaled --port 41641 --state=mem: --tun=userspace-networking --socks5-server=localhost:1055 --statedir=/data/tailscale --socket=/var/run/tailscale/tailscaled.sock
 tailscale: tailscale up --accept-dns=false --accept-routes --advertise-exit-node --hostname=${FLY_APP_NAME} --advertise-tags=tag:fly-exit --authkey=${TS_OAUTH_CLIENT_SECRET}?preauthorized=true
 adguard: /opt/adguardhome/AdGuardHome --no-check-update -c /data/AdGuardHome/AdGuardHome.yaml -h 0.0.0.0 -w /data/AdGuardHome
-certbot: /certbot.sh
+cf_tunnel: cloudflared tunnel --no-autoupdate run --token "$CLOUDFLARE_TUNNEL_TOKEN"
+lego: /lego.sh
