@@ -13,7 +13,7 @@ mkdir -pv /data/tailscale
 
 #Set dnsproxy as dns server and starting it
 echo "nameserver 127.0.0.1" > /etc/resolv.conf && \
-  overmind start -l dnsproxy -f /Procfile -s /data/overmind.dns.sock &
+  overmind start -l dnsproxy -f /Procfile -s /overmind.dns.sock &
 echo -e "${GREEN}Info: Changed dns to dnsproxy(127.0.0.1)"
 
 # error: adding [-i tailscale0 -j MARK --set-mark 0x40000] in v4/filter/ts-forward: running [/sbin/iptables -t filter -A ts-forward -i tailscale0 -j MARK --set-mark 0x40000 --wait]: exit status 2: iptables v1.8.6 (legacy): unknown option "--set-mark"
