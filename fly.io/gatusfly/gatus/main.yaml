@@ -22,9 +22,8 @@ disable-monitoring-lock: true
 #     scopes: [openid]
 metrics: true
 storage:
-  type: postgres
-  caching: true
-  path: ${DATABASE_URL}
+  type: sqlite
+  path: /data/data.db
 endpoints:
   - name: Blog
     group: core

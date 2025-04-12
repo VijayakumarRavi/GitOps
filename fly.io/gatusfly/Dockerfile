@@ -1,6 +1,8 @@
 ARG GATUS_VERSION=v5.17.0
 ARG TAILSCALE_VERSION=v1.82.0
 ARG DNSPROXY_VERSION=v0.75.2
+ARG CLOUDFLARED_VERSION=2025.4.0
+
 # Builder for Overmind download
 FROM alpine as overmind
 
@@ -25,15 +27,20 @@ FROM adguard/dnsproxy:${DNSPROXY_VERSION} as dnsproxy
 # Gatus Kuma build stage
 FROM twinproduction/gatus:${GATUS_VERSION} as gatus
 
+# Cloudflared stage to fetch the latest cloudflared package
+FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
+
 FROM alpine as final
 
 # install required dependencies
 RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq curl bash tzdata
 
+# Timezone settings
+ENV TZ=Asia/Kolkata
+RUN cp /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+
 # creating directories for tailscale
-RUN mkdir -p /var/run/tailscale
-RUN mkdir -p /var/cache/tailscale
-RUN mkdir -p /var/lib/tailscale
+RUN mkdir -p /var/run/tailscale /var/cache/tailscale /var/lib/tailscale
 
 # Copy tailscale binary
 COPY --from=tailscale /usr/local/bin/tailscaled /usr/local/bin/tailscaled
@@ -41,6 +48,9 @@ COPY --from=tailscale /usr/local/bin/tailscale /usr/local/bin/tailscale
 
 # Copy dnsproxy binary
 COPY --from=dnsproxy /opt/dnsproxy/dnsproxy /usr/local/bin/dnsproxy
+
+# Copy Cloudflared binary
+COPY --from=cloudflared /usr/local/bin/cloudflared /usr/local/bin/cloudflared
 
 # Copy Overmind binary
 COPY --from=overmind /usr/local/bin/overmind /usr/local/bin/overmind
@@ -55,11 +65,8 @@ COPY --from=gatus /gatus /usr/local/bin/gatus
 COPY --from=gatus /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY gatus /config
 
-# Expose necessary port for the application
-EXPOSE ${PORT}
-
 # Set the entrypoint script as the entrypoint for the container
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Start Overmind
-CMD ["overmind", "start","-f", "/Procfile", "-c", "tailscale", "-x", "dnsproxy", "-r", "all", "-s", "/data/overmind.Gatus.sock"]
+CMD ["overmind", "start","-f", "/Procfile", "-c", "tailscale", "-x", "dnsproxy", "-r", "all", "-s", "/data/overmind.gatus.sock"]

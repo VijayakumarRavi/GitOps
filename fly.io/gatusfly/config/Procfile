@@ -1,4 +1,5 @@
 gatus: gatus
+cf_tunnel: cloudflared tunnel --no-autoupdate run --token "$CLOUDFLARE_TUNNEL_TOKEN"
 dnsproxy: dnsproxy -u https://dns.vijayakumar.xyz/dns-query/gatus -b 1.1.1.1 -f 1.1.1.1 --cache
-tailscale-daemon: tailscaled --port 41641 --state=mem: --statedir=/data/tailscale --socket=/var/run/tailscale/tailscaled.sock
+tailscale-daemon: tailscaled --port 41641 --state=mem: --statedir=/data/tailscale --socket=/var/run/tailscale/tailscaled.sock >> /dev/null 2>&1
 tailscale: tailscale up --accept-dns=false --accept-routes --advertise-exit-node --hostname=${FLY_APP_NAME} --advertise-tags=tag:fly-exit --authkey=${TS_OAUTH_CLIENT_SECRET}?preauthorized=true
