@@ -34,5 +34,13 @@ curl -s "https://api.tailscale.com/api/v2/tailnet/-/devices" -u "$apikey:" | jq 
     fi
   done
 
+restic restore latest --target=/ --verbose=2 --cleanup-cache
+if [ $? -ne 0 ]; then
+  echo -e "${RED}Error: Restic restore failed. Please check your restic configuration.${NC}"
+  exit 1
+else
+  echo -e "${GREEN}Info: Restic restore completed successfully.${NC}"
+fi
+
 # Execute the CMD
 exec "$@"

@@ -4,10 +4,12 @@ ARG LEGO_VERSION=v4.22
 ARG CLOUDFLARED_VERSION=2025.4.0
 
 # Builder for Overmind download
-FROM alpine as overmind
+FROM alpine as builder
 
 # renovate: datasource=github-releases depName=DarthSim/overmind
 ARG OVERMIND_VERSION=v2.5.1
+# renovate: datasource=github-releases depName=aptible/supercronic
+ARG SUPERCRONIC_VERSION=v0.2.33
 
 # install dependencies
 RUN apk add --no-cache wget gzip
@@ -17,6 +19,9 @@ RUN wget -O overmind.gz "https://github.com/DarthSim/overmind/releases/download/
   && gunzip overmind.gz \
   && chmod +x overmind \
   && mv overmind /usr/local/bin/
+
+RUN wget -O /usr/local/bin/supercronic "https://github.com/aptible/supercronic/releases/download/${SUPERCRONIC_VERSION}/supercronic-linux-amd64" \
+  && chmod +x /usr/local/bin/supercronic
 
 # Tailscale stage to fetch the latest Tailscale package
 FROM tailscale/tailscale:${TAILSCALE_VERSION} as tailscale
@@ -31,7 +36,7 @@ FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
 FROM adguard/adguardhome:${ADGUARD_VERSION}
 
 # install required dependencies
-RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq bash curl tzdata
+RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq bash curl tzdata restic uuidgen
 
 # Timezone settings
 ENV TZ=Asia/Kolkata
@@ -51,24 +56,19 @@ COPY --from=lego /lego /usr/local/bin/lego
 COPY --from=cloudflared /usr/local/bin/cloudflared /usr/local/bin/cloudflared
 
 # Copy Overmind binary
-COPY --from=overmind /usr/local/bin/overmind /usr/local/bin/overmind
+COPY --from=builder /usr/local/bin/overmind /usr/local/bin/overmind
+
+# Copy Supercronic binary 
+COPY --from=builder /usr/local/bin/supercronic /usr/local/bin/supercronic
 
 # Copy files to docker
-COPY config/lego.sh /lego.sh
-COPY config/Procfile /Procfile
-COPY config/entrypoint.sh /entrypoint.sh
+COPY config/ / 
 
 # Chmod the scripts
-RUN chmod +x /lego.sh /entrypoint.sh
-
-HEALTHCHECK \
-  --interval=30s \
-  --timeout=10s \
-  --retries=3 \
-  CMD [ "/opt/adguardhome/scripts/healthcheck.sh" ]
+RUN chmod +x -v /*.sh
 
 # Set the entrypoint script as the entrypoint for the container
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Start Overmind
-CMD ["overmind", "start","-f", "/Procfile", "-c", "tailscale", "-r", "all", "-s", "/data/overmind.AGH.sock"]
+CMD ["overmind", "start","-f", "/Procfile", "-c", "tailscale", "-r", "all", "-s", "/overmind.AGH.sock"]
