@@ -3,6 +3,7 @@ set -euo pipefail
 
 WORKING_DIR="/data/lego"
 LEGO_BIN="/usr/local/bin/lego"
+CLOUDFLARE_DNS_API_TOKEN="${CLOUDFLARE_API_KEY}"
 
 mkdir -pv "${WORKING_DIR}"
 

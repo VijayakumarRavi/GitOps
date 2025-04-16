@@ -63,7 +63,7 @@ function notify_and_exit_on_error() {
 }
 
 function finish_successfully() {
-    curl -fsS --retry 3 "https://hc-ping.com/${RESTIC_HC_PING_UUID}?rid=${RID}" >/dev/null 2>&1
+    curl -fsS --retry 3 "https://hc-ping.com/${RESTIC_HC_PING_UUID}?rid=${RID}" -d "$output" >/dev/null 2>&1
 }
 
 # ##############
