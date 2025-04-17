@@ -26,4 +26,5 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      VOLSYNC_CAPACITY: 5Gi
       VOLSYNC_CLAIM: jellyfin-config
