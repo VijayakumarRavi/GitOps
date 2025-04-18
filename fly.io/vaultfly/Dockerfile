@@ -11,7 +11,7 @@ ARG OVERMIND_VERSION=v2.5.1
 # renovate: datasource=github-releases depName=aptible/supercronic
 ARG SUPERCRONIC_VERSION=v0.2.33
 # renovate: datasource=github-releases depName=caddyserver/caddy
-ARG CADDY_VERSION=v2.9.1
+ARG CADDY_VERSION=v2.10.0
 
 # install dependencies
 RUN apk add --no-cache wget gzip
