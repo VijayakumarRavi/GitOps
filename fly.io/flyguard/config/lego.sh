@@ -50,7 +50,7 @@ else
     echo "🆕 Requesting certificate for ${DOMAIN_NAME}"
 fi
 
-output=$(eval '"$LEGO_BIN" \
+output=$(eval 'CLOUDFLARE_DNS_API_TOKEN=${CLOUDFLARE_API_KEY} "$LEGO_BIN" \
     --accept-tos \
     --email "$LEGO_EMAIL" \
     --dns cloudflare \

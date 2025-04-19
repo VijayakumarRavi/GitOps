@@ -2,7 +2,7 @@
 ui:
   header: Vijay's lab
   link: https://gatusfly.fly.dev
-  logo: https://s3.vijayakumar.xyz/assets/luffy.png
+  logo: https://pnganime.com/web/image-thumbnails/82/504-md.png
 alerting:
   pushover:
     application-token: ${PUSHOVER_APPLICATION_TOKEN}

@@ -3,6 +3,7 @@
 ![kubefetch](./assets/kubefetch.png)
 
 Leverages [flux](https://github.com/fluxcd/flux2) to automate cluster state using code residing in this repo
+This repo also contains my private [DOH server](../fly.io/flyguard) and [Vaultwarden](../fly.io/vaultfly) server hosted on fly.io
 
 ## :computer:&nbsp; Infrastructure
 
