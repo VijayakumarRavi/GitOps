@@ -11,4 +11,5 @@ resources:
   - ./flux-webhook-receiver.yaml
   - ./immich.yaml
   - ./jellyfin.yaml
+  - ./kromgo.yaml
   - ./vaultwarden.yaml

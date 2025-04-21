@@ -1,0 +1,19 @@
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kromgo-funnel
+  namespace: monitoring
+  annotations:
+    tailscale.com/funnel: "true"
+    tailscale.com/proxy-class: "luffy-ts-proxy"
+spec:
+  defaultBackend:
+    service:
+      name: kromgo
+      port:
+        name: http
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - kromgo

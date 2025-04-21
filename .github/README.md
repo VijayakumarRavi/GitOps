@@ -1,9 +1,24 @@
-# GitOps Workflow for Kubernetes Cluster
+<div align="center">
 
-![kubefetch](./assets/kubefetch.png)
+ # GitOps Workflow for Kubernetes Cluster
 
-Leverages [flux](https://github.com/fluxcd/flux2) to automate cluster state using code residing in this repo
-This repo also contains my private [DOH server](../fly.io/flyguard) and [Vaultwarden](../fly.io/vaultfly) server hosted on fly.io
+_managed by [flux](https://github.com/fluxcd/flux2), [Renovate](https://github.com/renovatebot/renovate) and [GitHub Actions](https://github.com/features/actions)_ :robot:
+
+Kubernetes cluster stats:
+
+[![Talos](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.bjw-s.dev%2Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&color=orange&label=talos)](https://talos.dev)&nbsp;
+[![Kubernetes](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.bjw-s.dev%2Fkubernetes_version&style=for-the-badge&logo=kubernetes&logoColor=white&color=blue&label=k8s)](https://kubernetes.io)&nbsp;&nbsp;
+[![Flux](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.bjw-s.dev%2Fflux_version&style=for-the-badge&logo=flux&logoColor=white&color=blue&label=flux)](https://fluxcd.io)
+
+[![Age-Days](https://kromgo.hamlet-ide.ts.net/cluster_age_days?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Node-Count](https://kromgo.hamlet-ide.ts.net/cluster_node_count?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Alerts](https://kromgo.hamlet-ide.ts.net/cluster_alert_count?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Pod-Count](https://kromgo.hamlet-ide.ts.net/cluster_pod_count?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![CPU-Usage](https://kromgo.hamlet-ide.ts.net/cluster_cpu_usage?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Memory-Usage](https://kromgo.hamlet-ide.ts.net/cluster_memory_usage?format=badge)](https://github.com/kashalls/kromgo/)
+
+</div>
+<br>
 
 ## :computer:&nbsp; Infrastructure
 
@@ -53,3 +68,5 @@ task k8s-bootstrap:apps
 
 * [Renovate](https://github.com/renovatebot/renovate) keeps workloads up-to-date by scanning the repo and opening pull requests when it detects a new container image update or a new helm chart
 * [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) automatically upgrades talos and kubernetes to new versions as they are released
+
+
