@@ -10,8 +10,6 @@ spec:
     name: app-template
     namespace: flux-system
   interval: 30m
-  dependsOn:
-    - name: rook-ceph-cluster
   values:
     controllers:
       plex:
@@ -24,7 +22,7 @@ spec:
             supplementalGroups:
               - 44
               - 109
-              - 65542 # gladius:external-services
+              - 65542
 
         containers:
           app:
@@ -32,8 +30,13 @@ spec:
               repository: ghcr.io/home-operations/plex
               tag: 1.41.6.9685
             env:
-              PLEX_ADVERTISE_URL: https://10.0.1.4:32400,https://plex.bjw-s.dev:443
+              PLEX_ADVERTISE_URL: https://10.0.1.4:32400,https://plex.${CLUSTER_DOMAIN}:443
               PLEX_NO_AUTH_NETWORKS: 10.244.0.0/16
+              PLEX_CLAIM_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: plex-claim-secret
+                    key: PLEX_CLAIM
             probes:
               liveness: &probes
                 enabled: true
@@ -63,7 +66,6 @@ spec:
                 cpu: 100m
               limits:
                 gpu.intel.com/i915: 1
-                memory: 9248M
 
     service:
       app:
@@ -107,7 +109,7 @@ spec:
               - path: /config/Library/Application Support/Plex Media Server/Logs
       nfs-nas-media:
         type: nfs
-        server: gladius.bjw-s.internal
+        server: ${NFS_STORAGE_SERVER}
         path: /mnt/tank/Media
         advancedMounts:
           plex:
