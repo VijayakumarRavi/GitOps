@@ -10,3 +10,4 @@ resources:
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./navidrome/ks.yaml
+  - ./plex/ks.yaml
