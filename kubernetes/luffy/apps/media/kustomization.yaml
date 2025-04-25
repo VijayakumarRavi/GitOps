@@ -12,3 +12,4 @@ resources:
   - ./maintainerr/ks.yaml
   - ./navidrome/ks.yaml
   - ./plex/ks.yaml
+  - ./tautulli/ks.yaml
