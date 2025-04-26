@@ -37,7 +37,7 @@ spec:
           tagging: &container
             image:
               repository: ghcr.io/buroa/qbtools
-              tag: v0.19.16
+              tag: v0.19.17
             env:
               QBIT_USERNAME:
                 valueFrom:
