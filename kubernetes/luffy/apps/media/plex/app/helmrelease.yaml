@@ -30,7 +30,6 @@ spec:
               repository: ghcr.io/home-operations/plex
               tag: 1.41.6.9685
             env:
-              PLEX_ADVERTISE_URL: https://10.0.1.4:32400,https://plex.${CLUSTER_DOMAIN}:443
               PLEX_NO_AUTH_NETWORKS: 10.244.0.0/16,172.16.0.0/12
             probes:
               liveness: &probes
