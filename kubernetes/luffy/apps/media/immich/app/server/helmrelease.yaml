@@ -32,7 +32,7 @@ spec:
       immich-server:
         annotations:
           reloader.stakater.com/auto: "true"
-        replicas: 3
+        replicas: 2
         containers:
           app:
             image:
