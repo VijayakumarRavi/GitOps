@@ -11,6 +11,7 @@ resources:
   - ./coredns.yaml
   - ./crunchy-userinit.yaml
   - ./crunchydata.yaml
+  - ./descheduler.yaml
   - ./external-secrets.yaml
   - ./fluent.yaml
   - ./fluxcd-kustomize-mutating-webhook.yaml
