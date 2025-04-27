@@ -38,17 +38,6 @@ spec:
             image:
               repository: ghcr.io/buroa/qbtools
               tag: v0.19.17
-            env:
-              QBIT_USERNAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: qbtools-secret
-                    key: QBIT_USERNAME
-              QBIT_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: qbtools-secret
-                    key: QBIT_PASSWORD
             args:
               - tagging
               - --added-on
@@ -60,10 +49,6 @@ spec:
               - &qbittorrent_host qbittorrent.downloads.svc.cluster.local
               - --port
               - &qbittorrent_port "8080"
-              - --username
-              - &qbittorrent_username "$(QBIT_USERNAME)"
-              - --password
-              - &qbittorrent_password "$(QBIT_PASSWORD)"
               - --config
               - /config/config.yaml
             resources:
@@ -94,10 +79,6 @@ spec:
               - *qbittorrent_host
               - --port
               - *qbittorrent_port
-              - --username
-              - *qbittorrent_username
-              - --password
-              - *qbittorrent_password
           unregistered:
             <<: *container
             args:
@@ -114,10 +95,6 @@ spec:
               - *qbittorrent_host
               - --port
               - *qbittorrent_port
-              - --username
-              - *qbittorrent_username
-              - --password
-              - *qbittorrent_password
       orphaned:
         type: cronjob
         cronjob:
@@ -138,10 +115,6 @@ spec:
               - *qbittorrent_host
               - --port
               - *qbittorrent_port
-              - --username
-              - *qbittorrent_username
-              - --password
-              - *qbittorrent_password
       reannounce:
         containers:
           app:
@@ -153,10 +126,6 @@ spec:
               - *qbittorrent_host
               - --port
               - *qbittorrent_port
-              - --username
-              - *qbittorrent_username
-              - --password
-              - *qbittorrent_password
     persistence:
       config-file:
         type: secret
