@@ -34,7 +34,7 @@ spec:
               PLEX_BASEURL: http://plex.media.svc.cluster.local:32400
               PLEX_LOCALURL: http://plex.media.svc.cluster.local:32400
               PLEX_USERNAME: vijaysrv
-              TRAKT_USERNAME: vijaysrv
+              TRAKT_USERNAME: vijayakumarravi
             probes:
               liveness:
                 enabled: false
