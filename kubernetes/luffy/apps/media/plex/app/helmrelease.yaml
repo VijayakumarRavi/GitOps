@@ -30,7 +30,7 @@ spec:
               repository: ghcr.io/home-operations/plex
               tag: 1.41.6.9685
             env:
-              PLEX_NO_AUTH_NETWORKS: 10.244.0.0/16,172.16.0.0/12
+              PLEX_NO_AUTH_NETWORKS: 10.0.0.0/16,172.16.0.0/12
             probes:
               liveness: &probes
                 enabled: true
