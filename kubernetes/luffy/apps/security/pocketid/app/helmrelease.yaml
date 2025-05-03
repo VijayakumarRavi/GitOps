@@ -1,0 +1,77 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pocketid
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 30m
+  values:
+    controllers:
+      pocketid:
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: "OnRootMismatch"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/pocket-id/pocket-id
+              tag: v0.51.0
+            env:
+              TRUST_PROXY: true
+              EMAIL_LOGIN_NOTIFICATION_ENABLED: true
+              PUBLIC_APP_URL: https://id.${CLUSTER_DOMAIN}
+            envFrom:
+              - secretRef:
+                  name: pocketid-secret
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128M
+              limits:
+                memory: 512M
+
+    service:
+      app:
+        controller: pocketid
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.0.1.5
+        ports:
+          http:
+            port: 80
+
+    ingress:
+      app:
+        className: nginx
+        hosts:
+          - host: id.${CLUSTER_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: pocketid-config
+        advancedMounts:
+          pocketid:
+            app:
+              - path: /app/backend/data
