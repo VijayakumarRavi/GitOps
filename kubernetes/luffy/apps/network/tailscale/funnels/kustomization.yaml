@@ -10,6 +10,6 @@ resources:
   # Funnel Resources
   - ./flux-webhook-receiver.yaml
   - ./immich.yaml
-  - ./jellyfin.yaml
+  - ./plex.yaml
   - ./kromgo.yaml
   - ./vaultwarden.yaml

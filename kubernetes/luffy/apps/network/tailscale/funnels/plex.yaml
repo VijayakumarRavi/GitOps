@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: jellyfin-funnel
+  name: plex-funnel
   namespace: media
   annotations:
     tailscale.com/funnel: "true"
@@ -9,10 +9,10 @@ metadata:
 spec:
   defaultBackend:
     service:
-      name: jellyfin
+      name: plex
       port:
         name: http
   ingressClassName: tailscale
   tls:
     - hosts:
-        - jellyfin
+        - plex
