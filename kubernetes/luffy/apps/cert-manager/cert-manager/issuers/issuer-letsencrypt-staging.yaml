@@ -19,4 +19,4 @@ spec:
               key: api-token
         selector:
           dnsZones:
-            - ${CLUSTER_DOMAIN}
+            - vjlab.dev

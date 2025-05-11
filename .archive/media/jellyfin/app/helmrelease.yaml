@@ -70,7 +70,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: jellyfin.${CLUSTER_DOMAIN}
+          - host: jellyfin.vjlab.dev
             paths:
               - path: /
                 service:

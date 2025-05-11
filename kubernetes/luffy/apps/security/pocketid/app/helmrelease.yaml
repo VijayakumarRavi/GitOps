@@ -28,7 +28,7 @@ spec:
             env:
               TRUST_PROXY: true
               EMAIL_LOGIN_NOTIFICATION_ENABLED: true
-              PUBLIC_APP_URL: https://id.${CLUSTER_DOMAIN}
+              PUBLIC_APP_URL: https://id.vjlab.dev
             envFrom:
               - secretRef:
                   name: pocketid-secret
@@ -60,7 +60,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: id.${CLUSTER_DOMAIN}
+          - host: id.vjlab.dev
             paths:
               - path: /
                 service:

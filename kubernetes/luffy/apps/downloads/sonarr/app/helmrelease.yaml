@@ -74,7 +74,7 @@ spec:
         enabled: true
         className: nginx
         hosts:
-          - host: sonarr.${CLUSTER_DOMAIN}
+          - host: sonarr.vjlab.dev
             paths:
               - path: /
                 service:

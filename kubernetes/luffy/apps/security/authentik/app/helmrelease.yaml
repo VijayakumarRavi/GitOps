@@ -73,9 +73,9 @@ spec:
         enabled: true
         ingressClassName: nginx
         hosts:
-          - auth.${CLUSTER_DOMAIN}
+          - auth.vjlab.dev
         rules:
-          - host: auth.${CLUSTER_DOMAIN}
+          - host: auth.vjlab.dev
             http:
               paths:
                 - path: /

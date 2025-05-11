@@ -51,7 +51,7 @@ spec:
         enabled: true
         className: nginx
         hosts:
-          - host: jellyseerr.${CLUSTER_DOMAIN}
+          - host: jellyseerr.vjlab.dev
             paths:
               - path: /
                 service:

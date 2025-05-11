@@ -2,15 +2,15 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 clusterName: &clusterName luffy
 
-endpoint: https://luffy.vijayakumar.xyz:6443
+endpoint: https://luffy.vjlab.dev:6443
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: v1.10.1 
+talosVersion: v1.10.1
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
 kubernetesVersion: v1.32.4
 
 additionalApiServerCertSans: &sans
-  - luffy.vijayakumar.xyz
+  - luffy.vjlab.dev
   - &talosControlplaneVip 10.0.1.100
   - 127.0.0.1 # KubePrism
 additionalMachineCertSans: *sans
@@ -204,7 +204,7 @@ controlPlane:
           extraHostEntries:
             - ip: 10.0.1.100
               aliases:
-                - luffy.vijayakumar.xyz
+                - luffy.vjlab.dev
 
     # Configure custom sysctls
     - |-

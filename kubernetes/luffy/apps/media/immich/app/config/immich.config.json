@@ -9,9 +9,20 @@
   "ffmpeg": {
     "accel": "qsv",
     "accelDecode": true,
-    "acceptedAudioCodecs": ["aac", "mp3", "libopus", "pcm_s16le"],
-    "acceptedContainers": ["mov", "ogg", "webm"],
-    "acceptedVideoCodecs": ["h264"],
+    "acceptedAudioCodecs": [
+      "aac",
+      "mp3",
+      "libopus",
+      "pcm_s16le"
+    ],
+    "acceptedContainers": [
+      "mov",
+      "ogg",
+      "webm"
+    ],
+    "acceptedVideoCodecs": [
+      "h264"
+    ],
     "bframes": -1,
     "cqMode": "auto",
     "crf": 23,
@@ -108,7 +119,9 @@
       "minScore": 0.7,
       "modelName": "antelopev2"
     },
-    "urls": ["http://immich-machine-learning.media.svc.cluster.local:3003"]
+    "urls": [
+      "http://immich-machine-learning.media.svc.cluster.local:3003"
+    ]
   },
   "map": {
     "darkStyle": "https://tiles.immich.cloud/v1/style/dark.json",
@@ -126,10 +139,10 @@
   "notifications": {
     "smtp": {
       "enabled": true,
-      "from": "immich@vijayakumar.xyz",
+      "from": "{{ .immich_smtp_from }}",
       "replyTo": "",
       "transport": {
-        "host": "smtp-relay.brevo.com",
+        "host": "{{ .immich_smtp_host }}",
         "ignoreCert": false,
         "password": "{{ .immich_smtp_password }}",
         "port": 587,
@@ -161,7 +174,7 @@
     "enabled": true
   },
   "server": {
-    "externalDomain": "https://immich.${CLUSTER_DOMAIN}",
+    "externalDomain": "https://immich.vjlab.dev",
     "loginPageMessage": "Welcome to Vijay's gallery",
     "publicUsers": true
   },

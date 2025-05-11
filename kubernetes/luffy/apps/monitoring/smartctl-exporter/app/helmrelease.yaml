@@ -28,7 +28,7 @@ spec:
           regex: (pod)
         - action: replace
           regex: (.*)
-          replacement: $1.${CLUSTER_DOMAIN}
+          replacement: $1.vjlab.dev
           sourceLabels:
             - __meta_kubernetes_endpoint_node_name
           targetLabel: instance

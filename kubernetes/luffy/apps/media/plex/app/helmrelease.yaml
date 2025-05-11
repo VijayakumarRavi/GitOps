@@ -75,7 +75,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: plex.${CLUSTER_DOMAIN}
+          - host: plex.vjlab.dev
             paths:
               - path: /
                 service:

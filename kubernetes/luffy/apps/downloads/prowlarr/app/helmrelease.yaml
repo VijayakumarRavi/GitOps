@@ -77,7 +77,7 @@ spec:
         enabled: true
         className: nginx
         hosts:
-          - host: prowlarr.${CLUSTER_DOMAIN}
+          - host: prowlarr.vjlab.dev
             paths:
               - path: /
                 service:

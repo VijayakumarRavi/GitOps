@@ -50,7 +50,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: vault.${CLUSTER_DOMAIN}
+          - host: vault.vjlab.dev
             paths:
               - path: /
                 service:

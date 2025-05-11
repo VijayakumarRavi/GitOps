@@ -110,7 +110,7 @@ spec:
         enabled: true
         ingressClassName: nginx
         hosts:
-          - prometheus.${CLUSTER_DOMAIN}
+          - prometheus.vjlab.dev
         pathType: Prefix
 
       prometheusSpec:
