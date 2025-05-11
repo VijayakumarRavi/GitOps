@@ -18,4 +18,5 @@ spec:
               name: cloudflare-api-token
               key: api-token
         selector:
-          dnsZones: [vijayakumar.xyz]
+          dnsZones:
+            - ${CLUSTER_DOMAIN}

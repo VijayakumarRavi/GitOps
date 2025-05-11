@@ -5,9 +5,9 @@ clusterName: &clusterName luffy
 endpoint: https://luffy.vijayakumar.xyz:6443
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: v1.9.4
+talosVersion: v1.10.1 
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.32.2
+kubernetesVersion: v1.32.4
 
 additionalApiServerCertSans: &sans
   - luffy.vijayakumar.xyz
