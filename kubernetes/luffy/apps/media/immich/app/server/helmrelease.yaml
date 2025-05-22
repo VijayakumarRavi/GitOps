@@ -65,7 +65,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: immich.vjlab.dev
+          - host: immich.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

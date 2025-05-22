@@ -25,7 +25,7 @@ spec:
             args:
               - "--storage.path=/alertmanager"
               - "--config.file=/etc/alertmanager/alertmanager.yml"
-              - "--web.external-url=https://alertmanager.vjlab.dev"
+              - "--web.external-url=https://alertmanager.${CLUSTER_DOMAIN}"
             ports:
               - name: http
                 containerPort: 9093
@@ -57,7 +57,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: alertmanager.vjlab.dev
+          - host: alertmanager.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

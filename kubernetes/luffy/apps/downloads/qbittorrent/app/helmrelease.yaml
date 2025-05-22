@@ -73,7 +73,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: torrent.vjlab.dev
+          - host: torrent.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

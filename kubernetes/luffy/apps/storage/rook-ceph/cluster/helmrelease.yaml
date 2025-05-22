@@ -26,7 +26,7 @@ spec:
       dashboard:
         ingressClassName: nginx
         host:
-          name: rook.vjlab.dev
+          name: rook.${CLUSTER_DOMAIN}
           path: "/"
     toolbox:
       enabled: true

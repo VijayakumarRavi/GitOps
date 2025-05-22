@@ -54,7 +54,7 @@ spec:
       uptime:
         className: nginx
         hosts:
-          - host: uptime.vjlab.dev
+          - host: uptime.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

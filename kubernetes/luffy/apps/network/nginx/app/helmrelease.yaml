@@ -87,8 +87,8 @@ spec:
             any: true
 
       extraArgs:
-        default-ssl-certificate: "network/vjlab.dev-tls"
-        publish-status-address: vjlab.dev
+        default-ssl-certificate: "network/${CLUSTER_DOMAIN}-tls"
+        publish-status-address: ${CLUSTER_DOMAIN}
 
       topologySpreadConstraints:
         - maxSkew: 1

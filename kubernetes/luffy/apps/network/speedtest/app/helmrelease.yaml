@@ -27,8 +27,8 @@ spec:
               DISPLAY_TIMEZONE: "${TIMEZONE}"
               SPEEDTEST_SCHEDULE: "6 * * * *"
               PRUNE_RESULTS_OLDER_THAN: "90"
-              APP_URL: "https://speedtest.vjlab.dev"
-              ASSET_URL: "https://speedtest.vjlab.dev"
+              APP_URL: "https://speedtest.${CLUSTER_DOMAIN}"
+              ASSET_URL: "https://speedtest.${CLUSTER_DOMAIN}"
             envFrom:
               - secretRef:
                   name: speedtest-secret
@@ -60,7 +60,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: speedtest.vjlab.dev
+          - host: speedtest.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:
