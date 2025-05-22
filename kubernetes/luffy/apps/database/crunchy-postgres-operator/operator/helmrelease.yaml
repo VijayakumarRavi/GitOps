@@ -6,15 +6,10 @@ metadata:
   name: crunchy-postgres-operator
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: pgo
-      version: 5.8.2
-      sourceRef:
-        kind: HelmRepository
-        name: crunchydata
-        namespace: flux-system
-      interval: 5m
+  chartRef:
+    kind: OCIRepository
+    name: crunchydata
+    namespace: flux-system
   values:
     install:
       clusterLabels:
