@@ -60,7 +60,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: reddit.vjlab.dev
+          - host: reddit.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

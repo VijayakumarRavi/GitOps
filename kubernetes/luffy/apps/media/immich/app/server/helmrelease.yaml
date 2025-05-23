@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.132.3
+              tag: v1.133.0
             env:
               IMMICH_WORKERS_INCLUDE: api
               IMMICH_CONFIG_FILE: /config/immich.config.json
@@ -65,7 +65,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: immich.vjlab.dev
+          - host: immich.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

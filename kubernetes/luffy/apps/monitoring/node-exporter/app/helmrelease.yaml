@@ -42,7 +42,7 @@ spec:
             targetLabel: nodename
           - action: replace
             regex: (.*)
-            replacement: $1.vjlab.dev:9100
+            replacement: $1.${CLUSTER_DOMAIN}:9100
             sourceLabels:
               - kubernetes_node
             targetLabel: instance

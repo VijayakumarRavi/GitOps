@@ -61,7 +61,7 @@ spec:
       app:
         className: nginx
         hosts:
-          - host: navidrome.vjlab.dev
+          - host: navidrome.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

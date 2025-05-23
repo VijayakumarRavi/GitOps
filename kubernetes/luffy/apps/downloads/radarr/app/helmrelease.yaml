@@ -28,14 +28,14 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/radarr
-              tag: 5.23.1.9914
+              tag: 5.23.3.9987
             env:
               COMPlus_EnableDiagnostics: "0"
               RADARR__INSTANCE_NAME: Radarr
               RADARR__PORT: &port 7878
               RADARR__AUTHENTICATION_METHOD: External
               RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-              RADARR__APPLICATION_URL: https://radarr.vjlab.dev
+              RADARR__APPLICATION_URL: https://radarr.${CLUSTER_DOMAIN}
               RADARR__LOG_LEVEL: info
               RADARR__API_KEY:
                 valueFrom:
@@ -74,7 +74,7 @@ spec:
         enabled: true
         className: nginx
         hosts:
-          - host: radarr.vjlab.dev
+          - host: radarr.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

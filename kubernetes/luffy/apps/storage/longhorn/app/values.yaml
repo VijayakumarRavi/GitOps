@@ -2,7 +2,7 @@
 ingress:
   enabled: true
   ingressClassName: nginx
-  host: longhorn.vjlab.dev
+  host: longhorn.${CLUSTER_DOMAIN}
   path: /
 persistence:
   defaultClass: true

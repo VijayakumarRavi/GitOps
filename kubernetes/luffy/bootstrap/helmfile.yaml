@@ -11,8 +11,6 @@ helmDefaults:
 repositories:
   - name: cilium
     url: https://helm.cilium.io
-  - name: longhorn
-    url: https://charts.longhorn.io
 
 releases:
   - name: prometheus-operator-crds
@@ -23,7 +21,7 @@ releases:
   - name: cilium
     namespace: network
     chart: cilium/cilium
-    version: 1.17.3
+    version: 1.17.4
     values:
       - ../apps/network/cilium/app/values.yaml
     needs:
@@ -38,15 +36,6 @@ releases:
     needs:
       - network/cilium
 
-  - name: longhorn
-    namespace: storage
-    chart: longhorn/longhorn
-    version: 1.8.1
-    values:
-      - ../apps/storage/longhorn/app/values.yaml
-    needs:
-      - network/coredns
-
   - name: flux-operator
     namespace: flux-system
     chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
@@ -54,7 +43,7 @@ releases:
     values:
       - ../apps/flux-system/flux-operator/app/values.yaml
     needs:
-      - storage/longhorn
+      - network/coredns
 
   - name: flux-instance
     namespace: flux-system

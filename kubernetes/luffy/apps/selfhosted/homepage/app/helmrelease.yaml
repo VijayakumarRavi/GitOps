@@ -33,7 +33,7 @@ spec:
         enabled: true
         ingressClassName: nginx
         hosts:
-          - host: &host dash.vjlab.dev
+          - host: &host dash.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
