@@ -11,7 +11,7 @@
     ':skipStatusChecks',
     ':timezone(Asia/Kolkata)',
     'github>VijayakumarRavi/GitOps//.github/renovate/allowedVersions.json5',
-    'github>VijayakumarRavi/GitOps//.github/renovate/autoMerge.json5',
+
     'github>VijayakumarRavi/GitOps//.github/renovate/clusters.json5',
     'github>VijayakumarRavi/GitOps//.github/renovate/commitMessage.json5',
     'github>VijayakumarRavi/GitOps//.github/renovate/customManagers.json5',
