@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./authentik.yaml
   - ./backube.yaml
+  - ./bitwarden-eso.yaml
   - ./cilium.yaml
   - ./crunchy-userinit.yaml
   - ./descheduler.yaml
