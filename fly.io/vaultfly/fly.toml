@@ -15,6 +15,9 @@ swap_size_mb = 512
 [build]
   dockerfile = 'Dockerfile'
 
+[[vm]]
+  size = 'shared-cpu-1x'
+
 [env]
   ADMIN_SESSION_LIFETIME = '3'
   DATABASE_MAX_CONNS = '10'
@@ -30,9 +33,6 @@ swap_size_mb = 512
   ICON_SERVICE = 'bitwarden'
   INVITATIONS_ALLOWED = 'true'
   IP_HEADER = 'X-Forwarded-For'
-  LITESTREAM_BUCKET = 'litestream'
-  LITESTREAM_PATH = 'vaultfly'
-  LITESTREAM_REGION = 'us-east-1'
   LOGIN_RATELIMIT_MAX_BURST = '5'
   LOGIN_RATELIMIT_SECONDS = '60'
   LOG_FILE = '/data/vaultwarden.log'
@@ -49,13 +49,12 @@ swap_size_mb = 512
   ROCKET_PROFILE = 'release'
   ROCKET_WORKERS = '50'
   SENDS_ALLOWED = 'true'
-  SHOW_PASSWORD_HINT = 'true'
   SIGNUPS_ALLOWED = 'false'
   SIGNUPS_VERIFY = 'true'
   SIGNUPS_VERIFY_RESEND_LIMIT = '3600'
   SIGNUPS_VERIFY_RESEND_TIME = '3600'
-  SMTP_AUTH_MECHANISM = 'login'
   SMTP_FROM_NAME = 'Vaultwarden'
+  SMTP_SECURITY = 'starttls'
   SMTP_PORT = '587'
   SMTP_TIMEOUT = '15'
   SSL_CERT_DIR = '/etc/ssl/certs'
@@ -69,36 +68,33 @@ swap_size_mb = 512
   destination = '/data'
   snapshot_retention = 60
 
-[http_service]
-  internal_port = 8080
-  force_https = true
-  auto_stop_machines = 'stop'
-  auto_start_machines = true
-  min_machines_running = 1
-  processes = ['app']
-
-[[services]]
-  protocol = 'tcp'
-  internal_port = 8080
-  auto_stop_machines = 'off'
-  auto_start_machines = true
-  min_machines_running = 1
-  processes = ['app']
-
-  [[services.ports]]
-    port = 8080
-    handlers = ['http']
-    force_https = true
-
-  [services.concurrency]
-    type = 'connections'
-    hard_limit = 25
-    soft_limit = 20
-
-  [[services.tcp_checks]]
-    interval = '15s'
-    timeout = '2s'
-    grace_period = '10s'
-
-[[vm]]
-  size = 'shared-cpu-1x'
+#[http_service]
+#  internal_port = 8080
+#  force_https = true
+#  auto_stop_machines = 'stop'
+#  auto_start_machines = true
+#  min_machines_running = 1
+#  processes = ['app']
+#
+#[[services]]
+#  protocol = 'tcp'
+#  internal_port = 8080
+#  auto_stop_machines = 'off'
+#  auto_start_machines = true
+#  min_machines_running = 1
+#  processes = ['app']
+#
+#  [[services.ports]]
+#    port = 8080
+#    handlers = ['http']
+#    force_https = true
+#
+#  [services.concurrency]
+#    type = 'connections'
+#    hard_limit = 25
+#    soft_limit = 20
+#
+#  [[services.tcp_checks]]
+#    interval = '15s'
+#    timeout = '2s'
+#    grace_period = '10s'

@@ -1,5 +1,4 @@
 ARG VAULTWARDEN_VERSION=1.33.2
-ARG TAILSCALE_VERSION=v1.84.0
 ARG LITESTREAM_VERSION=0.3.13
 ARG CLOUDFLARED_VERSION=2025.5.0
 
@@ -30,40 +29,22 @@ RUN wget -O /usr/local/bin/supercronic "https://github.com/aptible/supercronic/r
 RUN wget -O caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/${CADDY_VERSION}/caddy_${CADDY_VERSION#v}_linux_amd64.tar.gz"  \
     && tar -xzf caddy.tar.gz -C /usr/local/bin/ caddy
 
-# Tailscale stage to fetch the latest Tailscale package
-FROM tailscale/tailscale:${TAILSCALE_VERSION} as tailscale
-
-# Litestream stage to fetch the latest Litestream package
-FROM litestream/litestream:${LITESTREAM_VERSION} as litestream
-
 # Cloudflared stage to fetch the latest cloudflared package
 FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
 
 # vaultwarden build stage
 FROM vaultwarden/server:${VAULTWARDEN_VERSION}
 
-# Install runtime dependencies
-RUN apt-get update \
-    && apt-get install -y iptables iproute2 sqlite3 libnss3-tools libpq5 lsof jq gpg ca-certificates openssl tmux procps rclone \
-    && rm -rf /var/lib/apt/lists/*
-
 # Set timezone
 RUN ln -snf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && echo Asia/Kolkata > /etc/timezone
 
-# creating directories for tailscale
-RUN mkdir -p /var/run/tailscale
-RUN mkdir -p /var/cache/tailscale
-RUN mkdir -p /var/lib/tailscale
-
-# Copy tailscale binary
-COPY --from=tailscale /usr/local/bin/tailscaled /usr/local/bin/tailscaled
-COPY --from=tailscale /usr/local/bin/tailscale /usr/local/bin/tailscale
+# Install runtime dependencies
+RUN apt-get update \
+    && apt-get install -y tmux restic tzdata uuid-runtime \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy Cloudflared binary 
 COPY --from=cloudflared /usr/local/bin/cloudflared /usr/local/bin/cloudflared
-
-# Copy litestream binary
-COPY --from=litestream /usr/local/bin/litestream /usr/local/bin/litestream
 
 # Copy Overmind binary
 COPY --from=builder /usr/local/bin/overmind /usr/local/bin/overmind
@@ -75,23 +56,15 @@ COPY --from=builder /usr/local/bin/supercronic /usr/local/bin/supercronic
 COPY --from=builder /usr/local/bin/caddy /usr/local/bin/caddy
 
 # Copy configs files to docker
-COPY config/crontab /crontab
 COPY config/Procfile /Procfile
-COPY scripts/backup-rclone.sh /backup-rclone.sh
-COPY scripts/cleanup-backups.sh /cleanup-backups.sh
-COPY scripts/restore-data.sh /restore-data.sh
-COPY config/Caddyfile /etc/caddy/Caddyfile
-COPY config/litestream.yaml /etc/litestream.yaml
-COPY entrypoint.sh /entrypoint.sh
+COPY config/restic.sh /restic.sh
+COPY config/entrypoint.sh /entrypoint.sh
 
-# Chmod the scripts
-RUN chmod +x /backup-rclone.sh
-RUN chmod +x /cleanup-backups.sh
-RUN chmod +x /restore-data.sh
-RUN chmod +x /entrypoint.sh
+# Chmod the entrypoint
+RUN chmod +x /entrypoint.sh /restic.sh
 
 # Set the entrypoint script as the entrypoint for the container
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Start Overmind
-CMD ["overmind", "start","-f", "/Procfile", "-c", "tailscale", "-r", "all", "-s", "/overmind.vault.sock"]
+CMD ["overmind", "start","-f", "/Procfile", "-r", "all", "-s", "/overmind.vault.sock"]
