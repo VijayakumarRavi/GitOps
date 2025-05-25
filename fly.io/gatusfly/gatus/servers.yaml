@@ -17,14 +17,17 @@ endpoints:
   - name: tinypilot
     url: icmp://10.0.0.4
     <<: *servers-defaults
-  - name: nami
-    url: icmp://10.0.0.5
+  - name: dns lxc
+    url: icmp://10.0.2.1
     <<: *servers-defaults
-  - name: dnsproxy lxc
-    url: icmp://10.0.0.10
+  - name: docker lxc
+    url: icmp://10.0.2.2
     <<: *servers-defaults
   - name: tailscale lxc
-    url: icmp://10.0.0.251
+    url: icmp://10.0.2.3
+    <<: *servers-defaults
+  - name: gluetun lxc
+    url: icmp://10.0.2.4
     <<: *servers-defaults
   - name: zoro
     url: icmp://10.0.1.101
@@ -34,7 +37,4 @@ endpoints:
     <<: *servers-defaults
   - name: chopper
     url: icmp://10.0.1.103
-    <<: *servers-defaults
-  - name: gluetun
-    url: icmp://10.0.1.104
     <<: *servers-defaults

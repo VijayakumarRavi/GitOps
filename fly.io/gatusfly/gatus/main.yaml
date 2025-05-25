@@ -1,7 +1,7 @@
 ---
 ui:
   header: Vijay's lab
-  link: https://gatusfly.fly.dev
+  link: https://status.${LAB_DOMAIN}
   logo: https://pnganime.com/web/image-thumbnails/82/504-md.png
 alerting:
   pushover:
@@ -18,7 +18,7 @@ disable-monitoring-lock: true
 #     issuer-url: ${OIDC_ISSUER_URL}
 #     client-id: ${OIDC_CLIENT_ID}
 #     client-secret: ${OIDC_CLIENT_SECRET}
-#     redirect-url: https://gatusfly.fly.dev/authorization-code/callback
+#     redirect-url: https://status.${LAB_DOMAIN}/authorization-code/callback
 #     scopes: [openid]
 metrics: true
 storage:
@@ -27,22 +27,22 @@ storage:
 endpoints:
   - name: Blog
     group: core
-    url: https://vijayakumar.xyz
+    url: https://${MAIN_DOMAIN}
     interval: 1m
-    conditions: ['[STATUS] < 300', '[CERTIFICATE_EXPIRATION] > 48h']
+    conditions: ["[STATUS] < 300", "[CERTIFICATE_EXPIRATION] > 48h"]
     alerts:
       - type: pushover
-  - name: bin.vijayakumar.xyz
+  - name: bin.${LAB_DOMAIN}
     group: core
-    url: https://bin.vijayakumar.xyz
+    url: https://bin.${LAB_DOMAIN}
     interval: 1m
-    conditions: ['[STATUS] < 300', '[CERTIFICATE_EXPIRATION] > 48h']
+    conditions: ["[STATUS] < 300", "[CERTIFICATE_EXPIRATION] > 48h"]
     alerts:
       - type: pushover
   - name: healthchecks.io
     group: core
     url: https://hc-ping.com/${HC_PING_UUID}
     interval: 30m
-    conditions: ['[STATUS] < 300', '[CERTIFICATE_EXPIRATION] > 48h']
+    conditions: ["[STATUS] < 300", "[CERTIFICATE_EXPIRATION] > 48h"]
     alerts:
       - type: pushover

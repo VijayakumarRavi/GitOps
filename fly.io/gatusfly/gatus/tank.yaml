@@ -9,11 +9,11 @@ tank-default-endpoint: &tank-defaults
     - type: pushover
 endpoints:
   - name: Truenas
-    url: https://tank.home.vijayakumar.xyz
+    url: https://tank.home.${LAB_DOMAIN}
     <<: *tank-defaults
   - name: Backrest backup
-    url: https://backrest.tank.home.vijayakumar.xyz
+    url: https://backrest.tank.home.${LAB_DOMAIN}
     <<: *tank-defaults
   - name: Tank browser
-    url: https://files.tank.home.vijayakumar.xyz
+    url: https://files.tank.home.${LAB_DOMAIN}
     <<: *tank-defaults
