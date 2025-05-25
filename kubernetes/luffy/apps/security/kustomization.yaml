@@ -10,4 +10,3 @@ resources:
   - ./bitwarden/ks.yaml
   - ./external-secrets/ks.yaml
   - ./onepassword-connect/ks.yaml
-  # - ./pocketid/ks.yaml
