@@ -30,7 +30,7 @@ releases:
   - name: coredns
     namespace: network
     chart: oci://ghcr.io/coredns/charts/coredns
-    version: 1.42.1
+    version: 1.42.2
     values:
       - ../apps/network/coredns/app/values.yaml
     needs:
