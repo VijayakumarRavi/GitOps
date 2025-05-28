@@ -153,7 +153,7 @@
   "oauth": {
     "autoLaunch": true,
     "autoRegister": true,
-    "buttonText": "Login with Authentik",
+    "buttonText": "Login with Pocket ID",
     "clientId": "{{ .immich_oauth_client_id }}",
     "clientSecret": "{{ .immich_oauth_client_secret }}",
     "defaultStorageQuota": 0,
@@ -168,7 +168,7 @@
     "storageQuotaClaim": "immich_quota"
   },
   "passwordLogin": {
-    "enabled": true
+    "enabled": false
   },
   "reverseGeocoding": {
     "enabled": true

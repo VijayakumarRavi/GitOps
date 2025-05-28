@@ -1,0 +1,44 @@
+# fly.toml app configuration file generated for authfly on 2025-05-28T09:46:34+05:30
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'authfly'
+primary_region = 'syd'
+kill_signal = 'SIGINT'
+kill_timeout = '5s'
+swap_size_mb = 512
+
+[experimental]
+auto_rollback = true
+
+[build]
+dockerfile = 'Dockerfile'
+[env]
+PGID = "1000"
+PUID = "1000"
+DB_PROVIDER = "sqlite"
+TRUST_PROXY = "true"
+EMAILS_VERIFIED = "true"
+SMTP_TLS = "starttls"
+SMTP_PORT = "587"
+EMAIL_LOGIN_NOTIFICATION_ENABLED = "true"
+EMAIL_ONE_TIME_ACCESS_AS_ADMIN_ENABLED = "true"
+EMAIL_API_KEY_EXPIRATION_ENABLED = "true"
+EMAIL_ONE_TIME_ACCESS_AS_UNAUTHENTICATED_ENABLED = "true"
+
+[[mounts]]
+source = 'id_data'
+destination = '/app/data'
+snapshot_retention = 60
+
+[http_service]
+internal_port = 1411
+force_https = true
+auto_stop_machines = 'stop'
+auto_start_machines = true
+min_machines_running = 1
+processes = ['app']
+
+[[vm]]
+size = 'shared-cpu-1x'

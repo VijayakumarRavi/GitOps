@@ -1,4 +1,0 @@
-linkding: cd /etc/linkding && ./bootstrap.sh
-litestream: sleep 20 && litestream replicate -config /etc/litestream.yaml
-tailscale-daemon: /usr/local/bin/tailscaled --port 41641 --state=mem: --tun=userspace-networking --statedir=/data/tailscale --socket=/var/run/tailscale/tailscaled.sock
-tailscale: /usr/local/bin/tailscale up --accept-routes --advertise-exit-node --hostname=${FLY_APP_NAME} --advertise-tags=tag:fly-exit --authkey=${TS_OAUTH_CLIENT_SECRET}?preauthorized=true && tail -f /dev/null
