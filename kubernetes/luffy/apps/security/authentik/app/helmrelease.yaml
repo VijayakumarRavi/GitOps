@@ -36,7 +36,7 @@ spec:
         - name: authentik-media
           nfs:
             server: ${NFS_STORAGE_SERVER}
-            path: /mnt/tank/Kubernetes/authentik
+            path: /mnt/tank/Kubernetes/Apps/authentik
             readOnly: false
         - name: custom-css
           configMap:
