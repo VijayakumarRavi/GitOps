@@ -1,5 +1,4 @@
-ARG VAULTWARDEN_VERSION=1.34.1
-ARG LITESTREAM_VERSION=0.3.13
+ARG HCVAULT_VERSION=1.19
 ARG CLOUDFLARED_VERSION=2025.5.0
 
 # Builder for downloading dependencies
@@ -9,6 +8,7 @@ FROM alpine as builder
 ARG OVERMIND_VERSION=v2.5.1
 # renovate: datasource=github-releases depName=aptible/supercronic
 ARG SUPERCRONIC_VERSION=v0.2.33
+
 # install dependencies
 RUN apk add --no-cache wget gzip
 
@@ -26,15 +26,13 @@ RUN wget -O /usr/local/bin/supercronic "https://github.com/aptible/supercronic/r
 FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
 
 # vaultwarden build stage
-FROM vaultwarden/server:${VAULTWARDEN_VERSION}
+FROM hashicorp/vault:${HCVAULT_VERSION}
 
 # Set timezone
 RUN ln -snf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && echo Asia/Kolkata > /etc/timezone
 
 # Install runtime dependencies
-RUN apt-get update \
-    && apt-get install -y tmux restic tzdata uuid-runtime \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache ca-certificates uuidgen tmux jq curl bash tzdata restic
 
 # Copy Cloudflared binary 
 COPY --from=cloudflared /usr/local/bin/cloudflared /usr/local/bin/cloudflared
@@ -57,4 +55,4 @@ RUN chmod +x /entrypoint.sh /restic.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Start Overmind
-CMD ["overmind", "start","-f", "/Procfile", "-r", "all", "-s", "/overmind.vault.sock"]
+CMD ["overmind", "start","-f", "/Procfile", "-r", "all", "-s", "/overmind.hcvault.sock"]

@@ -1,0 +1,3 @@
+vault: vault server -config /config.hcl
+backup: echo "1 * * * * /restic.sh" > /crontab && exec supercronic /crontab
+cf_tunnel: cloudflared tunnel --no-autoupdate run --token "$CF_TOKEN"

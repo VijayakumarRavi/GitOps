@@ -1,0 +1,23 @@
+# fly.toml app configuration file generated for hcvault on 2025-06-02T18:41:31+05:30
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'hcvault'
+primary_region = 'nrt'
+kill_signal = 'SIGINT'
+kill_timeout = '5s'
+swap_size_mb = 1024
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[[mounts]]
+  source = 'hc_data'
+  destination = '/data'
+  snapshot_retention = 60
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 256
