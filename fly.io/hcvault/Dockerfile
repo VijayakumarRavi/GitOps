@@ -6,8 +6,6 @@ FROM alpine as builder
 
 # renovate: datasource=github-releases depName=DarthSim/overmind
 ARG OVERMIND_VERSION=v2.5.1
-# renovate: datasource=github-releases depName=aptible/supercronic
-ARG SUPERCRONIC_VERSION=v0.2.33
 
 # install dependencies
 RUN apk add --no-cache wget gzip
@@ -17,10 +15,6 @@ RUN wget -O overmind.gz "https://github.com/DarthSim/overmind/releases/download/
     && gunzip overmind.gz \
     && chmod +x overmind \
     && mv overmind /usr/local/bin/
-
-# Download and install SuperCronic for linux-amd64 (latest release)
-RUN wget -O /usr/local/bin/supercronic "https://github.com/aptible/supercronic/releases/download/${SUPERCRONIC_VERSION}/supercronic-linux-amd64" \
-    && chmod +x /usr/local/bin/supercronic
 
 # Cloudflared stage to fetch the latest cloudflared package
 FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
@@ -32,7 +26,7 @@ FROM hashicorp/vault:${HCVAULT_VERSION}
 RUN ln -snf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && echo Asia/Kolkata > /etc/timezone
 
 # Install runtime dependencies
-RUN apk add --no-cache ca-certificates uuidgen tmux jq curl bash tzdata restic
+RUN apk add --no-cache tmux curl bash tzdata
 
 # Copy Cloudflared binary 
 COPY --from=cloudflared /usr/local/bin/cloudflared /usr/local/bin/cloudflared
@@ -40,16 +34,12 @@ COPY --from=cloudflared /usr/local/bin/cloudflared /usr/local/bin/cloudflared
 # Copy Overmind binary
 COPY --from=builder /usr/local/bin/overmind /usr/local/bin/overmind
 
-# Copy Supercronic binary 
-COPY --from=builder /usr/local/bin/supercronic /usr/local/bin/supercronic
-
 # Copy configs files to docker
 COPY config/Procfile /Procfile
-COPY config/restic.sh /restic.sh
 COPY config/entrypoint.sh /entrypoint.sh
 
 # Chmod the entrypoint
-RUN chmod +x /entrypoint.sh /restic.sh
+RUN chmod +x /entrypoint.sh
 
 # Set the entrypoint script as the entrypoint for the container
 ENTRYPOINT ["/entrypoint.sh"]

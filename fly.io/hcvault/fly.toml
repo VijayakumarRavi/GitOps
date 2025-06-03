@@ -12,11 +12,6 @@ swap_size_mb = 1024
 [build]
   dockerfile = 'Dockerfile'
 
-[[mounts]]
-  source = 'hc_data'
-  destination = '/data'
-  snapshot_retention = 60
-
 [[vm]]
   cpu_kind = 'shared'
   cpus = 1

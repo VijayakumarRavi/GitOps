@@ -15,9 +15,13 @@ cluster_name = "hcvault"
 api_addr = "${VAULT_ADDR}"
 cluster_addr = "${VAULT_ADDR}:8201"
 
-storage "raft" {
-  path    = "/data/vault"
-  node_id = "hcvault"
+storage "s3" {
+  access_key = "${AWS_ACCESS_KEY_ID}"
+  secret_key = "${AWS_SECRET_ACCESS_KEY}"
+  bucket     = "fly"
+  path       = "hcvault/storage"
+  s3_force_path_style = "true"
+  endpoint   = "${AWS_ENDPOINT}"
 }
 
 listener "tcp" {
@@ -26,14 +30,6 @@ listener "tcp" {
 }
 EOF
 echo -e "${GREEN}Info: Vault configuration written to /config.hcl${NC}"
-
-restic restore --overwrite if-newer --target=/ --verbose=2 --cleanup-cache latest
-if [ $? -ne 0 ]; then
-  echo -e "${RED}Error: Restic restore failed. Please check your restic configuration.${NC}"
-  exit 1
-else
-  echo -e "${GREEN}Info: Restic restore completed successfully.${NC}"
-fi
 
 # Execute the CMD
 exec "$@"
