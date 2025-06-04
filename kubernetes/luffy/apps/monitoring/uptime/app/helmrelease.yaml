@@ -28,7 +28,7 @@ spec:
           uptime:
             image:
               repository: ghcr.io/louislam/uptime-kuma
-              tag: beta-rootless@sha256:57eb068c776f58ce626b025c285bb58cb9d4585581dffe8982a11bf87b81ba21
+              tag: beta-rootless@sha256:1ab09aa4c0d1058d28c2716123a43739a32b87806ba12f9b56c5bb7ba3785a9d
             ports:
               - name: http
                 containerPort: 3001
