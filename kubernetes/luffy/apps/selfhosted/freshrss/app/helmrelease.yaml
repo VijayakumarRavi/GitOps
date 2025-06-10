@@ -15,10 +15,7 @@ spec:
       freshrss:
         annotations:
           reloader.stakater.com/auto: "true"
-
-        pod:
-          hostUsers: false
-
+        replicas: 1
         containers:
           app:
             image:

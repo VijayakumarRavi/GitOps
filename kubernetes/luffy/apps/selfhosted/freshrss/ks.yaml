@@ -6,7 +6,7 @@ metadata:
   name: &appname freshrss
   namespace: flux-system
 spec:
-  targetNamespace: system
+  targetNamespace: selfhosted
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
