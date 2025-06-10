@@ -62,10 +62,6 @@ spec:
       databases: [immich]
       password:
         type: AlphaNumeric
-    - name: invidious
-      databases: [invidious]
-      password:
-        type: AlphaNumeric
     - name: linkwarden
       databases: [linkwarden]
       password:
@@ -74,8 +70,8 @@ spec:
       databases: [speedtest]
       password:
         type: AlphaNumeric
-    - name: vaultwarden
-      databases: [vaultwarden]
+    - name: freshrss
+      databases: [freshrss]
       password:
         type: AlphaNumeric
   backups:
