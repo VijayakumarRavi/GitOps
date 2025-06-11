@@ -5,12 +5,6 @@ metadata:
   name: pgadmin
   namespace: database
 spec:
-  users:
-    - username: im@vijayakumar.xyz
-      role: Administrator
-      passwordRef:
-        name: pgadmin-password
-        key: pgadmin-password
   dataVolumeClaimSpec:
     accessModes: [ReadWriteOnce]
     resources:
@@ -19,3 +13,12 @@ spec:
   serverGroups:
     - name: supply
       postgresClusterSelector: {}
+  config:
+    settings:
+      AUTHENTICATION_SOURCES: ["oauth2"]
+      OAUTH2_AUTO_CREATE_USER: true
+    oauthConfigurations:
+      - name: "pocketid"
+        secret:
+          name: pgadmin-oauth
+          key: 00-pocketid.json
