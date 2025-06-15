@@ -29,6 +29,12 @@ spec:
         name: openebs-hostpath
         isDefaultClass: false
         basePath: *hostPath
+    loki:
+      enabled: false
+    alloy:
+      enabled: false
+    minio:
+      enabled: false
 
     openebs-crds:
       csi:
