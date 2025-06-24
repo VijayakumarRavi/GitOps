@@ -16,10 +16,15 @@ sonarr:
       # 2160p
       - template: sonarr-v4-quality-profile-web-2160p
       - template: sonarr-v4-custom-formats-web-2160p
+      # Anime
+      - template: sonarr-quality-definition-anime
+      - template: sonarr-v4-quality-profile-anime
+      - template: sonarr-v4-custom-formats-anime
 
     quality_profiles:
       - name: WEB-1080p
       - name: WEB-2160p
+      - name: Remux-1080p - Anime
 
     custom_formats:
       # HDR Formats
@@ -42,6 +47,13 @@ sonarr:
         assign_scores_to:
           - name: WEB-1080p
           - name: WEB-2160p
+
+      - trash_ids:
+          - 026d5aadd1a6b4e550b134cb6c72b3ca # Uncensored
+          - b2550eb333d27b75833e25b8c2557b38 # 10bit
+          - 418f50b10f1907201b6cfdf881f467b7 # Anime Dual Audio
+        assign_scores_to:
+          - name: Remux-1080p - Anime
 
 radarr:
   radarr_main:
