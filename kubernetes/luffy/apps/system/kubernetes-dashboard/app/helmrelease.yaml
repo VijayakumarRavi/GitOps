@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kubernetes-dashboard
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: kubernetes-dashboard
+      version: 7.13.0
+      sourceRef:
+        kind: HelmRepository
+        name: kubernetes-dashboard
+        namespace: flux-system
+  values:
+    app:
+      settings:
+        global:
+          clusterName: luffy
+          defaultNamespace: _all
+      ingress:
+        enabled: true
+        hosts:
+          - k8s.${CLUSTER_DOMAIN}
+        ingressClassName: nginx
+    web:
+      containers:
+        args:
+          - --system-banner="Welcome to the Luffy's K8S Dashboard"
