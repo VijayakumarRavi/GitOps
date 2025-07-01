@@ -1,4 +1,4 @@
-ARG HCVAULT_VERSION=1.19
+ARG HCVAULT_VERSION=1.20
 ARG CLOUDFLARED_VERSION=2025.6.1
 
 # Builder for downloading dependencies
