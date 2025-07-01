@@ -9,8 +9,7 @@
       "automergeType": "branch",
       "matchUpdateTypes": ["digest"],
       "matchPackagePatterns": ["ghcr.io/VijayakumarRavi", "ghcr.io/home-operations", "ghcr.io/onedr0p", "ghcr.io/bjw-s", "ghcr.io/bjw-s-labs"],
-      "minimumReleaseAge": "2 day",
-      "automergeSchedule": ["* 0-3 * * *"]
+      "minimumReleaseAge": "2 day"
     },
     {
       "description": "Auto-merge GitHub Actions for minor and patch",
@@ -19,8 +18,7 @@
       "automerge": true,
       "automergeType": "branch",
       "matchUpdateTypes": ["minor", "patch"],
-      "minimumReleaseAge": "2 day",
-      "automergeSchedule": ["* 0-3 * * *"]
+      "minimumReleaseAge": "2 day"
     },
     {
       "description": "Auto merge KPS minors and patches",
@@ -30,8 +28,7 @@
       "matchUpdateTypes": ["minor", "patch"],
       "matchPackageNames": ["kube-prometheus-stack"],
       "minimumReleaseAge": "2 day",
-      "automergeType": "branch",
-      "automergeSchedule": ["* 0-3 * * *"]
+      "automergeType": "branch"
     },
     {
       "description": "Auto merge minor and patch updates",
@@ -39,8 +36,7 @@
       "matchCurrentVersion": "!/^0/",
       "automerge": true,
       "minimumReleaseAge": "2 day",
-      "automergeType": "branch",
-      "automergeSchedule": ["* 0-3 * * *"]
+      "automergeType": "branch"
     },
     {
       "description": "Disable Auto merge for immich updates",
