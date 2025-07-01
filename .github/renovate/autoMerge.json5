@@ -2,34 +2,51 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
-      "description": ["Auto-merge container digests updates for trusted containers"],
+      "description": "Auto-merge container digest updates for trusted containers",
       "matchDatasources": ["docker"],
       "automerge": true,
+      ignoreTests: false,
       "automergeType": "branch",
       "matchUpdateTypes": ["digest"],
-      "matchPackagePatterns": ["ghcr.io/VijayakumarRavi"]
+      "matchPackagePatterns": ["ghcr.io/VijayakumarRavi", "ghcr.io/home-operations", "ghcr.io/onedr0p", "ghcr.io/bjw-s", "ghcr.io/bjw-s-labs"],
+      "minimumReleaseAge": "2 day",
+      "automergeSchedule": ["* 0-3 * * *"]
     },
     {
-      "description": ["Auto-merge GitHub Actions for minor and patch"],
+      "description": "Auto-merge GitHub Actions for minor and patch",
       "matchManagers": ["github-actions"],
       "matchDatasources": ["github-tags"],
       "automerge": true,
       "automergeType": "branch",
-      "matchUpdateTypes": ["minor", "patch"]
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "2 day",
+      "automergeSchedule": ["* 0-3 * * *"]
     },
     {
-      description: ["Auto merge KPS minors and patches"],
-      matchDatasources: ["helm"],
-      automerge: true,
-      matchUpdateTypes: ["minor", "patch"],
-      matchPackageNames: ["kube-prometheus-stack"],
-      ignoreTests: false,
+      "description": "Auto merge KPS minors and patches",
+      "matchDatasources": ["helm"],
+      "automerge": true,
+      "ignoreTests": false,
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["kube-prometheus-stack"],
+      "minimumReleaseAge": "2 day",
+      "automergeType": "branch",
+      "automergeSchedule": ["* 0-3 * * *"]
     },
     {
-      "description": ["Auto merge minor and patch updates"],
+      "description": "Auto merge minor and patch updates",
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
-      "automerge": true
+      "automerge": true,
+      "minimumReleaseAge": "2 day",
+      "automergeType": "branch",
+      "automergeSchedule": ["* 0-3 * * *"]
+    },
+    {
+      "description": "Disable Auto merge for immich updates",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/immich-app/*"],
+      "automerge": false
     }
   ]
 }

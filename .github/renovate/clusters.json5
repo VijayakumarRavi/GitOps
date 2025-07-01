@@ -3,7 +3,7 @@
   "packageRules": [
     {
       "description": ["Separate PRs for master cluster"],
-      "matchFileNames": ["**/kubernetes/home.vijayakumar.xyz/**"],
+      "matchFileNames": ["**/kubernetes/luffy/**"],
       "additionalBranchPrefix": "master-"
     }
   ]
