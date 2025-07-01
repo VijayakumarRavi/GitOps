@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  timeout: 5m
+  timeout: 10m
   path: "./kubernetes/luffy/apps/cert-manager/cert-manager/app"
   prune: true
   sourceRef:
@@ -31,7 +31,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  timeout: 5m
+  timeout: 10m
   path: "./kubernetes/luffy/apps/cert-manager/cert-manager/issuers"
   prune: true
   sourceRef:

@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  timeout: 5m
+  timeout: 10m
   path: ./kubernetes/luffy/apps/flux-system/flux-operator/app
   prune: false # Never delete this
   sourceRef:
@@ -30,7 +30,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  timeout: 5m
+  timeout: 10m
   path: ./kubernetes/luffy/apps/flux-system/flux-operator/instance
   prune: false # Never delete this
   sourceRef:
@@ -50,7 +50,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  timeout: 5m
+  timeout: 10m
   path: ./kubernetes/luffy/apps/flux-system/flux-operator/sops
   prune: true
   sourceRef:

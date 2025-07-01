@@ -10,7 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
+  interval: 30m
+  timeout: 10m
   path: "./kubernetes/luffy/apps/selfhosted/redlib/app"
   prune: true
   sourceRef:

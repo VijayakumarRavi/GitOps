@@ -11,6 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
+  timeout: 10m
   path: "./kubernetes/luffy/apps/security/authentik/app"
   prune: true
   sourceRef:

@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  timeout: 5m
+  timeout: 10m
   path: "./kubernetes/luffy/apps/media/plex/app"
   prune: true
   sourceRef:
@@ -42,7 +42,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  timeout: 5m
+  timeout: 10m
   path: "./kubernetes/luffy/apps/media/plex/trakt-sync"
   prune: true
   sourceRef:
@@ -74,7 +74,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  timeout: 5m
+  timeout: 10m
   path: "./kubernetes/luffy/apps/media/plex/plex-image-cleanup"
   prune: true
   sourceRef:

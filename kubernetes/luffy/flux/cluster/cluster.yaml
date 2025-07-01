@@ -7,6 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
+  timeout: 10m
   ref:
     branch: master
   url: ssh://git@github.com/VijayakumarRavi/GitOps.git
@@ -25,8 +26,8 @@ metadata:
   name: cluster-meta
   namespace: flux-system
 spec:
-  interval: 60m0s
-  timeout: 60m0s
+  interval: 30m
+  timeout: 10m
   path: ./kubernetes/luffy/flux/cluster-meta
   prune: false
   wait: false
@@ -37,3 +38,29 @@ spec:
     provider: sops
     secretRef:
       name: sops-age
+  patches:
+    - patch: |-
+        apiVersion: source.toolkit.fluxcd.io/v1
+        kind: HelmRepository
+        metadata:
+          name: not-used
+          namespace: flux-system
+        spec:
+          interval: 30m
+          timeout: 10m
+      target:
+        group: source.toolkit.fluxcd.io
+        kind: HelmRepository
+        labelSelector: substitution.flux.home.arpa/disabled notin (true)
+    - patch: |-
+        apiVersion: source.toolkit.fluxcd.io/v1
+        kind: OCIRepository
+        metadata:
+          name: not-used
+          namespace: flux-system
+        spec:
+          timeout: 10m
+      target:
+        group: source.toolkit.fluxcd.io
+        kind: OCIRepository
+        labelSelector: substitution.flux.home.arpa/disabled notin (true)

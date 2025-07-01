@@ -15,6 +15,6 @@ spec:
     kind: GitRepository
     name: flux-system
   interval: 30m
-  timeout: 5m
+  timeout: 10m
   prune: true
   wait: false
