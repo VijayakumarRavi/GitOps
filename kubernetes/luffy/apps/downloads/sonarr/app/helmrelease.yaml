@@ -27,7 +27,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/sonarr
+              repository: ghcr.io/vijayakumarravi/sonarr
               tag: 4.0.15.2940
             env:
               COMPlus_EnableDiagnostics: "0"

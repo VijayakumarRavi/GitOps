@@ -27,7 +27,7 @@ spec:
           app:
             nameOverride: qbittorrent
             image:
-              repository: ghcr.io/home-operations/qbittorrent
+              repository: ghcr.io/vijayakumarravi/qbittorrent
               tag: 5.1.2
             env:
               UMASK: "022"

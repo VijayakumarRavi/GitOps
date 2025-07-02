@@ -27,7 +27,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/radarr
+              repository: ghcr.io/vijayakumarravi/radarr
               tag: 5.27.0.10101
             env:
               COMPlus_EnableDiagnostics: "0"

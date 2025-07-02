@@ -22,7 +22,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/irqbalance
+              repository: ghcr.io/vijayakumarravi/irqbalance
               tag: 1.9.4
             resources:
               requests:
