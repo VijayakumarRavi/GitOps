@@ -1,5 +1,5 @@
 ARG HCVAULT_VERSION=1.20
-ARG CLOUDFLARED_VERSION=2025.6.1
+ARG CLOUDFLARED_VERSION=2025.7.0
 
 # Builder for downloading dependencies
 FROM alpine as builder
