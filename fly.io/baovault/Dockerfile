@@ -1,4 +1,4 @@
-ARG HCVAULT_VERSION=1.20
+ARG BAOVAULT_VERSION=2.4.0-nightly1752150785
 ARG CLOUDFLARED_VERSION=2025.7.0
 
 # Builder for downloading dependencies
@@ -20,7 +20,7 @@ RUN wget -O overmind.gz "https://github.com/DarthSim/overmind/releases/download/
 FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
 
 # vaultwarden build stage
-FROM hashicorp/vault:${HCVAULT_VERSION}
+FROM quay.io/openbao/openbao-nightly:${BAOVAULT_VERSION}
 
 # Set timezone
 RUN ln -snf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && echo Asia/Kolkata > /etc/timezone
