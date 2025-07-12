@@ -10,7 +10,6 @@ resources:
   - ./homepage/ks.yaml
   - ./it-tools/ks.yaml
   - ./karakeep/ks.yaml
-  - ./linkwarden/ks.yaml
   - ./paperless/ks.yaml
   - ./redlib/ks.yaml
   - ./searxng/ks.yaml

@@ -40,6 +40,7 @@ spec:
               DATA_DIR: /data
               DISABLE_SIGNUPS: false
               DISABLE_PASSWORD_AUTH: true
+              MAX_ASSET_SIZE_MB: 500
               MEILI_ADDR: http://karakeep-meilisearch.selfhosted.svc.cluster.local:7700
               NEXTAUTH_URL: https://karakeep.${CLUSTER_DOMAIN}
               DISABLE_NEW_RELEASE_CHECK: true
