@@ -29,6 +29,9 @@ spec:
             image:
               repository: ghcr.io/karakeep-app/karakeep
               tag: 0.25.0
+            envFrom:
+              - secretRef:
+                  name: karakeep-secret
             env:
               BROWSER_WEB_URL: http://karakeep-chrome.selfhosted.svc.cluster.local:9222
               CRAWLER_DOWNLOAD_BANNER_IMAGE: true
@@ -49,8 +52,6 @@ spec:
             resources:
               requests:
                 cpu: 10m
-              limits:
-                memory: 1Gi
 
       chrome:
         annotations:
@@ -77,8 +78,6 @@ spec:
             resources:
               requests:
                 cpu: 10m
-              limits:
-                memory: 1Gi
 
       meilisearch:
         annotations:
@@ -108,16 +107,12 @@ spec:
               - --experimental-dumpless-upgrade
             env:
               MEILI_NO_ANALYTICS: true
-              MEILI_MASTER_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: karakeep-secret
-                    key: meilisearch_master_key
+            envFrom:
+              - secretRef:
+                  name: karakeep-secret
             resources:
               requests:
                 cpu: 10m
-              limits:
-                memory: 4Gi
 
     service:
       app:
@@ -126,7 +121,7 @@ spec:
         controller: karakeep
         ports:
           http:
-            port: &httpPort 3000
+            port: 3000
       chrome:
         controller: chrome
         ports:
@@ -159,5 +154,5 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: karakeep
+                  identifier: app
                   port: http
