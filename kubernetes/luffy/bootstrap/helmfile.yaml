@@ -21,7 +21,7 @@ releases:
   - name: cilium
     namespace: network
     chart: cilium/cilium
-    version: 1.17.5
+    version: 1.17.6
     values:
       - ../apps/network/cilium/app/values.yaml
     needs:
