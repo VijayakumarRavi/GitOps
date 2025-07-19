@@ -5,9 +5,9 @@ clusterName: &clusterName luffy
 endpoint: https://luffy.vjlab.dev:6443
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: v1.10.3
+talosVersion: v1.10.5
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.33.1
+kubernetesVersion: v1.33.2
 
 additionalApiServerCertSans: &sans
   - luffy.vjlab.dev
@@ -143,7 +143,11 @@ controlPlane:
           extraArgs:
             runtime-config: admissionregistration.k8s.io/v1alpha1=true
             feature-gates: MutatingAdmissionPolicy=true
-
+            oidc-issuer-url: ${OIDC_ISSUER_URL}
+            oidc-client-id: ${OIDC_CLIENT_ID}
+            oidc-username-claim: sub
+            oidc-groups-claim: groups
+            oidc-groups-prefix: "oidc:"
     # Configure cluster
     - |-
       cluster:
