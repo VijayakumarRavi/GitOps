@@ -15,8 +15,8 @@ spec:
         name: percona
         namespace: flux-system
   values:
+    image: perconalab/percona-postgresql-operator:2.7.0-ppg16-postgres
     postgresVersion: 16
-
     expose:
       type: LoadBalancer
       annotations:
