@@ -22,7 +22,7 @@ spec:
         max_wal_size: 5GB
         synchronous_commit: "on"
         pg_hba:
-          - hostnossl all all 10.43.0.0/16 md5 # Needed because dbman does not support SSL yet
+          - hostnossl all all 172.16.0.0/12 md5
           - hostssl all all all md5
   instances:
     - name: postgres
