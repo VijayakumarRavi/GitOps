@@ -7,7 +7,6 @@ resources:
   - ./backube.yaml
   - ./bitwarden-eso.yaml
   - ./cilium.yaml
-  - ./cloudnative-pg.yaml
   - ./crunchy-userinit.yaml
   - ./descheduler.yaml
   - ./external-secrets.yaml
