@@ -50,30 +50,27 @@ spec:
       databases: [postgres]
       options: SUPERUSER
     # Applications
-    - name: atuin
-      databases: [atuin]
-      password:
-        type: AlphaNumeric
     - name: authentik
       databases: [authentik]
-      password:
-        type: AlphaNumeric
-    - name: immich
-      databases: [immich]
-      password:
-        type: AlphaNumeric
-    - name: linkwarden
-      databases: [linkwarden]
-      password:
-        type: AlphaNumeric
-    - name: speedtest
-      databases: [speedtest]
       password:
         type: AlphaNumeric
     - name: freshrss
       databases: [freshrss]
       password:
         type: AlphaNumeric
+    - name: immich
+      databases: [immich]
+      password:
+        type: AlphaNumeric
+    - name: paperless
+      databases: [paperless]
+      password:
+        type: AlphaNumeric
+    - name: speedtest
+      databases: [speedtest]
+      password:
+        type: AlphaNumeric
+
   backups:
     pgbackrest:
       configuration: &backupConfig
