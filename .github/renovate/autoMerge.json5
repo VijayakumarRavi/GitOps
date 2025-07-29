@@ -8,7 +8,7 @@
       ignoreTests: false,
       "automergeType": "branch",
       "matchUpdateTypes": ["digest"],
-      "matchPackagePatterns": ["ghcr.io/VijayakumarRavi", "ghcr.io/home-operations", "ghcr.io/onedr0p", "ghcr.io/bjw-s", "ghcr.io/bjw-s-labs"],
+      "matchPackagePatterns": ["ghcr.io/vijayakumarravi", "ghcr.io/home-operations", "ghcr.io/onedr0p", "ghcr.io/bjw-s", "ghcr.io/bjw-s-labs"],
       "minimumReleaseAge": "2 day"
     },
     {
