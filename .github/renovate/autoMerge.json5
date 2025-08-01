@@ -42,6 +42,7 @@
       "description": "Disable Auto merge for immich updates",
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/immich-app/*"],
+      "minimumReleaseAge": "2 day",
       "automerge": false
     }
   ]
