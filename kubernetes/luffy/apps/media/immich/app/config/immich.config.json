@@ -134,7 +134,7 @@
     }
   },
   "newVersionCheck": {
-    "enabled": true
+    "enabled": false
   },
   "notifications": {
     "smtp": {
