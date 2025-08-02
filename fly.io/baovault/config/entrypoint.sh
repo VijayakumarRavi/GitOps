@@ -23,11 +23,19 @@ listener "tcp" {
   tls_disable = "true"
   address     = "[::]:8200"
   cluster_address = "[::]:8201"
+  telemetry {
+    unauthenticated_metrics_access = true
+  }
 }
 
 seal "static" {
   current_key_id = "unsealkey-20250711"
   current_key = "${BAO_CURRENT_UNSEAL_KEY}"
+}
+
+telemetry {
+  prometheus_retention_time = "24h"
+  disable_hostname = true
 }
 EOF
 echo -e "${GREEN}Info: Vault configuration written to /config.hcl${NC}"

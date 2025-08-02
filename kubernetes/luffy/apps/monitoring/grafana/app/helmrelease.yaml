@@ -102,10 +102,15 @@ spec:
           revision: 2
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
+        openbao:
+          # renovate: dashboardName="OpenBao"
+          gnetId: 23725
+          revision: 1
+          datasource: Prometheus
         volsync:
           # removate: dashboardName="VolSync Dashboard"
           gnetId: 21356
-          revision: 2
+          revision: 3
           datasource:
             - name: DS_PROMETHEUS
               value: Prometheus

@@ -1,2 +1,3 @@
 vault: bao server -config /config.hcl
 cf_tunnel: cloudflared tunnel --no-autoupdate run --token "$CF_TOKEN"
+healthcheck: /healthcheck.sh

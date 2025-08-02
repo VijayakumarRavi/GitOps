@@ -1,25 +1,34 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+
+URL="https://hc-ping.com/${HC_PING_KEY}/baovault-${FLY_MACHINE_ID}?create=1"
+
 log() {
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"
+    echo -e "[$(date '+%Y-%m-%d %H:%M:%S')] [$FLY_MACHINE_ID] $*" >&2
 }
 
+log "Starting healthcheck script for OpenBao..."
+
+# Initial delay to allow OpenBao to start
+sleep "${HEALTHCHECK_INTERVAL:-300}"
+
 while true; do
-    if ! bao status &>/dev/null; then
-        log "⚠️ Vault unhealthy. Restarting..."
+    STATUS_OUTPUT=$(bao status -address=http://127.0.0.1:8200 2>&1)
+    STATUS_CODE=$?
+
+    if [[ "${STATUS_CODE}" -ne 0 ]]; then
+        log "Attempting to restart OpenBao..."
         if overmind restart vault -s overmind.hcvault.sock; then
-            log "✅ Restart successful"
-            curl -fsS -m 10 --retry 3 "$HC_PING_URL/fail" \
-                -d "Vault unhealthy but restart successful" || true
+            DATA=`echo -e "⚠️  OpenBao was unhealthy. Status code: ${STATUS_CODE}\n✅ Restart successful\n${STATUS_OUTPUT}"`
+            curl -fsS -m 10 --retry 3 -d "${DATA}" "${URL}" -o /dev/null || log "Failed to ping Healthchecks.io"
         else
-            log "❌ Restart failed"
-            curl -fsS -m 10 --retry 3 "$HC_PING_URL/fail" \
-                -d "Vault unhealthy and restart failed" || true
+            DATA=`echo -e "❌ Restart failed \n${STATUS_OUTPUT}"`
+            curl -fsS -m 10 --retry 3 -d "${DATA}" "${URL}/fail" -o /dev/null || log "Failed to ping Healthchecks.io"
         fi
     else
-        curl -fsS -m 10 --retry 3 "$HC_PING_URL" > /dev/null || true
+        DATA=`echo -e "✅ Vault is healthy \n${STATUS_OUTPUT}"`
+        curl -fsS -m 10 --retry 3 -d "${DATA}" "${URL}" -o /dev/null || log "Failed to ping Healthchecks.io"
     fi
-
-    sleep ${HEALTHCHECK_INTERVAL:-300}
+    sleep "${HEALTHCHECK_INTERVAL:-300}"
 done

@@ -37,9 +37,11 @@ COPY --from=builder /usr/local/bin/overmind /usr/local/bin/overmind
 # Copy configs files to docker
 COPY config/Procfile /Procfile
 COPY config/entrypoint.sh /entrypoint.sh
+COPY config/healthcheck.sh /healthcheck.sh
 
 # Chmod the entrypoint
 RUN chmod +x /entrypoint.sh
+RUN chmod +x /healthcheck.sh
 
 # Set the entrypoint script as the entrypoint for the container
 ENTRYPOINT ["/entrypoint.sh"]
