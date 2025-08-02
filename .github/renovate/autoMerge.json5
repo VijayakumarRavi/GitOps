@@ -8,7 +8,7 @@
       ignoreTests: false,
       "automergeType": "branch",
       "matchUpdateTypes": ["digest"],
-      "matchPackagePatterns": ["ghcr.io/vijayakumarravi", "ghcr.io/home-operations", "ghcr.io/onedr0p", "ghcr.io/bjw-s", "ghcr.io/bjw-s-labs"],
+      "matchPackagePatterns": ["ghcr.io/vijayakumarravi"],
       "minimumReleaseAge": "2 day"
     },
     {
@@ -25,7 +25,6 @@
       "matchDatasources": ["helm"],
       "automerge": true,
       "ignoreTests": false,
-      "matchUpdateTypes": ["minor", "patch"],
       "matchPackageNames": ["kube-prometheus-stack"],
       "minimumReleaseAge": "2 day",
       "automergeType": "branch"
