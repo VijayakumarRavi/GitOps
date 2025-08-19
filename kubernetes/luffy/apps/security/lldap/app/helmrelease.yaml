@@ -28,7 +28,7 @@ spec:
           app:
             image:
               repository: lldap/lldap
-              tag: v0.6.1-alpine-rootless
+              tag: v0.6.2-alpine-rootless
             envFrom:
               - secretRef:
                   name: lldap-secret
