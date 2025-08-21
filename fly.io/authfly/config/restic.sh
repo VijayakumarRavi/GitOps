@@ -8,9 +8,6 @@ set -o pipefail
 RID=`uuidgen`
 LOG="/var/log/restic/$(date +\%Y\%m\%d_\%H\%M\%S).log"
 
-# create log dir
-mkdir -p /var/log/restic/
-
 function log() {
     "$@" 2>&1 | tee -a "$LOG"
 }
@@ -87,7 +84,7 @@ fi
 ok
 
 running "restic backup"
-notify_and_exit_on_error "restic backup --verbose /data" "Restic backup failed"
+notify_and_exit_on_error "restic backup --verbose /app/data" "Restic backup failed"
 ok
 
 running "checking consistency of restic repository"

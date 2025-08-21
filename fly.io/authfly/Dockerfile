@@ -25,6 +25,8 @@ RUN wget -O /usr/local/bin/supercronic "https://github.com/aptible/supercronic/r
 # Cloudflared stage to fetch the latest cloudflared package
 FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
 
+FROM lldap/lldap:latest as lldap
+
 # pocket id build stage
 FROM ghcr.io/pocket-id/pocket-id:${POCKETID_VERSION}
 
@@ -43,6 +45,9 @@ COPY --from=builder /usr/local/bin/overmind /usr/local/bin/overmind
 # Copy Supercronic binary 
 COPY --from=builder /usr/local/bin/supercronic /usr/local/bin/supercronic
 
+# Copy lldap data and binaries
+COPY --from=lldap /app /app/lldap
+
 # Copy configs files to docker
 COPY config/Procfile /Procfile
 COPY config/restic.sh /restic.sh
@@ -53,9 +58,10 @@ RUN chmod +x /entrypoint.sh /restic.sh
 
 WORKDIR /app
 
-EXPOSE 1411
+EXPOSE 5000
 ENV APP_ENV=production
-
+ENV LDAP_PORT=3890
+ENV HTTP_PORT=17170
 # Set the entrypoint script as the entrypoint for the container
 ENTRYPOINT ["/entrypoint.sh"]
 
