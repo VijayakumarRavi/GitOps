@@ -20,15 +20,15 @@ spec:
               repository: lscr.io/linuxserver/speedtest-tracker
               tag: v1.2.3-ls77
             env:
-              PUID: "1000"
-              PGID: "1000"
-              PUBLIC_DASHBOARD: "true"
-              APP_TIMEZONE: "${TIMEZONE}"
-              DISPLAY_TIMEZONE: "${TIMEZONE}"
-              SPEEDTEST_SCHEDULE: "6 * * * *"
-              PRUNE_RESULTS_OLDER_THAN: "90"
-              APP_URL: "https://speedtest.${CLUSTER_DOMAIN}"
-              ASSET_URL: "https://speedtest.${CLUSTER_DOMAIN}"
+              PUID: '1000'
+              PGID: '1000'
+              PUBLIC_DASHBOARD: 'true'
+              APP_TIMEZONE: 'Asia/Kolkata'
+              DISPLAY_TIMEZONE: 'Asia/Kolkata'
+              SPEEDTEST_SCHEDULE: '6 * * * *'
+              PRUNE_RESULTS_OLDER_THAN: '90'
+              APP_URL: 'https://speedtest.${CLUSTER_DOMAIN}'
+              ASSET_URL: 'https://speedtest.${CLUSTER_DOMAIN}'
             envFrom:
               - secretRef:
                   name: speedtest-secret

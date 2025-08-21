@@ -14,7 +14,7 @@ spec:
     controllers:
       sabnzbd:
         annotations:
-          reloader.stakater.com/auto: "true"
+          reloader.stakater.com/auto: 'true'
         pod:
           securityContext:
             runAsUser: 2000
@@ -98,7 +98,7 @@ spec:
               - path: /config
       downloads:
         type: nfs
-        server: ${NFS_STORAGE_SERVER}
+        server: tank
         path: /mnt/tank/Media
         globalMounts:
           - path: /data/nas-media/

@@ -9,4 +9,4 @@ spec:
     - name: alertname
       value: NodeMemoryHighUtilization
     - name: instance
-      value: ${NFS_STORAGE_SERVER}:9100
+      value: tank:9100

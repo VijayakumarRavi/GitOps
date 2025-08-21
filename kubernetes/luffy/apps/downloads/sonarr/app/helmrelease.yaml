@@ -14,7 +14,7 @@ spec:
     controllers:
       sonarr:
         annotations:
-          reloader.stakater.com/auto: "true"
+          reloader.stakater.com/auto: 'true'
         pod:
           securityContext:
             runAsUser: 2000
@@ -30,7 +30,7 @@ spec:
               repository: ghcr.io/vijayakumarravi/sonarr
               tag: 4.0.15.2940
             env:
-              COMPlus_EnableDiagnostics: "0"
+              COMPlus_EnableDiagnostics: '0'
               SONARR__APP__INSTANCENAME: Sonarr
               SONARR__AUTH__APIKEY:
                 valueFrom:
@@ -89,7 +89,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: ${NFS_STORAGE_SERVER}
+        server: tank
         path: /mnt/tank/Media
         globalMounts:
           - path: /data/nas-media

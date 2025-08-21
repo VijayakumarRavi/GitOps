@@ -7,7 +7,7 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - ${NFS_STORAGE_SERVER}:9100
+        - tank:9100
   metricsPath: /metrics
   relabelings:
     - action: replace

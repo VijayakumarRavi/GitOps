@@ -15,10 +15,10 @@ metadata:
 spec:
   matchConstraints:
     resourceRules:
-      - apiGroups: ["batch"]
-        apiVersions: ["v1"]
-        operations: ["CREATE", "UPDATE"]
-        resources: ["jobs"]
+      - apiGroups: ['batch']
+        apiVersions: ['v1']
+        operations: ['CREATE', 'UPDATE']
+        resources: ['jobs']
   matchConditions:
     - name: has-volsync-job-name-prefix
       expression: >
@@ -29,7 +29,7 @@ spec:
   failurePolicy: Fail
   reinvocationPolicy: IfNeeded
   mutations:
-    - patchType: "JSONPatch"
+    - patchType: 'JSONPatch'
       jsonPatch:
         expression: >
           [
@@ -64,10 +64,10 @@ metadata:
 spec:
   matchConstraints:
     resourceRules:
-      - apiGroups: ["batch"]
-        apiVersions: ["v1"]
-        operations: ["CREATE", "UPDATE"]
-        resources: ["jobs"]
+      - apiGroups: ['batch']
+        apiVersions: ['v1']
+        operations: ['CREATE', 'UPDATE']
+        resources: ['jobs']
   matchConditions:
     - name: has-volsync-job-name-prefix
       expression: >
@@ -81,7 +81,7 @@ spec:
   failurePolicy: Fail
   reinvocationPolicy: IfNeeded
   mutations:
-    - patchType: "JSONPatch"
+    - patchType: 'JSONPatch'
       jsonPatch:
         expression: >
           [
@@ -90,7 +90,7 @@ spec:
               value: Object.spec.template.spec.volumes{
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
-                  server: "${NFS_STORAGE_SERVER}",
+                  server: "tank",
                   path: "/mnt/tank/Kubernetes/Backup/Volsync"
                 }
               }

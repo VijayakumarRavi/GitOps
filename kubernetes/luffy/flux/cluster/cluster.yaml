@@ -1,24 +1,4 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: GitRepository
-metadata:
-  name: flux-system
-  namespace: flux-system
-spec:
-  interval: 30m
-  timeout: 10m
-  ref:
-    branch: master
-  url: ssh://git@github.com/VijayakumarRavi/GitOps.git
-  secretRef:
-    name: github-deploy-key
-  ignore: |
-    # exclude all
-    /*
-    # include gitops dirs
-    !/kubernetes
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

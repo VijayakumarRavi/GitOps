@@ -14,7 +14,7 @@ spec:
     controllers:
       radarr:
         annotations:
-          reloader.stakater.com/auto: "true"
+          reloader.stakater.com/auto: 'true'
         pod:
           securityContext:
             runAsUser: 2000
@@ -30,7 +30,7 @@ spec:
               repository: ghcr.io/vijayakumarravi/radarr
               tag: 5.27.4.10176
             env:
-              COMPlus_EnableDiagnostics: "0"
+              COMPlus_EnableDiagnostics: '0'
               RADARR__INSTANCE_NAME: Radarr
               RADARR__PORT: &port 7878
               RADARR__AUTHENTICATION_METHOD: External
@@ -89,7 +89,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: ${NFS_STORAGE_SERVER}
+        server: tank
         path: /mnt/tank/Media
         globalMounts:
           - path: /data/nas-media

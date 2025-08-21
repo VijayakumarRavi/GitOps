@@ -9,7 +9,7 @@ spec:
   capacity:
     storage: 1Mi
   nfs:
-    path: "/mnt/tank/Kubernetes/Backup/CPGO"
-    server: ${NFS_STORAGE_SERVER}
+    path: '/mnt/tank/Kubernetes/Backup/CPGO'
+    server: tank
   persistentVolumeReclaimPolicy: Retain
   storageClassName: postgres-nfs

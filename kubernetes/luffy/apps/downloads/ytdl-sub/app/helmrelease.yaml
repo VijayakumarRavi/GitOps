@@ -28,7 +28,7 @@ spec:
               - 65542 # gladius:external-services
 
         cronjob:
-          schedule: "0 */6 * * *"
+          schedule: '0 */6 * * *'
           backoffLimit: 0
           concurrencyPolicy: Forbid
           failedJobsHistory: 1
@@ -71,7 +71,7 @@ spec:
                 readOnly: true
       nfs-nas-media:
         type: nfs
-        server: ${NFS_STORAGE_SERVER}
+        server: tank
         path: /mnt/tank/Media
         advancedMounts:
           ytdl-sub:

@@ -30,7 +30,7 @@ spec:
               repository: ghcr.io/vijayakumarravi/qbittorrent
               tag: 5.1.2
             env:
-              UMASK: "022"
+              UMASK: '022'
               QBT_WEBUI_PORT: &port 8080
               XSEED_HOST: cross-seed.downloads.svc.cluster.local
               XSEED_PORT: 2468
@@ -89,7 +89,7 @@ spec:
               - path: /config
       media:
         type: nfs
-        server: ${NFS_STORAGE_SERVER}
+        server: tank
         path: /mnt/tank/Media
         globalMounts:
           - path: /data/nas-media

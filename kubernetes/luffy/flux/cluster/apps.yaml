@@ -21,8 +21,6 @@ spec:
     - name: cluster-meta
   postBuild:
     substituteFrom:
-      - name: cluster-settings
-        kind: ConfigMap
       - name: cluster-secrets
         kind: Secret
   patches:
@@ -37,9 +35,7 @@ spec:
             secretRef:
               name: sops-age
           postBuild:
-            substituteFrom:
-              - kind: ConfigMap
-                name: cluster-settings                
+            substituteFrom:             
               - kind: Secret
                 name: cluster-secrets
       target:
