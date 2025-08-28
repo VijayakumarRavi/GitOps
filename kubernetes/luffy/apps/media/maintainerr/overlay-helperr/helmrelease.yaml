@@ -1,0 +1,83 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: maintainerr-overlay-helperr
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 30m
+  dependsOn:
+    - name: maintainerr
+      namespace: media
+  values:
+    controllers:
+      maintainerr-overlay-helperr:
+        pod:
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - maintainerr
+                  topologyKey: kubernetes.io/hostname
+
+        containers:
+          app:
+            image:
+              repository: gsariev/maintainerr-overlay-helperr
+              tag: latest@sha256:327fcffeea5042030c531548c5d597982f36143549828772bd7550f0c57c6302
+            env:
+              PLEX_URL: http://plex.media.svc.cluster.local:32400
+              MAINTAINERR_URL: 'http://maintainerr.media.svc.cluster.local:6246'
+              IMAGE_SAVE_PATH: '/images'
+              ORIGINAL_IMAGE_PATH: '/images/originals'
+              TEMP_IMAGE_PATH: '/images/temp'
+
+              FONT_PATH: '/fonts/AvenirNextLTPro-Bold.ttf'
+              FONT_COLOR: '#ffffff'
+              BACK_COLOR: '#B20710'
+              FONT_SIZE: '55'
+              PADDING: '15'
+              BACK_RADIUS: '30'
+              HORIZONTAL_OFFSET: '30'
+              HORIZONTAL_ALIGN: 'center'
+              VERTICAL_OFFSET: '40'
+              VERTICAL_ALIGN: 'bottom'
+              DATE_FORMAT: 'MMM d'
+              OVERLAY_TEXT: 'Leaving'
+
+              ENABLE_DAY_SUFFIX: true
+              ENABLE_UPPERCASE: false
+              LANGUAGE: 'en-US'
+              CRON_SCHEDULE: '5 */8 * * *'
+              RUN_ON_CREATION: true
+              REAPPLY_OVERLAY: true
+              REORDER_COLLECTIONS: 'Delete watched movies, Delete watched episodes'
+            envFrom:
+              - secretRef:
+                  name: maintainerr-overlay-helperr
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128M
+              limits:
+                memory: 1024M
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop: [ALL]
+    persistence:
+      images:
+        enabled: true
+        type: emptyDir
+    service:
+      main:
+        enabled: false
