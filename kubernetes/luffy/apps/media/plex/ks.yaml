@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 10m
-  path: "./kubernetes/luffy/apps/media/plex/app"
+  path: './kubernetes/luffy/apps/media/plex/app'
   prune: true
   sourceRef:
     kind: GitRepository
@@ -43,7 +43,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 10m
-  path: "./kubernetes/luffy/apps/media/plex/trakt-sync"
+  path: './kubernetes/luffy/apps/media/plex/trakt-sync'
   prune: true
   sourceRef:
     kind: GitRepository
@@ -53,13 +53,14 @@ spec:
   dependsOn:
     - name: external-secrets-stores
     - name: volsync
+    - name: plex
   components:
     - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *appname
-      APP_UID: "1000"
-      APP_GID: "1000"
+      APP_UID: '1000'
+      APP_GID: '1000'
       VOLSYNC_CLAIM: plex-trakt-sync-config
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
@@ -75,7 +76,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 10m
-  path: "./kubernetes/luffy/apps/media/plex/plex-image-cleanup"
+  path: './kubernetes/luffy/apps/media/plex/plex-image-cleanup'
   prune: true
   sourceRef:
     kind: GitRepository
@@ -84,6 +85,34 @@ spec:
   wait: false
   dependsOn:
     - name: external-secrets-stores
+    - name: plex
+  postBuild:
+    substitute:
+      APP: *appname
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname plex-auto-languages
+  namespace: flux-system
+spec:
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 30m
+  timeout: 10m
+  path: './kubernetes/luffy/apps/media/plex/auto-languages'
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false
+  dependsOn:
+    - name: external-secrets-stores
+    - name: plex
   postBuild:
     substitute:
       APP: *appname
