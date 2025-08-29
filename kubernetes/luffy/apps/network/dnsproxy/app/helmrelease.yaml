@@ -1,0 +1,58 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dnsproxy
+spec:
+  interval: 30m
+  timeout: 1m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      dnsproxy:
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        replicas: 3
+        containers:
+          app:
+            image:
+              repository: adguard/dnsproxy
+              tag: v0.76.1
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            resources:
+              requests:
+                cpu: 12m
+                memory: 128M
+              limits:
+                memory: 512M
+
+    service:
+      app:
+        controller: dnsproxy
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.0.1.6
+        ports:
+          dns-tcp:
+            port: 53
+            protocol: TCP
+          dns-udp:
+            port: 53
+            protocol: UDP
+
+    persistence:
+      config-file:
+        type: secret
+        name: dnsproxy-config
+        globalMounts:
+          - path: /opt/dnsproxy/config.yaml
+            subPath: config.yaml
+            readOnly: true
