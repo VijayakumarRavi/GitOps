@@ -76,7 +76,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 10m
-  path: './kubernetes/luffy/apps/media/plex/plex-image-cleanup'
+  path: './kubernetes/luffy/apps/media/plex/image-cleanup'
   prune: true
   sourceRef:
     kind: GitRepository
