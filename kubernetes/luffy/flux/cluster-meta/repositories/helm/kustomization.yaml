@@ -10,7 +10,6 @@ resources:
   - ./crunchy-userinit.yaml
   - ./descheduler.yaml
   - ./external-secrets.yaml
-  - ./fluent.yaml
   - ./fluxcd-kustomize-mutating-webhook.yaml
   - ./grafana.yaml
   - ./intel.yaml
