@@ -5,16 +5,11 @@ kind: HelmRelease
 metadata:
   name: loki
 spec:
+  chartRef:
+    kind: OCIRepository
+    name: loki
+    namespace: flux-system
   interval: 30m
-  chart:
-    spec:
-      chart: loki
-      version: 6.39.0
-      sourceRef:
-        kind: HelmRepository
-        name: grafana
-        namespace: flux-system
-      interval: 30m
   values:
     deploymentMode: SingleBinary
 
@@ -34,7 +29,7 @@ spec:
         retention_period: 14d
       schemaConfig:
         configs:
-          - from: "2024-04-01"
+          - from: '2024-04-01'
             store: tsdb
             object_store: filesystem
             schema: v13
@@ -43,6 +38,8 @@ spec:
               period: 24h
       server:
         log_level: info
+        grpc_server_max_recv_msg_size: 10485760 # 10 MiB
+        grpc_server_max_send_msg_size: 10485760 # 10 MiB
       storage:
         type: filesystem
 
@@ -60,9 +57,12 @@ spec:
       enabled: false
     sidecar:
       image:
-        repository: ghcr.io/kiwigrid/k8s-sidecar
+        repository: ghcr.io/home-operations/k8s-sidecar
+        tag: 1.30.10@sha256:dd3b1f0c4e6b4512b2deb50c58acf65fd0f0927120a59a95eec854d32a6c9ce3
+      enableUniqueFilenames: true
       rules:
         searchNamespace: ALL
+        folder: /rules/fake
     singleBinary:
       replicas: 1
       persistence:

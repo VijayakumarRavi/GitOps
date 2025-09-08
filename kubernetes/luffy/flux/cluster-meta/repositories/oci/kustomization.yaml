@@ -9,7 +9,9 @@ resources:
   - ./controlplaneio.yaml
   - ./coredns.yaml
   - ./crunchydata.yaml
+  - ./grafana.yaml
   - ./intel-device-plugins-gpu.yaml
   - ./intel-device-plugins-operator.yaml
+  - ./loki.yaml
   - ./silence-operator.yaml
   - ./spegel.yaml

@@ -5,15 +5,10 @@ kind: HelmRelease
 metadata:
   name: grafana
 spec:
-  chart:
-    spec:
-      chart: grafana
-      interval: 30m
-      sourceRef:
-        kind: HelmRepository
-        name: grafana
-        namespace: flux-system
-      version: 9.4.4
+  chartRef:
+    kind: OCIRepository
+    name: grafana
+    namespace: flux-system
   interval: 30m
   values:
     annotations:
@@ -34,7 +29,7 @@ spec:
           - name: default
             disableDeletion: false
             editable: true
-            folder: ""
+            folder: ''
             options:
               path: /var/lib/grafana/dashboards/default
             orgId: 1
@@ -91,7 +86,7 @@ spec:
           gnetId: 1860
           revision: 37
           datasource: Prometheus
-        container-log-dashboard:
+        container-logs:
           # renovate: dashboardName="Container Log Dashboard"
           gnetId: 16966
           revision: 1
@@ -149,9 +144,6 @@ spec:
         flux-control-plane:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
           datasource: Prometheus
-        flux-logs:
-          url: https://raw.githubusercontent.com/razvanphp/flux2-monitoring-example/refs/heads/fix-grafana-dashboard-level-filter/monitoring/configs/dashboards/logs.json
-          datasource: Loki
       kubernetes:
         k8s-system-api-server:
           # renovate: dashboardName="Kubernetes / System / API Server"
@@ -300,7 +292,7 @@ spec:
       datasources:
         enabled: true
         searchNamespace: ALL
-        labelValue: ""
+        labelValue: ''
     testFramework:
       enabled: false
     topologySpreadConstraints:
