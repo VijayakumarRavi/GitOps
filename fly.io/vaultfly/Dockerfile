@@ -1,5 +1,4 @@
 ARG VAULTWARDEN_VERSION=1.34.3
-ARG LITESTREAM_VERSION=0.3.13
 ARG CLOUDFLARED_VERSION=2025.8.1
 
 # Builder for downloading dependencies
@@ -26,7 +25,7 @@ RUN wget -O /usr/local/bin/supercronic "https://github.com/aptible/supercronic/r
 FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
 
 # vaultwarden build stage
-FROM vaultwarden/server:${VAULTWARDEN_VERSION}
+FROM ghcr.io/dani-garcia/vaultwarden:${VAULTWARDEN_VERSION}
 
 # Set timezone
 RUN ln -snf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && echo Asia/Kolkata > /etc/timezone

@@ -20,4 +20,3 @@ else
   echo "❌ AdGuard Home is not healthy. Restarting..."
   overmind restart adguard -s /overmind.AGH.sock
 fi
-

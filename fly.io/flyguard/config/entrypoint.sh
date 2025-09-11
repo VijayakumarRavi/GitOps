@@ -9,6 +9,8 @@ NC='\033[0m' # No Color
 
 echo -e "${GREEN}Info: Starting up...${NC}"
 
+mkdir -p /data/AdGuardHome
+
 restic restore latest --target=/ --verbose=2 --cleanup-cache --overwrite if-newer
 if [ $? -ne 0 ]; then
   echo -e "${RED}Error: Restic restore failed. Please check your restic configuration.${NC}"
