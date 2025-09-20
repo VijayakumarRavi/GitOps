@@ -1,5 +1,5 @@
 ARG ADGUARD_VERSION=v0.107.66
-ARG CLOUDFLARED_VERSION=2025.8.1
+ARG CLOUDFLARED_VERSION=2025.9.0
 
 # Builder for Overmind download
 FROM alpine as builder
