@@ -1,4 +1,4 @@
-ARG POCKETID_VERSION=v1.11.1
+ARG POCKETID_VERSION=v1.11.2
 ARG CLOUDFLARED_VERSION=2025.9.0
 
 # Builder for downloading dependencies
