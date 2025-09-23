@@ -65,6 +65,7 @@ spec:
         existingClaim: model-cache-pvc
         globalMounts:
           - path: /cache
+          - path: /.cache
       tmp:
         type: emptyDir
         globalMounts:
@@ -75,6 +76,7 @@ spec:
         name: immich-config-secret
         globalMounts:
           - path: /config
+          - path: /.config
       media:
         type: nfs
         server: tank
