@@ -9,9 +9,9 @@ spec:
   trigger:
     schedule: 5 * * * *
   restic:
-    cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
-    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-openebs-hostpath}"
+    cacheAccessModes: ['${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}']
+    cacheCapacity: '${VOLSYNC_CACHE_CAPACITY:-1Gi}'
+    cacheStorageClassName: '${VOLSYNC_CACHE_SNAPSHOTCLASS:-openebs-hostpath}'
     copyMethod: Snapshot
     moverSecurityContext:
       runAsUser: ${APP_UID:-2000}
@@ -20,6 +20,7 @@ spec:
     pruneIntervalDays: 7
     repository: ${APP}-volsync-wasabi
     retain:
+      hourly: 24
       daily: 7
-    storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
-    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}"
+    storageClassName: '${VOLSYNC_STORAGECLASS:-ceph-block}'
+    volumeSnapshotClassName: '${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}'
