@@ -41,7 +41,7 @@ spec:
               op: "add", path: "/spec/template/spec/initContainers/-",
               value: Object.spec.template.spec.initContainers{
                 name: "unlock",
-                image: "docker.io/restic/restic:latest",
+                image: object.spec.template.spec.containers[0].image,
                 imagePullPolicy: "IfNotPresent",
                 env: object.spec.template.spec.containers[0].env,
                 volumeMounts: object.spec.template.spec.containers[0].volumeMounts,
@@ -50,6 +50,7 @@ spec:
                   "-c",
                   "DURATION=$(shuf -i 0-60 -n 1)\n" +
                   "echo \"Using restic repository: $RESTIC_REPOSITORY\"\n" +
+                  "case \"$RESTIC_REPOSITORY\" in /repository*) ls -lah \"$RESTIC_REPOSITORY\" ;; esac\n" +
                   "echo \"Running restic unlock...\"\n" +
                   "restic unlock --remove-all --verbose\n" +
                   "echo \"Sleeping for $DURATION seconds...\"\n" +
