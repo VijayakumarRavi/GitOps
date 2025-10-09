@@ -58,7 +58,7 @@ spec:
           flaresolverr:
             image:
               repository: ghcr.io/flaresolverr/flaresolverr
-              tag: v3.4.1
+              tag: v3.4.2
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
