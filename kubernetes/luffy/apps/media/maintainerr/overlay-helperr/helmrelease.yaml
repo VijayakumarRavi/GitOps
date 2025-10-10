@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: gsariev/maintainerr-overlay-helperr
-              tag: latest@sha256:5380096803f1a25c95fd4c0e79428f1678226a8d646a8db0eef5d21984034bb7
+              tag: latest@sha256:7b274df3f505993756e65fa8262f6baf273054a6705a9a3e8cdd8b0c217b64c9
             env:
               PLEX_URL: http://plex.media.svc.cluster.local:32400
               MAINTAINERR_URL: 'http://maintainerr.media.svc.cluster.local:6246'
