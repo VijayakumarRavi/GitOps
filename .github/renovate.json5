@@ -46,4 +46,14 @@
       '/(^|/)kubernetes/.+\\.ya?ml$/',
     ],
   },
+  regexManagers: [
+    {
+      "description": "Update Talos and Kubernetes versions in talconfig.yaml",
+      "fileMatch": ["^kubernetes/luffy/talos/talconfig\\.ya?ml$"],
+      "matchStrings": [
+        "# renovate: depName=(?<depName>.*?) datasource=(?<datasource>.*?)\\s+talosVersion: (?<currentValue>.*)",
+        "# renovate: depName=(?<depName>.*?) datasource=(?<datasource>.*?)\\s+kubernetesVersion: (?<currentValue>.*)"
+      ]
+    }
+  ]
 }

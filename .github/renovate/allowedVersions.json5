@@ -10,6 +10,12 @@
       "matchDatasources": ["docker"],
       "matchPackagePatterns": ["postgresql"],
       "allowedVersions": "<17"
+    },
+    {
+      description: "Talos version management",
+      matchDatasources: ["github-releases"],
+      matchPackageNames: ["siderolabs/talos"],
+      versioning: "semver",
     }
   ]
 }
