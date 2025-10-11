@@ -15,4 +15,5 @@ resources:
   - ./loki.yaml
   - ./silence-operator.yaml
   - ./spegel.yaml
+  - ./tuppr.yaml
   - ./volsync.yaml
