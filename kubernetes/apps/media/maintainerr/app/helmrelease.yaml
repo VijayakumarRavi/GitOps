@@ -16,15 +16,8 @@ spec:
   values:
     controllers:
       maintainerr:
-        pod:
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
-            fsGroupChangePolicy: "OnRootMismatch"
-
         containers:
-          app:
+          maintainerr:
             image:
               repository: ghcr.io/jorenn92/maintainerr
               tag: 2.19.0
@@ -44,7 +37,19 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 512Mi
-
+          overlay-helperr:
+            image:
+              repository: gsariev/maintainerr-overlay-helperr
+              tag: latest@sha256:7b274df3f505993756e65fa8262f6baf273054a6705a9a3e8cdd8b0c217b64c9
+            envFrom:
+              - secretRef:
+                  name: maintainerr-overlay-helperr
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128M
+              limits:
+                memory: 1024M
     service:
       app:
         controller: maintainerr
