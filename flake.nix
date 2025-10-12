@@ -15,9 +15,12 @@
       default = inputs.nixpkgs.legacyPackages.${system}.mkShell {
         buildInputs = with inputs.nixpkgs.legacyPackages.${system}; [
           jq
+          yq
           git
+          gum
           flux
           sops
+          just
           go-task
           kubectl
           python3
@@ -28,9 +31,11 @@
         ];
         shellHook = ''
           # Set environment variables based on the current directory as config root
+          export JUST_UNSTABLE="1"
           export KUBERNETES_DIR="$(pwd)/kubernetes/luffy"
+          export MINIJINJA_CONFIG_FILE="$(pwd)/.minijinja.toml"
           export SOPS_AGE_KEY_FILE="$(pwd)/age.agekey"
-          export TALOSCONFIG="$(pwd)/kubernetes/luffy/talos/clusterconfig/talosconfig"
+          export TALOSCONFIG="$(pwd)/talosconfig"
           # Tells pip to put packages into $PIP_PREFIX instead of the usual locations.
           # See https://pip.pypa.io/en/stable/user_guide/#environment-variables.
           export PIP_PREFIX=$(pwd)/_build/pip_packages
