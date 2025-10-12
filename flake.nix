@@ -1,9 +1,6 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    talhelper.url = "github:budimanjojo/talhelper";
-    talhelper.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs = inputs: let
     # Supported systems for NixOS and MacOS
@@ -18,16 +15,17 @@
           yq
           git
           gum
-          flux
           sops
           just
+          krew
+          fluxcd
           go-task
           kubectl
+          kubectx
           python3
           helmfile
           talosctl
           minijinja
-          inputs.talhelper.packages.${system}.default
         ];
         shellHook = ''
           # Set environment variables based on the current directory as config root
@@ -36,12 +34,8 @@
           export MINIJINJA_CONFIG_FILE="$(pwd)/.minijinja.toml"
           export SOPS_AGE_KEY_FILE="$(pwd)/age.agekey"
           export TALOSCONFIG="$(pwd)/talosconfig"
-          # Tells pip to put packages into $PIP_PREFIX instead of the usual locations.
-          # See https://pip.pypa.io/en/stable/user_guide/#environment-variables.
-          export PIP_PREFIX=$(pwd)/_build/pip_packages
-          export PYTHONPATH="$PIP_PREFIX/${inputs.nixpkgs.legacyPackages.${system}.python313.sitePackages}:$PYTHONPATH"
-          export PATH="$PIP_PREFIX/bin:$PATH"
-          unset SOURCE_DATE_EPOCH
+          export PATH="$HOME/.krew/bin:$PATH"
+          krew install browse-pvc ctx ns oidc-login rook-ceph tmux-exec
         '';
       };
     });

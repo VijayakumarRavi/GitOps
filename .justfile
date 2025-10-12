@@ -3,8 +3,8 @@
 set quiet := true
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
-#mod bootstrap "kubernetes/luffy/bootstrap"
-# mod kube "kubernetes/luffy"
+mod bootstrap "kubernetes/luffy/bootstrap"
+mod kube "kubernetes/luffy"
 mod talos "kubernetes/luffy/talos"
 
 [private]
