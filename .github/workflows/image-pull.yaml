@@ -3,7 +3,7 @@ name: Image Pull
 
 on:
   pull_request:
-    branches: ["master"]
+    branches: ['master']
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: ["default", "pull"]
+        branch: ['default', 'pull']
       fail-fast: false
     outputs:
       default: ${{ steps.extract.outputs.default }}
@@ -47,7 +47,7 @@ jobs:
           args: >-
             get cluster
             --all-namespaces
-            --path /github/workspace/kubernetes/luffy/flux/cluster
+            --path /github/workspace/kubernetes/flux/cluster
             --enable-images
             --only-images
             --output json

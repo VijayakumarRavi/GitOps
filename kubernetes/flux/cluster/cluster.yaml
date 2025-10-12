@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-meta
+  namespace: flux-system
+spec:
+  interval: 30m
+  timeout: 10m
+  path: ./kubernetes/flux/cluster-meta
+  prune: false
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  patches:
+    - patch: |-
+        apiVersion: source.toolkit.fluxcd.io/v1
+        kind: HelmRepository
+        metadata:
+          name: not-used
+          namespace: flux-system
+        spec:
+          interval: 30m
+          timeout: 10m
+      target:
+        group: source.toolkit.fluxcd.io
+        kind: HelmRepository
+        labelSelector: substitution.flux.home.arpa/disabled notin (true)
+    - patch: |-
+        apiVersion: source.toolkit.fluxcd.io/v1
+        kind: OCIRepository
+        metadata:
+          name: not-used
+          namespace: flux-system
+        spec:
+          timeout: 10m
+      target:
+        group: source.toolkit.fluxcd.io
+        kind: OCIRepository
+        labelSelector: substitution.flux.home.arpa/disabled notin (true)

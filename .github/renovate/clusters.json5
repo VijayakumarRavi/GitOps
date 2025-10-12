@@ -3,7 +3,7 @@
   "packageRules": [
     {
       "description": ["Separate PRs for master cluster"],
-      "matchFileNames": ["**/kubernetes/luffy/**"],
+      "matchFileNames": ["**/kubernetes/**"],
       "additionalBranchPrefix": "master-"
     }
   ]

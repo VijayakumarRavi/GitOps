@@ -30,7 +30,7 @@
         shellHook = ''
           # Set environment variables based on the current directory as config root
           export JUST_UNSTABLE="1"
-          export KUBERNETES_DIR="$(pwd)/kubernetes/luffy"
+          export KUBERNETES_DIR="$(pwd)/kubernetes"
           export MINIJINJA_CONFIG_FILE="$(pwd)/.minijinja.toml"
           export SOPS_AGE_KEY_FILE="$(pwd)/age.agekey"
           export TALOSCONFIG="$(pwd)/talosconfig"
