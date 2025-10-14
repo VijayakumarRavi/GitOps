@@ -40,7 +40,7 @@ spec:
           overlay-helperr:
             image:
               repository: gsariev/maintainerr-overlay-helperr
-              tag: latest@sha256:60151c7ef2fc7e5d37008feff0134e180efb3d06b3ccaddbc7decb7563c470ae
+              tag: latest@sha256:7b274df3f505993756e65fa8262f6baf273054a6705a9a3e8cdd8b0c217b64c9
             envFrom:
               - secretRef:
                   name: maintainerr-overlay-helperr
