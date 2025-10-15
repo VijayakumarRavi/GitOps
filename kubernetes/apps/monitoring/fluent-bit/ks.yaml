@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname alloy
+  name: &appname fluent-bit
   namespace: flux-system
 spec:
   targetNamespace: monitoring
@@ -12,9 +12,11 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 10m
-  path: './kubernetes/apps/monitoring/alloy/app'
+  path: "./kubernetes/apps/monitoring/fluent-bit/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
+  wait: false
+  dependsOn:
+    - name: victoria-logs
