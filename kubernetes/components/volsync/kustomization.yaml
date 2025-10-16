@@ -5,5 +5,5 @@ kind: Component
 resources:
   - ./nfs
   # - ./b2
-  - ./wasabi
+  # - ./wasabi
   - ./pvc.yaml
