@@ -19,7 +19,7 @@ spec:
         containers:
           maintainerr:
             image:
-              repository: ghcr.io/jorenn92/maintainerr
+              repository: ghcr.io/maintainerr/maintainerr
               tag: 2.19.0
             probes:
               liveness:
