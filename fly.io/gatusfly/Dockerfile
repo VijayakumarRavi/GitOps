@@ -14,9 +14,9 @@ RUN apk add --no-cache wget gzip
 
 # Download and extract Overmind (latest release)
 RUN wget -O overmind.gz "https://github.com/DarthSim/overmind/releases/download/$OVERMIND_VERSION/overmind-${OVERMIND_VERSION}-linux-amd64.gz" \
-    && gunzip overmind.gz \
-    && chmod +x overmind \
-    && mv overmind /usr/local/bin/
+  && gunzip overmind.gz \
+  && chmod +x overmind \
+  && mv overmind /usr/local/bin/
 
 # Fetch the latest tailscale package from it's official Docker image
 FROM tailscale/tailscale:${TAILSCALE_VERSION} as tailscale

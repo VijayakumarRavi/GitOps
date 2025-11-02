@@ -34,17 +34,17 @@ RUN apk add --no-cache ca-certificates iptables iproute2 ip6tables tmux jq bash 
 ENV TZ=Asia/Kolkata
 RUN cp /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 
-# Copy Cloudflared binary 
+# Copy Cloudflared binary
 COPY --from=cloudflared /usr/local/bin/cloudflared /usr/local/bin/cloudflared
 
 # Copy Overmind binary
 COPY --from=builder /usr/local/bin/overmind /usr/local/bin/overmind
 
-# Copy Supercronic binary 
+# Copy Supercronic binary
 COPY --from=builder /usr/local/bin/supercronic /usr/local/bin/supercronic
 
 # Copy files to docker
-COPY config/ / 
+COPY config/ /
 
 # Chmod the scripts
 RUN chmod +x -v /*.sh

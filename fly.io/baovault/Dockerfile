@@ -12,9 +12,9 @@ RUN apk add --no-cache wget gzip
 
 # Download and extract Overmind (latest release)
 RUN wget -O overmind.gz "https://github.com/DarthSim/overmind/releases/download/$OVERMIND_VERSION/overmind-${OVERMIND_VERSION}-linux-amd64.gz" \
-    && gunzip overmind.gz \
-    && chmod +x overmind \
-    && mv overmind /usr/local/bin/
+  && gunzip overmind.gz \
+  && chmod +x overmind \
+  && mv overmind /usr/local/bin/
 
 # Cloudflared stage to fetch the latest cloudflared package
 FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
@@ -28,7 +28,7 @@ RUN ln -snf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && echo Asia/Kolkata
 # Install runtime dependencies
 RUN apk add --no-cache tmux curl bash tzdata
 
-# Copy Cloudflared binary 
+# Copy Cloudflared binary
 COPY --from=cloudflared /usr/local/bin/cloudflared /usr/local/bin/cloudflared
 
 # Copy Overmind binary
