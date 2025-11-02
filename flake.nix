@@ -34,6 +34,7 @@
           export MINIJINJA_CONFIG_FILE="$(pwd)/.minijinja.toml"
           export SOPS_AGE_KEY_FILE="$(pwd)/age.agekey"
           export TALOSCONFIG="$(pwd)/talosconfig"
+          export KUBECONFIG="$(pwd)/kubeconfig"
           export PATH="$HOME/.krew/bin:$PATH"
           krew install browse-pvc ctx ns oidc-login rook-ceph tmux-exec
         '';
