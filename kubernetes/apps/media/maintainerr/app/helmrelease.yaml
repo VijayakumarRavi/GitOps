@@ -20,7 +20,7 @@ spec:
           maintainerr:
             image:
               repository: ghcr.io/maintainerr/maintainerr
-              tag: 2.19.0
+              tag: 2.20.0
             probes:
               liveness:
                 enabled: true
