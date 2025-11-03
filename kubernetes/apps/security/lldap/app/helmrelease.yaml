@@ -27,8 +27,8 @@ spec:
         containers:
           app:
             image:
-              repository: lldap/lldap
-              tag: v0.6.2-alpine-rootless
+              repository: ghcr.io/lldap/lldap
+              tag: latest-alpine-rootless@sha256:b510901b90d4a332b604b014acc7f844fd5d1f51ea086c1767fde1d53250ba6f
             envFrom:
               - secretRef:
                   name: lldap-secret
