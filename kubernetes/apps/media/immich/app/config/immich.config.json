@@ -133,7 +133,7 @@
       "modelName": "antelopev2"
     },
     "ocr": {
-      "enabled": true,
+      "enabled": false,
       "maxResolution": 736,
       "minDetectionScore": 0.5,
       "minRecognitionScore": 0.8,
