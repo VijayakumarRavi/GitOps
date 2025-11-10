@@ -28,3 +28,4 @@ spec:
     substitute:
       APP: *appname
       VOLSYNC_CLAIM: tautulli-config
+      VOLSYNC_CAPACITY: 2Gi
