@@ -122,7 +122,7 @@ spec:
         controller: karakeep
         ports:
           http:
-            port: 3000
+            port: &port 3000
       chrome:
         controller: chrome
         ports:
@@ -147,13 +147,14 @@ spec:
               - path: /meili_data
                 subPath: meilisearch
 
-    ingress:
-      app:
-        className: nginx
-        hosts:
-          - host: karakeep.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+    route:
+        app:
+          hostnames:
+            - karakeep.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
+          rules:
+            - backendRefs:
+                - name: karakeep-app
+                  port: *port

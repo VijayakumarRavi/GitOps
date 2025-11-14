@@ -70,16 +70,13 @@ spec:
           http:
             port: 32400
 
-    ingress:
-      app:
-        className: nginx
-        hosts:
-          - host: plex.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+    route:
+        app:
+          hostnames:
+            - plex.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
 
     persistence:
       config:

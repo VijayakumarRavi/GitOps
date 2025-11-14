@@ -22,12 +22,15 @@ spec:
     monitoring:
       enabled: true
       createPrometheusRules: true
-    ingress:
+    route:
       dashboard:
-        ingressClassName: nginx
-        host:
-          name: rook.${CLUSTER_DOMAIN}
-          path: '/'
+         host:
+           name: rook.${CLUSTER_DOMAIN}
+           path: "/"
+           pathType: PathPrefix
+         parentRefs:
+           - name: envoy
+             namespace: network
     toolbox:
       enabled: true
     cephClusterSpec:

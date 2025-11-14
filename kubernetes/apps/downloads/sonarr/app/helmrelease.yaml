@@ -69,17 +69,13 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
-      app:
-        enabled: true
-        className: nginx
-        hosts:
-          - host: sonarr.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+    route:
+        app:
+          hostnames:
+            - sonarr.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
     persistence:
       config:
         existingClaim: sonarr-config

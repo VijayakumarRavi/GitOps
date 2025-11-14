@@ -12,12 +12,12 @@
       default = inputs.nixpkgs.legacyPackages.${system}.mkShell {
         buildInputs = with inputs.nixpkgs.legacyPackages.${system}; [
           jq
-          yq
           git
           gum
           sops
           just
           krew
+          yq-go
           fluxcd
           go-task
           kubectl

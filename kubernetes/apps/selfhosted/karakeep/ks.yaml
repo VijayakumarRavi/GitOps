@@ -20,7 +20,7 @@ spec:
     namespace: flux-system
   wait: false
   dependsOn:
-    - name: nginx
+    - name: envoy-gateway-config
     - name: volsync
     - name: external-secrets-stores
     - name: crunchy-postgres-secretstore

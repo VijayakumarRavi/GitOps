@@ -55,17 +55,13 @@ spec:
         ports:
           http:
             port: 80
-
-    ingress:
-      app:
-        className: nginx
-        hosts:
-          - host: speedtest.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+    route:
+        app:
+          hostnames:
+            - speedtest.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
     persistence:
       config:
         existingClaim: speedtest-config

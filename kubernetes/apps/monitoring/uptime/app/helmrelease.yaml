@@ -50,16 +50,13 @@ spec:
           http:
             port: 3001
 
-    ingress:
-      uptime:
-        className: nginx
-        hosts:
-          - host: uptime.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: uptime
-                  port: http
+    route:
+        app:
+          hostnames:
+            - uptime.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
 
     persistence:
       config:

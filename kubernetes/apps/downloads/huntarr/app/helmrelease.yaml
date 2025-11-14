@@ -54,17 +54,13 @@ spec:
         ports:
           http:
             port: 9705
-    ingress:
-      app:
-        enabled: true
-        className: nginx
-        hosts:
-          - host: huntarr.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+    route:
+        app:
+          hostnames:
+            - huntarr.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
     persistence:
       config:
         existingClaim: huntarr-config

@@ -66,16 +66,13 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
-      app:
-        className: nginx
-        hosts:
-          - host: torrent.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+    route:
+        app:
+          hostnames:
+            - torrent.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
     persistence:
       config:
         enabled: true
@@ -90,8 +87,5 @@ spec:
         path: /mnt/tank/Media
         globalMounts:
           - path: /data/nas-media
-      qbrr:
-        type: image
-        image: ghcr.io/buroa/qbrr:0.1.1@sha256:fe4a1d100ba896999253a5122d9c77cc4920779d618c23f765458cb6ec7383ca
       tmp:
         type: emptyDir

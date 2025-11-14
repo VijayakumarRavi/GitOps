@@ -56,7 +56,7 @@ spec:
         controller: lldap
         ports:
           http:
-            port: 17170
+            port: &port 17170
       lldap:
         controller: lldap
         type: LoadBalancer
@@ -66,17 +66,17 @@ spec:
           ldap:
             port: 3890
 
-    ingress:
-      web:
-        enabled: true
-        className: nginx
-        hosts:
-          - host: lldap.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: web
-                  port: http
+    route:
+      app:
+        hostnames:
+          - lldap.${CLUSTER_DOMAIN}
+        parentRefs:
+          - name: envoy
+            namespace: network
+        rules:
+          - backendRefs:
+              - name: lldap-web
+                port: *port
 
     persistence:
       data:

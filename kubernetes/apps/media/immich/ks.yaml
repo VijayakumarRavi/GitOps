@@ -18,7 +18,7 @@ spec:
     name: flux-system
   wait: false
   dependsOn:
-    - name: nginx
+    - name: envoy-gateway-config
     - name: dragonfly-cluster
     - name: external-secrets-stores
     - name: crunchy-postgres-secretstore

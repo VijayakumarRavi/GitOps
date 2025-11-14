@@ -48,17 +48,13 @@ spec:
           http:
             port: 8080
 
-    ingress:
-      app:
-        className: nginx
-        hosts:
-          - host: *domain
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-
+    route:
+        app:
+          hostnames:
+            - *domain
+          parentRefs:
+            - name: envoy
+              namespace: network
     persistence:
       data:
         existingClaim: freshrss

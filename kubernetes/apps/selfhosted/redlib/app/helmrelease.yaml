@@ -56,13 +56,10 @@ spec:
         ports:
           http:
             port: 8080
-    ingress:
-      app:
-        className: nginx
-        hosts:
-          - host: reddit.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+    route:
+        app:
+          hostnames:
+            - reddit.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network

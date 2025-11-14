@@ -88,16 +88,14 @@ spec:
           http:
             port: 8000
 
-    ingress:
-      paperless:
-        className: nginx
-        hosts:
-          - host: paperless.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: paperless
-                  port: http
+    route:
+        app:
+          hostnames:
+            - paperless.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
+
     persistence:
       data:
         existingClaim: paperless-data

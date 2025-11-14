@@ -41,5 +41,5 @@ spec:
     name: flux-system
   wait: true
   dependsOn:
-    - name: nginx-certificates
+    - name: envoy-gateway-config
     - name: cilium-config

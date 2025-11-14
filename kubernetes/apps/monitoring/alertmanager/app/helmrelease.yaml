@@ -53,16 +53,13 @@ spec:
           http:
             port: 9093
 
-    ingress:
-      app:
-        className: nginx
-        hosts:
-          - host: alertmanager.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+    route:
+        app:
+          hostnames:
+            - alertmanager.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
 
     persistence:
       config:

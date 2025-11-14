@@ -78,16 +78,13 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
-      app:
-        className: nginx
-        hosts:
-          - host: kopia.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+    route:
+        app:
+          hostnames:
+            - kopia.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
     persistence:
       config-file:
         type: configMap

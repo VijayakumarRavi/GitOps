@@ -69,17 +69,14 @@ spec:
       autoscaling:
         enabled: true
         minReplicas: 1
-      ingress:
-        enabled: true
-        ingressClassName: nginx
-        hosts:
-          - auth.${CLUSTER_DOMAIN}
-        rules:
-          - host: auth.${CLUSTER_DOMAIN}
-            http:
-              paths:
-                - path: /
-                  pathType: Prefix
+      route:
+        main:
+          enabled: true
+          hostnames:
+            - auth.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
 
       metrics:
         prometheus:

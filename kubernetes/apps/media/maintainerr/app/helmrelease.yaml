@@ -56,17 +56,13 @@ spec:
         ports:
           http:
             port: 6246
-
-    ingress:
-      app:
-        className: nginx
-        hosts:
-          - host: maintainerr.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+    route:
+        app:
+          hostnames:
+            - maintainerr.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
 
     persistence:
       data:

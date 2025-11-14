@@ -16,6 +16,7 @@ spec:
       version: 1.18.3
   interval: 30m
   values:
+    rollOutCiliumPods: true
     ipam:
       mode: cluster-pool
       operator:
@@ -30,21 +31,14 @@ spec:
       qps: 28
       burst: 32
     # devices: { enp+, eth+ }
-    hubble:
+    endpointRoutes:
       enabled: true
-      relay:
-        enabled: true
-        prometheus:
-          serviceMonitor:
-            enabled: true
-      ui:
-        enabled: true
-        rollOutPods: true
-        ingress:
-          enabled: true
-          className: nginx
-          hosts:
-            - hubble.${CLUSTER_DOMAIN}
+    envoy:
+      enabled: false
+    gatewayAPI:
+      enabled: false
+    hubble:
+      enabled: false
 
       metrics:
         enabled:
@@ -61,7 +55,6 @@ spec:
           enabled: true
           annotations:
             grafana_folder: Cilium
-
     operator:
       prometheus:
         enabled: true

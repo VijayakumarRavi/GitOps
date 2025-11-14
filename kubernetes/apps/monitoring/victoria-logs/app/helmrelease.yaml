@@ -20,14 +20,13 @@ spec:
         size: 20Gi
       serviceMonitor:
         enabled: true
-      ingress:
+      route:
         enabled: true
-        ingressClassName: nginx
-        hosts:
-          - name: logs.${CLUSTER_DOMAIN}
-            path:
-              - /
-            port: http
+        hostnames:
+          - logs.${CLUSTER_DOMAIN}
+        parentRefs:
+          - name: envoy
+            namespace: network
     dashboards:
       enabled: true
       annotations:

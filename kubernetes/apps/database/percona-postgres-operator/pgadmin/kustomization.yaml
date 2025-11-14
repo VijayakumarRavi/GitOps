@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./pgadmin.yaml
   - ./externalsecret.yaml
-  - ./ingress.yaml
+  - ./httproute.yaml

@@ -266,11 +266,15 @@ spec:
       GF_SERVER_ROOT_URL: https://grafana.${CLUSTER_DOMAIN}
     imageRenderer:
       enabled: true
-    ingress:
-      enabled: true
-      ingressClassName: nginx
-      hosts:
-        - grafana.${CLUSTER_DOMAIN}
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - grafana.${CLUSTER_DOMAIN}
+        parentRefs:
+          - name: envoy
+            namespace: network
+
     persistence:
       enabled: false
     plugins:

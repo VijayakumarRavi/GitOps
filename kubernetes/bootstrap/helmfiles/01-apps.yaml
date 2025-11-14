@@ -1,6 +1,5 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/helmfile
-
 helmDefaults:
   wait: true
   force: true
@@ -9,16 +8,7 @@ helmDefaults:
   recreatePods: true
   cleanupOnFail: true
 
-repositories:
-  - name: cilium
-    url: https://helm.cilium.io
-
 releases:
-  - name: prometheus-operator-crds
-    namespace: monitoring
-    chart: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
-    version: 24.0.1
-
   - name: cilium
     namespace: network
     chart: oci://ghcr.io/home-operations/charts-mirror/cilium
@@ -30,7 +20,7 @@ releases:
         command: bash
         args:
           - -c
-          - until kubectl get crd ciliumloadbalancerippools.cilium.io ciliumbgpadvertisements.cilium.io ciliumbgppeerconfigs.cilium.io ciliumbgpclusterconfigs.cilium.io &>/dev/null; do sleep 5; done
+          - until kubectl get crd ciliumloadbalancerippools.cilium.io ciliuml2announcementpolicies.cilium.io; do sleep 5; done
         events:
           - postsync
         showlogs: true
@@ -46,8 +36,6 @@ releases:
         events:
           - postsync
         showlogs: true
-    needs:
-      - monitoring/prometheus-operator-crds
 
   - name: coredns
     namespace: network

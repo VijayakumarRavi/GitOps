@@ -61,16 +61,13 @@ spec:
         ports:
           http:
             port: 2283
-    ingress:
+    route:
       app:
-        className: nginx
-        hosts:
-          - host: immich.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: immich-server
-                  port: http
+        hostnames:
+          - immich.${CLUSTER_DOMAIN}
+        parentRefs:
+          - name: envoy
+            namespace: network
     persistence:
       config:
         enabled: true

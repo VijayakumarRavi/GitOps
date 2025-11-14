@@ -8,7 +8,7 @@ controller := `talosctl config info --output json | jq --raw-output '.endpoints[
 nodes := `talosctl config info -o yaml | yq -er '.nodes | join (" ")'`
 
 [private]
-default: talos k8s (kubeconfig "node") wait kubeconfig sops apps
+default: talos k8s (kubeconfig "node") wait kubeconfig sops crds apps
 
 [doc('Install Talos')]
 talos:
@@ -71,9 +71,19 @@ sops:
       fi; \
     fi
 
+[doc('Apply Helmfile CRDs and Apps')]
+helmfile: crds apps
+
+[doc('Apply Helmfile CRDs')]
+crds:
+  just log info "Running stage..." "stage" "$0"
+  if ! helmfile -f "{{ bootstrap_dir }}/helmfiles/00-crds.yaml" template -q | kubectl apply --server-side -f -; then \
+    just log fatal "Failed to apply crds" "stage" "$0"; \
+  fi;
+
 [doc('Apply Helmfile Apps')]
 apps:
-    just log info "Running stage..." "stage" "$0"
-    if ! helmfile -f "{{ bootstrap_dir }}/helmfile.yaml" sync --hide-notes; then \
-        just log fatal "Failed to sync helmfile" "stage" "$0"; \
-    fi
+  just log info "Running stage..." "stage" "$0"
+  if ! helmfile -f "{{ bootstrap_dir }}/helmfiles/01-apps.yaml" sync --hide-notes; then \
+    just log fatal "Failed to sync helmfile" "stage" "$0"; \
+  fi

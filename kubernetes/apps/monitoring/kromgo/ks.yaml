@@ -19,5 +19,5 @@ spec:
     name: flux-system
   wait: false
   dependsOn:
-    - name: nginx
+    - name: envoy-gateway-config
     - name: kube-prometheus-stack
