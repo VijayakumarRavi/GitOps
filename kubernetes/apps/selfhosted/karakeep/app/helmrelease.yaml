@@ -122,7 +122,7 @@ spec:
         controller: karakeep
         ports:
           http:
-            port: &port 3000
+            port: &httpPort 3000
       chrome:
         controller: chrome
         ports:
@@ -156,5 +156,5 @@ spec:
               namespace: network
           rules:
             - backendRefs:
-                - name: karakeep-app
-                  port: *port
+                - identifier: app
+                  port: *httpPort

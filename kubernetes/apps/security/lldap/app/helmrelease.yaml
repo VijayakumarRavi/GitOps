@@ -75,7 +75,7 @@ spec:
             namespace: network
         rules:
           - backendRefs:
-              - name: lldap-web
+              - identifier: web
                 port: *port
 
     persistence:
