@@ -28,15 +28,13 @@ spec:
       create: true
       name: homepage
     enableRbac: true
-    ingress:
-      app:
-        enabled: true
-        ingressClassName: nginx
-        hosts:
-          - host: &host dash.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                pathType: Prefix
+    route:
+      main:
+        hostnames:
+          - &host dash.${CLUSTER_DOMAIN}
+        parentRefs:
+          - name: envoy-external
+            namespace: network
     config:
       useExistingConfigMap: homepage-configs
     env:
