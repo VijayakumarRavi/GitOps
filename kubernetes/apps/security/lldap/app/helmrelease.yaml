@@ -28,7 +28,7 @@ spec:
           app:
             image:
               repository: ghcr.io/lldap/lldap
-              tag: latest-alpine-rootless@sha256:172d57f453bed81c0c3f1ab56510fedab19e7f24e2c91465b3d774bb446953f4
+              tag: latest-alpine-rootless@sha256:82c4289affc92dcb198f9a2d53080c82900930991db03953da28756b7c3e198f
             envFrom:
               - secretRef:
                   name: lldap-secret
