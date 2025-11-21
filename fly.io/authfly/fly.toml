@@ -30,6 +30,11 @@ EMAIL_ONE_TIME_ACCESS_AS_ADMIN_ENABLED = "true"
 LDAP_ENABLED = "true"
 LDAP_URL = "ldap://localhost:3890"
 
+FILE_BACKEND = "s3"
+S3_BUCKET = "vjlab"
+UPLOAD_PATH = "apps/authfly/uploads"
+S3_FORCE_PATH_STYLE = "true"
+
 LDAP_SKIP_CERT_VERIFY = "true"
 LDAP_SOFT_DELETE_USERS = "true"
 LDAP_ATTRIBUTE_USER_UNIQUE_IDENTIFIER = "uuid"
@@ -42,11 +47,6 @@ LDAP_ATTRIBUTE_GROUP_MEMBER = "member"
 LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER = "uuid"
 LDAP_ATTRIBUTE_GROUP_NAME = "cn"
 LDAP_ATTRIBUTE_ADMIN_GROUP = "lldap_admin"
-
-[[mounts]]
-source = 'id_data'
-destination = '/app/data'
-snapshot_retention = 60
 
 [http_service]
 internal_port = 5000

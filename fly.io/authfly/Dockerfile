@@ -28,7 +28,8 @@ FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
 FROM lldap/lldap:latest as lldap
 
 # pocket id build stage
-FROM ghcr.io/pocket-id/pocket-id:${POCKETID_VERSION}
+# FROM ghcr.io/pocket-id/pocket-id:${POCKETID_VERSION}
+FROM ghcr.io/pocket-id/pocket-id:next as pocketid
 
 # Set timezone
 RUN ln -snf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && echo Asia/Kolkata > /etc/timezone
