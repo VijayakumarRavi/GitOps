@@ -28,7 +28,7 @@ spec:
             nameOverride: qbittorrent
             image:
               repository: ghcr.io/vijayakumarravi/qbittorrent
-              tag: 5.1.2
+              tag: 5.1.4
             env:
               QBT_WEBUI_PORT: &port 8080
               QBT_TORRENTING_PORT: 51478
