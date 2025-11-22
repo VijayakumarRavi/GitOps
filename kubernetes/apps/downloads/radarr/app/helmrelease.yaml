@@ -28,7 +28,7 @@ spec:
           app:
             image:
               repository: ghcr.io/vijayakumarravi/radarr
-              tag: 6.0.3.10276
+              tag: 6.0.4.10291
             env:
               COMPlus_EnableDiagnostics: '0'
               RADARR__INSTANCE_NAME: Radarr
