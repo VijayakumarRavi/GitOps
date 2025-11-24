@@ -95,13 +95,13 @@ spec:
           archive-push-queue-max: 5GiB
           compress-type: bz2
           compress-level: "9"
-          # Wasabi
-          repo1-bundle: "y"
-          repo1-block: "y"
-          repo1-path: /percona-pgo
-          repo1-retention-full: "7" # days
-          repo1-retention-full-type: time
-          repo1-s3-uri-style: path
+          ## Wasabi
+          #repo1-bundle: "y"
+          #repo1-block: "y"
+          #repo1-path: /percona-pgo
+          #repo1-retention-full: "7" # days
+          #repo1-retention-full-type: time
+          #repo1-s3-uri-style: path
         manual:
           repoName: repo1
           options: [--type=full]

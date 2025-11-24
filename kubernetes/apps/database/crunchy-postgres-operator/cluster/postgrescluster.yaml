@@ -88,13 +88,13 @@ spec:
         repo1-retention-full: "7" # days
         repo1-retention-full-type: time
         repo1-s3-uri-style: path
-        # Wasabi
-        repo2-bundle: "y"
-        repo2-block: "y"
-        repo2-path: /crunchy-pgo
-        repo2-retention-full: "7" # days
-        repo2-retention-full-type: time
-        repo2-s3-uri-style: path
+        ## Wasabi
+        # repo2-bundle: "y"
+        # repo2-block: "y"
+        # repo2-path: /crunchy-pgo
+        # repo2-retention-full: "7" # days
+        # repo2-retention-full-type: time
+        # repo2-s3-uri-style: path
       manual:
         repoName: repo1
         options: [--type=full]
@@ -111,15 +111,15 @@ spec:
             full: "0 1 * * 0" # Sunday at 01:00
             differential: "0 1 * * 1-6" # Mon-Sat at 01:00
             incremental: "0 2-23 * * *" # Every hour except 01:00
-        - name: repo2 # Wasabi
-          s3: &wasabi
-            bucket: "luffy"
-            endpoint: s3.ap-northeast-1.wasabisys.com
-            region: "ap-northeast-1"
-          schedules:
-            full: "0 1 * * 0" # Sunday at 01:00
-            differential: "0 1 * * 1-6" # Mon-Sat at 01:00
-            incremental: "0 2-23 * * *" # Every hour except 01:00
+        #- name: repo2 # Wasabi
+        #  s3: &wasabi
+        #    bucket: "luffy"
+        #    endpoint: s3.ap-northeast-1.wasabisys.com
+        #    region: "ap-northeast-1"
+        #  schedules:
+        #    full: "0 1 * * 0" # Sunday at 01:00
+        #    differential: "0 1 * * 1-6" # Mon-Sat at 01:00
+        #    incremental: "0 2-23 * * *" # Every hour except 01:00
   dataSource:
     pgbackrest:
       stanza: "db"
