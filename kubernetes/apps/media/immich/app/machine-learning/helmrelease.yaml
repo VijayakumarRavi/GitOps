@@ -51,6 +51,7 @@ spec:
             resources:
               requests:
                 cpu: 200m
+              limits:
                 gpu.intel.com/i915: '1'
     service:
       immich-machine-learning:
