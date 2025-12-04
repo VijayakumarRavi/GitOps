@@ -9,7 +9,6 @@
       "automergeType": "branch",
       "matchUpdateTypes": ["digest"],
       "matchPackagePatterns": ["ghcr.io/vijayakumarravi"],
-      "minimumReleaseAge": "2 day"
     },
     {
       "description": "Auto-merge GitHub Actions for minor and patch",
@@ -18,7 +17,6 @@
       "automerge": true,
       "automergeType": "branch",
       "matchUpdateTypes": ["minor", "patch"],
-      "minimumReleaseAge": "2 day"
     },
     {
       "description": "Auto merge KPS minors and patches",
@@ -26,7 +24,6 @@
       "automerge": true,
       "ignoreTests": false,
       "matchPackageNames": ["kube-prometheus-stack"],
-      "minimumReleaseAge": "2 day",
       "automergeType": "branch"
     },
     {
@@ -34,14 +31,12 @@
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
       "automerge": true,
-      "minimumReleaseAge": "2 day",
       "automergeType": "branch"
     },
     {
       "description": "Disable Auto merge for immich updates",
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/immich-app/*"],
-      "minimumReleaseAge": "2 day",
       "automerge": false
     }
   ]
