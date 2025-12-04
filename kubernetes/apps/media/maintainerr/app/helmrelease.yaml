@@ -16,8 +16,11 @@ spec:
   values:
     controllers:
       maintainerr:
+        forceRename: maintainerr
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
-          maintainerr:
+          app:
             image:
               repository: ghcr.io/maintainerr/maintainerr
               tag: 2.21.0
@@ -37,7 +40,13 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 512Mi
-          overlay-helperr:
+      overlay-helperr:
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
+            k8tz.io/inject: 'false'
+        containers:
+          app:
             image:
               repository: gsariev/maintainerr-overlay-helperr
               tag: latest@sha256:60151c7ef2fc7e5d37008feff0134e180efb3d06b3ccaddbc7decb7563c470ae
