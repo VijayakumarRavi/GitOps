@@ -21,7 +21,7 @@ spec:
           app:
             image:
               repository: adguard/dnsproxy
-              tag: v0.78.1
+              tag: v0.78.2
             probes:
               liveness:
                 enabled: true
