@@ -17,13 +17,18 @@ spec:
     controllers:
       maintainerr:
         forceRename: maintainerr
-        annotations:
-          reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
+            k8tz.io/inject: 'false'
         containers:
-          app:
+          maintainerr:
             image:
               repository: ghcr.io/maintainerr/maintainerr
               tag: 2.24.0
+            env:
+              - name: TZ
+                value: 'Asia/Kolkata'
             probes:
               liveness:
                 enabled: true
@@ -40,16 +45,13 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 512Mi
-      overlay-helperr:
-        pod:
-          annotations:
-            reloader.stakater.com/auto: "true"
-            k8tz.io/inject: 'false'
-        containers:
-          app:
+          overlay-helperr:
             image:
               repository: gsariev/maintainerr-overlay-helperr
               tag: latest@sha256:60151c7ef2fc7e5d37008feff0134e180efb3d06b3ccaddbc7decb7563c470ae
+            env:
+              - name: TZ
+                value: 'Asia/Kolkata'
             envFrom:
               - secretRef:
                   name: maintainerr-overlay-helperr
