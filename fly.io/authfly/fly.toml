@@ -4,7 +4,7 @@
 #
 
 app = 'authfly'
-primary_region = 'syd'
+primary_region = 'sin'
 kill_signal = 'SIGINT'
 kill_timeout = '5s'
 swap_size_mb = 512
@@ -14,9 +14,12 @@ auto_rollback = true
 
 [build]
 dockerfile = 'Dockerfile'
+
 [env]
 PGID = "1000"
 PUID = "1000"
+PORT = "1411"
+HOST = "127.0.0.1"
 UI_CONFIG_DISABLED = "true"
 DB_PROVIDER = "postgres"
 ANALYTICS_DISABLED = "true"
@@ -29,12 +32,9 @@ EMAIL_LOGIN_NOTIFICATION_ENABLED = "true"
 EMAIL_ONE_TIME_ACCESS_AS_ADMIN_ENABLED = "true"
 LDAP_ENABLED = "true"
 LDAP_URL = "ldap://localhost:3890"
-
-FILE_BACKEND = "s3"
-S3_BUCKET = "vjlab"
-UPLOAD_PATH = "apps/authfly/uploads"
-S3_FORCE_PATH_STYLE = "true"
-
+FILE_BACKEND = "database"
+LLDAP_HTTP_HOST = "127.0.0.1"
+LLDAP_LDAP_HOST = "127.0.0.1"
 LDAP_SKIP_CERT_VERIFY = "true"
 LDAP_SOFT_DELETE_USERS = "true"
 LDAP_ATTRIBUTE_USER_UNIQUE_IDENTIFIER = "uuid"
@@ -49,9 +49,9 @@ LDAP_ATTRIBUTE_GROUP_NAME = "cn"
 LDAP_ATTRIBUTE_ADMIN_GROUP = "lldap_admin"
 
 [http_service]
-internal_port = 5000
+internal_port = 17170
 force_https = true
-auto_stop_machines = 'stop'
+auto_stop_machines = "off"
 auto_start_machines = true
 min_machines_running = 1
 processes = ['app']

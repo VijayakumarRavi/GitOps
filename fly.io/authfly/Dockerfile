@@ -1,4 +1,4 @@
-ARG POCKETID_VERSION=v1.14.2
+ARG POCKETID_VERSION=v1.16.0
 ARG CLOUDFLARED_VERSION=2025.11.1
 
 # Builder for downloading dependencies
@@ -28,8 +28,7 @@ FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
 FROM lldap/lldap:latest as lldap
 
 # pocket id build stage
-# FROM ghcr.io/pocket-id/pocket-id:${POCKETID_VERSION}
-FROM ghcr.io/pocket-id/pocket-id:next as pocketid
+FROM ghcr.io/pocket-id/pocket-id:${POCKETID_VERSION}
 
 # Set timezone
 RUN ln -snf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && echo Asia/Kolkata > /etc/timezone
