@@ -8,8 +8,5 @@ resources:
   # Flux-Kustomizations
   - ./coredns/ks.yaml
   - ./cilium/ks.yaml
-  - ./dnsproxy/ks.yaml
   - ./envoy-gateway/ks.yaml
-#  - ./nginx/ks.yaml
   - ./speedtest/ks.yaml
-  - ./tailscale/ks.yaml
