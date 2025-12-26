@@ -28,7 +28,7 @@ spec:
           app:
             image:
               repository: ghcr.io/vijayakumarravi/sonarr
-              tag: 4.0.16.2943
+              tag: 4.0.16.2946
             env:
               COMPlus_EnableDiagnostics: '0'
               SONARR__APP__INSTANCENAME: Sonarr
