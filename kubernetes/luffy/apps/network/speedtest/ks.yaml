@@ -25,7 +25,7 @@ spec:
     - name: external-secrets-stores
     - name: crunchy-postgres-secretstore
   components:
-    - ../../../../../components/volsync
+    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *appname

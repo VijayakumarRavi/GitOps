@@ -82,7 +82,7 @@ machine:
     extraHostEntries:
         - ip: 10.0.1.100
           aliases:
-            - luffy.vjlab.dev
+            - robin.vjlab.dev
         - ip: 10.0.0.3
           aliases:
             - tank
@@ -118,7 +118,7 @@ cluster:
     {% endif %}
   clusterName: luffy
   controlPlane:
-    endpoint: https://luffy.vjlab.dev:6443
+    endpoint: https://robin.vjlab.dev:6443
   discovery:
     enabled: true
     registries:
@@ -149,7 +149,7 @@ cluster:
       rules:
         - level: Metadata
     certSANs:
-      - luffy.vjlab.dev
+      - robin.vjlab.dev
       - 10.0.1.100
       - 127.0.0.1
     disablePodSecurityPolicy: true

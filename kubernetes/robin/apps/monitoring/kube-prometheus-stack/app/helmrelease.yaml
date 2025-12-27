@@ -136,7 +136,7 @@ spec:
           limits:
             memory: 2000M
         retention: 14d
-        retentionSize: 50GB
+        retentionSize: 9GB
         ruleSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
@@ -144,8 +144,8 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: ceph-block
+              storageClassName: openebs-hostpath
               resources:
                 requests:
-                  storage: 55Gi
+                  storage: 10Gi
         walCompression: true

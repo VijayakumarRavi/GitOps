@@ -23,7 +23,7 @@ spec:
     - name: external-secrets-stores
     - name: volsync
   components:
-    - ../../../../../components/volsync
+    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *appname
@@ -55,7 +55,7 @@ spec:
     - name: volsync
     - name: plex
   components:
-    - ../../../../../components/volsync
+    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *appname

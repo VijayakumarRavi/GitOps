@@ -21,7 +21,7 @@ spec:
   dependsOn:
     - name: volsync
     - name: external-secrets-stores
-  components: [../../../../../components/volsync]
+  components: [../../../../components/volsync]
   postBuild:
     substitute:
       APP: *appname
@@ -48,7 +48,7 @@ spec:
   wait: false
   dependsOn:
     - name: qbittorrent
-  components: [../../../../../components/volsync]
+  components: [../../../../components/volsync]
   postBuild:
     substitute:
       APP: *appname

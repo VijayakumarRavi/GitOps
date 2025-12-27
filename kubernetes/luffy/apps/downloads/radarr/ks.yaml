@@ -22,7 +22,7 @@ spec:
     - name: volsync
     - name: external-secrets-stores
   components:
-    - ../../../../../components/volsync
+    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *appname

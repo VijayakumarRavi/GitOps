@@ -11,16 +11,27 @@ spec:
   provider:
     type: Kubernetes
     kubernetes:
-      envoyDeployment:
-        replicas: 2
+      useListenerPortAsContainerPort: true
+      envoyDaemonSet:
+        patch:
+          value:
+            spec:
+              template:
+                spec:
+                  hostNetwork: true
+                  dnsPolicy: ClusterFirstWithHostNet
         container:
-          image: mirror.gcr.io/envoyproxy/envoy:v1.36.4
+          securityContext:
+            runAsUser: 0
+            allowPrivilegeEscalation: true
+          image: mirror.gcr.io/envoyproxy/envoy:distroless-v1.36.4
           resources:
             requests:
               cpu: 100m
             limits:
               memory: 1Gi
       envoyService:
+        type: ClusterIP
         externalTrafficPolicy: Local
   shutdown:
     drainTimeout: 180s

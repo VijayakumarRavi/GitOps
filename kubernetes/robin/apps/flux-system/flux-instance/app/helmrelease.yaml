@@ -25,7 +25,7 @@ spec:
         kind: GitRepository
         url: https://github.com/VijayakumarRavi/GitOps.git
         ref: refs/heads/master
-        path: kubernetes/flux/cluster
+        path: kubernetes/robin/flux/cluster
       commonMetadata:
         labels:
           app.kubernetes.io/name: flux

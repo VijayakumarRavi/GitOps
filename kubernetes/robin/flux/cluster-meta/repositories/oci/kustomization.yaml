@@ -3,7 +3,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./actions-runner-controller.yaml
   - ./fluent-bit.yaml
   - ./app-template.yaml
   - ./controlplaneio.yaml
@@ -11,10 +10,7 @@ resources:
   - ./crunchydata.yaml
   - ./envoy-gateway.yaml
   - ./grafana.yaml
-  - ./intel-device-plugins-gpu.yaml
-  - ./intel-device-plugins-operator.yaml
   - ./victoria-logs.yaml
   - ./silence-operator.yaml
-  - ./spegel.yaml
   - ./tuppr.yaml
   - ./volsync.yaml

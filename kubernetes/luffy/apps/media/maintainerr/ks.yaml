@@ -24,7 +24,7 @@ spec:
     - name: volsync
     - name: plex
   components:
-    - ../../../../../components/volsync
+    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *appname

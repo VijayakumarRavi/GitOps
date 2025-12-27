@@ -22,4 +22,3 @@ spec:
     - name: envoy-gateway-config
     - name: openebs
     - name: snapshot-controller
-    - name: rook-ceph-cluster
