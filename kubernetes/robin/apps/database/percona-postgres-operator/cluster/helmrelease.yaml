@@ -1,0 +1,206 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &name percona-postgres
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: pg-db
+      version: 2.8.1
+      sourceRef:
+        kind: HelmRepository
+        name: percona
+        namespace: flux-system
+  values:
+    image: perconalab/percona-postgresql-operator:2.7.0-ppg16-postgres
+    postgresVersion: 16
+    expose:
+      type: LoadBalancer
+      annotations:
+        lbipam.cilium.io/ips: 10.0.1.10
+
+    patroni: # turn on sync writes to at least 1 other replica
+      dynamicConfiguration:
+        synchronous_mode: true
+        postgresql:
+          max_wal_size: 5GB
+          synchronous_commit: "on"
+          pg_hba:
+            - hostnossl all all 172.16.0.0/12 md5
+            - hostssl all all all md5
+    instances:
+      - name: *name
+        metadata:
+          labels:
+            app.kubernetes.io/name: percona-postgres
+        replicas: &replica 3
+        dataVolumeClaimSpec:
+          storageClassName: openebs-hostpath
+          accessModes: [ReadWriteOnce]
+          resources:
+            requests:
+              storage: 50Gi
+        topologySpreadConstraints:
+          - maxSkew: 1
+            topologyKey: kubernetes.io/hostname
+            whenUnsatisfiable: DoNotSchedule
+            labelSelector:
+              matchLabels:
+                postgres-operator.crunchydata.com/cluster: *name
+                postgres-operator.crunchydata.com/data: postgres
+                postgres-operator.crunchydata.com/instance-set: *name
+    autoCreateUserSchema: true
+    users:
+      # Superuser
+      - name: vijay
+        databases: [postgres]
+        options: SUPERUSER
+        password:
+          type: AlphaNumeric
+      # Applications
+      - name: authentik
+        databases: [authentik]
+        password:
+          type: AlphaNumeric
+      - name: immich
+        databases: [immich]
+        password:
+          type: AlphaNumeric
+      - name: linkwarden
+        databases: [linkwarden]
+        password:
+          type: AlphaNumeric
+      - name: speedtest
+        databases: [speedtest]
+        password:
+          type: AlphaNumeric
+      - name: freshrss
+        databases: [freshrss]
+        password:
+          type: AlphaNumeric
+    backups:
+      pgbackrest:
+        jobs:
+          ttlSecondsAfterFinished: 21600
+        #restore:
+        #  enabled: true
+        configuration: &backupConfig
+          - secret:
+              name: percona-postgres-secret
+        global: &backupFlag
+          archive-async: "y"
+          archive-push-queue-max: 5GiB
+          compress-type: bz2
+          compress-level: "9"
+          ## Wasabi
+          #repo1-bundle: "y"
+          #repo1-block: "y"
+          #repo1-path: /percona-pgo
+          #repo1-retention-full: "7" # days
+          #repo1-retention-full-type: time
+          #repo1-s3-uri-style: path
+        manual:
+          repoName: repo1
+          options: [--type=full]
+        metadata:
+          labels:
+            app.kubernetes.io/name: percona-postgres-backup
+        repos:
+          - name: repo1 # Wasabi
+            s3: &wasabi
+              bucket: "luffy"
+              endpoint: s3.ap-northeast-1.wasabisys.com
+              region: "ap-northeast-1"
+            schedules:
+              full: "0 1 * * 0" # Sunday at 01:00
+              differential: "0 1 * * 1-6" # Mon-Sat at 01:00
+              incremental: "0 2-23 * * *" # Every hour except 01:00
+
+    dataSource:
+      pgbackrest:
+        stanza: "db"
+        configuration:
+          - secret:
+              name: percona-postgres-secret
+        global:
+          archive-async: "y"
+          archive-push-queue-max: 5GiB
+          compress-type: bz2
+          compress-level: "9"
+          # Wasabi
+          repo1-bundle: "y"
+          repo1-block: "y"
+          repo1-path: /crunchy-pgo
+          repo1-retention-full: "7" # days
+          repo1-retention-full-type: time
+          repo1-s3-uri-style: path
+        repo:
+          name: "repo1"
+          s3:
+            bucket: "luffy"
+            endpoint: s3.ap-northeast-1.wasabisys.com
+            region: "ap-northeast-1"
+      #pgbackrest:
+      #  stanza: "db"
+      #  configuration: *backupConfig
+      #  global: *backupFlag
+      #  repo:
+      #    name: "repo1"
+      #    s3: *r2
+    monitoring:
+      pgmonitor:
+        exporter:
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64M
+            limits:
+              memory: 512M
+    proxy:
+      pgBouncer:
+        port: 5432
+        replicas: *replica
+        metadata:
+          labels:
+            app.kubernetes.io/name: percona-postgres-pgbouncer
+        config:
+          global:
+            pool_mode: transaction # pgBouncer is set to transaction for Authentik. Grafana requires session https://github.com/grafana/grafana/issues/74260#issuecomment-1702795311. Everything else is happy with transaction
+            client_tls_sslmode: prefer
+        topologySpreadConstraints:
+          - maxSkew: 1
+            topologyKey: kubernetes.io/hostname
+            whenUnsatisfiable: DoNotSchedule
+            labelSelector:
+              matchLabels:
+                postgres-operator.crunchydata.com/instance-set: *name
+                postgres-operator.crunchydata.com/cluster: *name
+                postgres-operator.crunchydata.com/role: pgbouncer
+    pmm:
+      enabled: false
+    extensions:
+      builtin:
+        pg_stat_monitor: true
+        pg_stat_statements: true
+        pg_audit: true
+        pgvector: true
+
+    #   storage:
+    #     type: s3
+    #     bucket: pg-extensions
+    #     region: eu-central-1
+    #     endpoint: s3.eu-central-1.amazonaws.com
+    #     secret:
+    #       name: cluster1-extensions-secret
+    #   builtin:
+    #     pg_stat_monitor: true
+    #     pg_stat_statements: false
+    #     pg_audit: true
+    #     pgvector: false
+    #     pg_repack: false
+    #   custom:
+    #   - name: pg_cron
+    #     version: 1.6.1

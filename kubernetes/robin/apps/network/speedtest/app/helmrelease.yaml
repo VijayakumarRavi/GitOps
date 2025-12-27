@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: speedtest
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+
+  values:
+    controllers:
+      speedtest:
+        containers:
+          app:
+            image:
+              repository: lscr.io/linuxserver/speedtest-tracker
+              tag: v1.2.3-ls77
+            env:
+              PUID: '1000'
+              PGID: '1000'
+              PUBLIC_DASHBOARD: 'true'
+              APP_TIMEZONE: 'Asia/Kolkata'
+              DISPLAY_TIMEZONE: 'Asia/Kolkata'
+              SPEEDTEST_SCHEDULE: '6 * * * *'
+              PRUNE_RESULTS_OLDER_THAN: '90'
+              APP_URL: 'https://speedtest.${CLUSTER_DOMAIN}'
+              ASSET_URL: 'https://speedtest.${CLUSTER_DOMAIN}'
+            envFrom:
+              - secretRef:
+                  name: speedtest-secret
+              - secretRef:
+                  name: speedtest-db
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/healthcheck
+                    port: 80
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+    service:
+      app:
+        controller: speedtest
+        ports:
+          http:
+            port: 80
+    route:
+        app:
+          hostnames:
+            - speedtest.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
+    persistence:
+      config:
+        existingClaim: speedtest-config
+        globalMounts:
+          - path: /config

@@ -1,0 +1,27 @@
+---
+- openmeteo:
+        label: Bangalore
+        latitude: 13.036815088643934
+        longitude: 77.61750411521813
+        timezone: Asia/Kolkata
+        units: metric
+        cache: 5
+- logo:
+        # icon:
+- kubernetes:
+        cluster:
+              show: true
+              cpu: true
+              memory: true
+              showLabel: true
+              label: Home cluster
+        nodes:
+              show: true
+              cpu: true
+              memory: true
+              showLabel: true
+- search:
+        provider: duckduckgo
+        target: _blank
+        focus: true
+        showSearchSuggestions: true
