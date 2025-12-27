@@ -9,51 +9,12 @@ helmDefaults:
   cleanupOnFail: true
 
 releases:
-  - name: cilium
-    namespace: network
-    chart: oci://ghcr.io/home-operations/charts-mirror/cilium
-    version: 1.18.3
-    values:
-      - templates/values.yaml.gotmpl
-    hooks:
-      - # Wait for Cilium CRDs to be available
-        command: bash
-        args:
-          - -c
-          - until kubectl get crd ciliumloadbalancerippools.cilium.io ciliuml2announcementpolicies.cilium.io; do sleep 5; done
-        events:
-          - postsync
-        showlogs: true
-      - # Apply cilium network configuration
-        command: kubectl
-        args:
-          - apply
-          - --namespace=network
-          - --server-side
-          - --field-manager=kustomize-controller
-          - --kustomize
-          - ../../apps/network/cilium/config
-        events:
-          - postsync
-        showlogs: true
-
-  - name: coredns
-    namespace: network
-    chart: oci://ghcr.io/coredns/charts/coredns
-    version: 1.45.0
-    values:
-      - templates/values.yaml.gotmpl
-    needs:
-      - network/cilium
-
-  - name: spegel
-    namespace: system
-    chart: oci://ghcr.io/spegel-org/helm-charts/spegel
-    version: 0.4.0
-    values:
-      - templates/values.yaml.gotmpl
-    needs:
-      - network/coredns
+  #  - name: coredns
+  #    namespace: network
+  #    chart: oci://ghcr.io/coredns/charts/coredns
+  #    version: 1.45.0
+  #    values:
+  #      - templates/values.yaml.gotmpl
 
   - name: flux-operator
     namespace: flux-system
@@ -61,8 +22,8 @@ releases:
     version: 0.33.0
     values:
       - templates/values.yaml.gotmpl
-    needs:
-      - system/spegel
+  #    needs:
+  #      - network/coredns
 
   - name: flux-instance
     namespace: flux-system

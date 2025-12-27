@@ -8,7 +8,7 @@ metadata:
 spec:
   interval: 30m
   timeout: 10m
-  path: ./kubernetes/flux/cluster-meta
+  path: ./kubernetes/robin/flux/cluster-meta
   prune: false
   wait: false
   sourceRef:
