@@ -41,7 +41,11 @@ spec:
       options: SUPERUSER
     # Applications
     - name: pocketid
-      databases: [authentik]
+      databases: [pocketid]
+      password:
+        type: AlphaNumeric
+    - name: lldap
+      databases: [lldap]
       password:
         type: AlphaNumeric
 

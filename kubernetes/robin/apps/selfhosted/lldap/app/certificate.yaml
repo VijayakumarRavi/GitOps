@@ -4,7 +4,7 @@ kind: Certificate
 metadata:
   name: ${CLUSTER_DOMAIN}
 spec:
-  secretName: ${CLUSTER_DOMAIN}-https-tls
+  secretName: ${CLUSTER_DOMAIN}-lldaps-tls
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
