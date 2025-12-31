@@ -1,11 +1,12 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/postgres-operator.crunchydata.com/postgrescluster_v1beta1.json
-apiVersion: postgres-operator.crunchydata.com/v1
+apiVersion: postgres-operator.crunchydata.com/v1beta1
 kind: PostgresCluster
 metadata:
   name: &name postgres
 spec:
-  postgresVersion: 16
+  # shutdown: true
+  postgresVersion: 17
   metadata:
     labels:
       crunchy-userinit.ramblurr.github.com/enabled: "true"
