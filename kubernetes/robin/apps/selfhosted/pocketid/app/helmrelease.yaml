@@ -60,6 +60,11 @@ spec:
                   name: pocketid-secret
               - secretRef:
                   name: pocketid-db-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: [ALL]
             probes:
               liveness:
                 enabled: true
