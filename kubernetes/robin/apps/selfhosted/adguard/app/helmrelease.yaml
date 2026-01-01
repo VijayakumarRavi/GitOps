@@ -1,0 +1,74 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: adguard
+spec:
+  interval: 30m
+  timeout: 1m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      adguard:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: adguard/adguardhome
+              tag: v0.107.71
+            command: "--no-check-update -c /data/AdGuardHome.yaml -w /data/work"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: [ALL]
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            resources:
+              requests:
+                cpu: 12m
+                memory: 128M
+              limits:
+                memory: 512M
+
+    service:
+      web:
+        controller: adguard
+        ports:
+          http:
+            port: &port 3000
+      doh:
+        controller: adguard
+        ports:
+          http:
+            port: 443
+
+    route:
+      app:
+        hostnames:
+          - "dns.${CLUSTER_DOMAIN}"
+          - "*.dns.${CLUSTER_DOMAIN}"
+        parentRefs:
+          - name: envoy
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: web
+                port: *port
+
+    persistence:
+      data:
+        existingClaim: adguard
+        advancedMounts:
+          adguard:
+            app:
+              - path: /data

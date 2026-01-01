@@ -21,4 +21,3 @@ spec:
   dependsOn:
     - name: envoy-gateway-config
     - name: openebs
-    - name: snapshot-controller

@@ -3,20 +3,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname k8tz
+  name: &appname adguard
   namespace: flux-system
 spec:
-  targetNamespace: system-controllers
+  targetNamespace: selfhosted
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 10m
-  path: "./kubernetes/robin/apps/system-controllers/k8tz/app"
+  path: "./kubernetes/robin/apps/selfhosted/adguard/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   wait: false
   dependsOn:
-    - name: cert-manager
+    - name: volsync
+    - name: envoy-gateway-config
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *appname
+      VOLSYNC_CAPACITY: 1Gi

@@ -6,6 +6,6 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
+  - ./adguard/ks.yaml
   - ./lldap/ks.yaml
   - ./pocketid/ks.yaml
-  
