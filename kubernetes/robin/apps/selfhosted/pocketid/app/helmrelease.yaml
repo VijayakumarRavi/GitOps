@@ -21,7 +21,7 @@ spec:
           app:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: v1.16.0-distroless
+              tag: v2.0.1-distroless
             env:
               APP_URL: https://auth.${CLUSTER_DOMAIN}
               PGID: "1000"
