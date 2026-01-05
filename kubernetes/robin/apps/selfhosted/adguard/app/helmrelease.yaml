@@ -22,12 +22,9 @@ spec:
             image:
               repository: adguard/adguardhome
               tag: v0.107.71
-            command: "--no-check-update -c /data/AdGuardHome.yaml -w /data/work"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities:
-                drop: [ALL]
             probes:
               liveness:
                 enabled: true
@@ -45,18 +42,12 @@ spec:
         controller: adguard
         ports:
           http:
-            port: &port 3000
-      doh:
-        controller: adguard
-        ports:
-          http:
-            port: 443
+            port: &port 80
 
     route:
       app:
         hostnames:
-          - "dns.${CLUSTER_DOMAIN}"
-          - "*.dns.${CLUSTER_DOMAIN}"
+          - "dns.robin.vjlab.dev"
         parentRefs:
           - name: envoy
             namespace: network
@@ -71,4 +62,5 @@ spec:
         advancedMounts:
           adguard:
             app:
-              - path: /data
+              - path: /opt/adguardhome/conf
+              - path: /opt/adguardhome/work
