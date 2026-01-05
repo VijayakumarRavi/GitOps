@@ -11,7 +11,9 @@ resources:
   - ./k8tz.yaml
   - ./kubernetes-sigs-metrics-server.yaml
   - ./kubernetes-sigs-nfd.yaml
+  - ./longhorn.yaml
   - ./openebs.yaml
+  - ./piraeus.yaml
   - ./prometheus-community.yaml
   - ./stakater.yaml
   - ./tailscale.yaml

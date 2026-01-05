@@ -5,3 +5,4 @@ resources:
   - ./longhorn-cache.yaml
   - ./longhorn-local.yaml
   - ./longhorn-snapshot.yaml
+  - ./longhorn-snapshot-class.yaml

@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 10m
-  path: ./kubernetes/apps/storage/longhorn/app
+  path: ./kubernetes/robin/apps/storage/longhorn/app
   prune: true
   wait: true
   sourceRef:
@@ -20,6 +20,7 @@ spec:
     name: flux-system
   dependsOn:
     - name: envoy-gateway-config
+    - name: snapshot-controller
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -34,7 +35,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 10m
-  path: ./kubernetes/apps/storage/longhorn/storageclass
+  path: ./kubernetes/robin/apps/storage/longhorn/storageclass
   prune: true
   wait: true
   sourceRef:
