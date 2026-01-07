@@ -17,6 +17,10 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         replicas: 1
+        strategy: RollingUpdate
+        rollingUpdate:
+          unavailable: 0
+          surge: 1
         containers:
           app:
             image:
@@ -31,6 +35,20 @@ spec:
                   name: lldap-secret
               - secretRef:
                   name: lldap-db-secret
+            probes:
+              liveness: &healthcheck
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /app/lldap
+                      - healthcheck
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *healthcheck
             resources:
               requests:
                 cpu: 20m

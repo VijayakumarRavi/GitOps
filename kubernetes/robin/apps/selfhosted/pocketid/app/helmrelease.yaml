@@ -64,10 +64,19 @@ spec:
               capabilities:
                 drop: [ALL]
             probes:
-              liveness:
+              liveness: &healthcheck
                 enabled: true
-              readiness:
-                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /app/pocket-id
+                      - healthcheck
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *healthcheck
             resources:
               requests:
                 cpu: 12m
