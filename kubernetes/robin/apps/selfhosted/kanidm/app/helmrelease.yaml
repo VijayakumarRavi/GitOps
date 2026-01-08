@@ -1,0 +1,113 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kanidm
+spec:
+  interval: 30m
+  timeout: 1m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      kanidm:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        replicas: 1
+        strategy: RollingUpdate
+        rollingUpdate:
+          unavailable: 0
+          surge: 1
+        containers:
+          server:
+            image:
+              repository: kanidm/server
+              tag: 1.8.5
+            env:
+              KANIDM_CONFIG: /config/server.toml
+            probes:
+              liveness: &healthcheck
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /sbin/kanidmd
+                      - healthcheck
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *healthcheck
+            resources:
+              requests:
+                cpu: 20m
+                memory: 250Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: [ALL]
+          # tools:
+          #   image:
+          #     repository: kanidm/server
+          #     tag: 1.8.5
+          #   command: sleep infinity
+          #   probes:
+          #     liveness: &healthcheck
+          #       enabled: false
+          #     readiness: *healthcheck
+          #   resources:
+          #     requests:
+          #       cpu: 20m
+          #       memory: 250Mi
+          #   securityContext:
+          #     allowPrivilegeEscalation: false
+          #     readOnlyRootFilesystem: true
+          #     capabilities:
+          #       drop: [ALL]
+    service:
+      web:
+        controller: kanidm
+        ports:
+          http:
+            port: &port 8443
+      kanidm:
+        controller: kanidm
+        type: NodePort
+        ports:
+          ldap:
+            port: 3636
+            nodePort: 32626
+
+    route:
+      server:
+        hostnames:
+          - idm.${LAB_DOMAIN}
+        parentRefs:
+          - name: envoy
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: web
+                port: *port
+
+    persistence:
+      certs:
+        enabled: true
+        type: secret
+        name: ${LAB_DOMAIN}-tls
+        globalMounts:
+          - path: /certs
+            readOnly: true
+      config:
+        enabled: true
+        type: configMap
+        name: kanidm-config
+      data:
+        existingClaim: kanidm
+        globalMounts:
+          - path: /data

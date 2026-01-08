@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./backendpolicy.yaml
+  - ./helmrelease.yaml
+  - ./certificate.yaml
+configMapGenerator:
+  - name: kanidm-config
+    files:
+      - ./config/server.toml
+generatorOptions:
+  disableNameSuffixHash: true

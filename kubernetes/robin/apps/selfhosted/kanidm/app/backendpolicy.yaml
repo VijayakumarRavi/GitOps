@@ -1,0 +1,13 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: BackendTLSPolicy
+metadata:
+  name: kanidm-tls-policy
+spec:
+  targetRefs:
+    - kind: Service
+      name: kanidm-web
+      group: ""
+      sectionName: http
+  validation:
+    wellKnownCACertificates: System
+    hostname: idm.${LAB_DOMAIN}
