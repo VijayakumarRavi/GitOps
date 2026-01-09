@@ -47,7 +47,7 @@ spec:
     route:
       app:
         hostnames:
-          - "dns.robin.vjlab.dev"
+          - dns.${CLUSTER_DOMAIN}
         parentRefs:
           - name: envoy
             namespace: network
