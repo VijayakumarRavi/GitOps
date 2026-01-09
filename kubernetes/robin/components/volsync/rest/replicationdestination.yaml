@@ -22,5 +22,5 @@ spec:
       runAsGroup: ${APP_GID:-2000}
       fsGroup: ${APP_GID:-2000}
     repository: "${APP}-volsync-rest"
-    storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn}"
+    storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn-snapshot}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-longhorn-snapshot-class}"
