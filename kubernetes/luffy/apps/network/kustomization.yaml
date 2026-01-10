@@ -10,3 +10,4 @@ resources:
   - ./cilium/ks.yaml
   - ./envoy-gateway/ks.yaml
   - ./speedtest/ks.yaml
+  - ./tailscale/ks.yaml

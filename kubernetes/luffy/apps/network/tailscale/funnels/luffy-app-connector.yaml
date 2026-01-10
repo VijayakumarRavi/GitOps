@@ -1,0 +1,7 @@
+apiVersion: tailscale.com/v1alpha1
+kind: Connector
+metadata:
+  name: &name luffy-app-connector
+spec:
+  hostname: *name
+  appConnector: {}
