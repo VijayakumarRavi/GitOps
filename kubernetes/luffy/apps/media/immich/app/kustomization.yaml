@@ -7,8 +7,8 @@ resources:
   - ./funnel.yaml
   - ./server/helmrelease.yaml
   - ./worker/helmrelease.yaml
-  - ./machine-learning/helmrelease.yaml
-  - ./machine-learning/pvc.yaml
+  # - ./machine-learning/helmrelease.yaml
+  # - ./machine-learning/pvc.yaml
 configMapGenerator:
   - name: immich-config-tpl
     files:

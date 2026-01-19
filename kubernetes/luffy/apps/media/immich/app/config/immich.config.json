@@ -133,14 +133,14 @@
       "modelName": "antelopev2"
     },
     "ocr": {
-      "enabled": false,
+      "enabled": true,
       "maxResolution": 736,
       "minDetectionScore": 0.5,
       "minRecognitionScore": 0.8,
       "modelName": "PP-OCRv5_server"
     },
     "urls": [
-      "http://immich-machine-learning.media.svc.cluster.local:3003"
+      "http://10.0.2.2:3003"
     ]
   },
   "map": {
