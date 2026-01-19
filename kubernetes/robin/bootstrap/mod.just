@@ -2,7 +2,7 @@ set positional-arguments := true
 set quiet := true
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
-kubernetes_dir := justfile_dir() + '/kubernetes'
+kubernetes_dir := justfile_dir() + '/kubernetes/robin'
 bootstrap_dir := kubernetes_dir + '/bootstrap'
 controller := `talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1`
 nodes := `talosctl config info -o yaml | yq -er '.nodes | join (" ")'`
@@ -14,7 +14,7 @@ default: talos k8s (kubeconfig "node") wait kubeconfig sops crds apps
 talos:
     just log info "Running stage..." "stage" "$0"
     for n in {{ nodes }}; do \
-        if ! op=$(just talos apply-node "$n" --insecure 2>&1); then \
+        if ! op=$(just robin talos apply-node "$n" --insecure 2>&1); then \
             if [[ "$op" == *"certificate required"* ]]; then \
                 just log info "Talos already configured, skipping apply of config" "stage" "$0" "node" "$n"; \
                 continue; \

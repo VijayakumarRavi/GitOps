@@ -3,10 +3,11 @@
 set quiet := true
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
-#mod kube "kubernetes"
+export JUST_UNSTABLE := "1"
+export MINIJINJA_CONFIG_FILE := justfile_dir() + "/.minijinja.toml"
+export SOPS_AGE_KEY_FILE := justfile_dir() + "/age.agekey"
 
-#mod luffy "kubernetes/luffy"
-
+mod luffy "kubernetes/luffy"
 mod robin "kubernetes/robin"
 
 [private]

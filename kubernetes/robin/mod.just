@@ -4,7 +4,7 @@ set shell := ['bash', '-euo', 'pipefail', '-c']
 mod bootstrap "bootstrap"
 mod talos "talos"
 
-kubernetes_dir := justfile_dir() + '/kubernetes'
+kubernetes_dir := justfile_dir() + '/kubernetes/robin'
 
 [private]
 default:

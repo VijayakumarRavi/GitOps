@@ -1,24 +1,24 @@
 set quiet := true
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
-kubernetes_dir := justfile_dir() + '/kubernetes'
+kubernetes_dir := justfile_dir() + '/kubernetes/luffy'
 talos_dir := kubernetes_dir + '/talos'
 controller := `talosctl config info -o yaml | yq -e '.endpoints[0]'`
 
 [private]
 default:
-    just -l talos
+    just -l luffy talos
 
 [doc('Apply Talos config to a node')]
 apply-node node *args:
-    just talos render-config "{{ node }}" | talosctl -n "{{ node }}" apply-config -f /dev/stdin {{ args }}
+    just luffy talos render-config "{{ node }}" | talosctl -n "{{ node }}" apply-config -f /dev/stdin {{ args }}
 
 [doc('Download Talos machine image')]
 download-image version schematic:
     gum spin --title "Downloading Talos {{ version }} ..." -- \
     curl -sfL --remove-on-error --retry 5 --retry-delay 5 --retry-all-errors \
         -o "{{ talos_dir }}/talos-{{ version }}-{{ replace_regex(schematic, '^(.{8}).*', '$1') }}.iso" \
-        "https://factory.talos.dev/image/{{ schematic }}/{{ version }}/metal-amd64.iso"
+        "https://factory.talos.dev/image/{{ schematic }}/{{ version }}/metal-amd64-secureboot.iso"
     just log info "Downloaded Talos" version "{{ version }}" schematic "{{ schematic }}"
 
 [doc('Generate schematic ID from Talos schematic')]
@@ -32,7 +32,7 @@ reboot-node node:
 
 [doc('Render Talos config for a node')]
 render-config node:
-    export IS_CONTROLLER="$(just talos machine-controller {{ node }})"; \
+    export IS_CONTROLLER="$(just luffy talos machine-controller {{ node }})"; \
     talosctl machineconfig patch <(just template "{{ talos_dir }}/machineconfig.yaml.j2") \
         -p @<(just template "{{ talos_dir }}/nodes/{{ node }}.yaml.j2")
 
@@ -52,7 +52,7 @@ upgrade-k8s version:
 
 [doc('Upgrade Talos version on a node')]
 upgrade-node node:
-    talosctl -n "{{ node }}" upgrade -i "$(just talos machine-image)" -m powercycle --timeout=10m
+    talosctl -n "{{ node }}" upgrade -i "$(just luffy talos machine-image)" -m powercycle --timeout=10m
 
 [private]
 machine-controller node:

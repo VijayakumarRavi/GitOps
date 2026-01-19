@@ -26,6 +26,7 @@ Thumbs.db
 *tfplan*
 
 # Other files
+*.iso
 kubeconfig
 talosconfig
 .pre-commit-config.yaml

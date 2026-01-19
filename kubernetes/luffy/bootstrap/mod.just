@@ -2,7 +2,7 @@ set positional-arguments := true
 set quiet := true
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
-kubernetes_dir := justfile_dir() + '/kubernetes'
+kubernetes_dir := justfile_dir() + '/kubernetes/luffy'
 bootstrap_dir := kubernetes_dir + '/bootstrap'
 controller := `talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1`
 nodes := `talosctl config info -o yaml | yq -er '.nodes | join (" ")'`
@@ -14,7 +14,7 @@ default: talos k8s (kubeconfig "node") wait kubeconfig sops crds apps
 talos:
     just log info "Running stage..." "stage" "$0"
     for n in {{ nodes }}; do \
-        if ! op=$(just talos apply-node "$n" --insecure 2>&1); then \
+        if ! op=$(just luffy apply-node "$n" --insecure 2>&1); then \
             if [[ "$op" == *"certificate required"* ]]; then \
                 just log info "Talos already configured, skipping apply of config" "stage" "$0" "node" "$n"; \
                 continue; \
@@ -63,7 +63,7 @@ sops:
         just log fatal "Failed to create namespace flux-system" "stage" "$0" "output" "$op"; \
       fi; \
     fi
-    if ! op=$(kubectl create secret generic sops-age --namespace=flux-system --from-literal=age.agekey="$(op read op://automation/flux/sops_private_key)" 2>&1); then \
+    if ! op=$(kubectl create secret generic sops-age --context admin@luffy --namespace=flux-system --from-literal=age.agekey="$(op read op://automation/flux/sops_private_key)" 2>&1); then \
       if [[ "$op" == *"already exists"* ]]; then \
         just log info "Secret sops-age already exists, skipping creation" "stage" "$0"; \
       else \
@@ -76,14 +76,14 @@ helmfile: crds apps
 
 [doc('Apply Helmfile CRDs')]
 crds:
-  just log info "Running stage..." "stage" "$0"
-  if ! helmfile -f "{{ bootstrap_dir }}/helmfiles/00-crds.yaml" template -q | kubectl apply --server-side -f -; then \
-    just log fatal "Failed to apply crds" "stage" "$0"; \
-  fi;
+    just log info "Running stage..." "stage" "$0"
+    if ! helmfile -f "{{ bootstrap_dir }}/helmfiles/00-crds.yaml" template -q | kubectl apply --server-side -f -; then \
+      just log fatal "Failed to apply crds" "stage" "$0"; \
+    fi;
 
 [doc('Apply Helmfile Apps')]
 apps:
-  just log info "Running stage..." "stage" "$0"
-  if ! helmfile -f "{{ bootstrap_dir }}/helmfiles/01-apps.yaml" sync --hide-notes; then \
-    just log fatal "Failed to sync helmfile" "stage" "$0"; \
-  fi
+    just log info "Running stage..." "stage" "$0"
+    if ! helmfile -f "{{ bootstrap_dir }}/helmfiles/01-apps.yaml" sync --hide-notes; then \
+      just log fatal "Failed to sync helmfile" "stage" "$0"; \
+    fi
