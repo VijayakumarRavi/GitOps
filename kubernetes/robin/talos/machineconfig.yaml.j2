@@ -2,9 +2,9 @@
 version: v1alpha1
 machine:
   ca:
-    crt: op://automation/talos/MACHINE_CA_CRT
+    crt: op://automation/talos-robin/MACHINE_CA_CRT
     {% if ENV.IS_CONTROLLER %}
-    key: op://automation/talos/MACHINE_CA_KEY
+    key: op://automation/talos-robin/MACHINE_CA_KEY
     {% endif %}
   features:
     apidCheckExtKeyUsage: true
@@ -49,10 +49,10 @@ machine:
         nconnect=16
         noatime=True
   install:
-    diskSelector:
-      model: CONSISTENT NVME S6 128GB
-    image: factory.talos.dev/installer-secureboot/2afb3d7915a7be53aadaf53ae53b115c1181ed0a88bf2ffe15c820b19c75551c:v1.11.2
+    disk: /dev/vda
+    image: factory.talos.dev/installer/88d1f7a5c4f1d3aba7df787c448c1d3d008ed29cfb34af53fa0df4336a56040b:v1.12.0
     wipe: false
+    grubUseUKICmdline: true
   systemDiskEncryption:
     state:
       provider: luks2
@@ -74,22 +74,10 @@ machine:
         ResourceHealthStatus: true
       serializeImagePulls: false
     image: ghcr.io/siderolabs/kubelet:v1.34.1
-    nodeIP:
-      validSubnets:
-        - 10.0.1.0/24
   network:
-    disableSearchDomain: true
-    extraHostEntries:
-        - ip: 10.0.1.100
-          aliases:
-            - robin.vjlab.dev
-        - ip: 10.0.0.3
-          aliases:
-            - tank
+    disableSearchDomain: true 
   nodeLabels:
-    node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: main
-    intel.feature.node.kubernetes.io/gpu: "true"
   sysctls:
     fs.inotify.max_user_instances: "8192"
     fs.inotify.max_user_watches: "1048576"
@@ -109,16 +97,16 @@ machine:
     sunrpc.tcp_slot_table_entries: "128"
     user.max_user_namespaces: "11255"
     vm.nr_hugepages: "1024"
-  token: op://automation/talos/MACHINE_TOKEN
+  token: op://automation/talos-robin/MACHINE_TOKEN
 cluster:
   ca:
-    crt: op://automation/talos/CLUSTER_CA_CRT
+    crt: op://automation/talos-robin/CLUSTER_CA_CRT
     {% if ENV.IS_CONTROLLER %}
-    key: op://automation/talos/CLUSTER_CA_KEY
+    key: op://automation/talos-robin/CLUSTER_CA_KEY
     {% endif %}
-  clusterName: luffy
+  clusterName: robin
   controlPlane:
-    endpoint: https://robin.vjlab.dev:6443
+    endpoint: op://automation/talos-robin/ENDPOINT
   discovery:
     enabled: true
     registries:
@@ -126,21 +114,19 @@ cluster:
         disabled: true
       service:
         disabled: false
-  id: op://automation/talos/CLUSTER_ID
+  id: op://automation/talos-robin/CLUSTER_ID
   network:
-    cni:
-      name: none
     dnsDomain: cluster.local
     podSubnets:
       - 10.244.0.0/16
     serviceSubnets:
       - 10.96.0.0/12
-  secret: op://automation/talos/CLUSTER_SECRET
-  token: op://automation/talos/CLUSTER_TOKEN
+  secret: op://automation/talos-robin/CLUSTER_SECRET
+  token: op://automation/talos-robin/CLUSTER_TOKEN
   {% if ENV.IS_CONTROLLER %}
   aggregatorCA:
-    crt: op://automation/talos/CLUSTER_AGGREGATORCA_CRT
-    key: op://automation/talos/CLUSTER_AGGREGATORCA_KEY
+    crt: op://automation/talos-robin/CLUSTER_AGGREGATORCA_CRT
+    key: op://automation/talos-robin/CLUSTER_AGGREGATORCA_KEY
   allowSchedulingOnControlPlanes: true
   apiServer:
     auditPolicy:
@@ -148,10 +134,7 @@ cluster:
       kind: Policy
       rules:
         - level: Metadata
-    certSANs:
-      - robin.vjlab.dev
-      - 10.0.1.100
-      - 127.0.0.1
+    certSANs: [ op://automation/talos-robin/CERT_SANS ]
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
@@ -168,8 +151,8 @@ cluster:
     advertisedSubnets:
       - 10.0.1.0/24
     ca:
-      crt: op://automation/talos/CLUSTER_ETCD_CA_CRT
-      key: op://automation/talos/CLUSTER_ETCD_CA_KEY
+      crt: op://automation/talos-robin/CLUSTER_ETCD_CA_CRT
+      key: op://automation/talos-robin/CLUSTER_ETCD_CA_KEY
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
   proxy:
@@ -196,9 +179,9 @@ cluster:
     extraArgs:
       bind-address: 0.0.0.0
     image: registry.k8s.io/kube-scheduler:v1.34.1
-  secretboxEncryptionSecret: op://automation/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
+  secretboxEncryptionSecret: op://automation/talos-robin/CLUSTER_SECRETBOXENCRYPTIONSECRET
   serviceAccount:
-    key: op://automation/talos/CLUSTER_SERVICEACCOUNT_KEY
+    key: op://automation/talos-robin/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
 ---
 apiVersion: v1alpha1

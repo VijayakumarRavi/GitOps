@@ -2,9 +2,9 @@
 version: v1alpha1
 machine:
   ca:
-    crt: op://automation/talos/MACHINE_CA_CRT
+    crt: op://automation/talos-luffy/MACHINE_CA_CRT
     {% if ENV.IS_CONTROLLER %}
-    key: op://automation/talos/MACHINE_CA_KEY
+    key: op://automation/talos-luffy/MACHINE_CA_KEY
     {% endif %}
   features:
     apidCheckExtKeyUsage: true
@@ -82,7 +82,7 @@ machine:
     extraHostEntries:
         - ip: 10.0.1.100
           aliases:
-            - robin.vjlab.dev
+            - op://automation/talos-luffy/CLUSTER_HOSTNAME
         - ip: 10.0.0.3
           aliases:
             - tank
@@ -109,16 +109,16 @@ machine:
     sunrpc.tcp_slot_table_entries: "128"
     user.max_user_namespaces: "11255"
     vm.nr_hugepages: "1024"
-  token: op://automation/talos/MACHINE_TOKEN
+  token: op://automation/talos-luffy/MACHINE_TOKEN
 cluster:
   ca:
-    crt: op://automation/talos/CLUSTER_CA_CRT
+    crt: op://automation/talos-luffy/CLUSTER_CA_CRT
     {% if ENV.IS_CONTROLLER %}
-    key: op://automation/talos/CLUSTER_CA_KEY
+    key: op://automation/talos-luffy/CLUSTER_CA_KEY
     {% endif %}
   clusterName: luffy
   controlPlane:
-    endpoint: https://luffy.vjlab.dev:6443
+    endpoint: op://automation/talos-luffy/ENDPOINT
   discovery:
     enabled: true
     registries:
@@ -126,7 +126,7 @@ cluster:
         disabled: true
       service:
         disabled: false
-  id: op://automation/talos/CLUSTER_ID
+  id: op://automation/talos-luffy/CLUSTER_ID
   network:
     cni:
       name: none
@@ -135,12 +135,12 @@ cluster:
       - 10.244.0.0/16
     serviceSubnets:
       - 10.96.0.0/12
-  secret: op://automation/talos/CLUSTER_SECRET
-  token: op://automation/talos/CLUSTER_TOKEN
+  secret: op://automation/talos-luffy/CLUSTER_SECRET
+  token: op://automation/talos-luffy/CLUSTER_TOKEN
   {% if ENV.IS_CONTROLLER %}
   aggregatorCA:
-    crt: op://automation/talos/CLUSTER_AGGREGATORCA_CRT
-    key: op://automation/talos/CLUSTER_AGGREGATORCA_KEY
+    crt: op://automation/talos-luffy/CLUSTER_AGGREGATORCA_CRT
+    key: op://automation/talos-luffy/CLUSTER_AGGREGATORCA_KEY
   allowSchedulingOnControlPlanes: true
   apiServer:
     auditPolicy:
@@ -149,7 +149,7 @@ cluster:
       rules:
         - level: Metadata
     certSANs:
-      - luffy.vjlab.dev
+      - op://automation/talos-luffy/CLUSTER_HOSTNAME
       - 10.0.1.100
       - 127.0.0.1
     disablePodSecurityPolicy: true
@@ -168,8 +168,8 @@ cluster:
     advertisedSubnets:
       - 10.0.1.0/24
     ca:
-      crt: op://automation/talos/CLUSTER_ETCD_CA_CRT
-      key: op://automation/talos/CLUSTER_ETCD_CA_KEY
+      crt: op://automation/talos-luffy/CLUSTER_ETCD_CA_CRT
+      key: op://automation/talos-luffy/CLUSTER_ETCD_CA_KEY
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
   proxy:
@@ -196,9 +196,9 @@ cluster:
     extraArgs:
       bind-address: 0.0.0.0
     image: registry.k8s.io/kube-scheduler:v1.35.0
-  secretboxEncryptionSecret: op://automation/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
+  secretboxEncryptionSecret: op://automation/talos-luffy/CLUSTER_SECRETBOXENCRYPTIONSECRET
   serviceAccount:
-    key: op://automation/talos/CLUSTER_SERVICEACCOUNT_KEY
+    key: op://automation/talos-luffy/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
 ---
 apiVersion: v1alpha1
