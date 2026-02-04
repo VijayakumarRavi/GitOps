@@ -1,4 +1,4 @@
-ARG BAOVAULT_VERSION=2.4.4
+ARG BAOVAULT_VERSION=2.5.0
 ARG CLOUDFLARED_VERSION=2026.1.2
 
 # Builder for downloading dependencies
