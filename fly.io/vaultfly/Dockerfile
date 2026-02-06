@@ -1,5 +1,5 @@
 ARG VAULTWARDEN_VERSION=1.35.2
-ARG CLOUDFLARED_VERSION=2026.1.2
+ARG CLOUDFLARED_VERSION=2026.2.0
 
 # Builder for downloading dependencies
 FROM alpine as builder
