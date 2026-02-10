@@ -79,7 +79,7 @@
       "concurrency": 5
     },
     "ocr": {
-      "concurrency": 3
+      "concurrency": 1
     },
     "search": {
       "concurrency": 5
@@ -136,11 +136,10 @@
       "enabled": true,
       "maxResolution": 736,
       "minDetectionScore": 0.5,
-      "minRecognitionScore": 0.8,
-      "modelName": "PP-OCRv5_server"
+      "minRecognitionScore": 0.8
     },
     "urls": [
-      "http://10.0.2.2:3003"
+      "http://immich-machine-learning.media.svc.cluster.local:3003"
     ]
   },
   "map": {
