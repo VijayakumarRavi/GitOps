@@ -3,7 +3,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: kubernetes-dashboard
+  name: kite
   namespace: flux-system
 spec:
-  url: https://kubernetes.github.io/dashboard
+  url: https://zxh326.github.io/kite

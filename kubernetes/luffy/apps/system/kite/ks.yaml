@@ -3,14 +3,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname kubernetes-dashboard
+  name: &appname kite
   namespace: flux-system
 spec:
   targetNamespace: system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: "./kubernetes/luffy/apps/system/kubernetes-dashboard/app"
+  path: "./kubernetes/luffy/apps/system/kite/app"
   sourceRef:
     kind: GitRepository
     name: flux-system

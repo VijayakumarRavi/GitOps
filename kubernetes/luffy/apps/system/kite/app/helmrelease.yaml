@@ -1,0 +1,43 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kite
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: kite
+      version: 0.7.8
+      sourceRef:
+        kind: HelmRepository
+        name: kite
+        namespace: flux-system
+  values:
+    secret:
+      existingSecret: kite-secret
+    db:
+      type: sqlite
+      sqlite:
+        persistence:
+          pvc:
+            enabled: true
+            size: 1Gi
+    gateway:
+      enabled: true
+      name: envoy
+      namespace: network
+      className: envoy
+      httpRoutes:
+        - name: kite
+          hostnames:
+            - kite.${CLUSTER_DOMAIN}
+          rules:
+            - matches:
+                - path:
+                    type: PathPrefix
+                    value: /
+              backendRefs:
+                - name: kite
+                  port: 8080

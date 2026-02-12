@@ -14,7 +14,7 @@ resources:
   - ./jameswynn.yaml
   - ./jetstack.yaml
   - ./k8tz.yaml
-  - ./kubernetes-dashboard.yaml
+  - ./kite.yaml
   - ./kubernetes-sigs-metrics-server.yaml
   - ./kubernetes-sigs-nfd.yaml
   - ./metallb.yaml
