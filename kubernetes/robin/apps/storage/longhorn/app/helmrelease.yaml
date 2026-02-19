@@ -15,13 +15,6 @@ spec:
       version: 1.11.0
   interval: 30m
   values:
-    httproute:
-      enabled: true
-      parentRefs:
-        - name: envoy
-          namespace: network
-      hostnames: longhorn.${CLUSTER_DOMAIN}
-      path: /
     persistence:
       defaultClass: true
       defaultClassReplicaCount: &replica 1
