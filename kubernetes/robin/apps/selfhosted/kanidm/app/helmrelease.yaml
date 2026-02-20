@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -17,35 +17,27 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         replicas: 1
-        strategy: RollingUpdate
-        rollingUpdate:
-          unavailable: 0
-          surge: 1
+        type: statefulset
+        pod:
+          securityContext:
+            fsGroup: 2000
+            fsGroupChangePolicy: OnRootMismatch
+            runAsGroup: 2000
+            runAsNonRoot: true
+            runAsUser: 2000
         containers:
           server:
             image:
-              repository: kanidm/server
+              repository: docker.io/kanidm/server
               tag: 1.9.0
             env:
               KANIDM_CONFIG: /config/server.toml
-            probes:
-              liveness: &healthcheck
-                enabled: true
-                custom: true
-                spec:
-                  exec:
-                    command:
-                      - /sbin/kanidmd
-                      - healthcheck
-                  initialDelaySeconds: 10
-                  periodSeconds: 30
-                  timeoutSeconds: 5
-                  failureThreshold: 3
-              readiness: *healthcheck
+              KANIDM_ADMIN_BIND_PATH: /var/run/kanidmd.sock
             resources:
               requests:
-                cpu: 20m
-                memory: 250Mi
+                cpu: 10m
+              limits:
+                memory: 1Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -94,20 +86,23 @@ spec:
           - backendRefs:
               - identifier: web
                 port: *port
-
     persistence:
       certs:
-        enabled: true
         type: secret
         name: ${LAB_DOMAIN}-tls
+        defaultMode: 0400
         globalMounts:
           - path: /certs
-            readOnly: true
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /var/run
+            subPath: var-run
       config:
-        enabled: true
         type: configMap
         name: kanidm-config
       data:
         existingClaim: kanidm
         globalMounts:
           - path: /data
+            subPath: data
