@@ -43,24 +43,24 @@ spec:
               readOnlyRootFilesystem: true
               capabilities:
                 drop: [ALL]
-          # tools:
-          #   image:
-          #     repository: kanidm/server
-          #     tag: 1.8.5
-          #   command: sleep infinity
-          #   probes:
-          #     liveness: &healthcheck
-          #       enabled: false
-          #     readiness: *healthcheck
-          #   resources:
-          #     requests:
-          #       cpu: 20m
-          #       memory: 250Mi
-          #   securityContext:
-          #     allowPrivilegeEscalation: false
-          #     readOnlyRootFilesystem: true
-          #     capabilities:
-          #       drop: [ALL]
+          tools:
+            image:
+              repository: docker.io/kanidm/tools
+              tag: 1.9.0
+            command: ["/bin/bash", "-c", "tail -f /dev/null"]
+            probes:
+              liveness: &healthcheck
+                enabled: false
+              readiness: *healthcheck
+            resources:
+              requests:
+                cpu: 20m
+                memory: 250Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: [ALL]
     service:
       web:
         controller: kanidm
