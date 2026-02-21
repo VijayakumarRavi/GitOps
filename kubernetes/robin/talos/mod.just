@@ -7,7 +7,7 @@ controller := `talosctl config info -o yaml | yq -e '.endpoints[0]'`
 
 [private]
 default:
-    just -l talos
+    just -l robin talos
 
 [doc('Apply Talos config to a node')]
 apply-node node *args:

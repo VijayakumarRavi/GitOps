@@ -34,11 +34,11 @@ k8s:
 [doc('Fetch kubeconfig')]
 kubeconfig lb="cilium":
     just log info "Running stage..." "stage" "$0"
-    if ! talosctl kubeconfig -n "{{ controller }}" -f --force-context-name luffy {{ justfile_dir() }}; then \
+    if ! talosctl kubeconfig -n "{{ controller }}" -f --force-context-name admin@robin {{ justfile_dir() }}; then \
         just log fatal "Failed to fetch kubeconfig" "stage" "$0"; \
     fi
     if [[ "{{ lb }}" != "cilium" ]]; then \
-        if ! kubectl config set-cluster luffy --server "https://{{ controller }}:6443"; then \
+        if ! kubectl config set-cluster admin@robin --server "https://{{ controller }}:6443"; then \
             just log fatal "Failed to set kubectl cluster server address" "stage" "$0"; \
         fi; \
     fi
@@ -76,14 +76,14 @@ helmfile: crds apps
 
 [doc('Apply Helmfile CRDs')]
 crds:
-  just log info "Running stage..." "stage" "$0"
-  if ! helmfile -f "{{ bootstrap_dir }}/helmfiles/00-crds.yaml" template -q | kubectl apply --server-side -f -; then \
-    just log fatal "Failed to apply crds" "stage" "$0"; \
-  fi;
+    just log info "Running stage..." "stage" "$0"
+    if ! helmfile -f "{{ bootstrap_dir }}/helmfiles/00-crds.yaml" template -q | kubectl apply --server-side -f -; then \
+      just log fatal "Failed to apply crds" "stage" "$0"; \
+    fi;
 
 [doc('Apply Helmfile Apps')]
 apps:
-  just log info "Running stage..." "stage" "$0"
-  if ! helmfile -f "{{ bootstrap_dir }}/helmfiles/01-apps.yaml" sync --hide-notes; then \
-    just log fatal "Failed to sync helmfile" "stage" "$0"; \
-  fi
+    just log info "Running stage..." "stage" "$0"
+    if ! helmfile -f "{{ bootstrap_dir }}/helmfiles/01-apps.yaml" sync --hide-notes; then \
+      just log fatal "Failed to sync helmfile" "stage" "$0"; \
+    fi

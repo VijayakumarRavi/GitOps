@@ -50,20 +50,19 @@ machine:
         noatime=True
   install:
     disk: /dev/vda
-    image: factory.talos.dev/installer/88d1f7a5c4f1d3aba7df787c448c1d3d008ed29cfb34af53fa0df4336a56040b:v1.12.0
+    image: factory.talos.dev/installer/88d1f7a5c4f1d3aba7df787c448c1d3d008ed29cfb34af53fa0df4336a56040b:v1.12.4
     wipe: false
-    grubUseUKICmdline: true
   systemDiskEncryption:
     state:
       provider: luks2
       keys:
         - slot: 0
-          tpm: {}
+          nodeID: {}
     ephemeral:
       provider: luks2
       keys:
         - slot: 0
-          tpm: {}
+          nodeID: {}
 
   kubelet:
     defaultRuntimeSeccompProfileEnabled: true
@@ -73,9 +72,9 @@ machine:
         ImageVolume: true
         ResourceHealthStatus: true
       serializeImagePulls: false
-    image: ghcr.io/siderolabs/kubelet:v1.34.1
+    image: ghcr.io/siderolabs/kubelet:v1.35.1
   network:
-    disableSearchDomain: true 
+    disableSearchDomain: true
   nodeLabels:
     topology.kubernetes.io/region: main
   sysctls:
@@ -140,24 +139,22 @@ cluster:
       enable-aggregator-routing: "true"
       feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true,ResourceHealthStatus=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
-    image: registry.k8s.io/kube-apiserver:v1.34.1
+    image: registry.k8s.io/kube-apiserver:v1.35.1
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-controller-manager:v1.34.1
+    image: registry.k8s.io/kube-controller-manager:v1.35.1
   coreDNS:
     disabled: true
   etcd:
-    advertisedSubnets:
-      - 10.0.1.0/24
     ca:
       crt: op://automation/talos-robin/CLUSTER_ETCD_CA_CRT
       key: op://automation/talos-robin/CLUSTER_ETCD_CA_KEY
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
   proxy:
-    disabled: true
-    image: registry.k8s.io/kube-proxy:v1.34.1
+    disabled: false
+    image: registry.k8s.io/kube-proxy:v1.35.1
   scheduler:
     config:
       apiVersion: kubescheduler.config.k8s.io/v1
@@ -178,13 +175,8 @@ cluster:
                     whenUnsatisfiable: ScheduleAnyway
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-scheduler:v1.34.1
+    image: registry.k8s.io/kube-scheduler:v1.35.1
   secretboxEncryptionSecret: op://automation/talos-robin/CLUSTER_SECRETBOXENCRYPTIONSECRET
   serviceAccount:
     key: op://automation/talos-robin/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
----
-apiVersion: v1alpha1
-kind: WatchdogTimerConfig
-device: /dev/watchdog0
-timeout: 5m
