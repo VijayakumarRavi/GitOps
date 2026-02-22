@@ -50,8 +50,11 @@ machine:
         noatime=True
   install:
     disk: /dev/vda
-    image: factory.talos.dev/installer/88d1f7a5c4f1d3aba7df787c448c1d3d008ed29cfb34af53fa0df4336a56040b:v1.12.4
+    image: factory.talos.dev/installer/b553b4a25d76e938fd7a9aaa7f887c06ea4ef75275e64f4630e6f8f739cf07df:v1.12.4
     wipe: false
+  kernel:
+    modules:
+      - name: zfs
   systemDiskEncryption:
     state:
       provider: luks2
@@ -180,3 +183,18 @@ cluster:
   serviceAccount:
     key: op://automation/talos-robin/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+provisioning:
+  maxSize: 40GiB
+  grow: false
+---
+apiVersion: v1alpha1
+kind: RawVolumeConfig
+name: openebs-zfs
+provisioning:
+  minSize: 100GiB
+  diskSelector:
+    match: system_disk

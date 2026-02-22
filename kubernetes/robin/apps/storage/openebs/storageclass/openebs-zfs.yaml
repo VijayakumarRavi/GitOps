@@ -1,0 +1,14 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: openebs-zfs
+provisioner: zfs.csi.openebs.io
+reclaimPolicy: Delete
+allowVolumeExpansion: true
+parameters:
+  poolname: "openebs-pool"
+  compression: "lz4"
+  dedup: "off"
+  fstype: "zfs"
+  recordsize: "68k"
+volumeBindingMode: WaitForFirstConsumer

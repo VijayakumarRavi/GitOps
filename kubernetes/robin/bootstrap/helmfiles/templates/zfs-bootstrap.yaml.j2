@@ -1,0 +1,59 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: zfs-bootstrap
+  namespace: kube-system
+spec:
+  template:
+    spec:
+      hostNetwork: true
+      hostPID: true
+      restartPolicy: Never
+      containers:
+      - name: zfs-setup
+        image: alpine:latest
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: dev
+          mountPath: /dev
+        command:
+          - /bin/sh
+          - -c
+          - |
+            set -e
+            # 1. Install ZFS tools (takes ~2 seconds)
+            echo "🔧 Installing ZFS tools..."
+            apk add --no-cache zfs > /dev/null
+
+            DEVICE='{{ device_path }}'
+            POOL='{{ pool_name }}'
+
+            echo "Checking for ZFS pool '$POOL'..."
+
+            if zpool list $POOL >/dev/null 2>&1; then
+              echo "✅ Pool '$POOL' already exists. Skipping creation."
+            else
+              echo "🚀 Creating ZFS pool '$POOL' on '$DEVICE'..."
+
+              # Safety check: Ensure device exists
+              if [ ! -e "$DEVICE" ]; then
+                echo "❌ Error: Device '$DEVICE' not found!"
+                exit 1
+              fi
+
+              # -f forces overwrite of old signatures (like LVM/fs)
+              # ashift=12 optimizes for 4k sector drives
+              # compression=lz4 is standard for performance
+              # -m legacy is important so ZFS doesn't try to mount it on the host OS root
+              zpool create -f -m legacy -o ashift=12 -O compression=lz4 $POOL $DEVICE
+
+              echo "✅ Pool created successfully."
+            fi
+
+            # Verify
+            zpool list -v
+      volumes:
+      - name: dev
+        hostPath:
+          path: /dev

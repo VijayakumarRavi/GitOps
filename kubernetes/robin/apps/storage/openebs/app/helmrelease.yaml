@@ -16,37 +16,37 @@ spec:
         name: openebs
         namespace: flux-system
   values:
-    localpv-provisioner:
-      rbac:
-        create: true
-      localpv:
-        image:
-          registry: quay.io/
-          repository: openebs/provisioner-localpv
-        basePath: &hostPath /var/mnt/extra/openebs/local
-      hostpathClass:
-        enabled: true
-        name: openebs-hostpath
-        isDefaultClass: false
-        basePath: *hostPath
-    loki:
-      enabled: false
-    alloy:
-      enabled: false
-    minio:
-      enabled: false
-
     openebs-crds:
       csi:
         volumeSnapshots:
-          enabled: false
-          keep: false
+          enabled: true
+          keep: true
 
-    zfs-localpv:
+    localpv-provisioner:
       enabled: false
+      #rbac:
+      #  create: true
+      #localpv:
+      #  image:
+      #    registry: quay.io/
+      #    repository: openebs/provisioner-localpv
+      #  basePath: &hostPath /var/mnt/extra/openebs/local
+      hostpathClass:
+        enabled: false
+      #  name: openebs-hostpath
+      #  isDefaultClass: false
+      #  basePath: *hostPath
 
     lvm-localpv:
       enabled: false
+
+    zfs-localpv:
+      enabled: true
+      zfsNode:
+        encrKeysDir: /var/openebs/keys
+      zfs:
+        pools:
+          - openebs-pool
 
     mayastor:
       enabled: false
@@ -56,7 +56,16 @@ spec:
         lvm:
           enabled: false
         zfs:
-          enabled: false
+          enabled: true
       replicated:
         mayastor:
           enabled: false
+
+    loki:
+      enabled: false
+
+    alloy:
+      enabled: false
+
+    minio:
+      enabled: false

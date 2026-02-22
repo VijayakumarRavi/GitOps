@@ -12,7 +12,7 @@ spec:
     accessModes: ["${VOLSYNC_SNAP_ACCESSMODES:-ReadWriteOnce}"]
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
-    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-longhorn-cache}"
+    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-openebs-zfs}"
     copyMethod: "${VOLSYNC_COPYMETHOD:-Snapshot}"
     moverSecurityContext:
       runAsUser: ${APP_UID:-2000}
@@ -23,5 +23,5 @@ spec:
     retain:
       hourly: 24
       daily: 7
-    storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn-snapshot}"
-    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-longhorn-snapshot-class}"
+    storageClassName: "${VOLSYNC_STORAGECLASS:-openebs-zfs}"
+    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-openebs-zfs-snapshotclass}"

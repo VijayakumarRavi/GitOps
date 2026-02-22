@@ -16,7 +16,7 @@ spec:
     server:
       persistentVolume:
         enabled: true
-        storageClassName: openebs-hostpath
+        storageClassName: openebs-zfs
         size: 10Gi
       serviceMonitor:
         enabled: true

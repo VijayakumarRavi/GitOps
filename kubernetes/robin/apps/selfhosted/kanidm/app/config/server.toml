@@ -5,7 +5,7 @@ bindaddress = "0.0.0.0:8443"
 ldapbindaddress = "0.0.0.0:3636"
 
 db_path = "/data/kanidm.db"
-
+db_fs_type = "zfs"
 tls_chain = "/certs/tls.crt"
 tls_key = "/certs/tls.key"
 
@@ -17,4 +17,4 @@ x-forward-for = ["10.244.0.0/16", "10.96.0.0/12"]
 
 [online_backup]
 path = "/data/backups/"
-schedule = "00 22 * * *"
+schedule = "00 * * * *"
