@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: ${CLUSTER_DOMAIN}-lldaps-tls
   issuerRef:
-    name: letsencrypt-production
+    name: zerossl-production
     kind: ClusterIssuer
   commonName: "*.${CLUSTER_DOMAIN}"
   dnsNames: ["*.${CLUSTER_DOMAIN}"]
