@@ -4,10 +4,11 @@ version = "2"
 bindaddress = "0.0.0.0:8443"
 ldapbindaddress = "0.0.0.0:3636"
 
-db_path = "/data/kanidm.db"
 db_fs_type = "zfs"
+db_path = "/data/kanidm.db"
 tls_chain = "/certs/tls.crt"
 tls_key = "/certs/tls.key"
+adminbindpath = "/var/run/kanidmd.sock"
 
 domain = "idm.${LAB_DOMAIN}"
 origin = "https://idm.${LAB_DOMAIN}"
@@ -17,4 +18,4 @@ x-forward-for = ["10.244.0.0/16", "10.96.0.0/12"]
 
 [online_backup]
 path = "/data/backups/"
-schedule = "00 * * * *"
+schedule = "30 00 * * *"
