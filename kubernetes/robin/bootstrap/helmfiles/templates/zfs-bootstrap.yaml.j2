@@ -22,36 +22,22 @@ spec:
           - -c
           - |
             set -e
-            # 1. Install ZFS tools (takes ~2 seconds)
-            echo "🔧 Installing ZFS tools..."
             apk add --no-cache zfs > /dev/null
 
             DEVICE='{{ device_path }}'
             POOL='{{ pool_name }}'
 
-            echo "Checking for ZFS pool '$POOL'..."
-
-            if zpool list $POOL >/dev/null 2>&1; then
-              echo "✅ Pool '$POOL' already exists. Skipping creation."
+            if zpool list "$POOL" >/dev/null 2>&1; then
+              echo "Pool '$POOL' already exists."
             else
-              echo "🚀 Creating ZFS pool '$POOL' on '$DEVICE'..."
-
-              # Safety check: Ensure device exists
+              echo "Creating ZFS pool '$POOL' on '$DEVICE'..."
               if [ ! -e "$DEVICE" ]; then
-                echo "❌ Error: Device '$DEVICE' not found!"
+                echo "Error: Device '$DEVICE' not found."
                 exit 1
               fi
-
-              # -f forces overwrite of old signatures (like LVM/fs)
-              # ashift=12 optimizes for 4k sector drives
-              # compression=lz4 is standard for performance
-              # -m legacy is important so ZFS doesn't try to mount it on the host OS root
-              zpool create -f -m legacy -o ashift=12 -O compression=lz4 $POOL $DEVICE
-
-              echo "✅ Pool created successfully."
+              zpool create -f -m legacy -o ashift=12 -O compression=lz4 -O atime=off -O xattr=sa "$POOL" "$DEVICE"
+              echo "Pool '$POOL' created successfully."
             fi
-
-            # Verify
             zpool list -v
       volumes:
       - name: dev

@@ -10,7 +10,7 @@ zfs_device := "/dev/disk/by-partlabel/r-openebs-zfs"
 zfs_pool := "openebs-pool"
 
 [private]
-default: talos k8s (kubeconfig "node") wait kubeconfig sops zfs crds apps
+default: talos k8s wait sops zfs crds apps
 
 [doc('Install Talos')]
 talos:

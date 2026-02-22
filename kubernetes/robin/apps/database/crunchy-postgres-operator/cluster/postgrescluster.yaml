@@ -15,12 +15,31 @@ spec:
     nodePort: 32629
   patroni:
     dynamicConfiguration:
-      synchronous_mode: true
       postgresql:
         max_wal_size: 1GB
         synchronous_commit: "on"
         pg_hba:
           - hostssl all all all md5
+        parameters:
+          shared_buffers: "1GB"
+          effective_cache_size: "3GB"
+          work_mem: "16MB"
+          maintenance_work_mem: "256MB"
+          max_connections: "100"
+
+          # WAL & checkpoint tuning
+          max_wal_size: "4GB"
+          min_wal_size: "1GB"
+          checkpoint_completion_target: "0.9"
+          wal_compression: "on"
+
+          # Autovacuum tuning
+          autovacuum_naptime: "10s"
+          autovacuum_vacuum_scale_factor: "0.05"
+          autovacuum_analyze_scale_factor: "0.02"
+
+          # Small latency win
+          random_page_cost: "1.1"
   instances:
     - name: postgres
       metadata:
@@ -28,7 +47,7 @@ spec:
           app.kubernetes.io/name: crunchy-postgres
       replicas: &replica 1
       dataVolumeClaimSpec:
-        storageClassName: openebs-zfs
+        storageClassName: openebs-zfs-postgres
         accessModes: [ReadWriteOnce]
         resources:
           requests:
