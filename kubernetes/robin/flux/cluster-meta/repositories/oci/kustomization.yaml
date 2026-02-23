@@ -2,15 +2,4 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-  - ./fluent-bit.yaml
-  - ./app-template.yaml
-  - ./controlplaneio.yaml
-  - ./coredns.yaml
-  - ./crunchydata.yaml
-  - ./envoy-gateway.yaml
-  - ./grafana.yaml
-  - ./victoria-logs.yaml
-  - ./silence-operator.yaml
-  - ./tuppr.yaml
-  - ./volsync.yaml
+resources: []
