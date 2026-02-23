@@ -5,5 +5,4 @@ kind: Kustomization
 resources:
   - ./apps.yaml
   - ./base.yaml
-  - ./cluster.yaml
-
+  - ./meta.yaml

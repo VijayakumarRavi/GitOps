@@ -7,3 +7,4 @@ resources:
   # - ./b2
   # - ./wasabi
   - ./pvc.yaml
+  - ./mutatingadmissionpolicy.yaml

@@ -1,0 +1,61 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/mutatingadmissionpolicybinding.json
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingAdmissionPolicyBinding
+metadata:
+  name: volsync-movers-add-restic-unlock
+spec:
+  policyName: volsync-movers-add-restic-unlock
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/mutatingadmissionpolicy.json
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingAdmissionPolicy
+metadata:
+  name: volsync-movers-add-restic-unlock
+spec:
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ['batch']
+        apiVersions: ['v1']
+        operations: ['CREATE', 'UPDATE']
+        resources: ['jobs']
+  matchConditions:
+    - name: has-volsync-job-name-prefix
+      expression: >
+        object.metadata.name.startsWith("volsync-src-")
+    - name: has-volsync-created-by-labels
+      expression: >
+        object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
+  failurePolicy: Fail
+  reinvocationPolicy: IfNeeded
+  mutations:
+    - patchType: 'JSONPatch'
+      jsonPatch:
+        expression: >
+          [
+            JSONPatch{
+              op: "add", path: "/spec/template/spec/initContainers",
+              value: []
+            },
+            JSONPatch{
+              op: "add", path: "/spec/template/spec/initContainers/-",
+              value: Object.spec.template.spec.initContainers{
+                name: "unlock",
+                image: object.spec.template.spec.containers[0].image,
+                imagePullPolicy: "IfNotPresent",
+                env: object.spec.template.spec.containers[0].env,
+                volumeMounts: object.spec.template.spec.containers[0].volumeMounts,
+                command: [
+                  "sh",
+                  "-c",
+                  "DURATION=$(shuf -i 0-60 -n 1)\n" +
+                  "echo \"Using restic repository: $RESTIC_REPOSITORY\"\n" +
+                  "case \"$RESTIC_REPOSITORY\" in /repository*) ls -lah \"$RESTIC_REPOSITORY\" ;; esac\n" +
+                  "echo \"Running restic unlock...\"\n" +
+                  "restic unlock --remove-all --verbose\n" +
+                  "echo \"Sleeping for $DURATION seconds...\"\n" +
+                  "sleep $DURATION"
+                ]
+              }
+            }
+          ]

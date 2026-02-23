@@ -6,7 +6,6 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./coredns/ks.yaml
   - ./cilium/ks.yaml
   - ./envoy-gateway/ks.yaml
   - ./speedtest/ks.yaml

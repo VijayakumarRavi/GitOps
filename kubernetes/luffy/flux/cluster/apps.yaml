@@ -10,6 +10,7 @@ spec:
   timeout: 10m
   path: ./kubernetes/luffy/apps
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -18,7 +19,7 @@ spec:
     secretRef:
       name: sops-age
   dependsOn:
-    - name: cluster-meta
+    - name: cluster-base
   postBuild:
     substituteFrom:
       - name: cluster-secrets
@@ -28,7 +29,7 @@ spec:
         apiVersion: kustomize.toolkit.fluxcd.io/v1
         kind: Kustomization
         metadata:
-          name: not-used
+          name: _
         spec:
           decryption:
             provider: sops
@@ -46,22 +47,24 @@ spec:
         apiVersion: helm.toolkit.fluxcd.io/v2beta1
         kind: HelmRelease
         metadata:
-          name: not-used
+          name: _
         spec:
           timeout: 10m
           install:
-            createNamespace: true
             crds: CreateReplace
-            remediation:
-              retries: 5
-          upgrade:
-            crds: CreateReplace
+            strategy:
+              name: RetryOnFailure
+          rollback:
             cleanupOnFail: true
+            recreate: true
+          upgrade:
+            cleanupOnFail: true
+            crds: CreateReplace
+            strategy:
+              name: RemediateOnFailure
             remediation:
-              strategy: rollback
-              retries: 5
-          uninstall:
-            keepHistory: false
+              remediateLastFailure: true
+              retries: 2
       target:
         kind: HelmRelease
         group: helm.toolkit.fluxcd.io

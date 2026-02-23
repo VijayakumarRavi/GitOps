@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname envoy-gateway-config
+  name: &appname coredns
   namespace: flux-system
 spec:
   targetNamespace: network
@@ -12,12 +12,10 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 10m
-  path: "./kubernetes/robin/apps/network/envoy-gateway/config"
-  prune: true
+  path: "./kubernetes/base/apps/network/coredns/app"
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
-  dependsOn:
-    - name: envoy-gateway
+  wait: false
