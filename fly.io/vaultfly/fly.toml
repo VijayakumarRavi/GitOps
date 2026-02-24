@@ -6,11 +6,9 @@
 app = 'vaultfly'
 primary_region = 'sin'
 kill_signal = 'SIGINT'
-kill_timeout = '5s'
-swap_size_mb = 512
-
-[experimental]
-  auto_rollback = true
+kill_timeout = '30s'
+swap_size_mb = 1024
+deploy = { strategy = 'rolling', max_unavailable = 1 }
 
 [build]
   dockerfile = 'Dockerfile'
@@ -62,7 +60,7 @@ swap_size_mb = 512
   USE_SYSLOG = 'false'
   WEBSOCKET_ENABLED = 'true'
   WEB_VAULT_ENABLED = 'true'
-
+  TRASH_AUTO_DELETE_DAYS= '30'
 [[mounts]]
   source = 'vw_data'
   destination = '/data'

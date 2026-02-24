@@ -3,7 +3,7 @@ name: Deploy Fly.io Apps on Dependency Updates
 on:
   push:
     paths: [fly.io/**]
-    branches: ["master"]
+    branches: ['master']
 jobs:
   deploy-fly-app:
     runs-on: ubuntu-latest
@@ -12,7 +12,7 @@ jobs:
     #   github.event.commits[0].author.email == 'bot@renovateapp.com'
     strategy:
       matrix:
-        app: [authfly, baovault, flyguard, gatusfly, vaultfly]
+        app: [authfly, baovault, flyguard, vaultfly]
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
