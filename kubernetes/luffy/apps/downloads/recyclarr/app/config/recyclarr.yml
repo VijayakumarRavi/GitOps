@@ -1,86 +1,90 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/recyclarr/recyclarr/master/schemas/config-schema.json
 sonarr:
-  sonarr_main:
+  series:
     base_url: http://sonarr.downloads.svc.cluster.local:8989
     api_key: !env_var SONARR_API_KEY
 
     delete_old_custom_formats: true
-    replace_existing_custom_formats: true
 
-    include:
-      - template: sonarr-quality-definition-series
-      # 1080p
-      - template: sonarr-v4-quality-profile-web-1080p
-      - template: sonarr-v4-custom-formats-web-1080p
-      # 2160p
-      - template: sonarr-v4-quality-profile-web-2160p
-      - template: sonarr-v4-custom-formats-web-2160p
-      # Anime
-      - template: sonarr-quality-definition-anime
-      - template: sonarr-v4-quality-profile-anime
-      - template: sonarr-v4-custom-formats-anime
+    quality_definition:
+      type: series
+
+    # Set up folder and file renaming to your media player standards
+    media_naming:
+      series: plex-tvdb # or jellyfin-tvdb
+      season: default
+      episodes:
+        rename: true
+        standard: default
+        daily: default
+        anime: default
 
     quality_profiles:
-      - name: WEB-1080p
-      - name: WEB-2160p
-      - name: Remux-1080p - Anime
+      - trash_id: 9d142234e45d6143785ac55f5a9e8dc9  # WEB-1080p (Alternative)
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: 20e0fc959f1f1704bed501f23bdae76f  # [Anime] Remux-1080p
+        reset_unmatched_scores:
+          enabled: true
 
-    custom_formats:
-      # HDR Formats
-      - trash_ids:
-          # Comment out the next line if you and all of your users' setups are fully DV compatible
-          - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL)
+    custom_format_groups:
+      add:
+        - trash_id: 35fb4585dcd9e2a5ac732e4309f5a45a  # [Streaming Services] Asian
 
-          # HDR10+ Boost - Uncomment the next two lines if any of your devices DO support HDR10+
-          # - 0dad0a507451acddd754fe6dc3a7f5e7 # HDR10+ Boost
-          # - 385e9e8581d33133c3961bdcdeffb7b4 # DV HDR10+ Boost
-        assign_scores_to:
-          - name: WEB-2160p
+        - trash_id: f4a0410a1df109a66d6e47dcadcce014  # [Optional] Miscellaneous
+          select:
+            - 32b367365729d530ca1c124a0b180c64 # Bad dual groups
+            - 82d40da2bc6923f41e14394075dd4b03 # No RlsGroup
+            - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated
+            - 06d66ab109d4d2eddb2794d21526d140 # Retags
+            - 1b3994c551cbb92a2c781af061f4ab44 # Scene
 
-      - trash_ids:
-          - 32b367365729d530ca1c124a0b180c64 # Bad Dual Groups
-          - 82d40da2bc6923f41e14394075dd4b03 # No-RlsGroup
-          - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated
-          - 06d66ab109d4d2eddb2794d21526d140 # Retags
-          - 1b3994c551cbb92a2c781af061f4ab44 # Scene
-        assign_scores_to:
-          - name: WEB-1080p
-          - name: WEB-2160p
-
-      - trash_ids:
-          - 026d5aadd1a6b4e550b134cb6c72b3ca # Uncensored
-          - b2550eb333d27b75833e25b8c2557b38 # 10bit
-          - 418f50b10f1907201b6cfdf881f467b7 # Anime Dual Audio
-        assign_scores_to:
-          - name: Remux-1080p - Anime
+        - trash_id: d920fd959d220306888f40b6f38e1578  # [Optional] Season Packs
 
 radarr:
-  radarr_main:
+  movies:
     base_url: http://radarr.downloads.svc.cluster.local:7878
     api_key: !env_var RADARR_API_KEY
 
     delete_old_custom_formats: true
-    replace_existing_custom_formats: true
 
-    include:
-      - template: radarr-quality-definition-sqp-streaming
-      # 2160p
-      - template: radarr-custom-formats-sqp-1-2160p
-      - template: radarr-quality-profile-sqp-1-2160p-4k-only-imax-e
+    media_naming:
+      folder: plex-tmdb # or jellyfin-tmdb
+      movie:
+        rename: true
+        standard: plex-tmdb # or jellyfin-tmdb
+
+    quality_definition:
+      type: movie
 
     quality_profiles:
-      - name: SQP-1 (2160p)
-        min_format_score: 2000
+      - trash_id: d1d67249d3890e49bc12e275d989a7e9  # HD Bluray + WEB
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: 722b624f9af1e492284c4bc842153a38  # [Anime] Remux-1080p
+        reset_unmatched_scores:
+          enabled: true
 
-    custom_formats:
-      - trash_ids:
-          - 7a0d1ad358fee9f5b074af3ef3f9d9ef # hallowed
-          - b6832f586342ef70d9c128d40c07b872 # Bad Dual Groups
-          - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL)
-          - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup
-          - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated
-          - 5c44f52a8714fdd79bb4d98e2673be1f # Retags
-          - f537cf427b64c38c8e36298f657e4828 # Scene
-        assign_scores_to:
-          - name: SQP-1 (2160p)
+    custom_format_groups:
+      add:
+        - trash_id: b22449f789b16a4163b59f1b70cbc580  # [Streaming Services] Asian
+
+        - trash_id: f4f1474b963b24cf983455743aa9906c  # Movie Versions
+          select:
+            - 570bc9ebecd92723d2d21500f4be314c # Remaster
+            - eca37840c13c6ef2dd0262b141a5482f # 4K source remaster
+            - e0c07d59beb37348e975a930d5e50319 # Criterion
+            - 9d27d9d2181838f76dee150882bdc58c # Masters of Cinema
+            - db9b4c4b53d312a3ca5f1378f6440fc9 # Vinegar syndrom
+            - eecf3a857724171f968a66cb5719e152 # IMAX
+            - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced
+
+        - trash_id: 9337080378236ce4c0b183e35790d2a7 # Miscellaneous exclusions
+          select:
+            - b6832f586342ef70d9c128d40c07b872 # Bad dual groups
+            - cc444569854e9de0b084ab2b8b1532b2 # B&W editions
+            - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup
+            - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated
+            - 5c44f52a8714fdd79bb4d98e2673be1f # Retags
+            - f537cf427b64c38c8e36298f657e4828 # Scene
