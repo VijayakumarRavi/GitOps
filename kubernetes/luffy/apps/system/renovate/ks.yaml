@@ -13,16 +13,16 @@ spec:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
       name: *appname
-      namespace: selfhosted
+      namespace: system
   interval: 30m
   timeout: 10m
-  path: "./kubernetes/robin/apps/selfhosted/renovate/app"
+  path: "./kubernetes/luffy/apps/system/renovate/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: selfhosted
+  targetNamespace: system
   dependsOn:
     - name: external-secrets-stores
     - name: envoy-gateway-config
@@ -42,11 +42,11 @@ spec:
     - name: renovate-operator
   interval: 30m
   timeout: 10m
-  path: "./kubernetes/robin/apps/selfhosted/renovate/jobs"
+  path: "./kubernetes/luffy/apps/system/renovate/jobs"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: selfhosted
+  targetNamespace: system
   wait: false

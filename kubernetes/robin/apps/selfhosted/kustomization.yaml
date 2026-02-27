@@ -10,4 +10,3 @@ resources:
   - ./kanidm/ks.yaml
   - ./lldap/ks.yaml
   - ./pocketid/ks.yaml
-#  - ./renovate/ks.yaml

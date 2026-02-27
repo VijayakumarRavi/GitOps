@@ -6,4 +6,5 @@ resources:
   - ./actions-runner-controller.yaml
   - ./intel-device-plugins-gpu.yaml
   - ./intel-device-plugins-operator.yaml
+  - ./renovate-operator.yaml
   - ./spegel.yaml

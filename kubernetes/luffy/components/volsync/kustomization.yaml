@@ -6,4 +6,4 @@ resources:
   # - ./nfs
   - ./idrive
   - ./pvc.yaml
-  - ./mutatingadmissionpolicy.yaml
+  # - ./mutatingadmissionpolicy.yaml
