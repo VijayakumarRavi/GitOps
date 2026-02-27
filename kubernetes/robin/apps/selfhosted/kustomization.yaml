@@ -9,4 +9,5 @@ resources:
   - ./adguard/ks.yaml
   - ./kanidm/ks.yaml
   - ./lldap/ks.yaml
+  - ./outline/ks.yaml
   - ./pocketid/ks.yaml
