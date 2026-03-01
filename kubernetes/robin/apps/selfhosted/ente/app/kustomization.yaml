@@ -5,4 +5,9 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
-  - ./scheduled-job.yaml
+configMapGenerator:
+  - name: museum-tpl
+    files:
+      - ./config/museum.yaml
+generatorOptions:
+  disableNameSuffixHash: true

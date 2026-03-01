@@ -19,7 +19,7 @@ spec:
         max_wal_size: 1GB
         synchronous_commit: "on"
         pg_hba:
-          - hostssl all all all md5
+          - hostssl all all all scram-sha-256
         parameters:
           shared_buffers: "1GB"
           effective_cache_size: "3GB"
@@ -67,8 +67,8 @@ spec:
       databases: [lldap]
       password:
         type: AlphaNumeric
-    - name: outline
-      databases: [outline]
+    - name: ente
+      databases: [ente]
       password:
         type: AlphaNumeric
 
