@@ -11,8 +11,9 @@ spec:
       crunchy-userinit.ramblurr.github.com/enabled: "true"
       crunchy-userinit.ramblurr.github.com/superuser: vijay
   service:
-    type: NodePort
-    nodePort: 32629
+    type: ClusterIP
+  #  type: NodePort
+  #  nodePort: 32629
   patroni:
     dynamicConfiguration:
       postgresql:
