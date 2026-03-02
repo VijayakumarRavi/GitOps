@@ -21,8 +21,8 @@ spec:
           namespace: network
     webhook:
       enabled: true
-    config:
-      # -- whether to delete successfully finished renovate jobs (will lose logs)
-      deleteSuccessfulJobs: true
-      # -- TTL for finished renovate jobs in seconds, -1 means they are kept forever
-      jobTTLSecondsAfterFinished: 60
+#    config:
+#      # -- whether to delete successfully finished renovate jobs (will lose logs)
+#      deleteSuccessfulJobs: true
+#      # -- TTL for finished renovate jobs in seconds, -1 means they are kept forever
+#      jobTTLSecondsAfterFinished: 60
