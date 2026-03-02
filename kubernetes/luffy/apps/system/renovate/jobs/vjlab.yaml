@@ -39,10 +39,10 @@ spec:
 apiVersion: renovate-operator.mogenius.com/v1alpha1
 kind: RenovateJob
 metadata:
-  name: vijayakumarravi-renovate
+  name: vjlab
   namespace: selfhosted
 spec:
-  discoveryFilter: VijayakumarRavi/*
+  discoverTopics: "renovate"
   extraEnv:
     - name: LOG_LEVEL
       value: debug
