@@ -138,6 +138,15 @@ spec:
               - identifier: share
                 port: http
 
+      embed:
+        <<: *route
+        hostnames:
+          - embed.${CLUSTER_DOMAIN}
+        rules:
+          - backendRefs:
+              - identifier: embed
+                port: http
+
 #    persistence:
 #      museum-yaml:
 #        enabled: true
