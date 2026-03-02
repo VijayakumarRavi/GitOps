@@ -2,9 +2,36 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
-      "description": ["Separate PRs for master cluster"],
-      "matchFileNames": ["**/kubernetes/**"],
-      "additionalBranchPrefix": "master-"
+      "description": "Fly.io  updates",
+      "matchFileNames": [
+        "kubernetes/fly.io/**"
+      ],
+      "additionalBranchPrefix": "fly-",
+      "commitMessagePrefix": "[fly] "
+    },
+    {
+      "description": "Base cluster updates",
+      "matchFileNames": [
+        "kubernetes/base/**"
+      ],
+      "additionalBranchPrefix": "base-",
+      "commitMessagePrefix": "[base] "
+    },
+    {
+      "description": "Luffy cluster updates",
+      "matchFileNames": [
+        "kubernetes/luffy/**"
+      ],
+      "additionalBranchPrefix": "luffy-",
+      "commitMessagePrefix": "[luffy] "
+    },
+    {
+      "description": "Robin cluster updates",
+      "matchFileNames": [
+        "kubernetes/robin/**"
+      ],
+      "additionalBranchPrefix": "robin-",
+      "commitMessagePrefix": "[robin] "
     }
   ]
 }

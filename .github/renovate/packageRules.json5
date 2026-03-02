@@ -2,22 +2,64 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
-      "description": ["Loose versioning for non-semver packages"],
-      "matchDatasources": ["docker"],
-      "matchPackagePatterns": ["cross-seed", "plex"],
+      "description": [
+        "Loose versioning for non-semver packages"
+      ],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackagePatterns": [
+        "cross-seed",
+        "plex"
+      ],
       "versioning": "loose"
     },
     {
-      "description": ["Custom schedule for frequently updated packages"],
-      "matchDataSources": ["docker", "helm"],
-      "matchPackagePatterns": ["minio", "postgresql", "reloader"],
-      "schedule": ["on the first day of the month"]
+      "description": [
+        "Custom schedule for frequently updated packages"
+      ],
+      "matchDataSources": [
+        "docker",
+        "helm"
+      ],
+      "matchPackagePatterns": [
+        "minio",
+        "postgresql",
+        "reloader"
+      ],
+      "schedule": [
+        "on the first day of the month"
+      ]
     },
     {
-      "description": ["Custom versioning for minio"],
-      "matchDatasources": ["docker"],
-      "matchPackagePatterns": ["minio"],
-      "versioning": "regex:^RELEASE\\.(?<major>\\d+)-(?<minor>\\d+)-(?<patch>\\d+)T.*Z$"
-    }
+      description: "Override Helmfile Dependency Name",
+      matchDatasources: [
+        "docker"
+      ],
+      matchManagers: [
+        "helmfile"
+      ],
+      overrideDepName: "{{packageName}}",
+    },
+    {
+      description: "Override Talos Installer Package Name",
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "/factory\\.talos\\.dev/"
+      ],
+      overridePackageName: "ghcr.io/siderolabs/installer",
+    },
+    {
+      description: "Override Renovate Operator source",
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "ghcr.io/mogenius/helm-charts/renovate-operator"
+      ],
+      sourceUrl: "https://github.com/mogenius/renovate-operator",
+    },
   ]
 }

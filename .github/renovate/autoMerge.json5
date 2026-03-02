@@ -3,41 +3,70 @@
   "packageRules": [
     {
       "description": "Auto-merge container digest updates for trusted containers",
-      "matchDatasources": ["docker"],
+      "matchDatasources": [
+        "docker"
+      ],
       "automerge": true,
       ignoreTests: false,
-      "automergeType": "branch",
-      "matchUpdateTypes": ["digest"],
-      "matchPackagePatterns": ["ghcr.io/vijayakumarravi"],
+      "automergeType": "pr",
+      "matchUpdateTypes": [
+        "digest"
+      ],
+      "matchPackagePatterns": [
+        "ghcr.io/vijayakumarravi",
+        "ghcr.io/home-operations",
+        "ghcr.io/onedr0p",
+        "ghcr.io/bjw-s",
+        "ghcr.io/bjw-s-labs",
+      ],
     },
     {
       "description": "Auto-merge GitHub Actions for minor and patch",
-      "matchManagers": ["github-actions"],
-      "matchDatasources": ["github-tags"],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchDatasources": [
+        "github-tags"
+      ],
       "automerge": true,
-      "automergeType": "branch",
-      "matchUpdateTypes": ["minor", "patch"],
+      "automergeType": "pr",
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
     },
     {
       "description": "Auto merge KPS minors and patches",
-      "matchDatasources": ["helm"],
+      "matchDatasources": [
+        "helm"
+      ],
       "automerge": true,
       "ignoreTests": false,
-      "matchPackageNames": ["kube-prometheus-stack"],
-      "automergeType": "branch"
+      "matchPackageNames": [
+        "kube-prometheus-stack"
+      ],
+      "automergeType": "pr"
     },
     {
       "description": "Auto merge minor and patch updates",
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "matchCurrentVersion": "!/^0/",
+      "minimumReleaseAge": "2 days",
       "automerge": true,
-      "automergeType": "branch"
+      "automergeType": "pr"
     },
     {
       "description": "Disable Auto merge for immich updates",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["ghcr.io/immich-app/*"],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "ghcr.io/immich-app/*"
+      ],
       "automerge": false
-    }
+    },
   ]
 }
