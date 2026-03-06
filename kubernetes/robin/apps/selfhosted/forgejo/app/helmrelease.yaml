@@ -1,0 +1,93 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: forgejo
+spec:
+  interval: 30m
+  timeout: 1m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      forgejo:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            fsGroup: 2000
+            fsGroupChangePolicy: OnRootMismatch
+            runAsGroup: 2000
+            runAsNonRoot: true
+            runAsUser: 2000
+        containers:
+          app:
+            image:
+              repository: codeberg.org/forgejo/forgejo
+              tag: 14.0.2-rootless
+            env:
+              FORGEJO____APP_NAME: "Forgejo"
+              FORGEJO__server__ROOT_URL: "https://git.${CLUSTER_DOMAIN}"
+              FORGEJO__server__SSH_DOMAIN: "git.${CLUSTER_DOMAIN}"
+              FORGEJO__server__SSH_PORT: "22"
+              FORGEJO__server__SSH_LISTEN_PORT: "2222"
+            envFrom:
+              - secretRef:
+                  name: forgejo-secret
+              - secretRef:
+                  name: forgejo-db-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: [ALL]
+            resources:
+              requests:
+                cpu: 12m
+                memory: 128M
+
+    service:
+      app:
+        controller: forgejo
+        ports:
+          http:
+            port: 3000
+      ssh:
+        controller: forgejo
+        type: ClusterIP
+        externalIPs:
+          - ${NODE_IP}
+        ports:
+          ssh:
+            port: 22
+            targetPort: 2222
+
+    route:
+      app:
+        hostnames:
+          - git.${CLUSTER_DOMAIN}
+        parentRefs:
+          - name: envoy
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
+
+    persistence:
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+      data:
+        existingClaim: forgejo
+        advancedMounts:
+          forgejo:
+            app:
+              - path: /var/lib/gitea
+                subPath: data
+              - path: /etc/gitea
+                subPath: config
