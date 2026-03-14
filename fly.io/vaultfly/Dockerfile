@@ -7,7 +7,7 @@ FROM alpine as builder
 # renovate: datasource=github-releases depName=DarthSim/overmind
 ARG OVERMIND_VERSION=v2.5.1
 # renovate: datasource=github-releases depName=aptible/supercronic
-ARG SUPERCRONIC_VERSION=v0.2.43
+ARG SUPERCRONIC_VERSION=v0.2.44
 # install dependencies
 RUN apk add --no-cache wget gzip
 
