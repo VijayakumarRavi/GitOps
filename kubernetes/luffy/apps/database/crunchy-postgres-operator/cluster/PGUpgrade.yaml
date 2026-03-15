@@ -4,8 +4,8 @@ metadata:
   name: postgres-upgrade
 spec:
   postgresClusterName: postgres
-  fromPostgresVersion: 16
-  toPostgresVersion: 17
+  fromPostgresVersion: 17
+  toPostgresVersion: 18
 
 # kubectl -n database annotate postgrescluster postgres postgres-operator.crunchydata.com/allow-upgrade="postgres-upgrade"
 # edit the spec.shutdown field to true

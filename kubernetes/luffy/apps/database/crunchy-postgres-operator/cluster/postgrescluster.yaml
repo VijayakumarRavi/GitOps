@@ -6,7 +6,7 @@ metadata:
   name: &name postgres
 spec:
   # shutdown: true
-  postgresVersion: 17
+  postgresVersion: 18
   metadata:
     labels:
       crunchy-userinit.ramblurr.github.com/enabled: "true"
