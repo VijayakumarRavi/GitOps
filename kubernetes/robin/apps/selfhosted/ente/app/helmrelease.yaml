@@ -34,7 +34,7 @@ spec:
           server:
             image:
               repository: ghcr.io/ente-io/server
-              tag: latest@sha256:1de2249fb7e2678547ee7ba253285234730a3c25ce6f9218a179320c88cdbff3
+              tag: latest@sha256:e1b615b261391b79a9d27f00783f70b909a18c67960cc038846a9e928fe79903
             envFrom:
               - secretRef:
                   name: ente-secret
