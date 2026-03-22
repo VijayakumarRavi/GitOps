@@ -16,11 +16,14 @@ spec:
     metadata:
       annotations:
         lbipam.cilium.io/ips: 10.0.1.2
-  patroni: # turn on sync writes to at least 1 other replica
+  config:
+    parameters:
+      max_wal_size: 5GB
+      shared_preload_libraries: timescaledb
+  patroni:
     dynamicConfiguration:
-      synchronous_mode: true
+      synchronous_mode: true  # turn on sync writes to at least 1 other replica
       postgresql:
-        max_wal_size: 5GB
         synchronous_commit: "on"
         pg_hba:
           - hostnossl all all 172.16.0.0/12 md5
