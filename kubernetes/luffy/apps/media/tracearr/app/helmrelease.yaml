@@ -31,7 +31,7 @@ spec:
             env:
               TZ: Asia/Kolkata
               LOG_LEVEL: info
-              REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379/4
+              REDIS_URL: "redis://dragonfly.database.svc:6379/9"
               CORS_ORIGIN: "https://tracearr.${CLUSTER_DOMAIN}"
               HOST: "0.0.0.0"
               NODE_ENV: production
