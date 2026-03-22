@@ -63,6 +63,10 @@ spec:
       databases: [immich]
       password:
         type: AlphaNumeric
+    - name: tracearr
+      databases: [tracearr]
+      password:
+        type: AlphaNumeric
     - name: paperless
       databases: [paperless]
       password:
