@@ -1,12 +1,11 @@
 ---
-# yaml-language-server: $schema=https://lds-schemas.pages.dev/dragonflydb.io/dragonfly_v1alpha1.json
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
   name: dragonfly
 spec:
   image: ghcr.io/dragonflydb/dragonfly:v1.37.0
-  replicas: 3
+  replicas: 2
   env:
     - name: MAX_MEMORY
       valueFrom:
@@ -19,6 +18,9 @@ spec:
     - --cluster_mode=emulated
     - --lock_on_hashtags
     - --default_lua_flags=allow-undeclared-keys
+
+  networkPolicyEnabled: false
+
   serviceSpec:
     type: LoadBalancer
     annotations:
