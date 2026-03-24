@@ -1,0 +1,35 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: gitlab-web-cert
+spec:
+  secretName: gitlab-tls
+  issuerRef:
+    name: zerossl-production
+    kind: ClusterIssuer
+  dnsNames:
+    - "gitlab.${CLUSTER_DOMAIN}"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: registry-web-cert
+spec:
+  secretName: registry-tls
+  issuerRef:
+    name: zerossl-production
+    kind: ClusterIssuer
+  dnsNames:
+    - "registry.${CLUSTER_DOMAIN}"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kas-web-cert
+spec:
+  secretName: kas-tls
+  issuerRef:
+    name: zerossl-production
+    kind: ClusterIssuer
+  dnsNames:
+    - "kas.${CLUSTER_DOMAIN}"

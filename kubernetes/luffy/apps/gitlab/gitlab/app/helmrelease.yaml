@@ -52,7 +52,9 @@ spec:
         class:
           name: "envoy"
         httpToHttpsRedirect: true
-
+        gateway:
+          annotations:
+              cert-manager.io/cluster-issuer: "zerossl-production"
       minio:
         enabled: false
       appConfig:
@@ -90,10 +92,6 @@ spec:
     gitlab-runner:
       install: true
 
-    redis:
-      persistence:
-        storageClass: openebs-zfs
-
     gitlab:
       webservice:
         resources:
@@ -106,8 +104,6 @@ spec:
             cpu: 10m
             memory: 120Mi
       gitaly:
-        persistence:
-          storageClass: openebs-zfs
         resources:
           requests:
             cpu: 10m

@@ -6,6 +6,7 @@ resources:
   - ./authentik.yaml
   - ./cilium.yaml
   - ./fluxcd-kustomize-mutating-webhook.yaml
+  - ./gitlab.yaml
   - ./intel.yaml
   - ./jameswynn.yaml
   - ./kite.yaml

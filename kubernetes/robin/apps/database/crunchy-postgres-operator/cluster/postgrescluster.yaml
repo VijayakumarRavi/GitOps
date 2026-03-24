@@ -76,10 +76,6 @@ spec:
       databases: [forgejo]
       password:
         type: AlphaNumeric
-    - name: gitlab
-      databases: [gitlab]
-      password:
-        type: AlphaNumeric
 
   backups:
     pgbackrest:
