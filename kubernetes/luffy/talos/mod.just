@@ -3,7 +3,7 @@ set shell := ['bash', '-euo', 'pipefail', '-c']
 
 kubernetes_dir := justfile_dir() + '/kubernetes/luffy'
 talos_dir := kubernetes_dir + '/talos'
-controller := `talosctl config info -o yaml | yq -e '.endpoints[0]'`
+controller := `talosctl --context luffy config info -o yaml | yq -e '.endpoints[0]'`
 
 [private]
 default:
@@ -11,7 +11,7 @@ default:
 
 [doc('Apply Talos config to a node')]
 apply-node node *args:
-    just luffy talos render-config "{{ node }}" | talosctl -n "{{ node }}" apply-config -f /dev/stdin {{ args }}
+    just luffy talos render-config "{{ node }}" | talosctl --context luffy -n "{{ node }}" apply-config -f /dev/stdin {{ args }}
 
 [doc('Download Talos machine image')]
 download-image version schematic:
@@ -28,7 +28,7 @@ gen-schematic-id:
 [doc('Reboot a node')]
 reboot-node node:
     gum confirm "Reboot node {{ node }}?" --default="No" && \
-        talosctl -n {{ node }} reboot -m powercycle || exit 0
+        talosctl --context luffy -n {{ node }} reboot -m powercycle || exit 0
 
 [doc('Render Talos config for a node')]
 render-config node:
@@ -39,20 +39,20 @@ render-config node:
 [doc('Reset a node')]
 reset-node node:
     gum confirm "Reset node {{ node }}?" --default="No" && \
-        talosctl -n "{{ node }}" reset --graceful=false --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL || exit 0
+        talosctl --context luffy -n "{{ node }}" reset --graceful=false --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL || exit 0
 
 [doc('Shutdown a node')]
 shutdown-node node:
     gum confirm "Shutdown node {{ node }}?" --default="No" && \
-        talosctl -n "{{ node }}" shutdown --force || exit 0
+        talosctl --context luffy -n "{{ node }}" shutdown --force || exit 0
 
 [doc('Upgrade Kubernetes version on the cluster')]
 upgrade-k8s version:
-    talosctl -n "{{ controller }}" upgrade-k8s --to {{ version }}
+    talosctl --context luffy -n "{{ controller }}" upgrade-k8s --to {{ version }}
 
 [doc('Upgrade Talos version on a node')]
 upgrade-node node:
-    talosctl -n "{{ node }}" upgrade -i "$(just luffy talos machine-image)" -m powercycle --timeout=10m
+    talosctl --context luffy -n "{{ node }}" upgrade -i "$(just luffy talos machine-image)" -m powercycle --timeout=10m
 
 [private]
 machine-controller node:

@@ -91,6 +91,11 @@ spec:
 
     gitlab-runner:
       install: true
+      runners:
+        config: |
+          [[runners]]
+                [runners.kubernetes]
+                  privileged = true
 
     gitlab:
       webservice:
