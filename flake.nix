@@ -23,6 +23,7 @@
           kubectl
           kubectx
           python3
+          just-lsp
           helmfile
           talosctl
           minijinja
