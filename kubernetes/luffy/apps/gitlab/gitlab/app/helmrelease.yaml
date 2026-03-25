@@ -18,6 +18,7 @@ spec:
   values:
     global:
       edition: ce
+      time_zone: "Asia/Kolkata"
       hosts:
         domain: ${CLUSTER_DOMAIN}
         https: true
