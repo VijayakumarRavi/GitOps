@@ -48,7 +48,7 @@ spec:
           overlay-helperr:
             image:
               repository: gsariev/maintainerr-overlay-helperr
-              tag: latest@sha256:0e07696bd05d767107ba9d2c0b7deb22a138772dcad05b1017ae53db4b4abde0
+              tag: latest@sha256:253f6b8b31dcc446de588fffa38f323f1cafe0643912d5bc59bcc955af28ea3d
             env:
               - name: TZ
                 value: 'Asia/Kolkata'
