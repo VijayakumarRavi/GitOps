@@ -65,24 +65,23 @@ spec:
       ssh:
         controller: forgejo
         type: ClusterIP
-        externalIPs:
-          - ${NODE_IP}
+        # externalIPs:
+        #   - ${NODE_IP}
         ports:
           ssh:
             port: 22
             targetPort: 2222
-
     route:
-      app:
-        hostnames:
-          - git.${CLUSTER_DOMAIN}
+      ssh:
+        kind: TCPRoute
         parentRefs:
           - name: envoy
             namespace: network
+            sectionName: ssh
         rules:
           - backendRefs:
-              - identifier: app
-                port: http
+              - name: forgejo-ssh
+                port: 22
 
     persistence:
       tmp:

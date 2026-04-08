@@ -53,13 +53,14 @@ spec:
     - name: forgejo-redis
   components:
     - ../../../../components/volsync
+    - ../../../../components/anubis
   postBuild:
     substitute:
       APP: forgejo
       APP_UID: "1000"
       APP_GID: "1000"
       VOLSYNC_CAPACITY: 10Gi
-      ANUBIS_TARGET: http://forgejo-http.dev.svc.cluster.local:3000
+      ANUBIS_TARGET: http://forgejo-app.dev.svc.cluster.local:3000
 ---
 # yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
