@@ -1,0 +1,83 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: forgejo-redis
+  namespace: flux-system
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: forgejo-redis
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: forgejo-redis
+      namespace: dev
+  targetNamespace: dev
+  interval: 30m
+  timeout: 10m
+  prune: true
+  wait: false
+  path: "./kubernetes/robin/apps/dev/forgejo/redis"
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: forgejo
+  namespace: flux-system
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: forgejo
+  path: "./kubernetes/robin/apps/dev/forgejo/app"
+  targetNamespace: dev
+  interval: 30m
+  timeout: 10m
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: volsync
+    - name: external-secrets-stores
+    - name: crunchy-postgres-secretstore
+    - name: envoy-gateway-config
+    - name: forgejo-redis
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: forgejo
+      APP_UID: "1000"
+      APP_GID: "1000"
+      VOLSYNC_CAPACITY: 10Gi
+      ANUBIS_TARGET: http://forgejo-http.dev.svc.cluster.local:3000
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: forgejo-runner
+  namespace: flux-system
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: forgejo
+  targetNamespace: dev
+  interval: 30m
+  timeout: 10m
+  prune: true
+  wait: false
+  path: "./kubernetes/robin/apps/dev/forgejo/runner"
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system

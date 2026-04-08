@@ -34,6 +34,13 @@ spec:
               FORGEJO__server__SSH_DOMAIN: "git.${CLUSTER_DOMAIN}"
               FORGEJO__server__SSH_PORT: "22"
               FORGEJO__server__SSH_LISTEN_PORT: "2222"
+              FORGEJO__queue__TYPE: redis
+              FORGEJO__queue__CONN_STR: &redis redis://forgejo-redis:6379
+              FORGEJO__session__PROVIDER: redis
+              FORGEJO__session__PROVIDER_CONFIG: *redis
+              FORGEJO__cache__ENABLED: true
+              FORGEJO__cache__ADAPTER: redis
+              FORGEJO__cache__HOST:  *redis
             envFrom:
               - secretRef:
                   name: forgejo-secret
