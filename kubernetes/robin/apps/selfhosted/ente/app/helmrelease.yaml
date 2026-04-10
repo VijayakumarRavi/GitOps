@@ -21,7 +21,7 @@ spec:
           web:
             image:
               repository: ghcr.io/ente-io/web
-              tag: latest@sha256:fd033aabb93b2efb82f79ed926cd25f1134e60d4d7f7d25e0c095dd402d89530
+              tag: latest@sha256:80f1b2e6b60c1f48d5d24ae7a11738465486bf3f7345bfdaa972dc3f3152aa78
             envFrom:
               - secretRef:
                   name: ente-secret
