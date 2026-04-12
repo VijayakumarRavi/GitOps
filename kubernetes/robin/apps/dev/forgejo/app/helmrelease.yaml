@@ -41,6 +41,8 @@ spec:
               FORGEJO__cache__ENABLED: true
               FORGEJO__cache__ADAPTER: redis
               FORGEJO__cache__HOST:  *redis
+              FORGEJO__actions__ENABLED: true
+              FORGEJO__actions__DEFAULT_URL: "https://github.com"
             envFrom:
               - secretRef:
                   name: forgejo-secret
