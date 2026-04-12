@@ -25,7 +25,7 @@ spec:
               workdir_parent: shared/workdir
             kubernetes:
               namespace: dev
-              poll_timeout: 10m
+              poll_timeout: 3h
             log:
               level: info
             runner:
@@ -36,7 +36,7 @@ spec:
                 - ubuntu-24.04:k8spod:/config/podspec-default.yaml
                 - default:k8spod:/config/podspec-default.yaml
                 - docker:k8spod:/config/podspec-dind.yaml
-              timeout: 3h
+              timeout: 6h
           podspec-default.yaml: |-
             containers:
               - env:
@@ -117,7 +117,6 @@ spec:
         statefulset:
           volumeClaimTemplates:
             - accessMode: ReadWriteOnce
-              storageClass: openebs-zfs
               globalMounts:
                 - path: /persistent
               name: persistent
@@ -149,9 +148,9 @@ spec:
                 echo "Registering runner..."
                 echo $RUNNER_TOKEN
                 cd /persistent && forgejo-runner register \
-                  --instance http://forgejo-app.dev.svc.cluster.local:3000 \
+                  --instance https://git.robin.${LAB_DOMAIN} \
                   --token "$RUNNER_TOKEN" \
-                  --name k8s-runner \
+                  --name luffy-k8s-runner \
                   --labels "default:k8spod:/config/podspec-default.yaml" \
                   --no-interactive
             env:
