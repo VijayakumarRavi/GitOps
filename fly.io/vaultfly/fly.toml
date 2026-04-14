@@ -24,7 +24,7 @@ deploy = { strategy = 'rolling', max_unavailable = 1 }
   EMAIL_CHANGE_ALLOWED = 'true'
   EMAIL_TOKEN_SIZE = '6'
   EMERGENCY_ACCESS_ALLOWED = 'true'
-  EXPERIMENTAL_CLIENT_FEATURE_FLAGS = 'fido2-vault-credentials,ssh-agent,ssh-key-vault-item,autofill-v2,autofill-overlay'
+  EXPERIMENTAL_CLIENT_FEATURE_FLAGS = 'ssh-agent,ssh-key-vault-item'
   EXTENDED_LOGGING = 'true'
   ICON_BLACKLIST_NON_GLOBAL_IPS = 'true'
   ICON_DOWNLOAD_TIMEOUT = '20'
