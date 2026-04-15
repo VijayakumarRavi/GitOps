@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v2.6.3-openvino
+              tag: v2.7.5-openvino
             env:
               IMMICH_CONFIG_FILE: /config/immich.config.json
               MPLCONFIGDIR: /cache/matplotlib
