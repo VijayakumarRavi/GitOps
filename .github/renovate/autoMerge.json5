@@ -54,7 +54,6 @@
         "patch"
       ],
       "matchCurrentVersion": "!/^0/",
-      "minimumReleaseAge": "2 days",
       "automerge": true,
       "automergeType": "pr"
     },
