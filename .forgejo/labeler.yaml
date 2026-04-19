@@ -2,20 +2,30 @@
 area/bootstrap:
   - changed-files:
       - any-glob-to-any-file:
-          - kubernetes/bootstrap/**/*
+          - kubernetes/**/bootstrap/**/*
 area/ci:
   - changed-files:
       - any-glob-to-any-file: ".forgejo/**/*"
       - any-glob-to-any-file: ".github/**/*"
-area/kubernetes:
-  - changed-files:
-      - any-glob-to-any-file: "kubernetes/**/*"
 area/renovate:
   - changed-files:
       - any-glob-to-any-file:
           - .renovate/**/*
-          - .renovaterc.json5
-area/talos:
+          - renovate.json5
+area/base-kubernetes:
+  - changed-files:
+      - any-glob-to-any-file: "kubernetes/base/**/*"
+area/luffy-kubernetes:
+  - changed-files:
+      - any-glob-to-any-file: "kubernetes/luffy/**/*"
+area/robin-kubernetes:
+  - changed-files:
+      - any-glob-to-any-file: "kubernetes/robin/**/*"
+area/luffy-talos:
   - changed-files:
       - any-glob-to-any-file:
-          - kubernetes/talos/**/*
+          - kubernetes/luffy/talos/**/*
+area/robin-talos:
+  - changed-files:
+      - any-glob-to-any-file:
+          - kubernetes/robin/talos/**/*
