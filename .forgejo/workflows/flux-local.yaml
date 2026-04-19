@@ -6,7 +6,7 @@ on:
   pull_request:
     branches:
       - master
-
+ 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || forgejo.ref }}
   cancel-in-progress: true
