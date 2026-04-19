@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: codeberg.org/forgejo/forgejo
-              tag: 14.0.4-rootless
+              tag: 15.0.0-rootless
             env:
               FORGEJO____APP_NAME: "Forgejo"
               FORGEJO__server__ROOT_URL: "https://git.${CLUSTER_DOMAIN}"
