@@ -1,18 +1,12 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "packageRules": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
     {
-      "description": "Auto-merge container digest updates for trusted containers",
-      "matchDatasources": [
-        "docker"
-      ],
-      "automerge": true,
-      ignoreTests: false,
-      "automergeType": "pr",
-      "matchUpdateTypes": [
-        "digest"
-      ],
-      "matchPackagePatterns": [
+      description: "Auto merge container digests",
+      matchDatasources: ["docker"],
+      automerge: true,
+      matchUpdateTypes: ["digest"],
+      matchPackagePrefixes: [
         "ghcr.io/vijayakumarravi",
         "ghcr.io/home-operations",
         "ghcr.io/onedr0p",
@@ -21,51 +15,25 @@
       ],
     },
     {
-      "description": "Auto-merge GitHub Actions for minor and patch",
-      "matchManagers": [
-        "github-actions"
-      ],
-      "matchDatasources": [
-        "github-tags"
-      ],
-      "automerge": true,
-      "automergeType": "pr",
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
+      description: "Auto merge minors and patches",
+      matchDatasources: ["docker"],
+      automerge: true,
+      matchUpdateTypes: ["minor", "patch"],
+      matchPackageNames: [
+        "/kube-prometheus-stack/",
+        "ghcr.io/mogenius/helm-charts/renovate-operator",
+        "ghcr.io/bjw-s-labs/wrangler",
       ],
     },
     {
-      "description": "Auto merge KPS minors and patches",
-      "matchDatasources": [
-        "helm"
+      description: "Auto-merge high-cadence packages weekly",
+      matchDatasources: ["docker"],
+      automerge: true,
+      matchUpdateTypes: ["minor", "patch"],
+      matchPackageNames: [
+        "ghcr.io/renovatebot/renovate",
       ],
-      "automerge": true,
-      "ignoreTests": false,
-      "matchPackageNames": [
-        "kube-prometheus-stack"
-      ],
-      "automergeType": "pr"
+      schedule: ["before 6am on Monday"],
     },
-    {
-      "description": "Auto merge minor and patch updates",
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true,
-      "automergeType": "pr"
-    },
-    {
-      "description": "Disable Auto merge for immich updates",
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "ghcr.io/immich-app/*"
-      ],
-      "automerge": false
-    },
-  ]
+  ],
 }

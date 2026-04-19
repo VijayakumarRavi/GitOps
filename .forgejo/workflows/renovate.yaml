@@ -5,7 +5,8 @@ on:
   push:
     branches: ['master']
     paths:
-      - renovate.json
+      - renovate.json5
+      - .renovate/**
   schedule:
     - cron: '0 * * * *'
   workflow_dispatch:

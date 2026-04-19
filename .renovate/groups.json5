@@ -2,25 +2,9 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      description: "1Password Connect group",
-      groupName: "1Password Connect",
-      matchDatasources: [
-        "docker"
-      ],
-      matchPackageNames: [
-        "/1password/"
-      ],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      minimumGroupSize: 2,
-    },
-    {
       description: "Actions Runner Controller group",
       groupName: "Actions Runner Controller",
-      matchDatasources: [
-        "docker"
-      ],
+      matchDatasources: ["docker"],
       matchPackageNames: [
         "/gha-runner-scale-set-controller/",
         "/gha-runner-scale-set/",
@@ -33,14 +17,8 @@
     {
       description: "Flux Operator group",
       groupName: "Flux Operator",
-      matchDatasources: [
-        "docker"
-      ],
-      matchPackageNames: [
-        "/flux-operator/",
-        "/flux-instance/",
-        "/flux-operator-manifests/"
-      ],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/flux-operator/", "/flux-instance/", "/flux-operator-manifests/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -49,9 +27,7 @@
     {
       description: "Kubernetes group",
       groupName: "Kubernetes",
-      matchDatasources: [
-        "docker"
-      ],
+      matchDatasources: ["docker"],
       matchPackageNames: [
         "/kube-apiserver/",
         "/kube-controller-manager/",
@@ -67,13 +43,8 @@
     {
       description: "Rook-Ceph group",
       groupName: "Rook-Ceph",
-      matchDatasources: [
-        "docker"
-      ],
-      matchPackageNames: [
-        "/rook-ceph/",
-        "/rook-ceph-cluster/"
-      ],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/rook-ceph/", "/rook-ceph-cluster/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -82,13 +53,8 @@
     {
       description: "Talos group",
       groupName: "Talos",
-      matchDatasources: [
-        "docker"
-      ],
-      matchPackageNames: [
-        "/installer/",
-        "/talosctl/"
-      ],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/installer/", "/talosctl/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
