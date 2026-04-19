@@ -26,7 +26,7 @@ jobs:
 
       - name: Detect Changes
         id: filter
-        uses: https://github.com/dorny/paths-filter@v4
+        uses: https://github.com/dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4
         with:
           filters: |
             luffy: kubernetes/luffy/**
