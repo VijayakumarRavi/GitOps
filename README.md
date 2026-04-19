@@ -22,7 +22,7 @@ Kubernetes cluster stats:
 
 ## :computer:&nbsp; Infrastructure
 
-See the [talos cluster setup](../kubernetes/talos/) for more detail about hardware and infrastructure
+See the [talos cluster setup](kubernetes/talos/) for more detail about hardware and infrastructure
 
 ## :gear:&nbsp; Setup
 
@@ -50,19 +50,19 @@ task k8s-bootstrap:apps
 
 ## :wrench:&nbsp; Workloads (by namespace in kubernetes/)
 
-* [cert-manager](../kubernetes/apps/cert-manager/)
-* [database](../kubernetes/apps/database/)
-* [downloads](../kubernetes/apps/downloads/)
-* [flux-system](../kubernetes/apps/flux-system/)
-* [media](../kubernetes/apps/media/)
-* [monitoring](../kubernetes/apps/monitoring/)
-* [network](../kubernetes/apps/network/)
-* [security](../kubernetes/apps/security/)
-* [selfhosted](../kubernetes/apps/selfhosted/)
-* [storage](../kubernetes/apps/storage/)
-* [system](../kubernetes/apps/system/)
-* [system-upgrade](../kubernetes/apps/system-upgrade/)
-* [system-controllers](../kubernetes/apps/system-controllers/)
+* [cert-manager](kubernetes/apps/cert-manager/)
+* [database](kubernetes/apps/database/)
+* [downloads](kubernetes/apps/downloads/)
+* [flux-system](kubernetes/apps/flux-system/)
+* [media](kubernetes/apps/media/)
+* [monitoring](kubernetes/apps/monitoring/)
+* [network](kubernetes/apps/network/)
+* [security](kubernetes/apps/security/)
+* [selfhosted](kubernetes/apps/selfhosted/)
+* [storage](kubernetes/apps/storage/)
+* [system](kubernetes/apps/system/)
+* [system-upgrade](kubernetes/apps/system-upgrade/)
+* [system-controllers](kubernetes/apps/system-controllers/)
  
 ## :robot:&nbsp; Automation
 

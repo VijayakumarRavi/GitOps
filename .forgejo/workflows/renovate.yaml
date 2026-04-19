@@ -1,0 +1,59 @@
+---
+name: Renovate
+
+on:
+  push:
+    branches: ['master']
+    paths:
+      - renovate.json
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        description: Dry Run
+        type: boolean
+        default: false
+        required: true
+      logLevel:
+        description: Log Level
+        type: choice
+        default: debug
+        options:
+          - debug
+          - info
+        required: true
+      version:
+        description: Renovate Version
+        type: string
+        default: latest
+        required: true
+
+concurrency:
+  group: ${{ forgejo.workflow }}-${{ forgejo.event.number || forgejo.ref }}
+  cancel-in-progress: true
+
+jobs:
+  renovate:
+    name: Renovate
+    runs-on: docker
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          token: ${{ secrets.RENOVATE_TOKEN }}
+
+      - name: Renovate
+        uses: https://github.com/renovatebot/github-action@68a3ea99af6ad249940b5a9fdf44fc6d7f14378b # v46.1.6
+        env:
+          LOG_LEVEL: ${{ inputs.logLevel || 'debug' }}
+          RENOVATE_AUTODISCOVER: true
+          RENOVATE_AUTODISCOVER_FILTER: ${{ forgejo.repository }}
+          RENOVATE_DRY_RUN: ${{ inputs.dryRun }}
+          RENOVATE_INTERNAL_CHECKS_FILTER: strict
+          RENOVATE_PLATFORM: forgejo
+          RENOVATE_ENDPOINT: ${{ forgejo.serverUrl }}
+          RENOVATE_GITHUB_COM_TOKEN: ${{ secrets.RENOVATE_GITHUB_COM_TOKEN }}
+        with:
+          token: ${{ secrets.RENOVATE_TOKEN }}
+          renovate-version: ${{ inputs.version || 'latest' }}
