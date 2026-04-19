@@ -11,7 +11,7 @@ helmDefaults:
 releases:
   - name: cilium
     namespace: network
-    chart: oci://ghcr.io/home-operations/charts-mirror/cilium
+    chart: oci://quay.io/cilium/charts/cilium
     version: 1.18.3
     values:
       - templates/values.yaml.gotmpl
