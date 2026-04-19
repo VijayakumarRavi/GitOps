@@ -62,16 +62,8 @@ spec:
       databases: [freshrss]
       password:
         type: AlphaNumeric
-    - name: gitlab
-      databases: [gitlab]
-      password:
-        type: AlphaNumeric
     - name: immich
       databases: [immich]
-      password:
-        type: AlphaNumeric
-    - name: tracearr
-      databases: [tracearr]
       password:
         type: AlphaNumeric
     - name: paperless
