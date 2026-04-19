@@ -5,7 +5,7 @@ name: Pre-pull Images
 on:
   pull_request:
     branches:
-      - main
+      - master
 
 concurrency:
   group: ${{ forgejo.workflow }}-${{ forgejo.event.number || forgejo.ref }}
