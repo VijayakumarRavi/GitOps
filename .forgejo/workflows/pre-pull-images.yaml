@@ -6,6 +6,8 @@ on:
   pull_request:
     branches:
       - master
+    paths:
+      - kubernetes/luffy
 
 concurrency:
   group: ${{ forgejo.workflow }}-${{ forgejo.event.number || forgejo.ref }}
@@ -55,7 +57,7 @@ jobs:
         run: |-
           flux-local get cluster \
             --all-namespaces \
-            --path kubernetes/flux/cluster \
+            --path kubernetes/luffy/flux/cluster \
             --enable-images \
             --only-images \
             --output json \

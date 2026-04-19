@@ -15,25 +15,32 @@ permissions:
   contents: read
 
 jobs:
-  filter-changes:
-    name: Filter changes
+  filter:
+    name: Flux Local - Filter
     runs-on: ubuntu-latest
     outputs:
-      changed-files: ${{ steps.changed-files.outputs.changed_files }}
+      clusters: ${{ steps.filter.outputs.changes }}
     steps:
-      - name: Get changed files
-        id: changed-files
-        uses: https://github.com/bjw-s-labs/action-changed-files@a9a36fb08ce06db9b02fbd8026cc2c0945eb9841 # v0.6.0
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Detect Changes
+        id: filter
+        uses: https://github.com/dorny/paths-filter@v4
         with:
-          patterns: |-
-            kubernetes/**/*
+          filters: |
+            luffy: kubernetes/luffy/**
+            robin: kubernetes/robin/**
 
   test:
-    if: ${{ needs.filter-changes.outputs.changed-files != '[]' }}
-    name: Run flux-local test
+    if: ${{ needs.filter.outputs.clusters != '[]' }}
+    needs: filter
+    name: Flux Local - Test
     runs-on: ubuntu-latest
-    needs:
-      - filter-changes
+    strategy:
+      fail-fast: false
+      matrix:
+        cluster: ${{ fromJson(needs.filter.outputs.clusters) }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -43,20 +50,24 @@ jobs:
       - name: Run flux-local test
         shell: bash
         run: |-
-          flux-local test --enable-helm --all-namespaces --path kubernetes/flux/cluster -v
+          flux-local test \
+            --enable-helm \
+            --all-namespaces \
+            --path kubernetes/${{ matrix.cluster }}/flux/cluster \
+            --verbose
 
   diff:
-    if: ${{ needs.filter-changes.outputs.changed-files != '[]' }}
-    name: Run flux-local diff ${{ matrix.resources }}
+    if: ${{ needs.filter.outputs.clusters != '[]' }}
+    needs: filter
+    name: Flux Local - Diff
     runs-on: ubuntu-latest
-    needs:
-      - filter-changes
     permissions:
       contents: read
       pull-requests: write
     strategy:
       matrix:
-        resources:
+        cluster: ${{ fromJson(needs.filter.outputs.clusters) }}
+        resource:
           - helmrelease
           - kustomization
       max-parallel: 4
@@ -78,10 +89,10 @@ jobs:
       - name: Run flux-local diff
         shell: bash
         run: |-
-          flux-local diff ${{ matrix.resources }} \
+          flux-local diff ${{ matrix.resource }} \
             --unified 6 \
-            --path pull/kubernetes/flux/cluster \
-            --path-orig default/kubernetes/flux/cluster \
+            --path pull/kubernetes/${{ matrix.cluster }}/flux/cluster \
+            --path-orig default/kubernetes/${{ matrix.cluster }}/flux/cluster \
             --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart" \
             --limit-bytes 10000 \
             --all-namespaces \
@@ -96,7 +107,7 @@ jobs:
               echo EOF
           } >> "${FORGEJO_OUTPUT}";
           {
-              echo "## Flux ${{ matrix.resources }} diff"
+              echo "## Flux ${{ matrix.resource }} diff for ${{ matrix.cluster }}"
               echo '```diff'
               cat diff.patch
               echo '```'
@@ -107,11 +118,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-          HEADER: "${{ github.event.pull_request.number }}/kubernetes/${{ matrix.resources }}"
+          HEADER: "${{ github.event.pull_request.number }}/${{ matrix.cluster }}/${{ matrix.resource }}"
           DIFF_CONTENT: ${{ steps.diff.outputs.diff }}
+          CLUSTER: ${{ matrix.cluster }}
         run: |-
-          MARKER="<!-- sticky-comment: ${HEADER} -->"
-          BODY=$(printf $'%s\n```diff\n%s\n```' "${MARKER}" "${DIFF_CONTENT}")
+          MARKER=""
+          BODY=$(printf $'%s\n### Cluster: %s\n```diff\n%s\n```' "${MARKER}" "${CLUSTER}" "${DIFF_CONTENT}")
           BODY_JSON=$(jq -Rs '{"body": .}' <<< "${BODY}")
 
           COMMENT_ID=$(curl -s \
@@ -132,3 +144,17 @@ jobs:
               "${{ github.api_url }}/repos/${{ github.repository }}/issues/${PR_NUMBER}/comments" \
               -d "${BODY_JSON}"
           fi
+
+  success:
+    if: ${{ !cancelled() }}
+    needs: [test, diff]
+    name: Flux Local - Success
+    runs-on: ubuntu-latest
+    steps:
+      - name: Any jobs failed?
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+      - name: All jobs passed or skipped?
+        if: ${{ !(contains(needs.*.result, 'failure')) }}
+        run: echo "All jobs passed or skipped" && echo "${{ toJSON(needs.*.result) }}"
