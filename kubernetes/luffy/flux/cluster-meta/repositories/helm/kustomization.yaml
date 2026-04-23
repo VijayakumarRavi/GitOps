@@ -8,7 +8,6 @@ resources:
   - ./fluxcd-kustomize-mutating-webhook.yaml
   - ./gitlab.yaml
   - ./intel.yaml
-  - ./jameswynn.yaml
   - ./kite.yaml
   - ./metallb.yaml
   - ./nginx.yaml
