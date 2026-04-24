@@ -118,12 +118,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.BOTPUNK_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-          HEADER: "${{ github.event.pull_request.number }}/${{ matrix.cluster }}/${{ matrix.resource }}"
           DIFF_CONTENT: ${{ steps.diff.outputs.diff }}
           CLUSTER: ${{ matrix.cluster }}
+          RESOURCE: ${{ matrix.resource }}
         run: |-
-          MARKER=""
-          BODY=$(printf $'%s\n### Cluster: %s\n```diff\n%s\n```' "${MARKER}" "${CLUSTER}" "${DIFF_CONTENT}")
+          MARKER="${CLUSTER}/${RESOURCE}"
+          BODY=$(printf $'%s\n### Cluster: %s (%s)\n```diff\n%s\n```' "${MARKER}" "${CLUSTER}" "${RESOURCE}" "${DIFF_CONTENT}")
           BODY_JSON=$(jq -Rs '{"body": .}' <<< "${BODY}")
 
           COMMENT_ID=$(curl -s \
