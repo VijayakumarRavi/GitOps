@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/vijayakumarravi/it-tools
-              tag: 2024.10.22@sha256:37c8b33a10261e58bcf123a86fde9a4fdf09923db20295bd86ffcaf175ab1369
+              tag: 2024.10.22@sha256:7998f8f484fb045134186d35541a666885d6a5a2082632f010d317030dd33ae1
             resources:
               requests:
                 cpu: 5m
