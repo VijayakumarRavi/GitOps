@@ -55,6 +55,7 @@ jobs:
           RENOVATE_PLATFORM: forgejo
           RENOVATE_ENDPOINT: ${{ forgejo.serverUrl }}
           RENOVATE_GITHUB_COM_TOKEN: ${{ secrets.RENOVATE_GITHUB_COM_TOKEN }}
+          RENOVATE_GIT_PRIVATE_KEY: ${{ secrets.RENOVATE_GIT_PRIVATE_KEY }}
         with:
           token: ${{ secrets.RENOVATE_TOKEN }}
           renovate-version: ${{ inputs.version || 'latest' }}
