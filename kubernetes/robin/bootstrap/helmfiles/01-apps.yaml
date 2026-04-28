@@ -14,7 +14,7 @@ releases:
     chart: oci://ghcr.io/coredns/charts/coredns
     version: 1.45.0
     values:
-      - templates/values.yaml.gotmpl
+      - templates/values_base.yaml.gotmpl
 
   - name: flux-operator
     namespace: flux-system

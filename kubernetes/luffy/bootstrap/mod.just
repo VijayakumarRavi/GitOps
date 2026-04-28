@@ -56,7 +56,7 @@ wait:
 [doc('Apply sops secrets')]
 sops:
     just log info "Running stage..." "stage" "$0"
-    if !  op=$(kubectl create ns flux-system 2>&1); then \
+    if !  op=$(kubectl create ns flux-system --context admin@luffy 2>&1); then \
       if [[ "$op" == *"AlreadyExists"* ]]; then \
         just log info "Namespace flux-system already exists, skipping creation" "stage" "$0"; \
       else \
@@ -77,13 +77,13 @@ helmfile: crds apps
 [doc('Apply Helmfile CRDs')]
 crds:
     just log info "Running stage..." "stage" "$0"
-    if ! helmfile -f "{{ bootstrap_dir }}/helmfiles/00-crds.yaml" template -q | kubectl apply --server-side -f -; then \
+    if ! helmfile --kube-context admin@luffy -f "{{ bootstrap_dir }}/helmfiles/00-crds.yaml" template -q | kubectl apply --context admin@luffy --server-side -f -; then \
       just log fatal "Failed to apply crds" "stage" "$0"; \
     fi;
 
 [doc('Apply Helmfile Apps')]
 apps:
     just log info "Running stage..." "stage" "$0"
-    if ! helmfile -f "{{ bootstrap_dir }}/helmfiles/01-apps.yaml" sync --hide-notes; then \
+    if ! helmfile --kube-context admin@luffy  -f "{{ bootstrap_dir }}/helmfiles/01-apps.yaml" sync --hide-notes; then \
       just log fatal "Failed to sync helmfile" "stage" "$0"; \
     fi

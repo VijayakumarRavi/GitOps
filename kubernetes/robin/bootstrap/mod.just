@@ -88,7 +88,7 @@ helmfile: crds apps
 [doc('Apply Helmfile CRDs')]
 crds:
     just log info "Running stage..." "stage" "$0"
-    if ! helmfile --kube-context admin@robin -f "{{ bootstrap_dir }}/helmfiles/00-crds.yaml" template -q | kubectl apply --server-side -f -; then \
+    if ! helmfile --kube-context admin@robin -f "{{ bootstrap_dir }}/helmfiles/00-crds.yaml" template -q | kubectl apply --context admin@robin --server-side -f -; then \
       just log fatal "Failed to apply crds" "stage" "$0"; \
     fi;
 

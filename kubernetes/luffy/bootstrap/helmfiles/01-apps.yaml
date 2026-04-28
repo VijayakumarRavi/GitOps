@@ -12,7 +12,7 @@ releases:
   - name: cilium
     namespace: network
     chart: oci://quay.io/cilium/charts/cilium
-    version: 1.18.3
+    version: 1.19.3
     values:
       - templates/values.yaml.gotmpl
     hooks:
@@ -42,7 +42,7 @@ releases:
     chart: oci://ghcr.io/coredns/charts/coredns
     version: 1.45.0
     values:
-      - templates/values.yaml.gotmpl
+      - templates/values_base.yaml.gotmpl
     needs:
       - network/cilium
 
