@@ -46,7 +46,7 @@ spec:
           tools:
             image:
               repository: docker.io/kanidm/tools
-              tag: 1.9.2
+              tag: 1.9.3
             command: ["/bin/bash", "-c", "tail -f /dev/null"]
             probes:
               liveness: &healthcheck
