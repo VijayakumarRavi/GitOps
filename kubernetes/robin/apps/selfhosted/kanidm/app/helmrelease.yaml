@@ -29,7 +29,7 @@ spec:
           server:
             image:
               repository: docker.io/kanidm/server
-              tag: 1.9.3
+              tag: 1.10.0
             env:
               KANIDM_CONFIG: /config/server.toml
               KANIDM_ADMIN_BIND_PATH: /var/run/kanidmd.sock
