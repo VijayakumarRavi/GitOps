@@ -43,11 +43,11 @@ spec:
               readOnlyRootFilesystem: true
               capabilities:
                 drop: [ALL]
-          tools:
+          mail-sender:
             image:
               repository: docker.io/kanidm/tools
               tag: 1.10.0
-            command: ["/bin/bash", "-c", "tail -f /dev/null"]
+            command: ["/sbin/kanidm-mail-sender", "-c", "/mail/client-config", "-m", "/mail/mail_sender.toml"]
             probes:
               liveness: &healthcheck
                 enabled: false
@@ -98,10 +98,24 @@ spec:
         globalMounts:
           - path: /var/run
             subPath: var-run
+          - path: /cache
       config:
         type: configMap
-        name: kanidm-config
+        name: kanidm-server-config
         defaultMode: 0400
+
+      mail:
+        type: secret
+        name: kanidm-mail-sender
+        defaultMode: 0400
+        globalMounts:
+          - path: /mail/mail_sender.toml
+            subPath: mail_sender.toml
+            readOnly: true
+          - path: /mail/client-config
+            subPath: client-config
+            readOnly: true
+
       data:
         existingClaim: kanidm
         globalMounts:

@@ -1,0 +1,43 @@
+
+# The token used to identify and authenticate to Kanidm to read the mail queue. This
+# token *must* have read-write privileges in order to ensure that queued messages can
+# be marked as sent.
+token = "{{ .kanidm_mail_sender_token }}"
+
+# A cron expression for how frequently the mail sender should check the mail queue for
+# new messages.
+
+# Default: every 5 seconds
+#
+schedule = "*/5 * * * * * *"
+
+# The display name of your Kanidm instance. This is used in subject lines of messages
+# to help identify the content to your users.
+instance_display_name = "Kanidm Vjlab"
+
+# The url of your Kanidm instance. This is distinct to the client uri that the mail
+# sender uses to connect to Kanidm. This is so that you can configure your mail
+# sender to connect to a *specific* Kanidm instance, while still presenting a
+# generic uri to users.
+instance_url = "https://idm.${LAB_DOMAIN}"
+
+# The address that messages should be sent from.
+mail_from_address = "{{ .kanidm_smtp_from }}"
+
+# The reply-to address that will be set in messages.
+mail_reply_to_address = "{{ .kanidm_smtp_username }}"
+
+# The hostname/address of the outgoing SMTP relay. This must support TLS.
+# You can specify the port as well if it is not the default (465). For example:
+# mail_relay = "smtp.example.com:12345"
+
+mail_relay = "{{ .kanidm_smtp_host }}"
+
+# The username to authenticate to the SMTP relay as.
+mail_username = "{{ .kanidm_smtp_username }}"
+
+# The password to authenticate to the SMTP relay.
+mail_password = "{{ .kanidm_smtp_password }}"
+
+# The timeout in seconds for connecting to the SMTP relay. Defaults to 15 seconds if not specified.
+mail_connect_timeout_seconds = 15
