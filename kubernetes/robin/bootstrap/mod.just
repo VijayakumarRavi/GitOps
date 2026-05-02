@@ -76,7 +76,7 @@ sops:
 [doc('Bootstrap ZFS Storage Pool using J2 template')]
 zfs:
     just log info "Running stage..." "stage" "$0"
-    minijinja-cli {{ bootstrap_dir }}/helmfiles/templates/zfs-bootstrap.yaml.j2 \
+    minijinja-cli {{ bootstrap_dir }}/helmfile.d/templates/zfs-bootstrap.yaml.j2 \
       -D device_path={{ zfs_device }} \
       -D pool_name={{ zfs_pool }}  | kubectl --context admin@robin apply -f -
     just log info "Waiting for ZFS pool creation..." "stage" "$0"
@@ -88,13 +88,13 @@ helmfile: crds apps
 [doc('Apply Helmfile CRDs')]
 crds:
     just log info "Running stage..." "stage" "$0"
-    if ! helmfile --kube-context admin@robin -f "{{ bootstrap_dir }}/helmfiles/00-crds.yaml" template -q | kubectl apply --context admin@robin --server-side -f -; then \
+    if ! helmfile --kube-context admin@robin -f "{{ bootstrap_dir }}/helmfile.d/00-crds.yaml" template -q | kubectl apply --context admin@robin --server-side -f -; then \
       just log fatal "Failed to apply crds" "stage" "$0"; \
     fi;
 
 [doc('Apply Helmfile Apps')]
 apps:
     just log info "Running stage..." "stage" "$0"
-    if ! helmfile --kube-context admin@robin -f "{{ bootstrap_dir }}/helmfiles/01-apps.yaml" sync --hide-notes; then \
+    if ! helmfile --kube-context admin@robin -f "{{ bootstrap_dir }}/helmfile.d/01-apps.yaml" sync --hide-notes; then \
       just log fatal "Failed to sync helmfile" "stage" "$0"; \
     fi
