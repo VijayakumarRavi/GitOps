@@ -23,19 +23,28 @@ spec:
             container:
               docker_host: "-"
               workdir_parent: shared/workdir
+            host:
+              workdir_parent: /data/act
             kubernetes:
               namespace: dev
               poll_timeout: 3h
             log:
               level: info
+            plugins:
+              k8s:
+                address: unix:///plugin/forgejo-runner-k8s.sock
+                options:
+                  namespace: dev
+                  poll_timeout: 10m
+                  labels: "app.kubernetes.io/name=forgejo-runner-instance,egress.home.arpa/custom-egress=true"
             runner:
               capacity: 10
               file: /persistent/.runner
               labels:
-                - ubuntu-latest:k8spod:/config/podspec-default.yaml
+                - ubuntu-latest:k8s:/config/podspec-default.yaml
                 - ubuntu-24.04:k8spod:/config/podspec-default.yaml
-                - default:k8spod:/config/podspec-default.yaml
-                - docker:k8spod:/config/podspec-dind.yaml
+                - default:k8s:/config/podspec-default.yaml
+                - docker:k8s:/config/podspec-dind.yaml
               timeout: 6h
           podspec-default.yaml: |-
             containers:
@@ -112,16 +121,12 @@ spec:
             restartPolicy: Never
     controllers:
       forgejo-runner:
-        type: statefulset
+        type: deployment
         replicas: 1
-        statefulset:
-          volumeClaimTemplates:
-            - accessMode: ReadWriteOnce
-              globalMounts:
-                - path: /persistent
-              name: persistent
-              size: 1Gi
+        annotations:
+          reloader.stakater.com/auto: "true"
         pod:
+          automountServiceAccountToken: true
           labels:
             app.kubernetes.io/component: forgejo-runner
           securityContext:
@@ -130,45 +135,20 @@ spec:
             runAsGroup: 1000
             runAsNonRoot: true
             runAsUser: 1000
-        annotations:
-          reloader.stakater.com/auto: "true"
-        initContainers:
-          register-runner:
-            image:
-              repository: git.erwanleboucher.dev/eleboucher/runner
-              tag: latest@sha256:423b05de9a223fa570b3598a51a51664603b0a46b675e5e64b9d589effff4956
-            command:
-              - bash
-              - -c
-              - |
-                if [ -f /persistent/.runner ]; then
-                  echo "Runner already registered, skipping"
-                  exit 0
-                fi
-                echo "Registering runner..."
-                echo $RUNNER_TOKEN
-                cd /persistent && forgejo-runner register \
-                  --instance https://git.robin.${LAB_DOMAIN} \
-                  --token "$RUNNER_TOKEN" \
-                  --name luffy-k8s-runner \
-                  --labels "default:k8spod:/config/podspec-default.yaml" \
-                  --no-interactive
-            env:
-              - name: RUNNER_TOKEN
-                valueFrom:
-                  secretKeyRef:
-                    key: RUNNER_TOKEN
-                    name: forgejo-runner-secret
         containers:
           runner:
             image:
               repository: git.erwanleboucher.dev/eleboucher/runner
-              tag: latest@sha256:423b05de9a223fa570b3598a51a51664603b0a46b675e5e64b9d589effff4956
+              tag: 12.10.1@sha256:0a8ef9dd41a4c29903db8f9f125b20e58e2ccb5c3c539beb1e02db139d7cf7a2
             command:
-              - /bin/forgejo-runner
-              - daemon
-              - --config
-              - /config/runner.yaml
+              - sh
+              - -ec
+              - |
+                exec /bin/forgejo-runner daemon \
+                  --config /config/runner.yaml \
+                  --url "https://git.robin.${LAB_DOMAIN}" \
+                  --uuid "$(cat /etc/forgejo-runner-secret/uuid)" \
+                  --token-url file:///etc/forgejo-runner-secret/token
             resources:
               requests:
                 cpu: 5m
@@ -179,6 +159,23 @@ spec:
                 drop:
                   - ALL
               readOnlyRootFilesystem: true
+          k8s-plugin:
+            image:
+              repository: git.erwanleboucher.dev/eleboucher/runner-k8s-plugin
+              tag: 12.10.0@sha256:c1b8145843d9e2f48ad6c7053e3aab184bea189cc868ba7f0ac6b34a905464d5
+            args:
+              - --listen
+              - unix:///plugin/forgejo-runner-k8s.sock
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
     persistence:
       config:
         type: configMap
@@ -187,12 +184,21 @@ spec:
           - path: /config
       tmpfs:
         type: emptyDir
-        sizeLimit: 10Gi
         globalMounts:
           - path: /data
             subPath: data
           - path: /tmp
             subPath: tmp
+      plugin:
+        type: emptyDir
+        globalMounts:
+          - path: /plugin
+      runner-secret:
+        type: secret
+        name: forgejo-runner-secret
+        globalMounts:
+          - path: /etc/forgejo-runner-secret
+            readOnly: true
     rbac:
       bindings:
         forgejo-runner:
