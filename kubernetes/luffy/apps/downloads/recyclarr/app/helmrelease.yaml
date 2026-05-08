@@ -24,7 +24,7 @@ spec:
           backoffLimit: 0
           concurrencyPolicy: Forbid
           failedJobsHistory: 1
-          successfulJobsHistory: 0
+          successfulJobsHistory: 1
 
         pod:
           securityContext:
@@ -39,14 +39,10 @@ spec:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: 8.6.0
-            command:
-              - bash
-              - -c
             args:
-              - |
-                recyclarr state repair --adopt && recyclarr sync
+              - sync
             env:
-              COMPlus_EnableDiagnostics: "0"
+              RECYCLARR_DATA_DIR: /tmp
             envFrom:
               - secretRef:
                   name: recyclarr-secret
@@ -65,7 +61,12 @@ spec:
 
     persistence:
       config:
-        type: emptyDir
+        existingClaim: recyclarr-config
+        advancedMounts:
+          recyclarr:
+            app:
+              - path: /config
+
       config-file:
         type: configMap
         name: recyclarr-configmap
@@ -73,3 +74,6 @@ spec:
           - path: /config/recyclarr.yml
             subPath: recyclarr.yml
             readOnly: true
+
+      tmp:
+        type: emptyDir

@@ -20,3 +20,9 @@ spec:
   wait: false
   dependsOn:
     - name: external-secrets-stores
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *appname
+      VOLSYNC_CLAIM: recyclarr-config
