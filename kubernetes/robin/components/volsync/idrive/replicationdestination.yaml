@@ -11,7 +11,7 @@ spec:
     accessModes: ["${VOLSYNC_SNAP_ACCESSMODES:-ReadWriteOnce}"]
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
-    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-openebs-zfs}"
+    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-openebs}"
     capacity: "${VOLSYNC_CAPACITY:-1Gi}"
     cleanupCachePVC: true
     cleanupTempPVC: true
@@ -22,5 +22,5 @@ spec:
       runAsGroup: ${APP_GID:-2000}
       fsGroup: ${APP_GID:-2000}
     repository: "${APP}-volsync-idrive"
-    storageClassName: "${VOLSYNC_STORAGECLASS:-openebs-zfs}"
-    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-openebs-zfs-snapshotclass}"
+    storageClassName: "${VOLSYNC_STORAGECLASS:-openebs}"
+    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-openebs-snapshotclass}"

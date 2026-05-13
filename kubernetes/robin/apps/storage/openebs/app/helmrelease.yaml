@@ -38,15 +38,10 @@ spec:
       #  basePath: *hostPath
 
     lvm-localpv:
-      enabled: false
+      enabled: true
 
     zfs-localpv:
-      enabled: true
-      zfsNode:
-        encrKeysDir: /var/openebs/keys
-      zfs:
-        pools:
-          - openebs-pool
+      enabled: false
 
     mayastor:
       enabled: false
@@ -54,9 +49,9 @@ spec:
     engines:
       local:
         lvm:
-          enabled: false
-        zfs:
           enabled: true
+        zfs:
+          enabled: false
       replicated:
         mayastor:
           enabled: false

@@ -6,11 +6,11 @@ kubernetes_dir := justfile_dir() + '/kubernetes/robin'
 bootstrap_dir := kubernetes_dir + '/bootstrap'
 controller := `talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1`
 nodes := `talosctl config info -o yaml | yq -er '.nodes | join (" ")'`
-zfs_device := "/dev/disk/by-partlabel/r-openebs-zfs"
-zfs_pool := "openebs-pool"
+lvm_device := "/dev/disk/by-partlabel/r-openebs-lvm"
+lvm_vg := "openebs-vg"
 
 [private]
-default: talos k8s wait sops zfs crds apps
+default: talos k8s wait sops lvm crds apps
 
 [doc('Install Talos')]
 talos:
@@ -73,14 +73,14 @@ sops:
       fi; \
     fi
 
-[doc('Bootstrap ZFS Storage Pool using J2 template')]
-zfs:
+[doc('Bootstrap lvm volume group using J2 template')]
+lvm:
     just log info "Running stage..." "stage" "$0"
-    minijinja-cli {{ bootstrap_dir }}/helmfile.d/templates/zfs-bootstrap.yaml.j2 \
-      -D device_path={{ zfs_device }} \
-      -D pool_name={{ zfs_pool }}  | kubectl --context admin@robin apply -f -
-    just log info "Waiting for ZFS pool creation..." "stage" "$0"
-    kubectl --context admin@robin wait --for=condition=complete job/zfs-bootstrap -n kube-system --timeout=120s
+    minijinja-cli {{ bootstrap_dir }}/helmfile.d/templates/lvm-bootstrap.yaml.j2 \
+      -D device_path={{ lvm_device }} \
+      -D vg_name={{ lvm_vg }}  | kubectl --context admin@robin apply -f -
+    just log info "Waiting for LVM volume group creation..." "stage" "$0"
+    kubectl --context admin@robin wait --for=condition=complete job/lvm-bootstrap -n kube-system --timeout=120s
 
 [doc('Apply Helmfile CRDs and Apps')]
 helmfile: crds apps

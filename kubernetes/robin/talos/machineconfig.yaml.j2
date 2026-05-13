@@ -50,13 +50,11 @@ machine:
         noatime=True
   install:
     disk: /dev/vda
-    image: factory.talos.dev/installer/1eed59b557a82441f7ca5bac9d4d120358c0e5af4009693fa482614d74f3e64c:v1.13.0
+    image: factory.talos.dev/installer/00d6a41635167ecec3aaaf416c2fdebb5dde36a9216a5257f6a9d71da7367ee8:v1.13.0
     wipe: false
   kernel:
     modules:
-      - name: zfs
-        parameters:
-          - zfs_arc_max=1610612736
+      - name: dm_thin_pool
   systemDiskEncryption:
     state:
       provider: luks2
@@ -194,7 +192,7 @@ provisioning:
 ---
 apiVersion: v1alpha1
 kind: RawVolumeConfig
-name: openebs-zfs
+name: openebs-lvm
 provisioning:
   minSize: 100GiB
   diskSelector:
