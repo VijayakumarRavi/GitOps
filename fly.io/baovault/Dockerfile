@@ -1,5 +1,5 @@
 ARG BAOVAULT_VERSION=2.5.3
-ARG CLOUDFLARED_VERSION=2026.3.0
+ARG CLOUDFLARED_VERSION=2026.5.0
 
 # Builder for downloading dependencies
 FROM alpine as builder
