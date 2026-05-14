@@ -29,7 +29,7 @@ spec:
           server:
             image:
               repository: docker.io/kanidm/server
-              tag: 1.10.1
+              tag: 1.10.2
             env:
               KANIDM_CONFIG: /config/server.toml
               KANIDM_ADMIN_BIND_PATH: /var/run/kanidmd.sock
@@ -46,7 +46,7 @@ spec:
           mail-sender:
             image:
               repository: docker.io/kanidm/tools
-              tag: 1.10.1
+              tag: 1.10.2
             command: ["/sbin/kanidm-mail-sender", "-c", "/mail/client-config", "-m", "/mail/mail_sender.toml"]
             probes:
               liveness: &healthcheck
