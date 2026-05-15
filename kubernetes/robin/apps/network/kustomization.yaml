@@ -7,3 +7,4 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./envoy-gateway/ks.yaml
+  - ./pangolin/ks.yaml
