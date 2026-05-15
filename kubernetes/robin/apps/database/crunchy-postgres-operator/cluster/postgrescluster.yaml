@@ -76,6 +76,10 @@ spec:
       databases: [forgejo]
       password:
         type: AlphaNumeric
+    - name: pangolin
+      databases: [pangolin]
+      password:
+        type: AlphaNumeric
 
   backups:
     pgbackrest:
