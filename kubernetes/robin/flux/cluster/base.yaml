@@ -26,31 +26,6 @@ spec:
         kind: Secret
   patches:
     - patch: |-
-        apiVersion: source.toolkit.fluxcd.io/v1
-        kind: HelmRepository
-        metadata:
-          name: _
-          namespace: flux-system
-        spec:
-          interval: 30m
-          timeout: 10m
-      target:
-        group: source.toolkit.fluxcd.io
-        kind: HelmRepository
-        labelSelector: substitution.flux.home.arpa/disabled notin (true)
-    - patch: |-
-        apiVersion: source.toolkit.fluxcd.io/v1
-        kind: OCIRepository
-        metadata:
-          name: _
-          namespace: flux-system
-        spec:
-          timeout: 10m
-      target:
-        group: source.toolkit.fluxcd.io
-        kind: OCIRepository
-        labelSelector: substitution.flux.home.arpa/disabled notin (true)
-    - patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1
         kind: Kustomization
         metadata:
@@ -64,33 +39,50 @@ spec:
             substituteFrom:
               - kind: Secret
                 name: cluster-secrets
+          patches:
+            - patch: |-
+                apiVersion: kustomize.toolkit.fluxcd.io/v1
+                kind: Kustomization
+                metadata:
+                  name: _
+                spec:
+                  decryption:
+                    provider: sops
+                    secretRef:
+                      name: sops-age
+                  postBuild:
+                    substituteFrom:
+                      - kind: Secret
+                        name: cluster-secrets
+              target:
+                group: kustomize.toolkit.fluxcd.io
+                kind: Kustomization
+                labelSelector: substitution.flux.home.arpa/disabled notin (true)
+            - patch: |-
+                apiVersion: helm.toolkit.fluxcd.io/v2
+                kind: HelmRelease
+                metadata:
+                  name: _
+                spec:
+                  install:
+                    crds: CreateReplace
+                    strategy:
+                      name: RetryOnFailure
+                  rollback:
+                    cleanupOnFail: true
+                  timeout: 10m
+                  upgrade:
+                    cleanupOnFail: true
+                    crds: CreateReplace
+                    strategy:
+                      name: RemediateOnFailure
+                    remediation:
+                      remediateLastFailure: true
+                      retries: 2
+              target:
+                group: helm.toolkit.fluxcd.io
+                kind: HelmRelease
       target:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization
         labelSelector: substitution.flux.home.arpa/disabled notin (true)
-    - patch: |-
-        apiVersion: helm.toolkit.fluxcd.io/v2beta1
-        kind: HelmRelease
-        metadata:
-          name: _
-        spec:
-          timeout: 10m
-          install:
-            crds: CreateReplace
-            strategy:
-              name: RetryOnFailure
-          rollback:
-            cleanupOnFail: true
-            recreate: true
-          upgrade:
-            cleanupOnFail: true
-            crds: CreateReplace
-            strategy:
-              name: RemediateOnFailure
-            remediation:
-              remediateLastFailure: true
-              retries: 2
-      target:
-        kind: HelmRelease
-        group: helm.toolkit.fluxcd.io
-        labelSelector: helmdefault.flux.home.arpa/disabled notin (true)
