@@ -11,4 +11,4 @@ spec:
     namespace: flux-system
   interval: 30m
   values:
-    replicaCount: 1
+    replicaCount: ${TUPPR_REPLICAS:=1}
