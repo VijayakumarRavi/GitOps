@@ -1,0 +1,23 @@
+# fly.toml app configuration file generated for gotifyfly on 2026-05-18T02:45:09+05:30
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'gotifyfly'
+primary_region = 'sin'
+kill_signal = 'SIGINT'
+kill_timeout = '5s'
+swap_size_mb = 1024
+
+[build]
+dockerfile = 'Dockerfile'
+
+[[mounts]]
+source = 'go_data'
+destination = '/data'
+snapshot_retention = 60
+
+[[vm]]
+memory = '256mb'
+cpus = 1
+memory_mb = 256
