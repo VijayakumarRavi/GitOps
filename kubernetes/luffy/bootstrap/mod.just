@@ -4,17 +4,17 @@ set shell := ['bash', '-euo', 'pipefail', '-c']
 
 kubernetes_dir := justfile_dir() + '/kubernetes/luffy'
 bootstrap_dir := kubernetes_dir + '/bootstrap'
-controller := `talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1`
-nodes := `talosctl config info -o yaml | yq -er '.nodes | join (" ")'`
+controller := `talosctl --context luffy config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1`
+nodes := `talosctl --context luffy config info -o yaml | yq -er '.nodes | join (" ")'`
 
 [private]
-default: talos k8s (kubeconfig "node") wait kubeconfig sops crds apps
+default: talos k8s wait sops crds apps
 
 [doc('Install Talos')]
 talos:
     just log info "Running stage..." "stage" "$0"
     for n in {{ nodes }}; do \
-        if ! op=$(just luffy apply-node "$n" --insecure 2>&1); then \
+        if ! op=$(just luffy talos apply-node "$n" --insecure 2>&1); then \
             if [[ "$op" == *"certificate required"* ]]; then \
                 just log info "Talos already configured, skipping apply of config" "stage" "$0" "node" "$n"; \
                 continue; \
@@ -26,7 +26,7 @@ talos:
 [doc('Install Kubernetes')]
 k8s:
     just log info "Running stage..." "stage" "$0"
-    until op=$(talosctl -n "{{ controller }}" bootstrap 2>&1 || true) && [[ "$op" == *"AlreadyExists"* ]]; do \
+    until op=$(talosctl --context luffy -n "{{ controller }}" bootstrap 2>&1 || true) && [[ "$op" == *"AlreadyExists"* ]]; do \
         just log info "Kubernetes bootstrap in progress. Retrying in 5 seconds..." "stage" "$0"; \
         sleep 5; \
     done
@@ -34,7 +34,7 @@ k8s:
 [doc('Fetch kubeconfig')]
 kubeconfig lb="cilium":
     just log info "Running stage..." "stage" "$0"
-    if ! talosctl kubeconfig -n "{{ controller }}" -f --force-context-name luffy {{ justfile_dir() }}; then \
+    if ! talosctl --context luffy kubeconfig -n "{{ controller }}" -f --force-context-name luffy {{ justfile_dir() }}; then \
         just log fatal "Failed to fetch kubeconfig" "stage" "$0"; \
     fi
     if [[ "{{ lb }}" != "cilium" ]]; then \

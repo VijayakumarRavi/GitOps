@@ -4,8 +4,8 @@ set shell := ['bash', '-euo', 'pipefail', '-c']
 
 kubernetes_dir := justfile_dir() + '/kubernetes/robin'
 bootstrap_dir := kubernetes_dir + '/bootstrap'
-controller := `talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1`
-nodes := `talosctl config info -o yaml | yq -er '.nodes | join (" ")'`
+controller := `talosctl --context robin config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1`
+nodes := `talosctl --context robin config info -o yaml | yq -er '.nodes | join (" ")'`
 lvm_device := "/dev/disk/by-partlabel/r-openebs-lvm"
 lvm_vg := "openebs-vg"
 
