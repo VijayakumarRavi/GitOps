@@ -71,6 +71,8 @@ spec:
                 env:
                   - name: DOCKER_TLS_CERTDIR
                     value: /certs
+                args:
+                  - --registry-mirror=https://mirror.gcr.io
                 resources:
                   requests:
                     cpu: 100m
