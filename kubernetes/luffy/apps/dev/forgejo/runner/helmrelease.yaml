@@ -38,7 +38,7 @@ spec:
                   poll_timeout: 10m
                   labels: "app.kubernetes.io/name=forgejo-runner-instance,egress.home.arpa/custom-egress=true"
             runner:
-              capacity: 3
+              capacity: 2
               file: /persistent/.runner
               labels:
                 - ubuntu-latest:k8s:/config/podspec-default.yaml
