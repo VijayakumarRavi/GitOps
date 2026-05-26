@@ -38,7 +38,7 @@ spec:
                   poll_timeout: 10m
                   labels: "app.kubernetes.io/name=forgejo-runner-instance,egress.home.arpa/custom-egress=true"
             runner:
-              capacity: 2
+              capacity: 3
               file: /persistent/.runner
               labels:
                 - ubuntu-latest:k8s:/config/podspec-default.yaml
@@ -47,6 +47,13 @@ spec:
                 - docker:k8s:/config/podspec-dind.yaml
               timeout: 6h
           podspec-default.yaml: |-
+            topologySpreadConstraints:
+              - maxSkew: 1
+                topologyKey: kubernetes.io/hostname
+                whenUnsatisfiable: DoNotSchedule
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: forgejo-runner-instance
             containers:
               - env:
                   - name: DEBIAN_FRONTEND
@@ -62,6 +69,13 @@ spec:
                     memory: 256Mi
             restartPolicy: Never
           podspec-dind.yaml: |-
+            topologySpreadConstraints:
+              - maxSkew: 1
+                topologyKey: kubernetes.io/hostname
+                whenUnsatisfiable: DoNotSchedule
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: forgejo-runner-instance
             initContainers:
               - name: dind
                 image: docker:29-dind
