@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://github.com/envoyproxy/gateway/raw/refs/heads/main/charts/gateway-helm/charts/crds/crds/generated/gateway.envoyproxy.io_envoyproxies.yaml
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy

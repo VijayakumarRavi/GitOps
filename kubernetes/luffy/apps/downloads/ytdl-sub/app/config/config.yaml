@@ -1,3 +1,4 @@
+---
 configuration:
   working_directory: "/workdir/"
 
@@ -23,4 +24,3 @@ presets:
 
     preset:
       - "_music_base"
-

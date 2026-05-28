@@ -1,3 +1,4 @@
+---
 nameReference:
   - fieldSpecs:
       - kind: HelmRelease

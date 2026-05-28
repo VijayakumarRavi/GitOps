@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -7,4 +8,4 @@ resources:
   # Flux-Kustomizations
   - ./crunchy-postgres-operator/ks.yaml
   - ./dragonfly/ks.yaml
-  # - ./percona-postgres-operator/ks.yaml
+# - ./percona-postgres-operator/ks.yaml

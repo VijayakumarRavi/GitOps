@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -50,7 +51,7 @@ spec:
         clusterPoolIPv4PodCIDRList: 172.16.0.0/12
     k8sClientRateLimit:
       burst: 32
-    # devices: { enp+, eth+ }
+      # devices: { enp+, eth+ }
       qps: 28
     k8sServiceHost: 127.0.0.1
     k8sServicePort: 7445

@@ -1,3 +1,4 @@
+---
 apps:
   accounts: http://localhost:3001
   cast: http://localhost:3004
@@ -43,4 +44,3 @@ webauthn:
     - https://albums.${CLUSTER_DOMAIN}
     - https://cast.${CLUSTER_DOMAIN}
     - https://share.${CLUSTER_DOMAIN}
-

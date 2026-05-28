@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -24,17 +25,17 @@ spec:
           archive-async: "y"
           archive-push-queue-max: 5GiB
           compress-level: "9"
-          ## Wasabi
-          #repo1-bundle: "y"
-          #repo1-block: "y"
-          #repo1-path: /percona-pgo
-          #repo1-retention-full: "7" # days
-          #repo1-retention-full-type: time
-          #repo1-s3-uri-style: path
+          # # Wasabi
+          # repo1-bundle: "y"
+          # repo1-block: "y"
+          # repo1-path: /percona-pgo
+          # repo1-retention-full: "7" # days
+          # repo1-retention-full-type: time
+          # repo1-s3-uri-style: path
           compress-type: bz2
         jobs:
           ttlSecondsAfterFinished: 21600
-        #restore:
+        # restore:
         #  enabled: true
         manual:
           options: [--type=full]
@@ -76,13 +77,13 @@ spec:
             bucket: "luffy"
             endpoint: s3.ap-northeast-1.wasabisys.com
             region: "ap-northeast-1"
-      #pgbackrest:
-      #  stanza: "db"
-      #  configuration: *backupConfig
-      #  global: *backupFlag
-      #  repo:
-      #    name: "repo1"
-      #    s3: *r2
+        # pgbackrest:
+        #  stanza: "db"
+        #  configuration: *backupConfig
+        #  global: *backupFlag
+        #  repo:
+        #    name: "repo1"
+        #    s3: *r2
         stanza: "db"
     expose:
       annotations:

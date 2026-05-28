@@ -1,7 +1,7 @@
 ---
 name: Renovate
 
-on:
+"on":
   push:
     branches: ["master"]
     paths:

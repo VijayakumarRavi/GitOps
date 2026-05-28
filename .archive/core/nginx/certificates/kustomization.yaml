@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
   #  # production
   - ./production/cluster-domain.yaml
-  # staging
-  # - ./issuers/letsencrypt-staging.yaml
-  # - ./staging/cluster-domain.yaml
+# staging
+# - ./issuers/letsencrypt-staging.yaml
+# - ./staging/cluster-domain.yaml

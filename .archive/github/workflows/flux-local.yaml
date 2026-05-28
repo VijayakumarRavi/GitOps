@@ -1,7 +1,7 @@
 ---
 name: Flux Local
 
-on:
+"on":
   pull_request:
     branches: ['master']
 
@@ -111,7 +111,7 @@ jobs:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           header: ${{ github.event.pull_request.number }}/${{ matrix.cluster }}/${{ matrix.resource }}
           message: |
-            ### Cluster: ${{ matrix.cluster }}
+            # ## Cluster: ${{ matrix.cluster }}
             ```diff
             ${{ steps.diff.outputs.diff }}
             ```

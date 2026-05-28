@@ -157,7 +157,7 @@ data:
                       fields: ["movies", "wanted", "queued"]
                       url: "{{HOMEPAGE_VAR_RADARR_URL}}"
                       key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
-                        # enableQueue: true  #  optional, defaults to false
+          # enableQueue: true  #  optional, defaults to false
           - Prowlarr:
                 icon: prowlarr.png
                 description: "Index management"
@@ -165,7 +165,7 @@ data:
                 ping: "{{HOMEPAGE_VAR_PROWLARR_URL}}"
                 widget:
                       type: prowlarr
-                        # fields: []
+                      # fields: []
                       url: "{{HOMEPAGE_VAR_PROWLARR_URL}}"
                       key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
   widgets.yaml: |
@@ -177,7 +177,7 @@ data:
         units: metric
         cache: 5
     - logo:
-        # icon:
+    # icon:
     - kubernetes:
         cluster:
           show: true

@@ -1,3 +1,4 @@
+---
 devices:
   - groups:
       - count: 1000

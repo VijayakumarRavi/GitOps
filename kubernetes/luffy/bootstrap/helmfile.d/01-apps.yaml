@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://json.schemastore.org/helmfile
 helmDefaults:
   cleanupOnFail: true
@@ -10,7 +11,7 @@ helmDefaults:
 releases:
   - chart: oci://quay.io/cilium/charts/cilium
     hooks:
-        # Wait for Cilium CRDs to be available
+      # Wait for Cilium CRDs to be available
       - args:
           - -c
           - until kubectl get crd ciliumloadbalancerippools.cilium.io ciliuml2announcementpolicies.cilium.io; do sleep 5; done
@@ -18,7 +19,7 @@ releases:
         events:
           - postsync
         showlogs: true
-        # Apply cilium network configuration
+      # Apply cilium network configuration
       - args:
           - apply
           - --namespace=network

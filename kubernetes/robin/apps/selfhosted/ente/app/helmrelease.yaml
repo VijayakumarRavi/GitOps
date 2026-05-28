@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -114,14 +115,14 @@ spec:
               - identifier: embed
                 port: http
 
-#    persistence:
-#      museum-yaml:
-#        enabled: true
-#        type: secret
-#        name: museum-yaml
-#        globalMounts:
-#          - path: /museum.yaml
-#
+    #    persistence:
+    #      museum-yaml:
+    #        enabled: true
+    #        type: secret
+    #        name: museum-yaml
+    #        globalMounts:
+    #          - path: /museum.yaml
+    #
     service:
       api:
         controller: ente

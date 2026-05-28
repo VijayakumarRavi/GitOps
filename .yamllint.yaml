@@ -2,7 +2,6 @@
 extends: default
 
 rules:
-  document-start: disable
   brackets:
     max-spaces-inside: 1
     min-spaces-inside: 0
@@ -15,18 +14,10 @@ rules:
     check-multi-line-strings: false
   line-length: disable
   quoted-strings:
-    quote-type: double
+    quote-type: consistent
     required: false
   truthy:
     allowed-values:
       - "true"
       - "false"
       - "on"
-  braces:
-    min-spaces-inside: 0
-    max-spaces-inside: 1
-
-ignore: |-
-  .cache
-  */deprecated/*
-  secret.ymal

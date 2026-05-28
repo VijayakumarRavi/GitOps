@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -25,9 +26,9 @@ spec:
 
     cleanPrometheusOperatorObjectNames: true
 
-    ###
-    ### Component values
-    ###
+    # ##
+    # ## Component values
+    # ##
     crds:
       enabled: false
     grafana:
@@ -38,9 +39,9 @@ spec:
           annotations:
             grafana_folder: Kubernetes
 
-    ###
-    ### Prometheus operator values
-    ###
+    # ##
+    # ## Prometheus operator values
+    # ##
     kubeApiServer:
       enabled: true
       serviceMonitor:
@@ -135,9 +136,9 @@ spec:
           limits:
             memory: 32M
 
-    ###
-    ### Prometheus instance values
-    ###
+          # ##
+          # ## Prometheus instance values
+          # ##
           requests:
             cpu: 5m
             memory: 32M

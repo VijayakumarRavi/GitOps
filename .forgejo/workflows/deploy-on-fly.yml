@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Deploy Fly.io Apps on Dependency Updates
-on:
+"on":
   push:
     paths: [fly.io/**]
     branches: ['master']
