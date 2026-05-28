@@ -1,26 +1,25 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: tailscale
 spec:
-  interval: 30m
   chart:
     spec:
       chart: tailscale-operator
-      version: 1.98.3
       interval: 30m
       sourceRef:
         kind: HelmRepository
         name: tailscale
         namespace: flux-system
+      version: 1.98.3
+  interval: 30m
   values:
     fullnameOverride: tailscale-operator
     hostname: luffy-tailscale-operator
     resources:
-      requests:
-        memory: 300Mi
-        cpu: 20m
       limits:
         memory: 1Gi
+      requests:
+        cpu: 20m
+        memory: 300Mi

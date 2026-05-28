@@ -1,7 +1,6 @@
----
 devices:
-  - name: tun
-    groups:
+  - groups:
       - count: 1000
         paths:
           - path: /dev/net/tun
+    name: tun

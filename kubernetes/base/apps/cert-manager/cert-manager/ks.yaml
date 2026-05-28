@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -6,17 +5,17 @@ metadata:
   name: &appname cert-manager
   namespace: flux-system
 spec:
-  targetNamespace: cert-manager
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  timeout: 10m
   path: "./kubernetes/base/apps/cert-manager/cert-manager/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  targetNamespace: cert-manager
+  timeout: 10m
   wait: true
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
@@ -26,18 +25,18 @@ metadata:
   name: &appname cert-manager-issuers
   namespace: flux-system
 spec:
-  targetNamespace: cert-manager
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  dependsOn:
+    - name: cert-manager
+    - name: external-secrets-stores
   interval: 30m
-  timeout: 10m
   path: "./kubernetes/base/apps/cert-manager/cert-manager/issuers"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  targetNamespace: cert-manager
+  timeout: 10m
   wait: true
-  dependsOn:
-    - name: cert-manager
-    - name: external-secrets-stores

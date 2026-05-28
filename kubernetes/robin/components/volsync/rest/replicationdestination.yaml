@@ -1,12 +1,9 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
   name: ${APP}-bootstrap
 spec:
-  trigger:
-    manual: restore-once
   restic:
     accessModes: ["${VOLSYNC_SNAP_ACCESSMODES:-ReadWriteOnce}"]
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
@@ -15,12 +12,14 @@ spec:
     capacity: "${VOLSYNC_CAPACITY:-1Gi}"
     cleanupCachePVC: true
     cleanupTempPVC: true
-    enableFileDeletion: true
     copyMethod: "${VOLSYNC_COPYMETHOD:-Snapshot}"
+    enableFileDeletion: true
     moverSecurityContext:
-      runAsUser: ${APP_UID:-2000}
-      runAsGroup: ${APP_GID:-2000}
       fsGroup: ${APP_GID:-2000}
+      runAsGroup: ${APP_GID:-2000}
+      runAsUser: ${APP_UID:-2000}
     repository: "${APP}-volsync-rest"
     storageClassName: "${VOLSYNC_STORAGECLASS:-openebs}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-openebs-snapshotclass}"
+  trigger:
+    manual: restore-once

@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -6,19 +5,13 @@ metadata:
   name: base-apps
   namespace: flux-system
 spec:
-  interval: 30m
-  timeout: 10m
-  path: ./kubernetes/base/apps
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   decryption:
     provider: sops
     secretRef:
       name: sops-age
   dependsOn:
     - name: base-meta
+  interval: 30m
   patches:
     - patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -81,3 +74,9 @@ spec:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization
         labelSelector: substitution.flux.home.arpa/disabled notin (true)
+  path: ./kubernetes/base/apps
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m

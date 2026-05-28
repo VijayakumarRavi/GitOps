@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/mutatingadmissionpolicybinding.json
 apiVersion: admissionregistration.k8s.io/v1beta1
 kind: MutatingAdmissionPolicyBinding
@@ -13,27 +12,25 @@ kind: MutatingAdmissionPolicy
 metadata:
   name: volsync-movers-add-nfs
 spec:
+  failurePolicy: Fail
+  matchConditions:
+    - expression: >
+        object.metadata.name.startsWith("volsync-")
+      name: has-volsync-job-name-prefix
+    - expression: >
+        object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
+      name: has-volsync-created-by-labels
+    - expression: >
+        !object.spec.template.spec.volumes.exists(item, item.name == "repository")
+      name: repository-volume-does-not-exist
   matchConstraints:
     resourceRules:
       - apiGroups: ['batch']
         apiVersions: ['v1']
         operations: ['CREATE', 'UPDATE']
         resources: ['jobs']
-  matchConditions:
-    - name: has-volsync-job-name-prefix
-      expression: >
-        object.metadata.name.startsWith("volsync-")
-    - name: has-volsync-created-by-labels
-      expression: >
-        object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
-    - name: repository-volume-does-not-exist
-      expression: >
-        !object.spec.template.spec.volumes.exists(item, item.name == "repository")
-  failurePolicy: Fail
-  reinvocationPolicy: IfNeeded
   mutations:
-    - patchType: 'JSONPatch'
-      jsonPatch:
+    - jsonPatch:
         expression: >
           [
             JSONPatch{
@@ -54,3 +51,5 @@ spec:
               }
             }
           ]
+      patchType: 'JSONPatch'
+  reinvocationPolicy: IfNeeded

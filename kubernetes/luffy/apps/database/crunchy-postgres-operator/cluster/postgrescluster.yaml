@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/postgres-operator.crunchydata.com/postgrescluster_v1beta1.json
 apiVersion: postgres-operator.crunchydata.com/v1
 kind: PostgresCluster
@@ -6,79 +5,6 @@ metadata:
   name: &name postgres
 spec:
   # shutdown: true
-  postgresVersion: 18
-  metadata:
-    labels:
-      crunchy-userinit.ramblurr.github.com/enabled: "true"
-      crunchy-userinit.ramblurr.github.com/superuser: vijay
-  service:
-    type: LoadBalancer
-    metadata:
-      annotations:
-        lbipam.cilium.io/ips: 10.0.1.2
-  config:
-    parameters:
-      max_wal_size: 5GB
-      shared_preload_libraries: timescaledb
-  patroni:
-    dynamicConfiguration:
-      synchronous_mode: true  # turn on sync writes to at least 1 other replica
-      postgresql:
-        synchronous_commit: "on"
-        pg_hba:
-          - hostnossl all all 172.16.0.0/12 md5
-          - hostssl all all all md5
-  instances:
-    - name: postgres
-      metadata:
-        labels:
-          app.kubernetes.io/name: crunchy-postgres
-      replicas: &replica 3
-      dataVolumeClaimSpec:
-        storageClassName: openebs-hostpath
-        accessModes: [ReadWriteOnce]
-        resources:
-          requests:
-            storage: 50Gi
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              postgres-operator.crunchydata.com/cluster: *name
-              postgres-operator.crunchydata.com/data: postgres
-  users:
-    # Superuser
-    - name: vijay
-      databases: [postgres]
-      options: SUPERUSER
-    # Applications
-    - name: authentik
-      databases: [authentik]
-      password:
-        type: AlphaNumeric
-    - name: freshrss
-      databases: [freshrss]
-      password:
-        type: AlphaNumeric
-    - name: immich
-      databases: [immich]
-      password:
-        type: AlphaNumeric
-    - name: paperless
-      databases: [paperless]
-      password:
-        type: AlphaNumeric
-    - name: seerr
-      databases: [seerr]
-      password:
-        type: AlphaNumeric
-    - name: speedtest
-      databases: [speedtest]
-      password:
-        type: AlphaNumeric
-
   backups:
     pgbackrest:
       configuration: &backupConfig
@@ -87,11 +13,11 @@ spec:
       global: &backupFlag
         archive-async: "y"
         archive-push-queue-max: 5GiB
-        compress-type: bz2
         compress-level: "9"
         # R2
-        repo1-bundle: "y"
+        compress-type: bz2
         repo1-block: "y"
+        repo1-bundle: "y"
         repo1-path: /crunchy-pgo/luffy
         repo1-retention-full: "7" # days
         repo1-retention-full-type: time
@@ -104,8 +30,8 @@ spec:
         # repo2-retention-full-type: time
         # repo2-s3-uri-style: path
       manual:
-        repoName: repo1
         options: [--type=full]
+        repoName: repo1
       metadata:
         labels:
           app.kubernetes.io/name: crunchy-postgres-backup
@@ -116,8 +42,8 @@ spec:
             endpoint: ${R2_ENDPOINT}
             region: "us-east-1"
           schedules:
-            full: "0 1 * * 0" # Sunday at 01:00
             differential: "0 1 * * 1-6" # Mon-Sat at 01:00
+            full: "0 1 * * 0" # Sunday at 01:00
             incremental: "0 2-23 * * *" # Every hour except 01:00
         #- name: repo2 # Wasabi
         #  s3: &wasabi
@@ -128,39 +54,112 @@ spec:
         #    full: "0 1 * * 0" # Sunday at 01:00
         #    differential: "0 1 * * 1-6" # Mon-Sat at 01:00
         #    incremental: "0 2-23 * * *" # Every hour except 01:00
+  config:
+    parameters:
+      max_wal_size: 5GB
+      shared_preload_libraries: timescaledb
   dataSource:
     pgbackrest:
-      stanza: "db"
       configuration: *backupConfig
       global: *backupFlag
       repo:
         name: "repo1"
         s3: *r2
+      stanza: "db"
+  instances:
+    - dataVolumeClaimSpec:
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests:
+            storage: 50Gi
+        storageClassName: openebs-hostpath
+      metadata:
+        labels:
+          app.kubernetes.io/name: crunchy-postgres
+      name: postgres
+      replicas: &replica 3
+      topologySpreadConstraints:
+        - labelSelector:
+            matchLabels:
+              postgres-operator.crunchydata.com/cluster: *name
+              postgres-operator.crunchydata.com/data: postgres
+          maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+  metadata:
+    labels:
+      crunchy-userinit.ramblurr.github.com/enabled: "true"
+      crunchy-userinit.ramblurr.github.com/superuser: vijay
   monitoring:
     pgmonitor:
       exporter:
         resources:
+          limits:
+            memory: 512M
           requests:
             cpu: 10m
             memory: 64M
-          limits:
-            memory: 512M
+  patroni:
+    dynamicConfiguration:
+      postgresql:
+        pg_hba:
+          - hostnossl all all 172.16.0.0/12 md5
+          - hostssl all all all md5
+        synchronous_commit: "on"
+      synchronous_mode: true  # turn on sync writes to at least 1 other replica
+  postgresVersion: 18
   proxy:
     pgBouncer:
-      port: 5432
-      replicas: *replica
+      config:
+        global:
+          client_tls_sslmode: prefer
+          pool_mode: transaction # pgBouncer is set to transaction for Authentik. Grafana requires session https://github.com/grafana/grafana/issues/74260#issuecomment-1702795311. Everything else is happy with transaction
       metadata:
         labels:
           app.kubernetes.io/name: crunchy-postgres-pgbouncer
-      config:
-        global:
-          pool_mode: transaction # pgBouncer is set to transaction for Authentik. Grafana requires session https://github.com/grafana/grafana/issues/74260#issuecomment-1702795311. Everything else is happy with transaction
-          client_tls_sslmode: prefer
+      port: 5432
+      replicas: *replica
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
+        - labelSelector:
             matchLabels:
               postgres-operator.crunchydata.com/cluster: *name
               postgres-operator.crunchydata.com/role: pgbouncer
+          maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+  service:
+    metadata:
+      annotations:
+        lbipam.cilium.io/ips: 10.0.1.2
+    type: LoadBalancer
+  users:
+    # Superuser
+    - databases: [postgres]
+      name: vijay
+      options: SUPERUSER
+    # Applications
+    - databases: [authentik]
+      name: authentik
+      password:
+        type: AlphaNumeric
+    - databases: [freshrss]
+      name: freshrss
+      password:
+        type: AlphaNumeric
+    - databases: [immich]
+      name: immich
+      password:
+        type: AlphaNumeric
+    - databases: [paperless]
+      name: paperless
+      password:
+        type: AlphaNumeric
+    - databases: [seerr]
+      name: seerr
+      password:
+        type: AlphaNumeric
+    - databases: [speedtest]
+      name: speedtest
+      password:
+        type: AlphaNumeric
+

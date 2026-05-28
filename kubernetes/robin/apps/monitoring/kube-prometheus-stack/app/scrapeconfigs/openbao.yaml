@@ -1,28 +1,26 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/scrapeconfig_v1alpha1.json
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
   name: openbao
 spec:
-  staticConfigs:
-    - targets:
-        - ${BAO_SERVER}
+  authorization:
+    credentials:
+      key: token
+      name: openbao-token
+    type: Bearer
   metricsPath: /v1/sys/metrics
   params:
     format:
       - prometheus
-  scheme: HTTPS
-  authorization:
-    type: Bearer
-    credentials:
-      name: openbao-token
-      key: token
   relabelings:
     - action: replace
-      targetLabel: job
       replacement: openbao-internal
-
+      targetLabel: job
+  scheme: HTTPS
+  staticConfigs:
+    - targets:
+        - ${BAO_SERVER}
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/external-secrets.io/externalsecret_v1.json
 apiVersion: external-secrets.io/v1
@@ -30,16 +28,6 @@ kind: ExternalSecret
 metadata:
   name: &name openbao-token
 spec:
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: bao
-  target:
-    creationPolicy: Owner
-    name: *name
-    template:
-      type: Opaque
-      data:
-        token: "{{ .openbao_token }}"
   dataFrom:
     - extract:
         key: openbao
@@ -47,3 +35,13 @@ spec:
         - regexp:
             source: "(.*)"
             target: "openbao_$1"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: bao
+  target:
+    creationPolicy: Owner
+    name: *name
+    template:
+      data:
+        token: "{{ .openbao_token }}"
+      type: Opaque

@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -18,11 +17,11 @@ spec:
       plex-trakt-sync:
         pod:
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
             fsGroup: 1000
             fsGroupChangePolicy: "OnRootMismatch"
 
+            runAsGroup: 1000
+            runAsUser: 1000
         containers:
           app:
             image:
@@ -62,5 +61,5 @@ spec:
         name: plex-tract-sync
         globalMounts:
           - path: /app/config/config.yml
-            subPath: config.yml
             readOnly: true
+            subPath: config.yml

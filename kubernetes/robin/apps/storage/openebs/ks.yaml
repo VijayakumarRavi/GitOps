@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -6,18 +5,18 @@ metadata:
   name: &appname openebs-release
   namespace: flux-system
 spec:
-  targetNamespace: storage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  timeout: 10m
   path: ./kubernetes/robin/apps/storage/openebs/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: storage
+  timeout: 10m
   wait: false
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
@@ -27,17 +26,17 @@ metadata:
   name: &appname openebs
   namespace: flux-system
 spec:
-  targetNamespace: storage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  dependsOn:
+    - name: openebs-release
   interval: 30m
-  timeout: 10m
   path: ./kubernetes/robin/apps/storage/openebs/storageclass
   prune: true
-  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  dependsOn:
-    - name: openebs-release
+  targetNamespace: storage
+  timeout: 10m
+  wait: true

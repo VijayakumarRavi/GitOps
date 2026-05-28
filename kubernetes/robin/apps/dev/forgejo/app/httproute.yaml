@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/gateway.networking.k8s.io/httproute_v1.json
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -15,10 +14,10 @@ spec:
         - name: forgejo-anubis
           port: 8080
       filters:
-        - type: RequestHeaderModifier
-          requestHeaderModifier:
+        - requestHeaderModifier:
             set:
               - name: X-Real-Ip
                 value: "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
+          type: RequestHeaderModifier
       timeouts:
         request: 300s

@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -16,35 +15,35 @@ spec:
         type: cronjob
 
         cronjob:
-          schedule: "0 0 * * 1"
-          parallelism: 3 # Set this to your number of nodes
           backoffLimit: 0
           failedJobsHistory: 1
+          parallelism: 3 # Set this to your number of nodes
+          schedule: "0 0 * * 1"
           successfulJobsHistory: 0
 
         pod:
           hostNetwork: true
           hostPID: true
           topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: kubernetes.io/hostname
-              whenUnsatisfiable: DoNotSchedule
-              labelSelector:
+            - labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: fstrim
 
+              maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
         containers:
           app:
             image:
               repository: docker.io/library/alpine
               tag: "3.23"
-            command:
-              - "/bin/sh"
-              - "-c"
             args:
               - |
                 nsenter --mount=/host/proc/$(pidof /usr/local/bin/kubelet)/ns/mnt --net=/host/proc/$(pidof /usr/local/bin/kubelet)/ns/net -- sh -c "cat /proc/self/mountinfo | grep -v kubelet | grep -v tmpfs | grep -v overlay > /tmp/fs.txt"
                 nsenter --mount=/host/proc/$(pidof /usr/local/bin/kubelet)/ns/mnt --net=/host/proc/$(pidof /usr/local/bin/kubelet)/ns/net -- sh -c "fstrim -v --quiet-unsupported -I /tmp/fs.txt"
+            command:
+              - "/bin/sh"
+              - "-c"
             probes:
               liveness:
                 enabled: false

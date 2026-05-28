@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/gateway_v1.json
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
@@ -7,36 +6,35 @@ metadata:
 spec:
   gatewayClassName: envoy
   listeners:
-    - name: http
-      protocol: HTTP
-      port: 80
-      allowedRoutes:
+    - allowedRoutes:
         namespaces:
           from: Same
-    - name: https
-      protocol: HTTPS
-      port: 443
-      allowedRoutes:
+      name: http
+      port: 80
+      protocol: HTTP
+    - allowedRoutes:
         namespaces:
           from: All
+      name: https
+      port: 443
+      protocol: HTTPS
       tls:
         certificateRefs:
           - kind: Secret
             name: ${CLUSTER_DOMAIN}-https-tls
           - kind: Secret
             name: ${LAB_DOMAIN}-tls
-    - name: ssh
-      protocol: TCP
-      port: 22
-      allowedRoutes:
+    - allowedRoutes:
+        kinds:
+          - kind: TCPRoute
         namespaces:
           from: Selector
           selector:
             matchLabels:
               kubernetes.io/metadata.name: dev
-        kinds:
-          - kind: TCPRoute
-
+      name: ssh
+      port: 22
+      protocol: TCP
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
 apiVersion: gateway.networking.k8s.io/v1
@@ -50,7 +48,7 @@ spec:
       sectionName: http
   rules:
     - filters:
-        - type: RequestRedirect
-          requestRedirect:
+        - requestRedirect:
             scheme: https
             statusCode: 301
+          type: RequestRedirect

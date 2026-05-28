@@ -1,4 +1,3 @@
----
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
@@ -9,9 +8,9 @@ spec:
     matchNames:
       - network
   podMetricsEndpoints:
-    - port: metrics
+    - honorLabels: true
       path: /stats/prometheus
-      honorLabels: true
+      port: metrics
   selector:
     matchLabels:
       app.kubernetes.io/component: proxy

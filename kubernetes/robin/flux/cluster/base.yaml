@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -6,24 +5,13 @@ metadata:
   name: cluster-base
   namespace: flux-system
 spec:
-  interval: 30m
-  timeout: 10m
-  path: ./kubernetes/base/flux/cluster
-  prune: true
-  wait: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   decryption:
     provider: sops
     secretRef:
       name: sops-age
   dependsOn:
     - name: cluster-meta
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
+  interval: 30m
   patches:
     - patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -86,3 +74,14 @@ spec:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization
         labelSelector: substitution.flux.home.arpa/disabled notin (true)
+  path: ./kubernetes/base/flux/cluster
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  wait: false

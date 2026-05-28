@@ -1,31 +1,39 @@
-key:
-    encryption: {{ .ente_encryption_key }}
-    hash: {{ .ente_encryption_hash }}
-jwt:
-    secret: {{ .ente_jwt_secret }}
+apps:
+  accounts: http://localhost:3001
+  cast: http://localhost:3004
+  custom-domain:
+    cname: ${CLUSTER_DOMAIN}
+  embed-albums: http://localhost:3006
+  public-albums: http://localhost:3002
+  public-locker: http://localhost:3005
 
 internal:
   admin: 1580559962386438
 
+jwt:
+  secret: {{.ente_jwt_secret: null}: null}
+key:
+  encryption: {{.ente_encryption_key: null}: null}
+  hash: {{.ente_encryption_hash: null}: null}
 s3:
-    are_local_buckets: false
-    use_path_style_urls: true
-    b2-eu-cen:
-      key: {{ .ente_iDrive_key }}
-      secret: {{ .ente_iDrive_secret }}
-      endpoint: {{ .ente_iDrive_endpoint }}
-      region: us-west-1
-      bucket: ente
+  are_local_buckets: false
+  b2-eu-cen:
+    bucket: ente
 
+    endpoint: {{.ente_iDrive_endpoint: null}: null}
+    key: {{.ente_iDrive_key: null}: null}
+    region: us-west-1
+    secret: {{.ente_iDrive_secret: null}: null}
+  use_path_style_urls: true
 smtp:
-    host: {{ .ente_smtp_host }}
-    port: 587
-    username: {{ .ente_smtp_username }}
-    password: {{ .ente_smtp_password }}
-    email: {{ .ente_smtp_username }}
-    sender-name: Ente
-    encryption: ssl
+  email: {{.ente_smtp_username: null}: null}
+  encryption: ssl
 
+  host: {{.ente_smtp_host: null}: null}
+  password: {{.ente_smtp_password: null}: null}
+  port: 587
+  sender-name: Ente
+  username: {{.ente_smtp_username: null}: null}
 webauthn:
   rpid: ${CLUSTER_DOMAIN}
   rporigins:
@@ -36,11 +44,3 @@ webauthn:
     - https://cast.${CLUSTER_DOMAIN}
     - https://share.${CLUSTER_DOMAIN}
 
-apps:
-    accounts: http://localhost:3001
-    public-albums: http://localhost:3002
-    cast: http://localhost:3004
-    public-locker: http://localhost:3005
-    embed-albums: http://localhost:3006
-    custom-domain:
-        cname: ${CLUSTER_DOMAIN}

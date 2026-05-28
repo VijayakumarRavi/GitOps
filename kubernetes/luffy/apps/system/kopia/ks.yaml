@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -6,24 +5,24 @@ metadata:
   name: &appname kopia
   namespace: flux-system
 spec:
-  targetNamespace: &namespace system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  dependsOn:
+    - name: volsync
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
       name: *appname
-      namespace: *namespace
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
+      namespace: &namespace system
   interval: 30m
-  timeout: 10m
   path: './kubernetes/luffy/apps/system/kopia/app'
   postBuild:
     substitute:
       APP: *appname
   prune: true
-  dependsOn:
-    - name: volsync
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: *namespace
+  timeout: 10m

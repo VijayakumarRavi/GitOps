@@ -1,38 +1,41 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: pangolin
 spec:
-  interval: 30m
-  timeout: 1m
   chartRef:
     kind: OCIRepository
     name: pangolin
     namespace: flux-system
 
+  interval: 30m
+  timeout: 1m
   values:
+    cnpg-cluster:
+      enabled: false
+
+    cnpg-operator:
+      enabled: false
+    database:
+      connection:
+        existingSecretKey: uri
+
+        existingSecretName: pangolin-db-secret
+      mode: external
     deployment:
-      type: controller
       mode: single
+
+      type: controller
+    gerbil:
+      enabled: true
+      persistence:
+        enabled: true
 
     namespace:
       create: false
 
-    database:
-      mode: external
-      connection:
-        existingSecretName: pangolin-db-secret
-        existingSecretKey: uri
-
-    cnpg-operator:
-      enabled: false
-    cnpg-cluster:
-      enabled: false
-
     pangolin:
-      replicaCount: 1
       config:
         app:
           dashboard_url: "https://pangolin.${LAB_DOMAIN}"
@@ -41,16 +44,12 @@ spec:
           # REPLACE: set to the hostname/IP where external WireGuard peers reach Gerbil.
           base_endpoint: "vpn.${LAB_DOMAIN}"
 
-    gerbil:
-      enabled: true
-      persistence:
-        enabled: true
-
+      replicaCount: 1
     traefik:
-      enabled: true
-      persistence:
-        enabled: true
       config:
-        letsencryptEmail: "admin@${LAB_DOMAIN}"
         dynamicRouters:
           host: "pangolin.${LAB_DOMAIN}"
+        letsencryptEmail: "admin@${LAB_DOMAIN}"
+      enabled: true
+      persistence:
+        enabled: true

@@ -4,10 +4,10 @@ metadata:
   name: kanidm-tls-policy
 spec:
   targetRefs:
-    - kind: Service
+    - group: ""
+      kind: Service
       name: kanidm-web
-      group: ""
       sectionName: http
   validation:
-    wellKnownCACertificates: System
     hostname: idm.${LAB_DOMAIN}
+    wellKnownCACertificates: System

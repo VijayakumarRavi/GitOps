@@ -3,16 +3,16 @@ kind: HTTPRoute
 metadata:
   name: flux-webhook-receiver
 spec:
+  hostnames:
+    - flux-webhook.${CLUSTER_DOMAIN}
   parentRefs:
     - name: envoy
       namespace: network
-  hostnames:
-    - flux-webhook.${CLUSTER_DOMAIN}
   rules:
-    - matches:
+    - backendRefs:
+        - name: webhook-receiver
+          port: 80
+      matches:
         - path:
             type: PathPrefix
             value: /hook/
-      backendRefs:
-        - name: webhook-receiver
-          port: 80

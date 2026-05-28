@@ -3,6 +3,7 @@ ignore/
 logs/
 testing/
 .vscode/
+.venv/
 
 # Trash
 .DS_Store

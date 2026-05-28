@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -41,26 +40,26 @@ spec:
             image:
               repository: ghcr.io/home-operations/kopia
               tag: 0.23.0@sha256:76865b421548b1d7bb26a8268f0f0bc828be4eec3f8d8b9c8ece991c99878f94
+            args:
+              - --without-password
             env:
               KOPIA_WEB_ENABLED: true
               KOPIA_WEB_PORT: &port 8080
             envFrom:
               - secretRef:
                   name: kopia-secret
-            args:
-              - --without-password
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
+                  failureThreshold: 3
                   httpGet:
                     path: /
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
-                  failureThreshold: 3
               readiness: *probes
             resources:
               requests:
@@ -69,22 +68,10 @@ spec:
                 memory: 512Mi
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - ALL
-    service:
-      app:
-        ports:
-          http:
-            port: *port
-    route:
-        app:
-          hostnames:
-            - kopia.${CLUSTER_DOMAIN}
-          parentRefs:
-            - name: envoy
-              namespace: network
+              readOnlyRootFilesystem: true
     persistence:
       config-file:
         type: configMap
@@ -109,3 +96,15 @@ spec:
                 subPath: logs
               - path: /tmp
                 subPath: tmp
+    route:
+      app:
+        hostnames:
+          - kopia.${CLUSTER_DOMAIN}
+        parentRefs:
+          - name: envoy
+            namespace: network
+    service:
+      app:
+        ports:
+          http:
+            port: *port

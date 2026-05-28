@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -14,16 +13,16 @@ spec:
       kind: HelmRelease
       name: forgejo-redis
       namespace: dev
-  targetNamespace: dev
   interval: 30m
-  timeout: 10m
-  prune: true
-  wait: false
   path: "./kubernetes/robin/apps/dev/forgejo/redis"
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: dev
+  timeout: 10m
+  wait: false
 ---
 # yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -35,29 +34,29 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: forgejo
-  path: "./kubernetes/robin/apps/dev/forgejo/app"
-  targetNamespace: dev
-  interval: 30m
-  timeout: 10m
-  prune: true
-  wait: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
+  components:
+    - ../../../../components/volsync
+    - ../../../../components/anubis
   dependsOn:
     - name: volsync
     - name: external-secrets-stores
     - name: crunchy-postgres-secretstore
     - name: envoy-gateway-config
     - name: forgejo-redis
-  components:
-    - ../../../../components/volsync
-    - ../../../../components/anubis
+  interval: 30m
+  path: "./kubernetes/robin/apps/dev/forgejo/app"
   postBuild:
     substitute:
-      APP: forgejo
-      APP_UID: "1000"
-      APP_GID: "1000"
-      VOLSYNC_CAPACITY: 10Gi
       ANUBIS_TARGET: http://forgejo-app.dev.svc.cluster.local:3000
+      APP: forgejo
+      APP_GID: "1000"
+      APP_UID: "1000"
+      VOLSYNC_CAPACITY: 10Gi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: dev
+  timeout: 10m
+  wait: false

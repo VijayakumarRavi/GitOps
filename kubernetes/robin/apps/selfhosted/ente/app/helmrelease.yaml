@@ -1,16 +1,14 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: ente
 spec:
-  interval: 30m
-  timeout: 1m
   chartRef:
     kind: OCIRepository
     name: app-template
     namespace: flux-system
+  interval: 30m
   values:
     controllers:
       ente:
@@ -18,19 +16,6 @@ spec:
           reloader.stakater.com/auto: "true"
         replicas: 1
         containers:
-          web:
-            image:
-              repository: ghcr.io/ente-io/web
-              tag: latest@sha256:e1ec302a5c05c3ebc2eb2633c24d0c9226e47c26b8cacd3a306cee6785f0cffa
-            envFrom:
-              - secretRef:
-                  name: ente-secret
-              - secretRef:
-                  name: ente-db-secret
-            resources:
-              requests:
-                cpu: 100m
-                memory: 512Mi
           server:
             image:
               repository: ghcr.io/ente-io/server
@@ -44,6 +29,99 @@ spec:
               requests:
                 cpu: 100m
                 memory: 512Mi
+          web:
+            image:
+              repository: ghcr.io/ente-io/web
+              tag: latest@sha256:e1ec302a5c05c3ebc2eb2633c24d0c9226e47c26b8cacd3a306cee6785f0cffa
+            envFrom:
+              - secretRef:
+                  name: ente-secret
+              - secretRef:
+                  name: ente-db-secret
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+    route:
+      photos: &route
+        hostnames:
+          - photos.${CLUSTER_DOMAIN}
+
+        parentRefs: &id001
+          - name: envoy
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: photos
+                port: http
+      api:
+        <<: *route
+        hostnames:
+          - ente.${CLUSTER_DOMAIN}
+        parentRefs: *id001
+        rules:
+          - backendRefs:
+              - identifier: api
+                port: http
+
+      accounts:
+        <<: *route
+        hostnames:
+          - accounts.${CLUSTER_DOMAIN}
+        parentRefs: *id001
+        rules:
+          - backendRefs:
+              - identifier: accounts
+                port: http
+
+      public-albums:
+        <<: *route
+        hostnames:
+          - albums.${CLUSTER_DOMAIN}
+        parentRefs: *id001
+        rules:
+          - backendRefs:
+              - identifier: public-albums
+                port: http
+
+      cast:
+        <<: *route
+        hostnames:
+          - cast.${CLUSTER_DOMAIN}
+        parentRefs: *id001
+        rules:
+          - backendRefs:
+              - identifier: cast
+                port: http
+
+      share:
+        <<: *route
+        hostnames:
+          - share.${CLUSTER_DOMAIN}
+        parentRefs: *id001
+        rules:
+          - backendRefs:
+              - identifier: share
+                port: http
+
+      embed:
+        <<: *route
+        hostnames:
+          - embed.${CLUSTER_DOMAIN}
+        parentRefs: *id001
+        rules:
+          - backendRefs:
+              - identifier: embed
+                port: http
+
+#    persistence:
+#      museum-yaml:
+#        enabled: true
+#        type: secret
+#        name: museum-yaml
+#        globalMounts:
+#          - path: /museum.yaml
+#
     service:
       api:
         controller: ente
@@ -81,77 +159,4 @@ spec:
           http:
             port: 3006
 
-    route:
-      photos: &route
-        parentRefs:
-          - name: envoy
-            namespace: network
-        rules:
-          - backendRefs:
-              - identifier: photos
-                port: http
-        hostnames:
-          - photos.${CLUSTER_DOMAIN}
-
-      api:
-        <<: *route
-        hostnames:
-          - ente.${CLUSTER_DOMAIN}
-        rules:
-          - backendRefs:
-              - identifier: api
-                port: http
-
-      accounts:
-        <<: *route
-        hostnames:
-          - accounts.${CLUSTER_DOMAIN}
-        rules:
-          - backendRefs:
-              - identifier: accounts
-                port: http
-
-      public-albums:
-        <<: *route
-        hostnames:
-          - albums.${CLUSTER_DOMAIN}
-        rules:
-          - backendRefs:
-              - identifier: public-albums
-                port: http
-
-      cast:
-        <<: *route
-        hostnames:
-          - cast.${CLUSTER_DOMAIN}
-        rules:
-          - backendRefs:
-              - identifier: cast
-                port: http
-
-      share:
-        <<: *route
-        hostnames:
-          - share.${CLUSTER_DOMAIN}
-        rules:
-          - backendRefs:
-              - identifier: share
-                port: http
-
-      embed:
-        <<: *route
-        hostnames:
-          - embed.${CLUSTER_DOMAIN}
-        rules:
-          - backendRefs:
-              - identifier: embed
-                port: http
-
-#    persistence:
-#      museum-yaml:
-#        enabled: true
-#        type: secret
-#        name: museum-yaml
-#        globalMounts:
-#          - path: /museum.yaml
-#
+  timeout: 1m

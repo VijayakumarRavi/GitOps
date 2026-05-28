@@ -3,5 +3,5 @@ kind: Connector
 metadata:
   name: &name luffy-app-connector
 spec:
-  hostname: *name
   appConnector: {}
+  hostname: *name

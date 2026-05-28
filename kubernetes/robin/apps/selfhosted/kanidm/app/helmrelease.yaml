@@ -1,23 +1,20 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: kanidm
 spec:
-  interval: 30m
-  timeout: 1m
   chartRef:
     kind: OCIRepository
     name: app-template
     namespace: flux-system
+  interval: 30m
   values:
     controllers:
       kanidm:
+        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
-        replicas: 1
-        type: statefulset
         pod:
           securityContext:
             fsGroup: 2000
@@ -25,24 +22,8 @@ spec:
             runAsGroup: 2000
             runAsNonRoot: true
             runAsUser: 2000
+        replicas: 1
         containers:
-          server:
-            image:
-              repository: docker.io/kanidm/server
-              tag: 1.10.3
-            env:
-              KANIDM_CONFIG: /config/server.toml
-              KANIDM_ADMIN_BIND_PATH: /var/run/kanidmd.sock
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 1Gi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop: [ALL]
           mail-sender:
             image:
               repository: docker.io/kanidm/tools
@@ -58,39 +39,31 @@ spec:
                 memory: 250Mi
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities:
                 drop: [ALL]
-    service:
-      web:
-        controller: kanidm
-        ports:
-          http:
-            port: &port 8443
-      kanidm:
-        controller: kanidm
-        type: NodePort
-        ports:
-          ldap:
-            port: 3636
-            nodePort: 32626
-
-    route:
-      server:
-        hostnames:
-          - idm.${LAB_DOMAIN}
-        parentRefs:
-          - name: envoy
-            namespace: network
-        rules:
-          - backendRefs:
-              - identifier: web
-                port: *port
+              readOnlyRootFilesystem: true
+          server:
+            image:
+              repository: docker.io/kanidm/server
+              tag: 1.10.3
+            env:
+              KANIDM_ADMIN_BIND_PATH: /var/run/kanidmd.sock
+              KANIDM_CONFIG: /config/server.toml
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+              readOnlyRootFilesystem: true
     persistence:
       certs:
         type: secret
-        name: ${LAB_DOMAIN}-tls
         defaultMode: 0400
+        name: ${LAB_DOMAIN}-tls
         globalMounts:
           - path: /certs
       tmpfs:
@@ -101,23 +74,49 @@ spec:
           - path: /cache
       config:
         type: configMap
-        name: kanidm-server-config
         defaultMode: 0400
 
+        name: kanidm-server-config
       mail:
         type: secret
-        name: kanidm-mail-sender
         defaultMode: 0400
+        name: kanidm-mail-sender
         globalMounts:
           - path: /mail/mail_sender.toml
-            subPath: mail_sender.toml
             readOnly: true
+            subPath: mail_sender.toml
           - path: /mail/client-config
-            subPath: client-config
             readOnly: true
 
+            subPath: client-config
       data:
         existingClaim: kanidm
         globalMounts:
           - path: /data
             subPath: data
+    route:
+      server:
+        hostnames:
+          - idm.${LAB_DOMAIN}
+        parentRefs:
+          - name: envoy
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: web
+                port: &port 8443
+    service:
+      web:
+        controller: kanidm
+        ports:
+          http:
+            port: *port
+      kanidm:
+        type: NodePort
+        controller: kanidm
+        ports:
+          ldap:
+            nodePort: 32626
+
+            port: 3636
+  timeout: 1m

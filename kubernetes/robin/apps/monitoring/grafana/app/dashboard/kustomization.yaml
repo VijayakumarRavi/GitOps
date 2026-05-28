@@ -1,14 +1,13 @@
----
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 configMapGenerator:
-  - name: grafana-dashboard
-    files:
+  - files:
       - home.json
+    name: grafana-dashboard
 generatorOptions:
-  disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
+  disableNameSuffixHash: true
   labels:
     grafana_dashboard: "true"

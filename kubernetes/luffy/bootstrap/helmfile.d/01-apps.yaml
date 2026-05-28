@@ -1,75 +1,74 @@
----
 # yaml-language-server: $schema=https://json.schemastore.org/helmfile
 helmDefaults:
-  wait: true
-  force: true
-  timeout: 600
-  waitForJobs: true
-  recreatePods: true
   cleanupOnFail: true
 
+  force: true
+  recreatePods: true
+  timeout: 600
+  wait: true
+  waitForJobs: true
 releases:
-  - name: cilium
-    namespace: network
-    chart: oci://quay.io/cilium/charts/cilium
-    version: 1.19.4
-    values:
-      - templates/values_luffy.yaml.gotmpl
+  - chart: oci://quay.io/cilium/charts/cilium
     hooks:
-      - # Wait for Cilium CRDs to be available
-        command: bash
-        args:
+        # Wait for Cilium CRDs to be available
+      - args:
           - -c
           - until kubectl get crd ciliumloadbalancerippools.cilium.io ciliuml2announcementpolicies.cilium.io; do sleep 5; done
+        command: bash
         events:
           - postsync
         showlogs: true
-      - # Apply cilium network configuration
-        command: kubectl
-        args:
+        # Apply cilium network configuration
+      - args:
           - apply
           - --namespace=network
           - --server-side
           - --field-manager=kustomize-controller
           - --kustomize
           - ../../apps/network/cilium/config
+        command: kubectl
         events:
           - postsync
         showlogs: true
 
-  - name: coredns
+    name: cilium
     namespace: network
-    chart: oci://ghcr.io/coredns/charts/coredns
-    version: 1.45.2
     values:
-      - templates/values_base.yaml.gotmpl
+      - templates/values_luffy.yaml.gotmpl
+    version: 1.19.4
+  - chart: oci://ghcr.io/coredns/charts/coredns
+    name: coredns
+    namespace: network
     needs:
       - network/cilium
 
-  - name: spegel
-    namespace: system
-    chart: oci://ghcr.io/spegel-org/helm-charts/spegel
-    version: 0.7.1
     values:
-      - templates/values_luffy.yaml.gotmpl
+      - templates/values_base.yaml.gotmpl
+    version: 1.45.2
+  - chart: oci://ghcr.io/spegel-org/helm-charts/spegel
+    name: spegel
+    namespace: system
     needs:
       - network/coredns
 
-  - name: flux-operator
-    namespace: flux-system
-    chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
-    version: 0.50.0
     values:
       - templates/values_luffy.yaml.gotmpl
+    version: 0.7.1
+  - chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
+    name: flux-operator
+    namespace: flux-system
     needs:
       - system/spegel
 
-  - name: flux-instance
-    namespace: flux-system
-    chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance
-    version: 0.50.0
-    wait: false
     values:
       - templates/values_luffy.yaml.gotmpl
+    version: 0.50.0
+  - chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance
+    name: flux-instance
+    namespace: flux-system
     needs:
       - flux-system/flux-operator
+    values:
+      - templates/values_luffy.yaml.gotmpl
+    version: 0.50.0
+    wait: false

@@ -1,10 +1,18 @@
----
 apiVersion: postgres-operator.crunchydata.com/v1beta1
 kind: PGAdmin
 metadata:
   name: pgadmin
   namespace: database
 spec:
+  config:
+    oauthConfigurations:
+      - name: "pocketid"
+        secret:
+          key: 00-pocketid.json
+          name: pgadmin-oauth
+    settings:
+      AUTHENTICATION_SOURCES: ["oauth2"]
+      OAUTH2_AUTO_CREATE_USER: true
   dataVolumeClaimSpec:
     accessModes: [ReadWriteOnce]
     resources:
@@ -13,12 +21,3 @@ spec:
   serverGroups:
     - name: supply
       postgresClusterSelector: {}
-  config:
-    settings:
-      AUTHENTICATION_SOURCES: ["oauth2"]
-      OAUTH2_AUTO_CREATE_USER: true
-    oauthConfigurations:
-      - name: "pocketid"
-        secret:
-          name: pgadmin-oauth
-          key: 00-pocketid.json

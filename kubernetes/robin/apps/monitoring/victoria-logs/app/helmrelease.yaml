@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -11,15 +10,19 @@ spec:
     namespace: flux-system
   interval: 30m
   values:
+    dashboards:
+      annotations:
+        grafana_folder: logs
+      enabled: true
+      labels:
+        grafana_dashboard: "1"
     fullnameOverride: victoria-logs
     retentionPeriod: 14d
     server:
       persistentVolume:
         enabled: true
-        storageClassName: openebs
         size: 10Gi
-      serviceMonitor:
-        enabled: true
+        storageClassName: openebs
       route:
         enabled: true
         hostnames:
@@ -27,9 +30,5 @@ spec:
         parentRefs:
           - name: envoy
             namespace: network
-    dashboards:
-      enabled: true
-      annotations:
-        grafana_folder: logs
-      labels:
-        grafana_dashboard: "1"
+      serviceMonitor:
+        enabled: true

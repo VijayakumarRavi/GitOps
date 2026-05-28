@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/generators.external-secrets.io/githubaccesstoken_v1alpha1.json
 apiVersion: generators.external-secrets.io/v1alpha1
 kind: GithubAccessToken
@@ -6,12 +5,12 @@ metadata:
   name: botpunk-auth-token
 spec:
   appID: "1211834"
-  installID: "64304826"
   auth:
     privateKey:
       secretRef:
-        name: botpunk-pem # reference secret from step 1.
         key: private_key_pem
+        name: botpunk-pem # reference secret from step 1.
+  installID: "64304826"
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1.json
 apiVersion: external-secrets.io/v1
@@ -19,22 +18,22 @@ kind: ExternalSecret
 metadata:
   name: botpunk-vjlab-token
 spec:
-  refreshInterval: "30m0s"
-  target:
-    name: botpunk-vjlab-token
-    template:
-      type: Opaque
-      engineVersion: v2
-      data:
-        GITHUB_COM_TOKEN: "{{ .token }}"
-        GITHUB_COM_USER: VmlqYXlha3VtYXJSYXZpCg==
-        RENOVATE_TOKEN: "{{ .token }}"
   dataFrom:
     - sourceRef:
         generatorRef:
           apiVersion: generators.external-secrets.io/v1alpha1
           kind: GithubAccessToken
           name: botpunk-auth-token
+  refreshInterval: "30m0s"
+  target:
+    name: botpunk-vjlab-token
+    template:
+      data:
+        GITHUB_COM_TOKEN: "{{ .token }}"
+        GITHUB_COM_USER: VmlqYXlha3VtYXJSYXZpCg==
+        RENOVATE_TOKEN: "{{ .token }}"
+      engineVersion: v2
+      type: Opaque
 ---
 apiVersion: renovate-operator.mogenius.com/v1alpha1
 kind: RenovateJob
@@ -56,10 +55,10 @@ spec:
     - name: RENOVATE_PLATFORM_COMMIT
       value: "true"
   image: ghcr.io/renovatebot/renovate:43.195.1
-  provider:
-    name: github
-    endpoint: ""
   parallelism: 5
+  provider:
+    endpoint: ""
+    name: github
   resources:
     requests:
       cpu: 100m
@@ -67,6 +66,6 @@ spec:
   schedule: 0 * * * *
   secretRef: botpunk-vjlab-token
   webhook:
-    enabled: true
     authentication:
       enabled: false
+    enabled: true

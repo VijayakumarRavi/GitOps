@@ -3,18 +3,18 @@ kind: HTTPRoute
 metadata:
   name: flux-web
 spec:
+  hostnames:
+    - flux.${CLUSTER_DOMAIN}
   parentRefs:
     - kind: Gateway
       name: envoy
       namespace: network
-  hostnames:
-    - flux.${CLUSTER_DOMAIN}
   rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
+    - backendRefs:
         - name: flux-operator
           namespace: flux-system
           port: 9080
+      matches:
+        - path:
+            type: PathPrefix
+            value: /

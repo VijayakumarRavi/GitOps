@@ -1,16 +1,8 @@
----
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
   name: dragonfly
 spec:
-  replicas: 1
-  env:
-    - name: MAX_MEMORY
-      valueFrom:
-        resourceFieldRef:
-          resource: limits.memory
-          divisor: 1Mi
   args:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
@@ -18,14 +10,21 @@ spec:
     - --lock_on_hashtags
     - --default_lua_flags=allow-undeclared-keys
 
+  env:
+    - name: MAX_MEMORY
+      valueFrom:
+        resourceFieldRef:
+          divisor: 1Mi
+          resource: limits.memory
   networkPolicyEnabled: false
 
-  serviceSpec:
-    type: LoadBalancer
-    annotations:
-      lbipam.cilium.io/ips: 10.0.1.3
+  replicas: 1
   resources:
-    requests:
-      cpu: 100m
     limits:
       memory: 512Mi
+    requests:
+      cpu: 100m
+  serviceSpec:
+    annotations:
+      lbipam.cilium.io/ips: 10.0.1.3
+    type: LoadBalancer

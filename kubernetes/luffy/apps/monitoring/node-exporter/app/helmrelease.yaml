@@ -1,23 +1,23 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: node-exporter
 spec:
-  interval: 30m
   chart:
     spec:
       chart: prometheus-node-exporter
-      version: 4.55.0
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
-      interval: 30m
+      version: 4.55.0
+  interval: 30m
   values:
     fullnameOverride: node-exporter
 
+    hostNetwork: false
     image:
       registry: quay.io
       repository: prometheus/node-exporter
@@ -48,10 +48,9 @@ spec:
             targetLabel: instance
 
     resources:
-      requests:
-        cpu: 23m
-        memory: 64M
       limits:
         memory: 64M
 
-    hostNetwork: false
+      requests:
+        cpu: 23m
+        memory: 64M

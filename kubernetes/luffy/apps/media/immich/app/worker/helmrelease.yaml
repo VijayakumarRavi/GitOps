@@ -1,23 +1,16 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: immich-worker
 spec:
-  interval: 30m
   chartRef:
     kind: OCIRepository
     name: app-template
     namespace: flux-system
+  interval: 30m
   values:
     defaultPodOptions:
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        runAsNonRoot: true
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -28,6 +21,12 @@ spec:
                     values:
                       - worker
               topologyKey: 'kubernetes.io/hostname'
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
     controllers:
       immich-worker:
         annotations:
@@ -39,8 +38,8 @@ spec:
               repository: ghcr.io/immich-app/immich-server
               tag: v2.7.5
             env:
-              IMMICH_WORKERS_EXCLUDE: api
               IMMICH_CONFIG_FILE: /config/immich.config.json
+              IMMICH_WORKERS_EXCLUDE: api
             envFrom:
               - secretRef:
                   name: immich-env
@@ -53,14 +52,8 @@ spec:
               requests:
                 cpu: 200m
               limits:
-                gpu.intel.com/i915: '1'
                 cpu: 3000m
-    service:
-      immich-worker:
-        controller: immich-worker
-        ports:
-          http:
-            port: 2283
+                gpu.intel.com/i915: '1'
     persistence:
       config:
         enabled: true
@@ -70,7 +63,13 @@ spec:
           - path: /config
       media:
         type: nfs
-        server: tank
         path: /mnt/tank/Kubernetes/Apps/immich
+        server: tank
         globalMounts:
           - path: /usr/src/app/upload
+    service:
+      immich-worker:
+        controller: immich-worker
+        ports:
+          http:
+            port: 2283

@@ -5,20 +5,20 @@ metadata:
   name: &appname immich
   namespace: flux-system
 spec:
-  targetNamespace: media
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 30m
-  timeout: 10m
-  path: ./kubernetes/luffy/apps/media/immich/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
   dependsOn:
     - name: envoy-gateway-config
     - name: dragonfly-cluster
     - name: external-secrets-stores
     - name: crunchy-postgres-secretstore
+  interval: 30m
+  path: ./kubernetes/luffy/apps/media/immich/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: media
+  timeout: 10m
+  wait: false

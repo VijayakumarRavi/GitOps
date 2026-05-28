@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -6,18 +5,18 @@ metadata:
   name: &appname volsync
   namespace: flux-system
 spec:
-  targetNamespace: system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  dependsOn:
+    - name: envoy-gateway-config
+    - name: openebs
   interval: 30m
-  timeout: 10m
   path: "./kubernetes/base/apps/system/volsync/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  targetNamespace: system
+  timeout: 10m
   wait: true
-  dependsOn:
-    - name: envoy-gateway-config
-    - name: openebs

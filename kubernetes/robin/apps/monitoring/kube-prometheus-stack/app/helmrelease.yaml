@@ -1,52 +1,71 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: prometheus-stack
 spec:
-  interval: 30m
-  timeout: 15m
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 85.4.0
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
-      interval: 30m
+      version: 85.4.0
   install:
     crds: Skip
+  interval: 30m
+  timeout: 15m
   upgrade:
     crds: Skip
   values:
-    crds:
+    alertmanager:
       enabled: false
+
     cleanPrometheusOperatorObjectNames: true
 
     ###
     ### Component values
     ###
-    alertmanager:
+    crds:
       enabled: false
+    grafana:
+      enabled: false
+      forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          annotations:
+            grafana_folder: Kubernetes
 
+    ###
+    ### Prometheus operator values
+    ###
     kubeApiServer:
       enabled: true
       serviceMonitor:
         metricRelabelings:
           # Drop high cardinality labels
           - action: drop
-            sourceLabels: ["__name__"]
             regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
-          - action: drop
             sourceLabels: ["__name__"]
+          - action: drop
             regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
 
+            sourceLabels: ["__name__"]
     kubeControllerManager:
       enabled: false
 
     kubeEtcd:
+      enabled: false
+
+    kubeProxy:
+      enabled: false
+
+    kubeScheduler:
+      enabled: false
+
+    kubeStateMetrics:
       enabled: false
 
     kubelet:
@@ -59,68 +78,19 @@ spec:
           - action: labeldrop
             regex: (id|name)
           - action: drop
-            sourceLabels: ["__name__"]
             regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
 
-    kubeProxy:
-      enabled: false
-
-    kubeScheduler:
-      enabled: false
-
-    kubeStateMetrics:
-      enabled: false
-
+            sourceLabels: ["__name__"]
     nodeExporter:
       enabled: false
 
-    grafana:
-      enabled: false
-      forceDeployDashboards: true
-      sidecar:
-        dashboards:
-          annotations:
-            grafana_folder: Kubernetes
-
-    ###
-    ### Prometheus operator values
-    ###
-    prometheusOperator:
-      resources:
-        requests:
-          cpu: 35m
-          memory: 273M
-        limits:
-          memory: 326M
-
-      prometheusConfigReloader:
-        # resource config for prometheusConfigReloader
-        resources:
-          requests:
-            cpu: 5m
-            memory: 32M
-          limits:
-            memory: 32M
-
-    ###
-    ### Prometheus instance values
-    ###
     prometheus:
-      route:
-        main:
-          enabled: true
-          hostnames:
-            - prometheus.${CLUSTER_DOMAIN}
-          parentRefs:
-            - name: envoy
-              namespace: network
-
       prometheusSpec:
         alertingEndpoints:
-          - namespace: monitoring
+          - apiVersion: v2
             name: alertmanager
+            namespace: monitoring
             port: 9093
-            apiVersion: v2
         enableAdminAPI: true
         enableFeatures:
           - auto-gomaxprocs
@@ -128,13 +98,13 @@ spec:
           - new-service-discovery-manager
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
-        replicas: 1
         replicaExternalLabelName: "__replica__" # must match with thanos value `.query.replicaLabel[0]`
+        replicas: 1
         resources:
-          requests:
-            cpu: 100m
           limits:
             memory: 2000M
+          requests:
+            cpu: 100m
         retention: 14d
         retentionSize: 9GB
         ruleSelectorNilUsesHelmValues: false
@@ -144,8 +114,37 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: openebs
               resources:
                 requests:
                   storage: 10Gi
+              storageClassName: openebs
         walCompression: true
+      route:
+        main:
+          enabled: true
+          hostnames:
+            - prometheus.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: envoy
+              namespace: network
+
+    prometheusOperator:
+      prometheusConfigReloader:
+        # resource config for prometheusConfigReloader
+        resources:
+          limits:
+            memory: 32M
+
+    ###
+    ### Prometheus instance values
+    ###
+          requests:
+            cpu: 5m
+            memory: 32M
+      resources:
+        limits:
+          memory: 326M
+
+        requests:
+          cpu: 35m
+          memory: 273M

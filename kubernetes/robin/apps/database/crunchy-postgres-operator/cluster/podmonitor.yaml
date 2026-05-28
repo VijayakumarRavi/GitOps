@@ -1,4 +1,3 @@
----
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
@@ -13,21 +12,13 @@ spec:
       path: /metrics
       port: exporter
       relabelings:
-        - sourceLabels:
-            [
-              "__meta_kubernetes_namespace",
-              "__meta_kubernetes_pod_label_postgres_operator_crunchydata_com_cluster",
-            ]
-          targetLabel: pg_cluster
+        - replacement: "$1$2"
           separator: "/"
-          replacement: "$1$2"
-        - sourceLabels:
-            [
-              __meta_kubernetes_pod_label_postgres_operator_crunchydata_com_instance,
-            ]
+          sourceLabels: ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_label_postgres_operator_crunchydata_com_cluster"]
+          targetLabel: pg_cluster
+        - sourceLabels: [__meta_kubernetes_pod_label_postgres_operator_crunchydata_com_instance]
           targetLabel: deployment
-        - sourceLabels:
-            [__meta_kubernetes_pod_label_postgres_operator_crunchydata_com_role]
+        - sourceLabels: [__meta_kubernetes_pod_label_postgres_operator_crunchydata_com_role]
           targetLabel: role
         - sourceLabels: [__meta_kubernetes_pod_name]
           targetLabel: instance

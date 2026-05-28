@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -11,24 +10,19 @@ spec:
   interval: 30m
   values:
     instance:
-      distribution:
-        artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.50.0
-        version: 2.x
       cluster:
         networkPolicy: false
+      commonMetadata:
+        labels:
+          app.kubernetes.io/name: flux
       components:
         - source-controller
         - kustomize-controller
         - helm-controller
         - notification-controller
-      sync:
-        kind: GitRepository
-        url: https://github.com/VijayakumarRavi/GitOps.git
-        ref: refs/heads/master
-        path: kubernetes/robin/flux/cluster
-      commonMetadata:
-        labels:
-          app.kubernetes.io/name: flux
+      distribution:
+        artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.50.0
+        version: 2.x
       kustomize:
         patches:
           # Add Sops decryption to Kustomizations
@@ -123,3 +117,8 @@ spec:
             target:
               kind: Deployment
               name: helm-controller
+      sync:
+        kind: GitRepository
+        path: kubernetes/robin/flux/cluster
+        ref: refs/heads/master
+        url: https://github.com/VijayakumarRavi/GitOps.git

@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -16,33 +15,25 @@ spec:
       version: 1.19.4
   interval: 30m
   values:
-    rollOutCiliumPods: true
-    ipam:
-      mode: cluster-pool
-      operator:
-        clusterPoolIPv4PodCIDRList: 172.16.0.0/12
-    k8sServiceHost: 127.0.0.1
-    k8sServicePort: 7445
-    kubeProxyReplacement: true
-    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-    socketLB:
-      hostNamespaceOnly: true
-    l2announcements:
+    dashboards:
+      annotations:
+        grafana_folder: Cilium
       enabled: true
-    k8sClientRateLimit:
-      qps: 28
-      burst: 32
-    # devices: { enp+, eth+ }
     endpointRoutes:
       enabled: true
     envoy:
       enabled: false
+    externalIPs.enabled: true
     gatewayAPI:
       enabled: false
     hubble:
       enabled: false
 
       metrics:
+        dashboards:
+          annotations:
+            grafana_folder: Cilium
+          enabled: true
         enabled:
           - dns:query
           - drop
@@ -53,32 +44,38 @@ spec:
           - http
         serviceMonitor:
           enabled: true
-        dashboards:
-          enabled: true
-          annotations:
-            grafana_folder: Cilium
+    ipam:
+      mode: cluster-pool
+      operator:
+        clusterPoolIPv4PodCIDRList: 172.16.0.0/12
+    k8sClientRateLimit:
+      burst: 32
+    # devices: { enp+, eth+ }
+      qps: 28
+    k8sServiceHost: 127.0.0.1
+    k8sServicePort: 7445
+    kubeProxyReplacement: true
+    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+    l2announcements:
+      enabled: true
+    loadBalancer.algorithm: maglev
+    # routingMode: native
+    # ipv4NativeRoutingCIDR: 10.0.2.0/16
     operator:
+      dashboards:
+        annotations:
+          grafana_folder: Cilium
+        enabled: true
       prometheus:
         enabled: true
         serviceMonitor:
           enabled: true
-      dashboards:
-        enabled: true
-        annotations:
-          grafana_folder: Cilium
     prometheus:
       enabled: true
       serviceMonitor:
         enabled: true
         trustCRDsExist: true
-    dashboards:
-      enabled: true
-      annotations:
-        grafana_folder: Cilium
-    externalIPs.enabled: true
-    loadBalancer.algorithm: maglev
-    # routingMode: native
-    # ipv4NativeRoutingCIDR: 10.0.2.0/16
+    rollOutCiliumPods: true
     securityContext:
       capabilities:
         ciliumAgent:
@@ -99,3 +96,5 @@ spec:
           - NET_ADMIN
           - SYS_ADMIN
           - SYS_RESOURCE
+    socketLB:
+      hostNamespaceOnly: true

@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -16,11 +15,11 @@ spec:
   values:
     controllers:
       maintainerr:
-        forceRename: maintainerr
         pod:
           annotations:
-            reloader.stakater.com/auto: "true"
             k8tz.io/inject: 'false'
+            reloader.stakater.com/auto: "true"
+        forceRename: maintainerr
         containers:
           maintainerr:
             image:
@@ -61,22 +60,22 @@ spec:
                 memory: 128M
               limits:
                 memory: 1024M
+    persistence:
+      data:
+        existingClaim: maintainerr-data
+        globalMounts:
+          - path: /opt/data
+    route:
+      app:
+        hostnames:
+          - maintainerr.${CLUSTER_DOMAIN}
+        parentRefs:
+          - name: envoy
+            namespace: network
+
     service:
       app:
         controller: maintainerr
         ports:
           http:
             port: 6246
-    route:
-        app:
-          hostnames:
-            - maintainerr.${CLUSTER_DOMAIN}
-          parentRefs:
-            - name: envoy
-              namespace: network
-
-    persistence:
-      data:
-        existingClaim: maintainerr-data
-        globalMounts:
-          - path: /opt/data

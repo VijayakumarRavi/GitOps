@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://github.com/envoyproxy/gateway/raw/refs/heads/main/charts/gateway-helm/charts/crds/crds/generated/gateway.envoyproxy.io_envoyproxies.yaml
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
@@ -9,17 +8,16 @@ spec:
     level:
       default: info
   provider:
-    type: Kubernetes
     kubernetes:
       envoyDeployment:
-        replicas: 1
         container:
           image: mirror.gcr.io/envoyproxy/envoy:v1.38.0
           resources:
-            requests:
-              cpu: 100m
             limits:
               memory: 1Gi
+            requests:
+              cpu: 100m
+        replicas: 1
       envoyService:
         externalTrafficPolicy: Local
         patch:
@@ -28,6 +26,7 @@ spec:
             spec:
               externalIPs:
                 - ${NODE_IP}
+    type: Kubernetes
   shutdown:
     drainTimeout: 180s
   telemetry:
@@ -91,7 +90,7 @@ spec:
     http:
       requestReceivedTimeout: 0s
   tls:
-    minVersion: "1.2"
     alpnProtocols:
       - h2
       - http/1.1
+    minVersion: "1.2"

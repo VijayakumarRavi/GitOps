@@ -6,12 +6,12 @@ metadata:
     tailscale.com/funnel: "true"
     tailscale.com/proxy-class: "luffy-ts-proxy"
 spec:
-  ingressClassName: tailscale
   defaultBackend:
     service:
       name: plex
       port:
         name: http
+  ingressClassName: tailscale
   tls:
     - hosts:
         - plex

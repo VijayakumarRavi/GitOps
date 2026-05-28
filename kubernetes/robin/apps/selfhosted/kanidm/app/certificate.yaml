@@ -1,19 +1,18 @@
----
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: ${LAB_DOMAIN}
 spec:
-  secretName: ${LAB_DOMAIN}-tls
-  issuerRef:
-    name: zerossl-production
-    kind: ClusterIssuer
   commonName: "*.${LAB_DOMAIN}"
   dnsNames: ["*.${LAB_DOMAIN}"]
   duration: 160h
+  issuerRef:
+    kind: ClusterIssuer
+    name: zerossl-production
   privateKey:
     algorithm: ECDSA
-    size: 256
     rotationPolicy: Always
+    size: 256
+  secretName: ${LAB_DOMAIN}-tls
   usages:
     - digital signature

@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -6,26 +5,26 @@ metadata:
   name: &appname qbittorrent
   namespace: flux-system
 spec:
-  targetNamespace: downloads
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 30m
-  timeout: 10m
-  path: ./kubernetes/luffy/apps/downloads/qbittorrent/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: true
+  components: [../../../../components/volsync]
   dependsOn:
     - name: volsync
     - name: external-secrets-stores
-  components: [../../../../components/volsync]
+  interval: 30m
+  path: ./kubernetes/luffy/apps/downloads/qbittorrent/app
   postBuild:
     substitute:
       APP: *appname
       VOLSYNC_CLAIM: qbittorrent-config
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: downloads
+  timeout: 10m
+  wait: true
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -34,21 +33,21 @@ metadata:
   name: &appname qui
   namespace: flux-system
 spec:
-  targetNamespace: downloads
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components: [../../../../components/volsync]
+  dependsOn:
+    - name: qbittorrent
   interval: 30m
-  timeout: 10m
   path: ./kubernetes/luffy/apps/downloads/qbittorrent/qui
+  postBuild:
+    substitute:
+      APP: *appname
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  targetNamespace: downloads
+  timeout: 10m
   wait: false
-  dependsOn:
-    - name: qbittorrent
-  components: [../../../../components/volsync]
-  postBuild:
-    substitute:
-      APP: *appname

@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -6,27 +5,27 @@ metadata:
   name: &appname home-assistant
   namespace: flux-system
 spec:
-  targetNamespace: selfhosted
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/volsync
+  dependsOn:
+    - name: volsync
+    - name: envoy-gateway-config
   interval: 30m
-  timeout: 10m
   path: "./kubernetes/luffy/apps/selfhosted/home-assistant/app"
+  postBuild:
+    substitute:
+      APP: *appname
+      APP_GID: "65533"
+      APP_UID: "65534"
+      VOLSYNC_CAPACITY: 8Gi
+      VOLSYNC_CLAIM: home-assistant-config
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  targetNamespace: selfhosted
+  timeout: 10m
   wait: false
-  components:
-    - ../../../../components/volsync
-  postBuild:
-    substitute:
-      APP: *appname
-      APP_UID: "65534"
-      APP_GID: "65533"
-      VOLSYNC_CLAIM: home-assistant-config
-      VOLSYNC_CAPACITY: 8Gi
-  dependsOn:
-    - name: volsync
-    - name: envoy-gateway-config

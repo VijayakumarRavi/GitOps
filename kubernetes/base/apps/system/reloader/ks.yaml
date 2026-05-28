@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -6,15 +5,15 @@ metadata:
   name: &appname reloader
   namespace: flux-system
 spec:
-  targetNamespace: system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  timeout: 10m
   path: "./kubernetes/base/apps/system/reloader/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  targetNamespace: system
+  timeout: 10m
   wait: false

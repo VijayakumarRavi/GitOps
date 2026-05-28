@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -28,11 +27,11 @@ spec:
                           - plex
                   topologyKey: kubernetes.io/hostname
           securityContext:
-            runAsUser: 568
-            runAsGroup: 568
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
 
+            runAsGroup: 568
+            runAsUser: 568
         containers:
           app:
             image:
