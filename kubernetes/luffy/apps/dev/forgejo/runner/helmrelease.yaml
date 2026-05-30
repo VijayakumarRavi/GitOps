@@ -20,9 +20,8 @@ spec:
                 topologyKey: kubernetes.io/hostname
                 whenUnsatisfiable: DoNotSchedule
                 labelSelector:
-                  matchExpressions:
-                    - key: job-name
-                      operator: Exists
+                  matchLabels:
+                    app.kubernetes.io/name: forgejo-runner-instance
             containers:
               - env:
                   - name: DEBIAN_FRONTEND
@@ -43,9 +42,8 @@ spec:
                 topologyKey: kubernetes.io/hostname
                 whenUnsatisfiable: DoNotSchedule
                 labelSelector:
-                  matchExpressions:
-                    - key: job-name
-                      operator: Exists
+                  matchLabels:
+                    app.kubernetes.io/name: forgejo-runner-instance
             initContainers:
               - name: dind
                 image: docker:29-dind
