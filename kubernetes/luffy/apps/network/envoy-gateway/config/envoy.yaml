@@ -16,7 +16,15 @@ spec:
           resources:
             requests:
               cpu: 100m
-        replicas: 2
+        replicas: 3
+        pod:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: envoy
       envoyService:
         externalTrafficPolicy: Local
     type: Kubernetes
