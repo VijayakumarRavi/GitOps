@@ -217,14 +217,27 @@ spec:
     rbac:
       bindings:
         forgejo-runner:
+          type: RoleBinding
           roleRef:
             identifier: forgejo-runner
           subjects:
             - identifier: forgejo-runner
-          type: RoleBinding
       roles:
         forgejo-runner:
+          type: Role
           rules:
+            # Jobs - the plugin creates jobs to run pipeline steps
+            - apiGroups:
+                - "batch"
+              resources:
+                - jobs
+              verbs:
+                - create
+                - get
+                - list
+                - watch
+                - delete
+            # Pods - only needed when the plugin needs to interact with them (logs, exec)
             - apiGroups:
                 - ""
               resources:
@@ -232,9 +245,7 @@ spec:
               verbs:
                 - list
                 - watch
-                - create
                 - get
-                - delete
             - apiGroups:
                 - ""
               resources:
@@ -250,7 +261,5 @@ spec:
                 - list
                 - watch
                 - get
-          type: Role
     serviceAccount:
       forgejo-runner: {}
-  timeout: 1m
