@@ -95,7 +95,7 @@ notify_and_exit_on_error "restic check" "Restic check failed"
 ok
 
 running "removing outdated snapshots"
-notify_and_exit_on_error "restic forget --keep-daily 7 --keep-weekly 4 --keep-monthly 3 --keep-yearly 3 --prune" "Restic forget failed"
+notify_and_exit_on_error "restic forget --keep-hourly 24 --keep-daily 7 --keep-weekly 4 --keep-monthly 3 --keep-yearly 3 --prune" "Restic forget failed"
 ok
 
 /usr/bin/find /var/log/restic/ -name "*.log" -type f -mmin +600 -exec rm -f {} \;

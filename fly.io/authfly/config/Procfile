@@ -1,4 +1,0 @@
-pocket-id: cd /app && sleep 5 && su-exec "$PUID:$PGID" /app/pocket-id
-lldap: cd /app/lldap && su-exec "$PUID:$PGID" /app/lldap/lldap run --config-file /app/data/lldap_config.toml
-# backup: echo "1 * * * * /restic.sh" > /crontab && su-exec "$PUID:$PGID" supercronic /crontab
-cf_tunnel: su-exec "$PUID:$PGID" cloudflared tunnel --no-autoupdate run --token "$CF_TOKEN"

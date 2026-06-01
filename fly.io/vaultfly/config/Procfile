@@ -1,3 +1,0 @@
-vaultwarden: /start.sh
-backup: echo "1 * * * * /restic.sh" > /crontab && exec supercronic /crontab
-cf_tunnel: cloudflared tunnel --no-autoupdate run --token "$CF_TOKEN"

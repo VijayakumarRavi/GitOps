@@ -45,4 +45,20 @@ if [[ ! -r "$LLDAP_CONFIG_FILE" ]]; then
   exit 1;
 fi
 
-exec "$@"
+# Start background processes
+echo "Starting pocket-id..."
+(cd /app && sleep 5 && su-exec "$PUID:$PGID" /app/pocket-id) &
+p1=$!
+
+echo "Starting lldap..."
+(cd /app/lldap && su-exec "$PUID:$PGID" /app/lldap/lldap run --config-file /app/data/lldap_config.toml) &
+p2=$!
+
+sleep 10
+echo "Starting cloudflared tunnel..."
+su-exec "$PUID:$PGID" cloudflared tunnel --no-autoupdate run --token "$CF_TOKEN" &
+p3=$!
+
+# Monitor processes
+wait -n $p1 $p2 $p3
+exit $?

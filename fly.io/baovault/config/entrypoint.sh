@@ -40,5 +40,16 @@ telemetry {
 EOF
 echo -e "${GREEN}Info: Vault configuration written to /config.hcl${NC}"
 
-# Execute the CMD
-exec "$@"
+# Start background processes
+echo -e "${GREEN}Info: Starting bao server...${NC}"
+bao server -config /config.hcl &
+p1=$!
+
+sleep 10
+echo -e "${GREEN}Info: Starting cloudflared tunnel...${NC}"
+cloudflared tunnel --no-autoupdate run --token "$CF_TOKEN" &
+p2=$!
+
+# Monitor processes
+wait -n $p1 $p2
+exit $?

@@ -12,8 +12,8 @@ echo -e "${GREEN}Info: Starting up...${NC}"
 mkdir -pv /data/tailscale
 
 #Set dnsproxy as dns server and starting it
-echo "nameserver 127.0.0.1" > /etc/resolv.conf && \
-  overmind start -l dnsproxy -f /Procfile -s /overmind.dns.sock &
+echo "nameserver 127.0.0.1" > /etc/resolv.conf
+dnsproxy -u https://dns.vjlab.xyz/dns-query/gatus -b 1.1.1.1 -f 1.1.1.1 --cache &
 echo -e "${GREEN}Info: Changed dns to dnsproxy(127.0.0.1)"
 
 # error: adding [-i tailscale0 -j MARK --set-mark 0x40000] in v4/filter/ts-forward: running [/sbin/iptables -t filter -A ts-forward -i tailscale0 -j MARK --set-mark 0x40000 --wait]: exit status 2: iptables v1.8.6 (legacy): unknown option "--set-mark"
@@ -38,5 +38,27 @@ curl -s "https://api.tailscale.com/api/v2/tailnet/-/devices" -u "$apikey:" | jq 
     fi
   done
 
-# Execute the CMD
-exec "$@"
+# Start tailscale daemon and wait briefly for socket
+echo -e "${GREEN}Info: Starting tailscale daemon...${NC}"
+tailscaled --port 41641 --state=mem: --statedir=/data/tailscale --socket=/var/run/tailscale/tailscaled.sock >> /dev/null 2>&1 &
+p1=$!
+sleep 3
+
+# Run tailscale up
+echo -e "${GREEN}Info: Running tailscale up...${NC}"
+tailscale up --accept-dns=false --accept-routes --advertise-exit-node --hostname=${FLY_APP_NAME} --advertise-tags=tag:fly-exit --authkey=${TS_OAUTH_CLIENT_SECRET}?preauthorized=true
+
+# Start gatus
+echo -e "${GREEN}Info: Starting gatus...${NC}"
+gatus &
+p2=$!
+
+sleep 10
+# Start cloudflared tunnel
+echo -e "${GREEN}Info: Starting cloudflared tunnel...${NC}"
+cloudflared tunnel --no-autoupdate run --token "$CLOUDFLARE_TUNNEL_TOKEN" &
+p3=$!
+
+# Monitor processes
+wait -n $p1 $p2 $p3
+exit $?
