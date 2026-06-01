@@ -15,13 +15,13 @@ spec:
       config:
         data:
           podspec-default.yaml: |-
-            topologySpreadConstraints:
-              - maxSkew: 1
-                topologyKey: kubernetes.io/hostname
-                whenUnsatisfiable: DoNotSchedule
-                labelSelector:
-                  matchLabels:
-                    app.kubernetes.io/managed-by: forgejo-runner
+            affinity:
+              podAntiAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  - labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/managed-by: forgejo-runner
+                    topologyKey: kubernetes.io/hostname
             containers:
               - env:
                   - name: DEBIAN_FRONTEND
@@ -37,13 +37,13 @@ spec:
                     memory: 256Mi
             restartPolicy: Never
           podspec-dind.yaml: |-
-            topologySpreadConstraints:
-              - maxSkew: 1
-                topologyKey: kubernetes.io/hostname
-                whenUnsatisfiable: DoNotSchedule
-                labelSelector:
-                  matchLabels:
-                    app.kubernetes.io/managed-by: forgejo-runner
+            affinity:
+              podAntiAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  - labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/managed-by: forgejo-runner
+                    topologyKey: kubernetes.io/hostname
             initContainers:
               - name: dind
                 image: docker:29-dind
