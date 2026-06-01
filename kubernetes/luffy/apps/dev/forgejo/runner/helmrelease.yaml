@@ -125,7 +125,7 @@ spec:
                   poll_timeout: 10m
                   labels: "app.kubernetes.io/instance=env-$${ENV_ID}"
             runner:
-              capacity: 5
+              capacity: 3
               file: /persistent/.runner
               labels:
                 - ubuntu-latest:k8s:/config/podspec-default.yaml
