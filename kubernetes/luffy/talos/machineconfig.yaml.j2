@@ -183,8 +183,3 @@ cluster:
   serviceAccount:
     key: op://automation/talos-luffy/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
----
-apiVersion: v1alpha1
-kind: WatchdogTimerConfig
-device: /dev/watchdog0
-timeout: 5m

@@ -1,0 +1,72 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: coredns
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: coredns
+    namespace: flux-system
+  interval: 30m
+  values:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-role.kubernetes.io/control-plane
+                  operator: Exists
+    fullnameOverride: coredns
+    k8sAppLabelOverride: kube-dns
+    replicaCount: 1
+    servers:
+      - plugins:
+          - name: errors
+          - configBlock: |-
+              lameduck 5s
+            name: health
+          - name: ready
+          - configBlock: |-
+              class error
+            name: log
+          - name: prometheus
+            parameters: 0.0.0.0:9153
+          - configBlock: |-
+              pods insecure
+              fallthrough in-addr.arpa ip6.arpa
+            name: kubernetes
+            parameters: cluster.local in-addr.arpa ip6.arpa
+          - name: dns64
+            parameters: 64:ff9b::/96
+          - name: forward
+            parameters: . /etc/resolv.conf
+          - name: cache
+            parameters: 30
+          - name: loop
+          - name: reload
+          - name: loadbalance
+        port: 53
+        zones:
+          - scheme: dns://
+            use_tcp: true
+            zone: .
+    service:
+      clusterIP: fd10:96::a
+      name: kube-dns
+    serviceAccount:
+      create: true
+    tolerations:
+      - key: CriticalAddonsOnly
+        operator: Exists
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/control-plane
+        operator: Exists
+    topologySpreadConstraints:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/instance: coredns
+        maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule

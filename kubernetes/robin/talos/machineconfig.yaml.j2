@@ -39,6 +39,39 @@ machine:
           discard_unpacked_layers = false
         [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
           discard_unpacked_layers = false
+    # haproxy config: bridges public IPv4 → IPv6 Envoy VIP
+    # NODE_IPV4 and NODE_IPV6 are resolved from 1Password at apply time.
+    - op: create
+      path: /var/etc/ipv4-proxy/haproxy.cfg
+      permissions: 0o644
+      content: |
+        global
+          daemon
+        defaults
+          timeout connect 5s
+          timeout client  30s
+          timeout server  30s
+        frontend https
+          mode tcp
+          bind op://automation/talos-robin/NODE_IPV4:443
+          default_backend envoy-https
+        backend envoy-https
+          mode tcp
+          server envoy [op://automation/talos-robin/NODE_IPV6]:443 check
+        frontend http
+          mode tcp
+          bind op://automation/talos-robin/NODE_IPV4:80
+          default_backend envoy-http
+        backend envoy-http
+          mode tcp
+          server envoy [op://automation/talos-robin/NODE_IPV6]:80 check
+        frontend forgejo-ssh
+          mode tcp
+          bind op://automation/talos-robin/NODE_IPV4:22
+          default_backend envoy-ssh
+        backend envoy-ssh
+          mode tcp
+          server envoy [op://automation/talos-robin/NODE_IPV6]:22 check
     - op: overwrite
       path: /etc/nfsmount.conf
       permissions: 0o644
@@ -68,6 +101,14 @@ machine:
           nodeID: {}
 
   kubelet:
+    extraMounts:
+      - destination: /var/etc/ipv4-proxy
+        type: bind
+        source: /var/etc/ipv4-proxy
+        options:
+          - bind
+          - rshared
+          - rw
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraConfig:
@@ -76,6 +117,9 @@ machine:
         ResourceHealthStatus: true
       serializeImagePulls: false
     image: ghcr.io/siderolabs/kubelet:v1.36.1
+    nodeIP:
+      validSubnets:
+        - op://automation/talos-robin/NODE_IPV6_SUBNET
   network:
     disableSearchDomain: true
   nodeLabels:
@@ -95,9 +139,38 @@ machine:
     net.ipv4.tcp_rmem: 4096 87380 33554432
     net.ipv4.tcp_window_scaling: "1"
     net.ipv4.tcp_wmem: 4096 65536 33554432
+    net.ipv6.conf.all.forwarding: "1"
+    net.ipv6.conf.default.forwarding: "1"
     sunrpc.tcp_max_slot_table_entries: "128"
     sunrpc.tcp_slot_table_entries: "128"
     user.max_user_namespaces: "11255"
+  pods:
+    # Static pod: haproxy bridges IPv4 → IPv6 Envoy VIP (outside Kubernetes scheduling)
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        name: ipv4-proxy
+        namespace: kube-system
+      spec:
+        containers:
+          - image: mirror.gcr.io/haproxy:3.0-alpine
+            name: haproxy
+            securityContext:
+              runAsUser: 0
+              capabilities:
+                add:
+                  - NET_BIND_SERVICE
+            volumeMounts:
+              - mountPath: /usr/local/etc/haproxy
+                name: cfg
+                readOnly: true
+        hostNetwork: true
+        restartPolicy: Always
+        volumes:
+          - hostPath:
+              path: /var/etc/ipv4-proxy
+              type: DirectoryOrCreate
+            name: cfg
   token: op://automation/talos-robin/MACHINE_TOKEN
 cluster:
   ca:
@@ -117,11 +190,14 @@ cluster:
         disabled: false
   id: op://automation/talos-robin/CLUSTER_ID
   network:
+    cni:
+      name: none
     dnsDomain: cluster.local
     podSubnets:
       - 10.244.0.0/16
+      - fd10:244::/104
     serviceSubnets:
-      - 10.96.0.0/12
+      - fd10:96::/112
   secret: op://automation/talos-robin/CLUSTER_SECRET
   token: op://automation/talos-robin/CLUSTER_TOKEN
   {% if ENV.IS_CONTROLLER %}
@@ -155,7 +231,7 @@ cluster:
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
   proxy:
-    disabled: false
+    disabled: true
     image: registry.k8s.io/kube-proxy:v1.36.1
   scheduler:
     extraArgs:
@@ -165,18 +241,4 @@ cluster:
   serviceAccount:
     key: op://automation/talos-robin/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
----
-apiVersion: v1alpha1
-kind: VolumeConfig
-name: EPHEMERAL
-provisioning:
-  maxSize: 40GiB
-  grow: false
----
-apiVersion: v1alpha1
-kind: RawVolumeConfig
-name: openebs-lvm
-provisioning:
-  minSize: 100GiB
-  diskSelector:
-    match: system_disk
+

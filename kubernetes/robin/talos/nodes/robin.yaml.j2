@@ -5,3 +5,18 @@ machine:
     topology.kubernetes.io/zone: m
   network:
     hostname: robin
+    nameservers:
+      - "2a03:4000:0:1::e1e6"
+      - "2a03:4000:8000::fce6"
+      - "1.1.1.1"
+    interfaces:
+      - interface: ens3
+        addresses:
+          - op://automation/talos-robin/NODE_IPV6_SUBNET
+          - op://automation/talos-robin/NODE_IPV4_SUBNET
+        routes:
+          - network: ::/0
+            gateway: fe80::1
+            metric: 1024
+          - network: 0.0.0.0/0
+            gateway: 188.68.52.1

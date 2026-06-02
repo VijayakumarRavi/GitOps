@@ -35,6 +35,7 @@ render-config node:
     export IS_CONTROLLER="$(just luffy talos machine-controller {{ node }})"; \
     talosctl machineconfig patch <(just template "{{ talos_dir }}/machineconfig.yaml.j2") \
         -p @<(just template "{{ talos_dir }}/nodes/{{ node }}.yaml.j2")
+    if [ -f "{{ talos_dir }}/extensions.yaml.j2" ]; then just template "{{ talos_dir }}/extensions.yaml.j2"; fi
 
 [doc('Reset a node')]
 reset-node node:

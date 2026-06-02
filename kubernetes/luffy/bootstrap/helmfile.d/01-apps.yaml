@@ -44,7 +44,7 @@ releases:
       - network/cilium
 
     values:
-      - templates/values_base.yaml.gotmpl
+      - templates/values_luffy.yaml.gotmpl
     version: 1.45.2
   - chart: oci://ghcr.io/spegel-org/helm-charts/spegel
     name: spegel

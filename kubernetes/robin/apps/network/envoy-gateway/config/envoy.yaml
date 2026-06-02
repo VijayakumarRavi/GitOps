@@ -20,13 +20,10 @@ spec:
               cpu: 100m
         replicas: 1
       envoyService:
+        annotations:
+          lbipam.cilium.io/ips: "${NODE_IPV6}"
         externalTrafficPolicy: Local
-        patch:
-          type: StrategicMerge
-          value:
-            spec:
-              externalIPs:
-                - ${NODE_IP}
+        type: LoadBalancer
     type: Kubernetes
   shutdown:
     drainTimeout: 180s
