@@ -6,4 +6,4 @@ metadata:
   name: crunchy-userinit
   namespace: flux-system
 spec:
-  url: https://ramblurr.github.io/crunchy-userinit-controller
+  url: https://drummyfloyd.github.io/crunchy-userinit-controller

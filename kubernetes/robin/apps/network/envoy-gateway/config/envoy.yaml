@@ -8,6 +8,7 @@ spec:
   logging:
     level:
       default: info
+  ipFamily: IPv6
   provider:
     kubernetes:
       envoyDeployment:

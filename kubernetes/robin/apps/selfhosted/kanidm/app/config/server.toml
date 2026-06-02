@@ -1,8 +1,8 @@
 # The server configuration file version.
 version = "2"
 
-bindaddress = "0.0.0.0:8443"
-ldapbindaddress = "0.0.0.0:3636"
+bindaddress = "[::]:8443"
+ldapbindaddress = "[::]:3636"
 
 db_fs_type = "zfs"
 db_path = "/data/kanidm.db"

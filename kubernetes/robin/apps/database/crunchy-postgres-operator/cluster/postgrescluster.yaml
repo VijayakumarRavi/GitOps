@@ -4,6 +4,8 @@ apiVersion: postgres-operator.crunchydata.com/v1
 kind: PostgresCluster
 metadata:
   name: &name postgres
+  annotations:
+    postgres-operator.crunchydata.com/pgbackrest-ip-version: IPv6
 spec:
   backups:
     pgbackrest:
@@ -61,8 +63,8 @@ spec:
       replicas: &replica 1
   metadata:
     labels:
-      crunchy-userinit.ramblurr.github.com/enabled: "true"
-      crunchy-userinit.ramblurr.github.com/superuser: vijay
+      crunchy-userinit.drummyfloyd.github.com/enabled: "true"
+      crunchy-userinit.drummyfloyd.github.com/superuser: vijay
   monitoring:
     pgmonitor:
       exporter:
@@ -77,8 +79,9 @@ spec:
       postgresql:
         max_wal_size: 1GB
         parameters:
+          listen_addresses: "*"
           autovacuum_analyze_scale_factor: "0.02"
-
+          
           # Small latency win
           autovacuum_naptime: "10s"
           autovacuum_vacuum_scale_factor: "0.05"

@@ -26,6 +26,8 @@ spec:
               repository: ghcr.io/lldap/lldap
               tag: 2025-12-24-alpine-rootless
             env:
+              LLDAP_LDAP_HOST: "::"
+              LLDAP_HTTP_HOST: "::"
               LLDAP_LDAPS_OPTIONS__CERT_FILE: /certs/tls.crt
               LLDAP_LDAPS_OPTIONS__ENABLED: true
               LLDAP_LDAPS_OPTIONS__KEY_FILE: /certs/tls.key

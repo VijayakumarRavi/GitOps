@@ -12,7 +12,21 @@ spec:
         kind: HelmRepository
         name: crunchy-userinit
         namespace: flux-system
-      version: 0.0.4
+      version: 1.0.4
   interval: 30m
   values:
     fullnameOverride: crunchy-userinit-controller
+  # We use postRenderers to rip out the livenessProbe because the upstream Helm chart has a bug.
+  # The chart's deployment template checks if the object `livenessProbe` exists, while the
+  # python app arg template checks `livenessProbe.enabled`. If we set `livenessProbe.enabled: false`,
+  # the probe gets injected by Kubernetes but the app doesn't serve it, causing a CrashLoop.
+  # Setting it to null falls back to the default `enabled: true`, hardcoding 0.0.0.0 (IPv4), breaking our IPv6 cluster.
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: crunchy-userinit-controller
+            patch: |-
+              - op: remove
+                path: /spec/template/spec/containers/0/livenessProbe
