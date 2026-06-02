@@ -75,6 +75,8 @@ spec:
   clientIPDetection:
     xForwardedFor:
       numTrustedHops: 1
+  proxyProtocol:
+    optional: true
   connection:
     bufferLimit: 64Mi
     maxAcceptPerSocketEvent: 0

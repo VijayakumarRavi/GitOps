@@ -38,8 +38,6 @@ spec:
               fallthrough in-addr.arpa ip6.arpa
             name: kubernetes
             parameters: cluster.local in-addr.arpa ip6.arpa
-          - name: dns64
-            parameters: 64:ff9b::/96
           - name: forward
             parameters: . /etc/resolv.conf
           - name: cache

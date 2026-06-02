@@ -16,14 +16,15 @@ spec:
       version: 1.19.4
   interval: 30m
   values:
-    # ── IPv6-only deltas from luffy ────────────────────────────────────────────
     externalIPs:
       enabled: false
     ipam:
       mode: cluster-pool
       operator:
         clusterPoolIPv4PodCIDRList: ["10.244.0.0/16"]
-        clusterPoolIPv6PodCIDRList: ["fd10:244::/104"]
+        clusterPoolIPv4MaskSize: 24
+        clusterPoolIPv6PodCIDRList: ["fd10:244::/56"]
+        clusterPoolIPv6MaskSize: 64
     ipv4:
       enabled: true
     ipv6:
@@ -32,9 +33,6 @@ spec:
     kubeProxyReplacementHealthzBindAddr: "[::]:10256"
     l2announcements:
       enabled: false
-    nat46x64Gateway:
-      enabled: true
-    # ── Identical to luffy from here ───────────────────────────────────────────
     dashboards:
       annotations:
         grafana_folder: Cilium
