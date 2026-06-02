@@ -1,4 +1,4 @@
-set quiet := true
+set quiet
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 kubernetes_dir := justfile_dir() + '/kubernetes/robin'

@@ -1,5 +1,5 @@
-set positional-arguments := true
-set quiet := true
+set positional-arguments
+set quiet
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 kubernetes_dir := justfile_dir() + '/kubernetes/luffy'
@@ -31,23 +31,11 @@ k8s:
         sleep 5; \
     done
 
-[doc('Fetch kubeconfig')]
-kubeconfig lb="cilium":
-    just log info "Running stage..." "stage" "$0"
-    if ! talosctl --context luffy kubeconfig -n "{{ controller }}" -f --force-context-name luffy {{ justfile_dir() }}; then \
-        just log fatal "Failed to fetch kubeconfig" "stage" "$0"; \
-    fi
-    if [[ "{{ lb }}" != "cilium" ]]; then \
-        if ! kubectl config set-cluster luffy --server "https://{{ controller }}:6443"; then \
-            just log fatal "Failed to set kubectl cluster server address" "stage" "$0"; \
-        fi; \
-    fi
-
 [doc('Wait for nodes to be not-ready')]
 wait:
     just log info "Running stage..." "stage" "$0"
-    if ! kubectl wait nodes --for=condition=Ready=True --all --timeout=10s &>/dev/null; then \
-        until kubectl wait nodes --for=condition=Ready=False --all --timeout=10s &>/dev/null; do \
+    if ! kubectl --context admin@luffy wait nodes --for=condition=Ready=True --all --timeout=10s &>/dev/null; then \
+        until kubectl --context admin@luffy wait nodes --for=condition=Ready=False --all --timeout=10s &>/dev/null; do \
             just log info "Nodes not available, waiting for nodes to be available. Retrying in 5 seconds..." "stage" "$0"; \
             sleep 5; \
         done \

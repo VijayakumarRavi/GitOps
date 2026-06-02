@@ -1,4 +1,4 @@
-set quiet := true
+set quiet
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 mod bootstrap "bootstrap"
@@ -12,73 +12,126 @@ default:
 
 #[doc('Apply local Flux Kustomization')]
 #apply-ks ns ks:
-#    just k8s render-local-ks "{{ ns }}" "{{ ks }}" | kubectl apply --server-side --field-manager=kustomize-controller -f /dev/stdin
+#    just k8s render-local-ks "{{ ns }}" "{{ ks }}" | kubectl --context admin@robin apply --server-side --field-manager=kustomize-controller -f /dev/stdin
 
 [doc('Browse a PVC')]
 browse-pvc namespace claim:
-    kubectl browse-pvc -n {{ namespace }} -i mirror.gcr.io/alpine:latest {{ claim }}
+    kubectl --context admin@robin browse-pvc -n {{ namespace }} -i mirror.gcr.io/alpine:latest {{ claim }}
 
 #[doc('Delete local Flux Kustomization')]
 #delete-ks ns ks:
-#    just k8s render-local-ks "{{ ns }}" "{{ ks }}" | kubectl delete -f /dev/stdin
+#    just k8s render-local-ks "{{ ns }}" "{{ ks }}" | kubectl --context admin@robin delete -f /dev/stdin
 
 [doc('Open a shell on a node')]
 node-shell node:
-    kubectl debug node/{{ node }} -n default -it --image="mirror.gcr.io/alpine:latest" --profile sysadmin
-    kubectl delete pod -n default -l app.kubernetes.io/managed-by=kubectl-debug
+    kubectl --context admin@robin debug node/{{ node }} -n default -it --image="mirror.gcr.io/alpine:latest" --profile sysadmin
+    kubectl --context admin@robin delete pod -n default -l app.kubernetes.io/managed-by=kubectl-debug
 
 [doc('Prune pods in Failed, Pending, or Succeeded state')]
 prune-pods:
     for phase in Failed Pending Succeeded UnexpectedAdmissionError Unknown; do \
-        kubectl delete pods -A --field-selector status.phase="$phase" --ignore-not-found=true; \
+        kubectl --context admin@robin delete pods -A --field-selector status.phase="$phase" --ignore-not-found=true; \
     done
 
 [doc('Snapshot VolSync PVCs')]
 snapshot:
-    kubectl get replicationsources --no-headers -A | while read -r ns name _; do \
-        kubectl -n "$ns" patch replicationsources "$name" --type merge -p '{"spec":{"trigger":{"manual":"$(date +%s)"}}}'; \
+    kubectl --context admin@robin get replicationsources --no-headers -A | while read -r ns name _; do \
+        kubectl --context admin@robin -n "$ns" patch replicationsources "$name" --type merge -p '{"spec":{"trigger":{"manual":"$(date +%s)"}}}'; \
     done
 
 [doc('Suspend or resume VolSync')]
 volsync state:
-    flux {{ state }} kustomization volsync
-    flux -n system {{ state }} helmrelease volsync
-    kubectl -n system scale deployment volsync --replicas {{ if state != "suspend" { "1" } else { "0" } }}
+    flux --context admin@robin {{ state }} kustomization volsync
+    flux --context admin@robin -n system {{ state }} helmrelease volsync
+    kubectl --context admin@robin -n system scale deployment volsync --replicas {{ if state != "suspend" { "1" } else { "0" } }}
 
 [doc('Sync ExternalSecrets')]
 sync-es:
-    kubectl get es --no-headers -A | while read -r ns name _; do \
-        kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite es "$name" force-sync="$(date +%s)"; \
+    kubectl --context admin@robin get es --no-headers -A | while read -r ns name _; do \
+        kubectl --context admin@robin -n "$ns" annotate --field-manager flux-client-side-apply --overwrite es "$name" force-sync="$(date +%s)"; \
     done
 
 [doc('Sync GitRepositories')]
 sync-git:
-    kubectl get gitrepo --no-headers -A | while read -r ns name _; do \
-        kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite gitrepo "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
+    kubectl --context admin@robin get gitrepo --no-headers -A | while read -r ns name _; do \
+        kubectl --context admin@robin -n "$ns" annotate --field-manager flux-client-side-apply --overwrite gitrepo "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
     done
 
 [doc('Sync HelmReleases')]
 sync-hr:
-    kubectl get hr --no-headers -A | while read -r ns name _; do \
-        kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite hr "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)" reconcile.fluxcd.io/forceAt="$(date +%s)"; \
+    kubectl --context admin@robin get hr --no-headers -A | while read -r ns name _; do \
+        kubectl --context admin@robin -n "$ns" annotate --field-manager flux-client-side-apply --overwrite hr "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)" reconcile.fluxcd.io/forceAt="$(date +%s)"; \
     done
 
 [doc('Sync Kustomizations')]
 sync-ks:
-    kubectl get ks --no-headers -A | while read -r ns name _; do \
-        kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite ks "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
+    kubectl --context admin@robin get ks --no-headers -A | while read -r ns name _; do \
+        kubectl --context admin@robin -n "$ns" annotate --field-manager flux-client-side-apply --overwrite ks "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
     done
 
 [doc('Sync OCIRepositories')]
 sync-oci:
-    kubectl get ocirepo --no-headers -A | while read -r ns name _; do \
-        kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite ocirepo "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
+    kubectl --context admin@robin get ocirepo --no-headers -A | while read -r ns name _; do \
+        kubectl --context admin@robin -n "$ns" annotate --field-manager flux-client-side-apply --overwrite ocirepo "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
     done
 
 [doc('View a secret')]
 view-secret namespace secret:
-    kubectl view-secret -n {{ namespace }} {{ secret }}
+    kubectl --context admin@robin view-secret -n {{ namespace }} {{ secret }}
 
 #[private]
 #render-local-ks ns ks:
 #    flux-local build ks --namespace "{{ ns }}" --path "{{ kubernetes_dir }}/flux/cluster" "{{ ks }}"
+
+[doc('Suspend apps and trigger manual backups for VolSync and Postgres')]
+stop-and-backup:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    TIMESTAMP="$(date +%F-%H%M%S)"
+    IGNORE_NS=" flux-system kube-system database volsync-system network storage "
+
+    VOLSYNC_NAMESPACES=$(kubectl --context admin@robin get replicationsources -A -o jsonpath='{range .items[*]}{.metadata.namespace}{"\n"}{end}' | sort -u || true)
+    for ns in $VOLSYNC_NAMESPACES; do
+        if [ "$ns" = "" ]; then continue; fi
+
+        if [[ "$IGNORE_NS" != *" $ns "* ]]; then
+            just log info "Suspending workloads and scaling down apps" "namespace" "$ns"
+            flux --context admin@robin suspend hr --all -n "$ns" >/dev/null 2>&1 || true
+            kubectl --context admin@robin scale deploy,sts --all --replicas=0 -n "$ns" >/dev/null 2>&1 || true
+        fi
+
+        just log info "Triggering VolSync backups" "namespace" "$ns"
+        for rs in $(kubectl --context admin@robin get replicationsources -n "$ns" -o name); do
+            kubectl --context admin@robin patch "$rs" -n "$ns" --type merge -p "{\"spec\":{\"trigger\":{\"manual\":\"${TIMESTAMP}\"}}}" >/dev/null 2>&1
+        done
+    done
+
+    PG_NAMESPACES=$(kubectl --context admin@robin get postgresclusters -A -o jsonpath='{range .items[*]}{.metadata.namespace}{"\n"}{end}' | sort -u || true)
+    for ns in $PG_NAMESPACES; do
+        if [ "$ns" = "" ]; then continue; fi
+        just log info "Triggering Postgres backups" "namespace" "$ns"
+        for pg in $(kubectl --context admin@robin get postgresclusters -n "$ns" -o name); do
+            kubectl --context admin@robin annotate -n "$ns" "$pg" postgres-operator.crunchydata.com/pgbackrest-backup="${TIMESTAMP}" --overwrite >/dev/null 2>&1
+        done
+    done
+
+    just log info "Waiting 15 seconds for backups to provision..."
+    sleep 15
+
+    for ns in $VOLSYNC_NAMESPACES; do
+        if [ "$ns" = "" ] || [[ "$IGNORE_NS" == *" $ns "* ]]; then continue; fi
+        until ! kubectl --context admin@robin get replicationsources -n "$ns" -o jsonpath='{.items[*].status.conditions[?(@.type=="Synchronizing")].status}' | grep -q "True"; do
+            just log info "Waiting for VolSync backups to complete. Retrying in 10 seconds..." "namespace" "$ns"
+            sleep 10
+        done
+    done
+
+    for ns in $PG_NAMESPACES; do
+        if [ "$ns" = "" ]; then continue; fi
+        until ! kubectl --context admin@robin get jobs -l postgres-operator.crunchydata.com/pgbackrest-backup=manual -n "$ns" -o jsonpath='{.items[*].status.active}' | grep -q "1"; do
+            just log info "Waiting for Postgres backups to complete. Retrying in 10 seconds..." "namespace" "$ns"
+            sleep 10
+        done
+    done
+
+    just log info "All manual backups completed successfully"

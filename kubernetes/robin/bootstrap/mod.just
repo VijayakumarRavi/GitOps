@@ -1,5 +1,5 @@
-set positional-arguments := true
-set quiet := true
+set positional-arguments
+set quiet
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 kubernetes_dir := justfile_dir() + '/kubernetes/robin'
@@ -32,18 +32,6 @@ k8s:
         just log info "Kubernetes bootstrap in progress. Retrying in 5 seconds..." "stage" "$0"; \
         sleep 5; \
     done
-
-[doc('Fetch kubeconfig')]
-kubeconfig lb="cilium":
-    just log info "Running stage..." "stage" "$0"
-    if ! talosctl --context robin kubeconfig -n "{{ controller }}" -f --force-context-name admin@robin {{ justfile_dir() }}; then \
-        just log fatal "Failed to fetch kubeconfig" "stage" "$0"; \
-    fi
-    if [[ "{{ lb }}" != "cilium" ]]; then \
-        if ! kubectl config set-cluster admin@robin --server "https://{{ controller }}:6443"; then \
-            just log fatal "Failed to set kubectl cluster server address" "stage" "$0"; \
-        fi; \
-    fi
 
 [doc('Wait for nodes to be not-ready')]
 wait:
