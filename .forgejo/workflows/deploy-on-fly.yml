@@ -24,12 +24,17 @@ jobs:
         uses: https://github.com/superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1 # 1.6
       - name: Determine Modified Files
         id: changes
-        run: |-
-          MODIFIED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | tr '\n' ' ')
-          echo "MODIFIED_FILES=$MODIFIED_FILES" >> "$GITHUB_ENV"
-          echo "Modified Files: $MODIFIED_FILES"
+        run: |
+          echo "Modified Files:"
+          git diff --name-only HEAD~1 HEAD
+
+          if git diff --name-only HEAD~1 HEAD | grep -q "^fly.io/${{ matrix.app }}/"; then
+            echo "modified=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "modified=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Deploy ${{ matrix.app }}
-        if: contains(env.MODIFIED_FILES, format('fly.io/{0}/', matrix.app))
+        if: steps.changes.outputs.modified == 'true'
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |-

@@ -31,11 +31,12 @@ if ! getent group vault-group > /dev/null 2>&1; then
 fi
 if ! id -u vaultuser > /dev/null 2>&1; then
     echo "Creating user $PUID..."
-    useradd -u "$PUID" -g "$PGID" -M -s /bin/false vaultuser
+    useradd -u "$PUID" -g "$PGID" -M -d /home/vaultuser -s /bin/false vaultuser
 fi
 
-# Fix ownership
-chown -R "$PUID:$PGID" /data /restic.sh
+# Ensure restic runtime dirs are writable by the backup user
+mkdir -p /var/log/restic/ /home/vaultuser
+chown -R "$PUID:$PGID" /var/log/restic/ /home/vaultuser /data /restic.sh
 
 # Start background processes
 echo -e "${GREEN}Info: Starting vaultwarden...${NC}"

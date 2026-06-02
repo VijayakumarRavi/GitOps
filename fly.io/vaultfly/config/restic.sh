@@ -1,12 +1,18 @@
 #!/bin/bash
 
 # catch the error in case first pipe command fails (but second succeeds)
-set -o pipefail
+set -euo pipefail
+IFS=$'\n\t'
 # turn on traces, useful while debugging but commented out by default
 # set -o xtrace
 
-RID=`uuidgen`
-LOG="/var/log/restic/$(date +\%Y\%m\%d_\%H\%M\%S).log"
+if [ -z "${RESTIC_HC_PING_UUID:-}" ]; then
+    echo "RESTIC_HC_PING_UUID is not set"
+    exit 1
+fi
+
+RID=$(uuidgen)
+LOG="/var/log/restic/$(date +%Y%m%d_%H%M%S).log"
 
 # create log dir
 mkdir -p /var/log/restic/
@@ -32,20 +38,20 @@ COL_YELLOW=$ESC_SEQ"33;01m"
 COL_RESET=$ESC_SEQ"39;49;00m"
 
 function ok() {
-    log echo -e "$COL_GREEN[ok]$COL_RESET $1"
+    log echo -e "$COL_GREEN[ok]$COL_RESET ${1:-}"
 }
 
 function running() {
-    log echo -en "$COL_BLUE ⇒ $COL_RESET $1..."
+    log echo -en "$COL_BLUE ⇒ $COL_RESET ${1:-}..."
 }
 
 function warn() {
-    log echo -e "$COL_YELLOW[warning]$COL_RESET $1"
+    log echo -e "$COL_YELLOW[warning]$COL_RESET ${1:-}"
 }
 
 function error() {
-    log echo -e "$COL_RED[error]$COL_RESET $1"
-    log echo -e "$2"
+    log echo -e "$COL_RED[error]$COL_RESET ${1:-}"
+    log echo -e "${2:-}"
 }
 
 function notify_and_exit_on_error() {
@@ -72,19 +78,20 @@ function finish_successfully() {
 
 curl -fsS --retry 3 "https://hc-ping.com/${RESTIC_HC_PING_UUID}/start?rid=$RID" >/dev/null 2>&1
 
-restic unlock
-
 running "checking restic config"
-
-run_silently restic cat config
-
-if [ $? -ne 0 ]; then
+if run_silently restic cat config; then
+    ok
+    running "unlocking restic repository"
+    if run_silently restic unlock; then
+        ok
+    else
+        warn "restic unlock failed, continuing anyway"
+    fi
+else
     warn "restic repo either not initialized or erroring out"
     running "trying to initialize it"
     notify_and_exit_on_error "restic init" "Repo init failed"
 fi
-
-ok
 
 running "restic backup"
 notify_and_exit_on_error "restic backup --verbose /data" "Restic backup failed"
