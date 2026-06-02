@@ -12,4 +12,4 @@ parameters:
   volgroup: "openebs-vg"
 provisioner: local.csi.openebs.io
 reclaimPolicy: Delete
-volumeBindingMode: WaitForFirstConsumer
+volumeBindingMode: Immediate
