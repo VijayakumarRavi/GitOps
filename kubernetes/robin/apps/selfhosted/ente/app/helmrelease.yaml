@@ -126,13 +126,6 @@ spec:
                 port: http
 
     persistence:
-      museum-yaml:
-        enabled: true
-        type: configMap
-        name: museum-tpl
-        advancedMounts:
-          ente:
-            server:
               - path: /museum.yaml
                 subPath: museum.yaml
       nginx-conf:
