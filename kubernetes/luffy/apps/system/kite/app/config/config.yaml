@@ -1,0 +1,51 @@
+clusters:
+  - name: luffy
+    inCluster: true
+    default: true
+    prometheusURL: "http://prometheus-operated.monitoring.svc.cluster.local:9090"
+  - name: robin
+    description: "Robin cluster"
+    config: |
+        {{ .kite_robin_config }}
+
+oauth:
+  - name: pocketID
+    enabled: true
+    clientId: kite
+    clientSecret: "{{ .kite_pocketid_client_secret }}"
+    issuer: "{{ .kite_pocketid_url }}/.well-known/openid-configuration"
+    scopes: "openid,profile,email,groups"
+    usernameClaim: "email"
+    groupsClaim: "groups"
+    allowedGroups: "admins,viewers,editors"
+
+ldap:
+  enabled: false
+
+rbac:
+  roles:
+    - name: admin
+      description: "Administrator role with full access"
+      clusters: ["*"]
+      namespaces: ["*"]
+      resources: ["*"]
+      verbs: ["*"]
+    - name: viewer
+      description: "Read-only access"
+      clusters: ["*"]
+      namespaces: ["*"]
+      resources: ["*"]
+      verbs: ["get", "log"]
+    - name: editor
+      description: "Editor role with limited access"
+      clusters: ["*"]
+      namespaces: ["*"]
+      resources: ["*"]
+      verbs: ["get", "create", "update", "log"]
+  roleMapping:
+    - name: admin
+      oidcGroups: ["admins"]
+    - name: viewer
+      oidcGroups: ["viewers"]
+    - name: editor
+      oidcGroups: ["editors"]

@@ -15,16 +15,29 @@ spec:
       version: 0.12.2
   interval: 30m
   values:
+    host: "https://kite.${CLUSTER_DOMAIN}"
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+    secret:
+      existingSecret: kite-secret
+    config:
+     enabled: true
+     existingSecret: "kite-secret"
     db:
-      sqlite:
-        persistence:
-          pvc:
-            enabled: true
-            size: 1Gi
-      type: sqlite
+      type: postgres
+    extraEnvs:
+      - name: DB_TYPE
+        value: "postgres"
+      - name: DB_DSN
+        valueFrom:
+          secretKeyRef:
+            name: kite-db
+            key: DB_DSN
     gateway:
-      className: envoy
       enabled: true
+      name: envoy
+      namespace: network
+      className: envoy
       httpRoutes:
         - hostnames:
             - kite.${CLUSTER_DOMAIN}
@@ -37,7 +50,3 @@ spec:
                 - path:
                     type: PathPrefix
                     value: /
-      name: envoy
-      namespace: network
-    secret:
-      existingSecret: kite-secret

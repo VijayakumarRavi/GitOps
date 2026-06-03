@@ -151,6 +151,10 @@ spec:
       name: immich
       password:
         type: AlphaNumeric
+    - databases: [kite]
+      name: kite
+      password:
+        type: AlphaNumeric
     - databases: [paperless]
       name: paperless
       password:

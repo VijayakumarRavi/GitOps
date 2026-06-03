@@ -19,3 +19,7 @@ spec:
   targetNamespace: system
   timeout: 10m
   wait: false
+  dependsOn:
+    - name: envoy-gateway-config
+    - name: external-secrets-stores
+    - name: crunchy-postgres-secretstore
