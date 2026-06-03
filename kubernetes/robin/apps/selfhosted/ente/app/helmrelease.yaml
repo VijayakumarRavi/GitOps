@@ -5,6 +5,18 @@ kind: HelmRelease
 metadata:
   name: ente
 spec:
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Service
+            patch: |
+              - op: add
+                path: /spec/ipFamilies
+                value: ["IPv4"]
+              - op: add
+                path: /spec/ipFamilyPolicy
+                value: SingleStack
   chartRef:
     kind: OCIRepository
     name: app-template
