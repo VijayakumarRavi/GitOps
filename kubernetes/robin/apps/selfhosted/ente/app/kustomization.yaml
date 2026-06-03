@@ -6,6 +6,9 @@ configMapGenerator:
   - files:
       - ./config/museum.yaml
     name: museum-tpl
+  - files:
+      - ./config/nginx.conf
+    name: nginx-conf
 generatorOptions:
   disableNameSuffixHash: true
 resources:

@@ -5,18 +5,6 @@ kind: HelmRelease
 metadata:
   name: ente
 spec:
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              kind: Service
-            patch: |
-              - op: add
-                path: /spec/ipFamilies
-                value: ["IPv4"]
-              - op: add
-                path: /spec/ipFamilyPolicy
-                value: SingleStack
   chartRef:
     kind: OCIRepository
     name: app-template
@@ -137,61 +125,58 @@ spec:
               - identifier: embed
                 port: http
 
-    #    persistence:
-    #      museum-yaml:
-    #        enabled: true
-    #        type: secret
-    #        name: museum-yaml
-    #        globalMounts:
-    #          - path: /museum.yaml
-    #
+    persistence:
+      museum-yaml:
+        enabled: true
+        type: configMap
+        name: museum-tpl
+        advancedMounts:
+          ente:
+            server:
+              - path: /museum.yaml
+                subPath: museum.yaml
+      nginx-conf:
+        enabled: true
+        type: configMap
+        name: nginx-conf
+        advancedMounts:
+          ente:
+            web:
+              - path: /etc/nginx/conf.d/default.conf
+                subPath: nginx.conf
     service:
       api:
         controller: ente
-        ipFamilyPolicy: SingleStack
-        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 8080
       photos:
         controller: ente
-        ipFamilyPolicy: SingleStack
-        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 3000
       accounts:
         controller: ente
-        ipFamilyPolicy: SingleStack
-        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 3001
       public-albums:
         controller: ente
-        ipFamilyPolicy: SingleStack
-        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 3002
       cast:
         controller: ente
-        ipFamilyPolicy: SingleStack
-        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 3004
       share:
         controller: ente
-        ipFamilyPolicy: SingleStack
-        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 3005
       embed:
         controller: ente
-        ipFamilyPolicy: SingleStack
-        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 3006
