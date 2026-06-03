@@ -89,8 +89,8 @@ spec:
           whenUnsatisfiable: DoNotSchedule
   metadata:
     labels:
-      crunchy-userinit.ramblurr.github.com/enabled: "true"
-      crunchy-userinit.ramblurr.github.com/superuser: vijay
+      crunchy-userinit.drummyfloyd.github.com/enabled: "true"
+      crunchy-userinit.drummyfloyd.github.com/superuser: vijay
   monitoring:
     pgmonitor:
       exporter:
