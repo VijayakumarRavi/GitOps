@@ -21,6 +21,11 @@ spec:
             image:
               repository: ghcr.io/ente-io/server
               tag: latest@sha256:6a1a76df708c29affb833cf2a89f1b4b318f58f15e64cb0249e76cd8cd1df304
+            env:
+              - name: HOST
+                value: "::"
+              - name: ENTE_HTTP_HOST
+                value: "::"
             envFrom:
               - secretRef:
                   name: ente-secret
@@ -34,6 +39,11 @@ spec:
             image:
               repository: ghcr.io/ente-io/web
               tag: latest@sha256:e1ec302a5c05c3ebc2eb2633c24d0c9226e47c26b8cacd3a306cee6785f0cffa
+            env:
+              - name: HOST
+                value: "::"
+              - name: HOSTNAME
+                value: "::"
             envFrom:
               - secretRef:
                   name: ente-secret
@@ -126,36 +136,50 @@ spec:
     service:
       api:
         controller: ente
+        ipFamilyPolicy: SingleStack
+        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 8080
       photos:
         controller: ente
+        ipFamilyPolicy: SingleStack
+        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 3000
       accounts:
         controller: ente
+        ipFamilyPolicy: SingleStack
+        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 3001
       public-albums:
         controller: ente
+        ipFamilyPolicy: SingleStack
+        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 3002
       cast:
         controller: ente
+        ipFamilyPolicy: SingleStack
+        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 3004
       share:
         controller: ente
+        ipFamilyPolicy: SingleStack
+        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 3005
       embed:
         controller: ente
+        ipFamilyPolicy: SingleStack
+        ipFamilies: ["IPv4"]
         ports:
           http:
             port: 3006
