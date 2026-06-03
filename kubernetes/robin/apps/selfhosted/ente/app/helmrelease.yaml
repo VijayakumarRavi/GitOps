@@ -126,8 +126,6 @@ spec:
                 port: http
 
     persistence:
-              - path: /museum.yaml
-                subPath: museum.yaml
       nginx-conf:
         enabled: true
         type: configMap
