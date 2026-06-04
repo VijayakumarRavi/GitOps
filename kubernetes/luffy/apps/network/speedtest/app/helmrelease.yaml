@@ -17,8 +17,8 @@ spec:
         containers:
           app:
             image:
-              repository: lscr.io/linuxserver/speedtest-tracker
-              tag: v1.2.3-ls77
+              repository: ghcr.io/linuxserver/speedtest-tracker
+              tag: 1.14.2@sha256:79c00631575dec6d91c10ed904c211224f00813013a305c2284324e195a538bb
             env:
               APP_TIMEZONE: 'Asia/Kolkata'
               APP_URL: 'https://speedtest.${CLUSTER_DOMAIN}'
