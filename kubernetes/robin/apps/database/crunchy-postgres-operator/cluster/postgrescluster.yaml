@@ -81,7 +81,7 @@ spec:
         parameters:
           listen_addresses: "*"
           autovacuum_analyze_scale_factor: "0.02"
-          
+
           # Small latency win
           autovacuum_naptime: "10s"
           autovacuum_vacuum_scale_factor: "0.05"
@@ -148,7 +148,7 @@ spec:
       name: forgejo
       password:
         type: AlphaNumeric
-    - databases: [pangolin]
-      name: pangolin
+    - databases: [gotosocial]
+      name: gotosocial
       password:
         type: AlphaNumeric
