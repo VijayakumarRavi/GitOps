@@ -37,8 +37,8 @@ spec:
             envFrom:
               - secretRef:
                   name: gotosocial-db
-              #- secretRef:
-              #    name: gotosocial-secret
+              - secretRef:
+                  name: gotosocial-secret
             probes:
               liveness:
                 enabled: true
