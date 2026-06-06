@@ -69,6 +69,8 @@ spec:
         trustCRDsExist: true
     rollOutCiliumPods: true
     securityContext:
+      seLinuxOptions:
+        type: spc_t
       capabilities:
         ciliumAgent:
           - CHOWN
