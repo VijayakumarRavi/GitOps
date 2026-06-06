@@ -9,6 +9,6 @@ resources:
   - ./adguard/ks.yaml
   - ./ente/ks.yaml
   # - ./gotosocial/ks.yaml
-  - ./kanidm/ks.yaml
+  # - ./kanidm/ks.yaml
   - ./lldap/ks.yaml
   - ./pocketid/ks.yaml
