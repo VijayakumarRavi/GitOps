@@ -147,6 +147,10 @@ spec:
       name: freshrss
       password:
         type: AlphaNumeric
+    - databases: [forgejo]
+      name: forgejo
+      password:
+        type: AlphaNumeric
     - databases: [immich]
       name: immich
       password:

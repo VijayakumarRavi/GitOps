@@ -26,6 +26,17 @@ spec:
         certificateRefs:
           - kind: Secret
             name: ${CLUSTER_DOMAIN}-tls
+    - allowedRoutes:
+        kinds:
+          - kind: TCPRoute
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: dev
+      name: ssh
+      port: 22
+      protocol: TCP
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
 apiVersion: gateway.networking.k8s.io/v1

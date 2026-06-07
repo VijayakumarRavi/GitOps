@@ -144,10 +144,6 @@ spec:
       name: ente
       password:
         type: AlphaNumeric
-    - databases: [forgejo]
-      name: forgejo
-      password:
-        type: AlphaNumeric
     - databases: [gotosocial]
       name: gotosocial
       password:

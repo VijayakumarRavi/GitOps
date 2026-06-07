@@ -21,8 +21,8 @@ spec:
     secret:
       existingSecret: kite-secret
     config:
-     enabled: true
-     existingSecret: "kite-secret"
+      enabled: true
+      existingSecret: "kite-secret"
     db:
       type: postgres
     extraEnvs:

@@ -65,13 +65,6 @@ machine:
         backend envoy-http
           mode tcp
           server envoy [op://automation/talos-robin/NODE_IPV6]:80 send-proxy-v2 check
-        frontend forgejo-ssh
-          mode tcp
-          bind op://automation/talos-robin/NODE_IPV4:22
-          default_backend envoy-ssh
-        backend envoy-ssh
-          mode tcp
-          server envoy [op://automation/talos-robin/NODE_IPV6]:22 check
     - op: overwrite
       path: /etc/nfsmount.conf
       permissions: 0o644

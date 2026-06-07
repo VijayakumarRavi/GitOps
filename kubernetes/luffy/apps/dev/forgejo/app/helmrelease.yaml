@@ -33,7 +33,7 @@ spec:
               FORGEJO__actions__ENABLED: true
               FORGEJO__cache__ADAPTER: redis
               FORGEJO__cache__ENABLED: true
-              FORGEJO__cache__HOST: &redis redis://forgejo-redis:6379
+              FORGEJO__cache__HOST: &redis redis://dragonfly.database.svc.cluster.local:6379
               FORGEJO__queue__CONN_STR: *redis
               FORGEJO__queue__TYPE: redis
               FORGEJO__server__ROOT_URL: "https://git.${CLUSTER_DOMAIN}"

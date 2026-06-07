@@ -15,13 +15,6 @@ spec:
       config:
         data:
           podspec-default.yaml: |-
-            affinity:
-              podAntiAffinity:
-                requiredDuringSchedulingIgnoredDuringExecution:
-                  - labelSelector:
-                      matchLabels:
-                        app.kubernetes.io/managed-by: forgejo-runner
-                    topologyKey: kubernetes.io/hostname
             containers:
               - env:
                   - name: DEBIAN_FRONTEND
@@ -37,13 +30,6 @@ spec:
                     memory: 256Mi
             restartPolicy: Never
           podspec-dind.yaml: |-
-            affinity:
-              podAntiAffinity:
-                requiredDuringSchedulingIgnoredDuringExecution:
-                  - labelSelector:
-                      matchLabels:
-                        app.kubernetes.io/managed-by: forgejo-runner
-                    topologyKey: kubernetes.io/hostname
             initContainers:
               - name: dind
                 image: docker:29-dind
@@ -125,7 +111,7 @@ spec:
                   poll_timeout: 10m
                   labels: "app.kubernetes.io/instance=env-$${ENV_ID}"
             runner:
-              capacity: 3
+              capacity: 5
               file: /persistent/.runner
               labels:
                 - ubuntu-latest:k8s:/config/podspec-default.yaml
@@ -178,7 +164,7 @@ spec:
               - |
                 exec /bin/forgejo-runner daemon \
                   --config /config/runner.yaml \
-                  --url "https://git.robin.${LAB_DOMAIN}" \
+                  --url "http://forgejo-app:3000" \
                   --uuid "$(cat /etc/forgejo-runner-secret/uuid)" \
                   --token-url file:///etc/forgejo-runner-secret/token
             resources:
