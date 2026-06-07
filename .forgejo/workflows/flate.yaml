@@ -1,0 +1,144 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Flate
+
+on:
+  pull_request:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ forgejo.workflow }}-${{ forgejo.event.number || forgejo.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  filter-changes:
+    name: Filter changes
+    runs-on: ubuntu-latest
+    outputs:
+      clusters: ${{ steps.cluster.outputs.clusters }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Get changed files
+        id: changed-files
+        uses: https://github.com/bjw-s-labs/action-changed-files@a9a36fb08ce06db9b02fbd8026cc2c0945eb9841 # v0.6.0
+        with:
+          patterns: |-
+            kubernetes/base/**
+            kubernetes/luffy/**
+            kubernetes/robin/**
+
+      - name: Select clusters
+        id: cluster
+        shell: bash
+        env:
+          CHANGED_FILES: ${{ steps.changed-files.outputs.changed_files }}
+        run: |-
+          # 1. Debug Before: Inspect the raw inputs from the file-filter action
+          echo "=== Changed Files Input ==="
+          echo "$CHANGED_FILES" | jq .
+          echo "=================================="
+
+          # 2. Run the evaluation logic
+          clusters=$(jq -c '
+            [
+              .[] |
+              if startswith("kubernetes/base/") then ("luffy", "robin")
+              elif startswith("kubernetes/luffy/") then "luffy"
+              elif startswith("kubernetes/robin/") then "robin"
+              else empty
+              end
+            ] | unique
+          ' <<< "$CHANGED_FILES")
+
+          # 3. Debug After: Inspect the parsed result that gets sent to the matrix
+          echo "=== Calculated Cluster Matrix ==="
+          echo "$clusters" | jq .
+          echo "========================================="
+
+          echo "clusters=${clusters}" >> "${FORGEJO_OUTPUT:-/dev/null}"
+
+  flate:
+    if: ${{ needs.filter-changes.outputs.clusters != '[]' }}
+    needs: filter-changes
+    name: Flate - Test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        cluster: ${{ fromJson(needs.filter-changes.outputs.clusters) }}
+    env:
+      FLATE_PATH: ./kubernetes/${{ matrix.cluster }}/flux/cluster
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install flate
+        uses: https://github.com/home-operations/flate/action@2e60db3b5de50864088cf597c2ca801dc274793b # v0.3.2
+        with:
+          token: ""
+
+      - name: Run flate test
+        run: flate test all --base ${{ forgejo.event.repository.default_branch }}
+
+      - name: Run flate diff
+        id: diff
+        run: |-
+          diff=$(flate diff all)
+          echo "Changes:"
+          echo "${diff}"
+          {
+            echo 'diff<<EOF'
+            echo "${diff}"
+            echo 'EOF'
+          } >> "${FORGEJO_OUTPUT}"
+
+      - name: Add Comment
+        if: ${{ steps.diff.outputs.diff != '' }}
+        env:
+          MARKER: "<!-- sticky-comment: flate -->"
+          HEADER: "Changes:"
+          GH_TOKEN: ${{ secrets.BOTPUNK_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          DIFF_CONTENT: ${{ steps.diff.outputs.diff }}
+          CLUSTER: ${{ matrix.cluster }}
+        run: |-
+          DIFF_LENGTH=${#DIFF_CONTENT}
+
+          if [[ ${DIFF_LENGTH} -gt 60000 ]]; then
+            RUN_URL="${{ forgejo.api_url }}/repos/${{ forgejo.repository }}/actions/runs/${{ forgejo.run_id }}"
+            BODY=$(printf $'%%s\n<details open>\n  <summary>%s (%%d chars — too large to post)</summary>\n\nDiff exceeds size limit. View the [workflow run](%%s) for full output.</details>' \
+              "${MARKER}" "${HEADER}" "${DIFF_LENGTH}" "${RUN_URL}")
+          else
+            BODY=$(printf $'%s\n<details open>\n  <summary>%s</summary>\n\n```diff\n%s\n```\n\n</details>' \
+              "${MARKER}" "${HEADER}" "${DIFF_CONTENT}")
+          fi
+
+          BODY_JSON=$(jq -Rs '{"body": .}' <<< "${BODY}")
+
+          COMMENT_ID=$(curl -s \
+            -H "Authorization: token ${GH_TOKEN}" \
+            "${{ forgejo.api_url }}/repos/${{ forgejo.repository }}/issues/${PR_NUMBER}/comments" \
+            | jq -r --arg marker "${MARKER}" '.[] | select(.body | startswith($marker)) | .id' | head -1)
+
+          if [[ -n "${COMMENT_ID}" ]]; then
+            curl -s -X PATCH \
+              -H "Authorization: token ${GH_TOKEN}" \
+              -H "Content-Type: application/json" \
+              "${{ forgejo.api_url }}/repos/${{ forgejo.repository }}/issues/comments/${COMMENT_ID}" \
+              -d "${BODY_JSON}"
+          else
+            curl -s -X POST \
+              -H "Authorization: token ${GH_TOKEN}" \
+              -H "Content-Type: application/json" \
+              "${{ forgejo.api_url }}/repos/${{ forgejo.repository }}/issues/${PR_NUMBER}/comments" \
+              -d "${BODY_JSON}"
+          fi

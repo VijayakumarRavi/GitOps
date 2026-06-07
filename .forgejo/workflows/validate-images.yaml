@@ -1,0 +1,146 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Validate Images
+
+on:
+  pull_request:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ forgejo.workflow }}-${{ forgejo.event.number || forgejo.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  filter-changes:
+    name: Filter changes
+    runs-on: ubuntu-latest
+    outputs:
+      clusters: ${{ steps.cluster.outputs.clusters }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Get changed files
+        id: changed-files
+        uses: https://github.com/bjw-s-labs/action-changed-files@a9a36fb08ce06db9b02fbd8026cc2c0945eb9841 # v0.6.0
+        with:
+          patterns: |-
+            kubernetes/base/**
+            kubernetes/luffy/**
+            kubernetes/robin/**
+
+      - name: Select clusters
+        id: cluster
+        shell: bash
+        env:
+          CHANGED_FILES: ${{ steps.changed-files.outputs.changed_files }}
+        run: |-
+          # 1. Debug Before: Inspect the raw inputs from the file-filter action
+          echo "=== Changed Files Input ==="
+          echo "$CHANGED_FILES" | jq .
+          echo "=================================="
+
+          # 2. Run the evaluation logic
+          clusters=$(jq -c '
+            [
+              .[] |
+              if startswith("kubernetes/base/") then ("luffy", "robin")
+              elif startswith("kubernetes/luffy/") then "luffy"
+              elif startswith("kubernetes/robin/") then "robin"
+              else empty
+              end
+            ] | unique
+          ' <<< "$CHANGED_FILES")
+
+          # 3. Debug After: Inspect the parsed result that gets sent to the matrix
+          echo "=== Calculated Cluster Matrix ==="
+          echo "$clusters" | jq .
+          echo "========================================="
+
+          echo "clusters=${clusters}" >> "${FORGEJO_OUTPUT:-/dev/null}"
+
+  extract-images:
+    if: ${{ needs.filter-changes.outputs.clusters != '[]' }}
+    name: Extract Images
+    runs-on: ubuntu-latest
+    needs:
+      - filter-changes
+    outputs:
+      images: ${{ steps.extract-images.outputs.images }}
+    strategy:
+      fail-fast: false
+      matrix:
+        cluster: ${{ fromJson(needs.filter-changes.outputs.clusters) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install flate
+        uses: https://github.com/home-operations/flate/action@2e60db3b5de50864088cf597c2ca801dc274793b # v0.3.2
+        with:
+          token: ""
+
+      - name: Extract Images
+        id: extract-images
+        env:
+          FLATE_OUTPUT: json
+          FLATE_PATH: ./kubernetes/${{ matrix.cluster }}/flux/cluster
+        run: |
+          images=$(flate diff images)
+          echo "Changed images:"
+          echo "${images}" | yq --prettyPrint
+
+          # Ensure matrix is never empty to prevent Forgejo from blocking downstream jobs
+          if [ "${images}" = "[]" ]; then
+              images='["__skip__"]'
+          fi
+
+          {
+            echo 'images<<EOF'
+            echo "${images}"
+            echo 'EOF'
+          } >> "${FORGEJO_OUTPUT}"
+
+  image-availability-check:
+    name: Image Availability Check
+    runs-on: docker
+    needs:
+      - extract-images
+    strategy:
+      matrix:
+        image: ${{ fromJSON(needs.extract-images.outputs.images) }}
+      max-parallel: 4
+      fail-fast: false
+    env:
+      MATRIX_IMAGE: ${{ matrix.image }}
+    steps:
+      - name: Validate Image Availability
+        run: |
+          if [ "${MATRIX_IMAGE}" = "__skip__" ]; then
+              echo "No new images to validate"
+              exit 0
+          fi
+          docker pull "${MATRIX_IMAGE}"
+
+  validation-result:
+    needs:
+      - extract-images
+      - image-availability-check
+    if: ${{ !cancelled() }}
+    name: Validation Result
+    runs-on: ubuntu-latest
+    steps:
+      - name: Any jobs failed?
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+      - name: All jobs passed or skipped?
+        if: ${{ !contains(needs.*.result, 'failure') }}
+        run: echo "All jobs passed or skipped" && echo "${{ toJSON(needs.*.result) }}"
