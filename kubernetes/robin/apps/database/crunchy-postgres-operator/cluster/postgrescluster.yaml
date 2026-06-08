@@ -144,7 +144,7 @@ spec:
       name: ente
       password:
         type: AlphaNumeric
-    - databases: [gotosocial]
-      name: gotosocial
+    - databases: [stalwart]
+      name: stalwart
       password:
         type: AlphaNumeric

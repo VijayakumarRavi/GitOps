@@ -10,3 +10,4 @@ resources:
   - ./ente/ks.yaml
   - ./lldap/ks.yaml
   - ./pocketid/ks.yaml
+  - ./stalwart/ks.yaml

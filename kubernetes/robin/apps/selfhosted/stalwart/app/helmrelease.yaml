@@ -1,0 +1,248 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: stalwart
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 30m
+  timeout: 1m
+  values:
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 2000
+        fsGroupChangePolicy: OnRootMismatch
+        runAsUser: 2000
+        runAsGroup: 2000
+        runAsNonRoot: true
+    controllers:
+      stalwart:
+        type: statefulset
+        pod:
+          imagePullSecrets:
+            - name: docker-registry-pull-secret
+        annotations:
+          reloader.stakater.com/auto: "true"
+        replicas: 1
+        containers:
+          mail-server:
+            image:
+              repository: docker.io/vijaysrv/stalwart
+              tag: v0.16.8
+            env:
+              STALWART_PUBLIC_URL: https://mail.${CLUSTER_DOMAIN}
+              STALWART_HOSTNAME: Robin
+            probes:
+              liveness: &stalwartHealth
+                enabled: false
+                path: /health
+                port: 8080
+              readiness: *stalwartHealth
+            resources:
+              requests:
+                cpu: 500m
+                memory: 512Mi
+              limits:
+                cpu: "1"
+                memory: 1Gi
+            securityContext:
+              readOnlyRootFilesystem: true
+          webmail:
+            image:
+              repository: ghcr.io/bulwarkmail/webmail
+              tag: v1.7.3
+            env:
+              HOSTNAME: "::"
+              PORT: 3000
+              APP_NAME: "Vjlab Webmail"
+              APP_SHORT_NAME: "Vjlab"
+              LOGIN_COMPANY_NAME: "Vjlab"
+              JMAP_SERVER_URL: https://mail.${CLUSTER_DOMAIN}
+              STALWART_FEATURES: true
+              BULWARK_TELEMETRY: "off"
+              LOG_LEVEL: info
+            probes:
+              liveness: &webmailHealth
+                enabled: true
+                path: /health
+                port: 3000
+              readiness: *webmailHealth
+            resources:
+              requests:
+                cpu: 500m
+                memory: 512Mi
+              limits:
+                cpu: "1"
+                memory: 1Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: false
+          redis:
+            image:
+              repository: ghcr.io/valkey-io/valkey
+              tag: 9.1.0
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              runAsGroup: 999
+              runAsNonRoot: true
+              runAsUser: 999
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: true
+    route:
+      mail:
+        hostnames:
+          - mail.${CLUSTER_DOMAIN}
+        parentRefs:
+          - name: envoy
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: jmap
+                port: 8080
+      webmail:
+        hostnames:
+          - webmail.${CLUSTER_DOMAIN}
+        parentRefs:
+          - name: envoy
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: webmail
+                port: 3000
+      smtp:
+        kind: TCPRoute
+        parentRefs:
+          - name: envoy
+            namespace: network
+            sectionName: smtp
+        rules:
+          - backendRefs:
+              - name: stalwart-smtp
+                port: 25
+      smtps:
+        kind: TLSRoute
+        parentRefs:
+          - name: envoy
+            namespace: network
+            sectionName: smtps
+        hostnames:
+          - mail.${CLUSTER_DOMAIN}
+        rules:
+          - backendRefs:
+              - name: stalwart-smtps
+                port: 465
+      smtp-submission:
+        kind: TCPRoute
+        parentRefs:
+          - name: envoy
+            namespace: network
+            sectionName: smtp-submission
+        rules:
+          - backendRefs:
+              - name: stalwart-smtp-submission
+                port: 587
+      imaps:
+        kind: TLSRoute
+        parentRefs:
+          - name: envoy
+            namespace: network
+            sectionName: imaps
+        hostnames:
+          - mail.${CLUSTER_DOMAIN}
+        rules:
+          - backendRefs:
+              - name: stalwart-imaps
+                port: 993
+      managesieve:
+        kind: TCPRoute
+        parentRefs:
+          - name: envoy
+            namespace: network
+            sectionName: managesieve
+        rules:
+          - backendRefs:
+              - name: stalwart-managesieve
+                port: 4190
+
+    service:
+      jmap:
+        controller: stalwart
+        primary: true
+        ports:
+          http:
+            port: 8080
+      smtp:
+        controller: stalwart
+        ports:
+          smtp:
+            port: 25
+      smtps:
+        controller: stalwart
+        ports:
+          smtps:
+            port: 465
+      smtp-submission:
+        controller: stalwart
+        ports:
+          submission:
+            port: 587
+      imaps:
+        controller: stalwart
+        ports:
+          imaps:
+            port: 993
+      managesieve:
+        controller: stalwart
+        ports:
+          sieve:
+            port: 4190
+      webmail:
+        controller: stalwart
+        ports:
+          http:
+            port: 3000
+
+    persistence:
+      data:
+        existingClaim: stalwart-data
+        advancedMounts:
+          stalwart:
+            mail-server:
+              - path: /etc/stalwart
+                subPath: etc
+              - path: /var/lib/stalwart
+                subPath: lib
+            webmail:
+              - path: /app/data
+                subPath: data
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          stalwart:
+            redis:
+              - path: /data
+                subPath: data
+      # config:
+      #   type: secret
+      #   name: stalwart-config
+      #   globalMounts:
+      #     - path: /etc/stalwart

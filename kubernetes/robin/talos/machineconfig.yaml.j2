@@ -49,22 +49,57 @@ machine:
           daemon
         defaults
           timeout connect 5s
-          timeout client  30s
-          timeout server  30s
+          timeout client 30m
+          timeout server 30m
         frontend https
           mode tcp
           bind op://automation/talos-robin/NODE_IPV4:443
           default_backend envoy-https
         backend envoy-https
           mode tcp
-          server envoy [op://automation/talos-robin/NODE_IPV6]:443 send-proxy-v2 check
+          server envoy [op://automation/talos-robin/NODE_IPV6]:443 check
         frontend http
           mode tcp
           bind op://automation/talos-robin/NODE_IPV4:80
           default_backend envoy-http
         backend envoy-http
           mode tcp
-          server envoy [op://automation/talos-robin/NODE_IPV6]:80 send-proxy-v2 check
+          server envoy [op://automation/talos-robin/NODE_IPV6]:80 check
+        frontend smtp
+          mode tcp
+          bind op://automation/talos-robin/NODE_IPV4:25
+          default_backend envoy-smtp
+        backend envoy-smtp
+          mode tcp
+          server envoy [op://automation/talos-robin/NODE_IPV6]:25 check
+        frontend smtps
+          mode tcp
+          bind op://automation/talos-robin/NODE_IPV4:465
+          default_backend envoy-smtps
+        backend envoy-smtps
+          mode tcp
+          server envoy [op://automation/talos-robin/NODE_IPV6]:465 check
+        frontend smtp-submission
+          mode tcp
+          bind op://automation/talos-robin/NODE_IPV4:587
+          default_backend envoy-smtp-submission
+        backend envoy-smtp-submission
+          mode tcp
+          server envoy [op://automation/talos-robin/NODE_IPV6]:587 check
+        frontend imaps
+          mode tcp
+          bind op://automation/talos-robin/NODE_IPV4:993
+          default_backend envoy-imaps
+        backend envoy-imaps
+          mode tcp
+          server envoy [op://automation/talos-robin/NODE_IPV6]:993 check
+        frontend managesieve
+          mode tcp
+          bind op://automation/talos-robin/NODE_IPV4:4190
+          default_backend envoy-managesieve
+        backend envoy-managesieve
+          mode tcp
+          server envoy [op://automation/talos-robin/NODE_IPV6]:4190 check
     - op: overwrite
       path: /etc/nfsmount.conf
       permissions: 0o644

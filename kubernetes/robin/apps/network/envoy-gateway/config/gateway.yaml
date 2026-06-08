@@ -25,6 +25,52 @@ spec:
             name: ${CLUSTER_DOMAIN}-https-tls
           - kind: Secret
             name: ${LAB_DOMAIN}-tls
+
+    # SMTP
+    - name: smtp
+      protocol: TCP
+      port: 25
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    # SMTPS
+    - name: smtps
+      protocol: TLS
+      port: 465
+      hostname: mail.${CLUSTER_DOMAIN}
+      tls:
+        mode: Passthrough
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    # SMTP Submission
+    - name: smtp-submission
+      protocol: TCP
+      port: 587
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    # IMAPS
+    - name: imaps
+      protocol: TLS
+      port: 993
+      hostname: mail.${CLUSTER_DOMAIN}
+      tls:
+        mode: Passthrough
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    # ManageSieve
+    - name: managesieve
+      protocol: TCP
+      port: 4190
+      allowedRoutes:
+        namespaces:
+          from: All
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
 apiVersion: gateway.networking.k8s.io/v1
