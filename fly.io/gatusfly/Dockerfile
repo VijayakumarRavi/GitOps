@@ -1,7 +1,7 @@
 ARG GATUS_VERSION=v5.36.0
 ARG TAILSCALE_VERSION=v1.98.4
 ARG DNSPROXY_VERSION=v0.81.3
-ARG CLOUDFLARED_VERSION=2026.5.2
+ARG CLOUDFLARED_VERSION=2026.6.0
 
 # Fetch the latest tailscale package from it's official Docker image
 FROM tailscale/tailscale:${TAILSCALE_VERSION} as tailscale

@@ -1,5 +1,5 @@
 ARG POCKETID_VERSION=v2.8.0
-ARG CLOUDFLARED_VERSION=2026.5.2
+ARG CLOUDFLARED_VERSION=2026.6.0
 
 # Builder for downloading dependencies
 FROM alpine as builder
