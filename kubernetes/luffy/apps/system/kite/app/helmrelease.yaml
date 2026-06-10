@@ -12,7 +12,7 @@ spec:
         kind: HelmRepository
         name: kite
         namespace: flux-system
-      version: 0.12.2
+      version: 0.12.3
   interval: 30m
   values:
     host: "https://kite.${CLUSTER_DOMAIN}"
