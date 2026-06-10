@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: docker.io/library/alpine
-              tag: "3.23"
+              tag: "3.24"
             args:
               - |
                 nsenter --mount=/host/proc/$(pidof /usr/local/bin/kubelet)/ns/mnt --net=/host/proc/$(pidof /usr/local/bin/kubelet)/ns/net -- sh -c "cat /proc/self/mountinfo | grep -v kubelet | grep -v tmpfs | grep -v overlay > /tmp/fs.txt"
