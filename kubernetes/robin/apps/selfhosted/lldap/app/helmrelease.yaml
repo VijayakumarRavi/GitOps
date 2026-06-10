@@ -64,6 +64,7 @@ spec:
         enabled: true
         type: secret
         name: ${CLUSTER_DOMAIN}-lldaps-tls
+
     route:
       app:
         hostnames:
@@ -88,6 +89,5 @@ spec:
         ports:
           ldap:
             nodePort: 32621
-
             port: 6360
   timeout: 1m

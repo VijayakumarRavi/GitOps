@@ -65,6 +65,13 @@ machine:
         backend envoy-http
           mode tcp
           server envoy [op://automation/talos-robin/NODE_IPV6]:80 send-proxy-v2 check
+        frontend ldap
+          mode tcp
+          bind op://automation/talos-robin/NODE_IPV4:32621
+          default_backend lldap-direct
+        backend lldap-direct
+          mode tcp
+          server lldap [op://automation/talos-robin/NODE_IPV6]:32621 check
     - op: overwrite
       path: /etc/nfsmount.conf
       permissions: 0o644
