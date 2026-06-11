@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: codeberg.org/forgejo/forgejo
-              tag: 15.0.2-rootless
+              tag: 15.0.3-rootless
             env:
               FORGEJO____APP_NAME: "Forgejo"
               FORGEJO__actions__DEFAULT_URL: "https://github.com"
