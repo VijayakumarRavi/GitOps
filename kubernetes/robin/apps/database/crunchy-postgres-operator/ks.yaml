@@ -85,7 +85,7 @@ spec:
     kind: GitRepository
     name: flux-system
   targetNamespace: database
-  timeout: 1m
+  timeout: 10m
   wait: true
 
   # ---
