@@ -10,6 +10,7 @@ spec:
     name: app-template
     namespace: flux-system
   interval: 30m
+  timeout: 1m
   values:
     controllers:
       ente:
@@ -165,16 +166,6 @@ spec:
               - identifier: memories
                 port: http
 
-    persistence:
-      nginx-conf:
-        enabled: true
-        type: configMap
-        name: nginx-conf
-        advancedMounts:
-          ente:
-            web:
-              - path: /etc/nginx/conf.d/default.conf
-                subPath: nginx.conf
     service:
       api:
         controller: ente
@@ -231,4 +222,3 @@ spec:
         ports:
           http:
             port: 3010
-  timeout: 1m
