@@ -1,0 +1,23 @@
+listen = "[::]:8080"
+require-proof-of-possession = true
+
+[database]
+url = "sqlite:///data/attic.db?mode=rwc"
+
+[storage]
+bucket = "attic"
+type = "s3"
+region = "us-west-1"
+endpoint = "https://s3.us-west-1.idrivee2.com"
+
+[chunking]
+nar-size-threshold = 65536
+min-size = 16384
+avg-size = 65536
+max-size = 262144
+
+[compression]
+type = "zstd"
+
+[garbage-collection]
+interval = "12 hours"

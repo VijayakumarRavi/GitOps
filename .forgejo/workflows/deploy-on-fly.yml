@@ -3,25 +3,35 @@
 name: Deploy Fly.io Apps on Dependency Updates
 "on":
   push:
-    paths: [fly.io/**]
+    paths: ['fly.io/**']
     branches: ['master']
 
 jobs:
   deploy-fly-app:
     runs-on: ubuntu-latest
-    # if: >
-    #   github.event.commits[0].author.name == 'renovate[bot]' ||
-    #   github.event.commits[0].author.email == 'bot@renovateapp.com'
     strategy:
+      fail-fast: false
       matrix:
-        app: [authfly, baovault, gotifyfly, vaultfly]
+        include:
+          - app: authfly
+            account: main
+          - app: baovault
+            account: main
+          - app: gotifyfly
+            account: main
+          - app: vaultfly
+            account: main
+          - app: atticfly
+            account: secondary
     steps:
       - name: Checkout code
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
+
       - name: Install Flyctl
         uses: https://github.com/superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1 # 1.6
+
       - name: Determine Modified Files
         id: changes
         run: |
@@ -33,10 +43,17 @@ jobs:
           else
             echo "modified=false" >> "$GITHUB_OUTPUT"
           fi
-      - name: Deploy ${{ matrix.app }}
+
+      - name: Deploy
         if: steps.changes.outputs.modified == 'true'
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          FLY_API_TOKEN: ${{ matrix.account == 'secondary' && secrets.FLY_API_TOKEN_ACCOUNT_2 || secrets.FLY_API_TOKEN }}
         run: |-
-          echo "Deploying ${{ matrix.app }} to Fly.io..."
-          flyctl -a ${{ matrix.app }} deploy --remote-only --now --no-public-ips --strategy immediate --no-cache fly.io/${{ matrix.app }}/
+          echo "Deploying ${{ matrix.app }} to ${{ matrix.account }} account..."
+          flyctl -a ${{ matrix.app }} deploy --now \
+            --remote-only \
+            --no-public-ips \
+            --strategy immediate \
+            --no-cache \
+            --config fly.io/${{ matrix.app }}/fly.toml \
+            fly.io/${{ matrix.app }}/
