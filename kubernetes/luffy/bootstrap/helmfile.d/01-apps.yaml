@@ -36,7 +36,7 @@ releases:
     namespace: network
     values:
       - templates/values_luffy.yaml.gotmpl
-    version: 1.19.4
+    version: 1.19.5
   - chart: oci://ghcr.io/coredns/charts/coredns
     name: coredns
     namespace: network
