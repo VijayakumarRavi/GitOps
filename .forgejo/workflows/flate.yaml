@@ -17,7 +17,7 @@ permissions:
 jobs:
   filter-changes:
     name: Filter changes
-    runs-on: ubuntu-latest
+    runs-on: gitops
     outputs:
       clusters: ${{ steps.cluster.outputs.clusters }}
     steps:
@@ -67,7 +67,7 @@ jobs:
     if: ${{ needs.filter-changes.outputs.clusters != '[]' }}
     needs: filter-changes
     name: Flate - Test
-    runs-on: ubuntu-latest
+    runs-on: gitops
     strategy:
       fail-fast: false
       matrix:

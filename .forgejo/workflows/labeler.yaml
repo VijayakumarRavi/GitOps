@@ -13,7 +13,7 @@ permissions:
 jobs:
   labeler:
     name: Labeler
-    runs-on: ubuntu-latest
+    runs-on: gitops
     permissions:
       contents: read
       pull-requests: write

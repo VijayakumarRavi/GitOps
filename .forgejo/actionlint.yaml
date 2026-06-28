@@ -3,8 +3,7 @@ self-hosted-runner:
   labels:
     - ubuntu-latest
     - ubuntu-24.04
-    - default
-    - docker
+    - gitops
 paths:
   # Glob pattern relative to the repository root for matching files. The path separator is always '/'.
   # This example configures any YAML file under the '.github/workflows/' directory.

@@ -17,7 +17,7 @@ permissions:
 jobs:
   filter-changes:
     name: Filter changes
-    runs-on: ubuntu-latest
+    runs-on: gitops
     outputs:
       clusters: ${{ steps.cluster.outputs.clusters }}
     steps:
@@ -66,7 +66,7 @@ jobs:
   extract-images:
     if: ${{ needs.filter-changes.outputs.clusters != '[]' }}
     name: Extract Images
-    runs-on: ubuntu-latest
+    runs-on: gitops
     needs:
       - filter-changes
     outputs:
@@ -110,7 +110,7 @@ jobs:
 
   image-availability-check:
     name: Image Availability Check
-    runs-on: docker
+    runs-on: gitops
     needs:
       - extract-images
     strategy:
@@ -135,7 +135,7 @@ jobs:
       - image-availability-check
     if: ${{ !cancelled() }}
     name: Validation Result
-    runs-on: ubuntu-latest
+    runs-on: gitops
     steps:
       - name: Any jobs failed?
         if: ${{ contains(needs.*.result, 'failure') }}
