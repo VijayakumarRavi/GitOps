@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
-      version: 86.2.2
+      version: 87.3.0
   install:
     crds: Skip
   interval: 30m
