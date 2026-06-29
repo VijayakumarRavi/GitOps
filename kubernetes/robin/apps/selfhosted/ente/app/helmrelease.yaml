@@ -20,7 +20,7 @@ spec:
         containers:
           server:
             image:
-              repository: ghcr.io/ente-io/server
+              repository: ghcr.io/ente/server
               tag: latest@sha256:6a1a76df708c29affb833cf2a89f1b4b318f58f15e64cb0249e76cd8cd1df304
             env:
               - name: HOST
@@ -38,7 +38,7 @@ spec:
                 memory: 512Mi
           web:
             image:
-              repository: ghcr.io/ente-io/web
+              repository: ghcr.io/ente/web
               tag: latest@sha256:7fba87f41189fdf4b026fdff1445c5df69f912c92201a58abd22059f64e7ca5e
             env:
               - name: HOST
