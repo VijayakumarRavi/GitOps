@@ -39,7 +39,7 @@ spec:
           web:
             image:
               repository: ghcr.io/ente/web
-              tag: latest@sha256:7fba87f41189fdf4b026fdff1445c5df69f912c92201a58abd22059f64e7ca5e
+              tag: latest@sha256:53206fe09511827215b99a799bc0536dd9d1aa5489f48b6a5ba0c5ccee91f67d
             env:
               - name: HOST
                 value: "::"
