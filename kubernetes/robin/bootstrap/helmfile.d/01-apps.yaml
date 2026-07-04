@@ -51,7 +51,7 @@ releases:
       - network/coredns
     values:
       - templates/values_robin.yaml.gotmpl
-    version: 0.52.0
+    version: 0.53.0
   - chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance
     name: flux-instance
     namespace: flux-system
@@ -59,5 +59,5 @@ releases:
       - flux-system/flux-operator
     values:
       - templates/values_robin.yaml.gotmpl
-    version: 0.52.0
+    version: 0.53.0
     wait: false
