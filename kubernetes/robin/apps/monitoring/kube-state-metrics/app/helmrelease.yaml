@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
-      version: 7.5.1
+      version: 7.8.1
   interval: 30m
   values:
     fullnameOverride: kube-state-metrics
