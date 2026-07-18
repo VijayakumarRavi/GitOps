@@ -17,13 +17,11 @@ spec:
           reloader.stakater.com/auto: 'true'
         pod:
           securityContext:
-            fsGroup: 2000
+            fsGroup: 3001
             fsGroupChangePolicy: OnRootMismatch
-            runAsGroup: 2000
+            runAsGroup: 3001
             runAsNonRoot: true
-            runAsUser: 2000
-            supplementalGroups:
-              - 65542 # gladius:external-services
+            runAsUser: 3001
         containers:
           app:
             image:

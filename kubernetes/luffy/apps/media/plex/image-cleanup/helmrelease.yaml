@@ -37,10 +37,10 @@ spec:
                           - plex
                   topologyKey: kubernetes.io/hostname
           securityContext:
-            runAsGroup: 2000
+            fsGroup: 3001
+            runAsGroup: 3001
             runAsNonRoot: true
-
-            runAsUser: 2000
+            runAsUser: 3001
         containers:
           app:
             image:

@@ -15,10 +15,10 @@ spec:
       plex:
         pod:
           securityContext:
-            fsGroup: 2000
+            fsGroup: 3001
             fsGroupChangePolicy: 'OnRootMismatch'
-            runAsGroup: 2000
-            runAsUser: 2000
+            runAsGroup: 3001
+            runAsUser: 3001
             supplementalGroups:
               - 44
               - 109

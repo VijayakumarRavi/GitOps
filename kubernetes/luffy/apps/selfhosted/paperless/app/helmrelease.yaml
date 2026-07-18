@@ -15,6 +15,12 @@ spec:
       paperless:
         annotations:
           reloader.stakater.com/auto: 'true'
+        pod:
+          securityContext:
+            fsGroup: 3002
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 3002
         containers:
           gotenberg:
             image:
@@ -34,6 +40,8 @@ spec:
               - gotenberg
               - tika
             env:
+              USERMAP_UID: '3002'
+              USERMAP_GID: '3002'
               # Configure application
               PAPERLESS_CONSUMER_POLLING: '60'
               PAPERLESS_CONSUMER_RECURSIVE: 'true'

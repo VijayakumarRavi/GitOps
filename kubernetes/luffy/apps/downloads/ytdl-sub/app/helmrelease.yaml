@@ -24,12 +24,11 @@ spec:
 
         pod:
           securityContext:
-            fsGroup: 3000
+            fsGroup: 3001
             fsGroupChangePolicy: OnRootMismatch
-
-            runAsGroup: 3000
+            runAsGroup: 3001
             runAsNonRoot: true
-            runAsUser: 3000
+            runAsUser: 3001
         containers:
           app:
             image:
