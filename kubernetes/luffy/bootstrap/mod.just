@@ -6,11 +6,9 @@ kubernetes_dir := justfile_dir() + '/kubernetes/luffy'
 bootstrap_dir := kubernetes_dir + '/bootstrap'
 controller := `talosctl --context luffy config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1`
 nodes := `talosctl --context luffy config info -o yaml | yq -er '.nodes | join (" ")'`
-lvm_device := "/dev/sda"
-lvm_vg := "miroir-vg"
 
 [private]
-default: talos wait-talos k8s wait sops lvm crds apps
+default: talos wait-talos k8s wait sops crds apps
 
 [doc('Install Talos')]
 talos:
@@ -71,26 +69,8 @@ sops:
       fi; \
     fi
 
-[doc('Bootstrap lvm volume group across nodes using J2 template')]
-lvm:
-    just log info "Running stage..." "stage" "$0"
-    for n in {{ nodes }}; do \
-        if kubectl --context admin@luffy get job/lvm-bootstrap-"$n" -n kube-system &>/dev/null; then \
-            just log info "Job lvm-bootstrap-$n already exists, skipping apply" "stage" "$0" "node" "$n"; \
-            continue; \
-        fi; \
-        minijinja-cli {{ bootstrap_dir }}/helmfile.d/templates/lvm-bootstrap.yaml.j2 \
-          -D node_name="$n" \
-          -D device_path={{ lvm_device }} \
-          -D vg_name={{ lvm_vg }} | kubectl --context admin@luffy apply -f -; \
-    done
-    just log info "Waiting for LVM volume group creation..." "stage" "$0"
-    for n in {{ nodes }}; do \
-        kubectl --context admin@luffy wait --for=condition=complete job/lvm-bootstrap-"$n" -n kube-system --timeout=120s; \
-    done
-
 [doc('Apply Helmfile CRDs and Apps')]
-helmfile: lvm crds apps
+helmfile: crds apps
 
 [doc('Apply Helmfile CRDs')]
 crds:

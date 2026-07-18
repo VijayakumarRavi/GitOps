@@ -12,7 +12,7 @@ spec:
   dependsOn:
     - name: cert-manager
   interval: 30m
-  path: "./kubernetes/luffy/apps/system/snapshot-controller/app"
+  path: "./kubernetes/base/apps/system/snapshot-controller/app"
   prune: true
   sourceRef:
     kind: GitRepository

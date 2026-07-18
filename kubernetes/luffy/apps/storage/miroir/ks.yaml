@@ -6,6 +6,8 @@ metadata:
   name: miroir
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: snapshot-controller
   interval: 1h
   path: ./kubernetes/luffy/apps/storage/miroir/app
   prune: true
@@ -14,3 +16,5 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: storage
+  timeout: 10m
+  wait: true

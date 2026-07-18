@@ -32,6 +32,7 @@ spec:
       app.kubernetes.io/name: *appname
   dependsOn:
     - name: openebs-release
+    - name: snapshot-controller
   interval: 30m
   path: ./kubernetes/robin/apps/storage/openebs/storageclass
   prune: true

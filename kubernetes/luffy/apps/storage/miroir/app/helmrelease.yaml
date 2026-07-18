@@ -11,24 +11,11 @@ spec:
   interval: 30m
   values:
     nodes:
-      chopper:
-        pools:
-          - name: default
-            backend: lvmthin
-            lvmthin:
-              thinPool: miroir-vg/miroir-vg_thinpool
-      usopp:
-        pools:
-          - name: default
-            backend: lvmthin
-            lvmthin:
-              thinPool: miroir-vg/miroir-vg_thinpool
-      zoro:
-        pools:
-          - name: default
-            backend: lvmthin
-            lvmthin:
-              thinPool: miroir-vg/miroir-vg_thinpool
+      chopper: &node_cfg
+        backend: lvmthin
+        device: /dev/sda
+      usopp: *node_cfg
+      zoro: *node_cfg
     replicatedStorageClass:
       create: true
       isDefault: true

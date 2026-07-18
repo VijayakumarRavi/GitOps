@@ -16,8 +16,6 @@ spec:
       version: 1.19.5
   interval: 30m
   values:
-    externalIPs:
-      enabled: false
     ipam:
       mode: cluster-pool
       operator:

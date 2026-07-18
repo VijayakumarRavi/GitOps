@@ -16,11 +16,10 @@ spec:
       version: 1.98.4
   interval: 30m
   values:
-    fullnameOverride: tailscale-operator
-    hostname: luffy-tailscale-operator
-    resources:
-      limits:
-        memory: 1Gi
-      requests:
-        cpu: 20m
-        memory: 300Mi
+    operatorConfig:
+      resources:
+        limits:
+          memory: 1Gi
+        requests:
+          cpu: 20m
+          memory: 300Mi
