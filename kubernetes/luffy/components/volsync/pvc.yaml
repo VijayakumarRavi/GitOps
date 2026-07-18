@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ${VOLSYNC_CLAIM:-${KOPIUR_CLAIM:-${APP}}}
+spec:
+  accessModes: ['${VOLSYNC_ACCESSMODES:-ReadWriteOnce}']
+  dataSourceRef:
+    apiGroup: volsync.backube
+    kind: ReplicationDestination
+    name: '${APP}-bootstrap'
+  resources:
+    requests:
+      storage: '${VOLSYNC_CAPACITY:-${KOPIUR_CAPACITY:-1Gi}}'
+  storageClassName: '${VOLSYNC_STORAGECLASS:-miroir-local}'

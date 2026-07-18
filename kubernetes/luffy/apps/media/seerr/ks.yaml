@@ -10,8 +10,10 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    - ../../../../components/kopiur/backup
+    - ../../../../components/volsync
+    - ../../../../components/kopiur
   dependsOn:
+    - name: volsync
     - name: external-secrets-stores
     - name: crunchy-postgres-secretstore
     - name: envoy-gateway-config

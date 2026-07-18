@@ -3,30 +3,24 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname qbittorrent
+  name: &appname kopiur
   namespace: flux-system
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  components:
-    - ../../../../components/volsync
-    - ../../../../components/kopiur
-  dependsOn:
-    - name: volsync
-    - name: kopiur
-    - name: external-secrets-stores
-  interval: 30m
-  path: ./kubernetes/luffy/apps/downloads/qbittorrent/app
-  postBuild:
-    substitute:
-      APP: *appname
-      KOPIUR_CLAIM: qbittorrent-config
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: kopiur
+      namespace: system
+  interval: 1h
+  path: "./kubernetes/base/apps/system/kopiur/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: downloads
+  targetNamespace: system
   timeout: 10m
   wait: true
 ---
@@ -34,27 +28,21 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname qui
+  name: &appname kopiur-repository
   namespace: flux-system
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  components:
-    - ../../../../components/volsync
-    - ../../../../components/kopiur
   dependsOn:
-    - name: volsync
-    - name: qbittorrent
-  interval: 30m
-  path: ./kubernetes/luffy/apps/downloads/qbittorrent/qui
-  postBuild:
-    substitute:
-      APP: *appname
+    - name: kopiur
+    - name: external-secrets-stores
+  interval: 1h
+  path: "./kubernetes/base/apps/system/kopiur/repository"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: downloads
+  targetNamespace: system
   timeout: 10m
-  wait: false
+  wait: true

@@ -36,9 +36,11 @@ spec:
     labels:
       app.kubernetes.io/name: forgejo
   components:
-    - ../../../../components/kopiur/backup
+    - ../../../../components/volsync
+    - ../../../../components/kopiur
     - ../../../../components/anubis
   dependsOn:
+    - name: volsync
     - name: kopiur
     - name: external-secrets-stores
     - name: crunchy-postgres-secretstore
