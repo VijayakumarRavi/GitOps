@@ -25,6 +25,5 @@ spec:
       name: kopiur-idrive-e2-secret
       namespace: system
   identityDefaults:
-    cluster: "${CLUSTER_NAME}"
-    hostnameExpr: "namespace + '.' + cluster"
+    hostnameExpr: "namespace + '.${CLUSTER_NAME}'"
     usernameExpr: policyName
