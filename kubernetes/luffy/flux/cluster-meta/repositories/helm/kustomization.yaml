@@ -11,4 +11,3 @@ resources:
   - ./metallb.yaml
   - ./nginx.yaml
   - ./percona.yaml
-  - ./rook-ceph.yaml

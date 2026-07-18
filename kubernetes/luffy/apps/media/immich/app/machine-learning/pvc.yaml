@@ -4,8 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: model-cache-pvc
 spec:
-  accessModes: [ReadWriteMany]
+  accessModes: ["ReadWriteOnce"]
   resources:
     requests:
       storage: 5Gi
-  storageClassName: ceph-filesystem
+  storageClassName: miroir-replicated

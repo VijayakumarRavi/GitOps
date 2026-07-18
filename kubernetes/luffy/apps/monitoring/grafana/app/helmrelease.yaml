@@ -28,14 +28,6 @@ spec:
             type: file
           - disableDeletion: false
             editable: true
-            folder: Ceph
-            name: ceph
-            options:
-              path: /var/lib/grafana/dashboards/ceph
-            orgId: 1
-            type: file
-          - disableDeletion: false
-            editable: true
             folder: Flux
             name: flux
             options:
@@ -75,23 +67,6 @@ spec:
             orgId: 1
             type: file
     dashboards:
-      ceph:
-        ceph-cluster:
-          # renovate: dashboardName="Ceph Cluster"
-          datasource: Prometheus
-          gnetId: 2842
-          revision: 18
-        ceph-osd:
-          # renovate: dashboardName="Ceph - OSD (Single)"
-          datasource: Prometheus
-          gnetId: 5336
-          revision: 9
-        ceph-pools:
-          # renovate: dashboardName="Ceph - Pools"
-          datasource: Prometheus
-
-          gnetId: 5342
-          revision: 9
       database:
         crunchy-pgbackrest:
           datasource: Prometheus
@@ -143,15 +118,6 @@ spec:
             - {name: DS_PROMETHEUS, value: Prometheus}
           gnetId: 22604
           revision: 2
-        volsync:
-          # removate: dashboardName="VolSync Dashboard"
-          datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
-            - name: VAR_REPLICATIONDESTNAME
-              value: .*-bootstrap
-          gnetId: 21356
-          revision: 3
         zfs:
           # renovate: dashboardName="ZFS"
           datasource: Prometheus

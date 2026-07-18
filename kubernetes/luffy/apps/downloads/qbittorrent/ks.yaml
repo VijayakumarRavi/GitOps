@@ -9,16 +9,16 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  components: [../../../../components/volsync]
+  components: [../../../../components/kopiur/backup]
   dependsOn:
-    - name: volsync
+    - name: kopiur
     - name: external-secrets-stores
   interval: 30m
   path: ./kubernetes/luffy/apps/downloads/qbittorrent/app
   postBuild:
     substitute:
       APP: *appname
-      VOLSYNC_CLAIM: qbittorrent-config
+      KOPIUR_CLAIM: qbittorrent-config
   prune: true
   sourceRef:
     kind: GitRepository
@@ -37,7 +37,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  components: [../../../../components/volsync]
+  components: [../../../../components/kopiur/backup]
   dependsOn:
     - name: qbittorrent
   interval: 30m

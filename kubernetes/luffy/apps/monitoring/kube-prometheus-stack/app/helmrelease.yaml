@@ -118,7 +118,7 @@ spec:
               resources:
                 requests:
                   storage: 55Gi
-              storageClassName: ceph-block
+              storageClassName: miroir-replicated
         walCompression: true
       route:
         main:

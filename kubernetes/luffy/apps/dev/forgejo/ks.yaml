@@ -36,10 +36,10 @@ spec:
     labels:
       app.kubernetes.io/name: forgejo
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
     - ../../../../components/anubis
   dependsOn:
-    - name: volsync
+    - name: kopiur
     - name: external-secrets-stores
     - name: crunchy-postgres-secretstore
     - name: envoy-gateway-config
@@ -52,7 +52,7 @@ spec:
       APP: forgejo
       APP_GID: "1000"
       APP_UID: "1000"
-      VOLSYNC_CAPACITY: 10Gi
+      KOPIUR_CAPACITY: 10Gi
   prune: true
   sourceRef:
     kind: GitRepository

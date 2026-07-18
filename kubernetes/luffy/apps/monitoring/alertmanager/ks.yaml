@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *appname
   dependsOn:
     - name: external-secrets-stores
-    - name: rook-ceph-cluster
+    - name: miroir
   interval: 30m
   path: "./kubernetes/luffy/apps/monitoring/alertmanager/app"
   prune: true

@@ -12,7 +12,7 @@ resources:
   - ./intel-device-plugins/ks.yaml
   - ./irqbalance/ks.yaml
   - ./kite/ks.yaml
-  # - ./kopia/ks.yaml
+  - ./kopiur/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./renovate/ks.yaml
   - ./snapshot-controller/ks.yaml

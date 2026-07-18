@@ -10,10 +10,10 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: envoy-gateway-config
-    - name: volsync
+    - name: kopiur
     - name: dragonfly-cluster
     - name: external-secrets-stores
     - name: crunchy-postgres-secretstore
@@ -22,8 +22,8 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      VOLSYNC_CAPACITY: 1Gi
-      VOLSYNC_CLAIM: paperless-data
+      KOPIUR_CAPACITY: 1Gi
+      KOPIUR_CLAIM: paperless-data
   prune: true
   sourceRef:
     kind: GitRepository

@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   dependsOn:
-    - name: rook-ceph-cluster
+    - name: miroir
   interval: 30m
   path: "./kubernetes/luffy/apps/monitoring/victoria-logs/app"
   prune: true

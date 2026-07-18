@@ -10,19 +10,19 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: external-secrets-stores
     - name: crunchy-postgres-secretstore
     - name: envoy-gateway-config
-    - name: volsync
+    - name: kopiur
   interval: 30m
   path: "./kubernetes/luffy/apps/media/seerr/app"
   postBuild:
     substitute:
       APP: *appname
-      VOLSYNC_CAPACITY: 1Gi
-      VOLSYNC_CLAIM: seerr-config
+      KOPIUR_CAPACITY: 1Gi
+      KOPIUR_CLAIM: seerr-config
   prune: true
   sourceRef:
     kind: GitRepository

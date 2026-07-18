@@ -53,6 +53,13 @@ machine:
       model: CONSISTENT NVME S6 128GB
     image: factory.talos.dev/installer-secureboot/cb0a3bbe55493a9d6b07eb5e0175e6c3b079855a693910bb5ec066a293fce7b4:v1.13.4
     wipe: false
+  kernel:
+    modules:
+      - name: dm_thin_pool # Miroir lvmthin backend
+      - name: drbd # Miroir replication
+        parameters:
+          - usermode_helper=disabled
+      - name: drbd_transport_tcp # Miroir replication TCP transport
   systemDiskEncryption:
     state:
       provider: luks2

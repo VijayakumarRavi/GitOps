@@ -73,7 +73,7 @@ spec:
         resources:
           requests:
             storage: 50Gi
-        storageClassName: openebs-hostpath
+        storageClassName: miroir-local
       metadata:
         labels:
           app.kubernetes.io/name: crunchy-postgres

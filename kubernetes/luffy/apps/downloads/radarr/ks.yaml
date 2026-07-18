@@ -10,16 +10,16 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   dependsOn:
-    - name: volsync
+    - name: kopiur
     - name: external-secrets-stores
   interval: 30m
   path: "./kubernetes/luffy/apps/downloads/radarr/app"
   postBuild:
     substitute:
       APP: *appname
-      VOLSYNC_CLAIM: radarr-config
+      KOPIUR_CLAIM: radarr-config
   prune: true
   sourceRef:
     kind: GitRepository

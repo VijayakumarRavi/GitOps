@@ -32,7 +32,7 @@ spec:
   dependsOn:
     - name: percona-postgres-operator
     - name: external-secrets
-    - name: rook-ceph-cluster
+    - name: miroir
   interval: 30m
   path: ./kubernetes/luffy/apps/database/percona-postgres-operator/cluster
   prune: true
@@ -100,7 +100,7 @@ spec:
       app.kubernetes.io/name: *appname
   dependsOn:
     - name: percona-postgres-cluster
-    - name: rook-ceph-cluster
+    - name: miroir
   interval: 30m
   path: ./kubernetes/luffy/apps/database/percona-postgres-operator/pgadmin
   prune: true
