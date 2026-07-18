@@ -39,6 +39,10 @@ machine:
           discard_unpacked_layers = false
         [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
           discard_unpacked_layers = false
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
+        [plugins."io.containerd.cri.v1.runtime"]
+          device_ownership_from_security_context = true
     - op: overwrite
       path: /etc/nfsmount.conf
       permissions: 0o644
@@ -48,10 +52,12 @@ machine:
         hard=True
         nconnect=16
         noatime=True
+        rsize=1048576
+        wsize=1048576
   install:
     diskSelector:
       model: CONSISTENT NVME S6 128GB
-    image: factory.talos.dev/installer-secureboot/cb0a3bbe55493a9d6b07eb5e0175e6c3b079855a693910bb5ec066a293fce7b4:v1.13.4
+    image: factory.talos.dev/installer-secureboot/{{ ENV.SCHEMATIC }}:{{ ENV.TALOS_VERSION }}
     wipe: false
   kernel:
     modules:
@@ -79,8 +85,9 @@ machine:
       featureGates:
         ImageVolume: true
         ResourceHealthStatus: true
+      maxPods: 150
       serializeImagePulls: false
-    image: ghcr.io/siderolabs/kubelet:v1.36.2
+    image: ghcr.io/siderolabs/kubelet:{{ ENV.K8S_VERSION }}
     nodeIP:
       validSubnets:
         - 10.0.1.0/24
@@ -106,10 +113,13 @@ machine:
     net.ipv4.neigh.default.gc_thresh1: "4096"
     net.ipv4.neigh.default.gc_thresh2: "8192"
     net.ipv4.neigh.default.gc_thresh3: "16384"
+    net.ipv4.ping_group_range: 0 2147483647
     net.ipv4.tcp_congestion_control: bbr
     net.ipv4.tcp_fastopen: "3"
     net.ipv4.tcp_mtu_probing: "1"
+    net.ipv4.tcp_notsent_lowat: "131072"
     net.ipv4.tcp_rmem: 4096 87380 33554432
+    net.ipv4.tcp_slow_start_after_idle: "0"
     net.ipv4.tcp_window_scaling: "1"
     net.ipv4.tcp_wmem: 4096 65536 33554432
     sunrpc.tcp_max_slot_table_entries: "128"
@@ -162,13 +172,14 @@ cluster:
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
-      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true,ResourceHealthStatus=true
+      feature-gates: HPAScaleToZero=true,ImageVolume=true,MutatingAdmissionPolicy=true,ResourceHealthStatus=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
-    image: registry.k8s.io/kube-apiserver:v1.36.2
+    image: registry.k8s.io/kube-apiserver:{{ ENV.K8S_VERSION }}
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-controller-manager:v1.36.2
+      feature-gates: HPAScaleToZero=true
+    image: registry.k8s.io/kube-controller-manager:{{ ENV.K8S_VERSION }}
   coreDNS:
     disabled: true
   etcd:
@@ -181,11 +192,11 @@ cluster:
       listen-metrics-urls: http://0.0.0.0:2381
   proxy:
     disabled: true
-    image: registry.k8s.io/kube-proxy:v1.36.2
+    image: registry.k8s.io/kube-proxy:{{ ENV.K8S_VERSION }}
   scheduler:
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-scheduler:v1.36.2
+    image: registry.k8s.io/kube-scheduler:{{ ENV.K8S_VERSION }}
   secretboxEncryptionSecret: op://automation/talos-luffy/CLUSTER_SECRETBOXENCRYPTIONSECRET
   serviceAccount:
     key: op://automation/talos-luffy/CLUSTER_SERVICEACCOUNT_KEY

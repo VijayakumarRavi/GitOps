@@ -5,11 +5,6 @@ helmDefaults:
     - --include-crds
     - --no-hooks
   cleanupOnFail: true
-  postRenderer: bash
-  postRendererArgs:
-    - -c
-    - yq ea --exit-status 'select(.kind == "CustomResourceDefinition")' -
-
   wait: true
   waitForJobs: true
 releases:

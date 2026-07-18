@@ -39,6 +39,10 @@ machine:
           discard_unpacked_layers = false
         [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
           discard_unpacked_layers = false
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
+        [plugins."io.containerd.cri.v1.runtime"]
+          device_ownership_from_security_context = true
     # haproxy config: bridges public IPv4 → IPv6 Envoy VIP
     # NODE_IPV4 and NODE_IPV6 are resolved from 1Password at apply time.
     - op: create
@@ -81,9 +85,11 @@ machine:
         hard=True
         nconnect=16
         noatime=True
+        rsize=1048576
+        wsize=1048576
   install:
     disk: /dev/vda
-    image: factory.talos.dev/installer/00d6a41635167ecec3aaaf416c2fdebb5dde36a9216a5257f6a9d71da7367ee8:v1.13.4
+    image: factory.talos.dev/installer/{{ ENV.SCHEMATIC }}:{{ ENV.TALOS_VERSION }}
     wipe: false
   kernel:
     modules:
@@ -115,8 +121,9 @@ machine:
       featureGates:
         ImageVolume: true
         ResourceHealthStatus: true
+      maxPods: 150
       serializeImagePulls: false
-    image: ghcr.io/siderolabs/kubelet:v1.36.2
+    image: ghcr.io/siderolabs/kubelet:{{ ENV.K8S_VERSION }}
     nodeIP:
       validSubnets:
         - op://automation/talos-robin/NODE_IPV6_SUBNET
@@ -133,10 +140,13 @@ machine:
     net.ipv4.neigh.default.gc_thresh1: "4096"
     net.ipv4.neigh.default.gc_thresh2: "8192"
     net.ipv4.neigh.default.gc_thresh3: "16384"
+    net.ipv4.ping_group_range: 0 2147483647
     net.ipv4.tcp_congestion_control: bbr
     net.ipv4.tcp_fastopen: "3"
     net.ipv4.tcp_mtu_probing: "1"
+    net.ipv4.tcp_notsent_lowat: "131072"
     net.ipv4.tcp_rmem: 4096 87380 33554432
+    net.ipv4.tcp_slow_start_after_idle: "0"
     net.ipv4.tcp_window_scaling: "1"
     net.ipv4.tcp_wmem: 4096 65536 33554432
     net.ipv6.conf.all.forwarding: "1"
@@ -144,6 +154,7 @@ machine:
     sunrpc.tcp_max_slot_table_entries: "128"
     sunrpc.tcp_slot_table_entries: "128"
     user.max_user_namespaces: "11255"
+    vm.nr_hugepages: "1024"
   pods:
     # Static pod: haproxy bridges IPv4 → IPv6 Envoy VIP (outside Kubernetes scheduling)
     - apiVersion: v1
@@ -215,13 +226,14 @@ cluster:
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
-      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true,ResourceHealthStatus=true
+      feature-gates: HPAScaleToZero=true,ImageVolume=true,MutatingAdmissionPolicy=true,ResourceHealthStatus=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
-    image: registry.k8s.io/kube-apiserver:v1.36.2
+    image: registry.k8s.io/kube-apiserver:{{ ENV.K8S_VERSION }}
   controllerManager:
     extraArgs:
       bind-address: "::"
-    image: registry.k8s.io/kube-controller-manager:v1.36.2
+      feature-gates: HPAScaleToZero=true
+    image: registry.k8s.io/kube-controller-manager:{{ ENV.K8S_VERSION }}
   coreDNS:
     disabled: true
   etcd:
@@ -232,11 +244,11 @@ cluster:
       listen-metrics-urls: http://[::]:2381
   proxy:
     disabled: true
-    image: registry.k8s.io/kube-proxy:v1.36.2
+    image: registry.k8s.io/kube-proxy:{{ ENV.K8S_VERSION }}
   scheduler:
     extraArgs:
       bind-address: "::"
-    image: registry.k8s.io/kube-scheduler:v1.36.2
+    image: registry.k8s.io/kube-scheduler:{{ ENV.K8S_VERSION }}
   secretboxEncryptionSecret: op://automation/talos-robin/CLUSTER_SECRETBOXENCRYPTIONSECRET
   serviceAccount:
     key: op://automation/talos-robin/CLUSTER_SERVICEACCOUNT_KEY

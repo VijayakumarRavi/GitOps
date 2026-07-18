@@ -45,34 +45,64 @@ volsync state:
     flux --context admin@robin -n system {{ state }} helmrelease volsync
     kubectl --context admin@robin -n system scale deployment volsync --replicas {{ if state != "suspend" { "1" } else { "0" } }}
 
-[doc('Sync ExternalSecrets')]
-sync-es:
+[doc('Sync single ExternalSecret')]
+sync-es ns name:
+    kubectl --context admin@robin -n "{{ ns }}" annotate --field-manager flux-client-side-apply --overwrite es "{{ name }}" force-sync="$(date +%s)"
+
+[doc('Sync single GitRepository')]
+sync-git ns name:
+    kubectl --context admin@robin -n "{{ ns }}" annotate --field-manager flux-client-side-apply --overwrite gitrepo "{{ name }}" reconcile.fluxcd.io/requestedAt="$(date +%s)"
+
+[doc('Sync single HelmRelease')]
+sync-hr ns name:
+    kubectl --context admin@robin -n "{{ ns }}" annotate --field-manager flux-client-side-apply --overwrite hr "{{ name }}" reconcile.fluxcd.io/requestedAt="$(date +%s)" reconcile.fluxcd.io/forceAt="$(date +%s)"
+
+[doc('Sync single Kustomization')]
+sync-ks ns name:
+    kubectl --context admin@robin -n "{{ ns }}" annotate --field-manager flux-client-side-apply --overwrite ks "{{ name }}" reconcile.fluxcd.io/requestedAt="$(date +%s)"
+
+[doc('Sync single OCIRepository')]
+sync-oci ns name:
+    kubectl --context admin@robin -n "{{ ns }}" annotate --field-manager flux-client-side-apply --overwrite ocirepo "{{ name }}" reconcile.fluxcd.io/requestedAt="$(date +%s)"
+
+[doc('Sync all ExternalSecrets')]
+sync-all-es:
     kubectl --context admin@robin get es --no-headers -A | while read -r ns name _; do \
-        kubectl --context admin@robin -n "$ns" annotate --field-manager flux-client-side-apply --overwrite es "$name" force-sync="$(date +%s)"; \
+        just robin sync-es "$ns" "$name"; \
     done
 
-[doc('Sync GitRepositories')]
-sync-git:
+[doc('Sync all GitRepositories')]
+sync-all-git:
     kubectl --context admin@robin get gitrepo --no-headers -A | while read -r ns name _; do \
-        kubectl --context admin@robin -n "$ns" annotate --field-manager flux-client-side-apply --overwrite gitrepo "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
+        just robin sync-git "$ns" "$name"; \
     done
 
-[doc('Sync HelmReleases')]
-sync-hr:
+[doc('Sync all HelmReleases')]
+sync-all-hr:
     kubectl --context admin@robin get hr --no-headers -A | while read -r ns name _; do \
-        kubectl --context admin@robin -n "$ns" annotate --field-manager flux-client-side-apply --overwrite hr "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)" reconcile.fluxcd.io/forceAt="$(date +%s)"; \
+        just robin sync-hr "$ns" "$name"; \
     done
 
-[doc('Sync Kustomizations')]
-sync-ks:
+[doc('Sync all Kustomizations')]
+sync-all-ks:
     kubectl --context admin@robin get ks --no-headers -A | while read -r ns name _; do \
-        kubectl --context admin@robin -n "$ns" annotate --field-manager flux-client-side-apply --overwrite ks "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
+        just robin sync-ks "$ns" "$name"; \
     done
 
-[doc('Sync OCIRepositories')]
-sync-oci:
+[doc('Sync all OCIRepositories')]
+sync-all-oci:
     kubectl --context admin@robin get ocirepo --no-headers -A | while read -r ns name _; do \
-        kubectl --context admin@robin -n "$ns" annotate --field-manager flux-client-side-apply --overwrite ocirepo "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
+        just robin sync-oci "$ns" "$name"; \
+    done
+
+[doc('Trigger Kopiur Snapshotpolicy')]
+snapshot-kopiur ns name:
+    kubectl --context admin@robin kopiur -n "{{ ns }}" snapshot now --policy "{{ name }}"
+
+[doc('Trigger all Kopiur Snapshotpolicies')]
+snapshot-kopiur-all:
+    kubectl --context admin@robin get snapshotpolicies.kopiur.home-operations.com --no-headers -A | while read -r ns name _; do \
+        just robin snapshot-kopiur "$ns" "$name"; \
     done
 
 [doc('View a secret')]
