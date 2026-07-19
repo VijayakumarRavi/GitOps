@@ -1,0 +1,15 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+  name: miroir-local
+allowVolumeExpansion: true
+provisioner: miroir.home-operations.com
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  csi.storage.k8s.io/fstype: ext4
+  miroir.home-operations.com/pool: default
+  miroir.home-operations.com/replicas: "1"

@@ -9,22 +9,9 @@ spec:
     kind: OCIRepository
     name: miroir
   interval: 30m
-  values:
-    nodes:
-      chopper: &node_cfg
-        backend: lvmthin
-        device: /dev/sda
-      usopp: *node_cfg
-      zoro: *node_cfg
-    replicatedStorageClass:
-      create: true
-      isDefault: true
-      name: miroir-replicated
-      quorum: last-man-standing
-    storageClass:
-      create: true
-      isDefault: false
-      name: miroir-local
-    volumeSnapshotClass:
-      create: true
-      name: miroir-snap
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+  values: {}
