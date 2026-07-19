@@ -1,0 +1,13 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: miroir-staging
+allowVolumeExpansion: true
+provisioner: miroir.home-operations.com
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+parameters:
+  csi.storage.k8s.io/fstype: ext4
+  miroir.home-operations.com/pool: default
+  miroir.home-operations.com/replicas: "1"

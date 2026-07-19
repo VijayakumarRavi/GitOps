@@ -24,6 +24,8 @@ spec:
   sources:
     - pvc:
         name: "${KOPIUR_CLAIM:-${VOLSYNC_CLAIM:-${APP}}}"
+  staging:
+    storageClassName: ${KOPIUR_STAGINGCLASS:=miroir-staging}
   verification:
     deep:
       schedule:

@@ -6,3 +6,4 @@ resources:
   - miroir-local.yaml
   - miroir-replicated.yaml
   - miroir-snap.yaml
+  - miroir-staging.yaml
