@@ -27,3 +27,6 @@ spec:
   identityDefaults:
     hostnameExpr: "namespace + '.${CLUSTER_NAME}'"
     usernameExpr: policyName
+  moverDefaults:
+    sourceColocation:
+      mode: Required
