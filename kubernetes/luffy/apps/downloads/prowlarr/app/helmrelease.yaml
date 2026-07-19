@@ -62,11 +62,15 @@ spec:
             image:
               repository: ghcr.io/flaresolverr/flaresolverr
               tag: v3.5.0
+            env:
+              HOME: /tmp
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
                 drop: [ALL]
               readOnlyRootFilesystem: false
+              runAsUser: 1000
+              runAsGroup: 1000
     persistence:
       config:
         existingClaim: prowlarr-config
