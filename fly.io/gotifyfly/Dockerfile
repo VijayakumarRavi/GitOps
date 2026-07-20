@@ -1,6 +1,6 @@
 ARG GOTIFY_VERSION=2.9.1
 ARG IGOTIFY_VERSION=v1.5.1.3
-ARG CLOUDFLARED_VERSION=2026.6.1
+ARG CLOUDFLARED_VERSION=2026.7.2
 
 FROM ghcr.io/gotify/server:${GOTIFY_VERSION} AS gotify
 FROM ghcr.io/androidseb25/igotify-notification-assist:${IGOTIFY_VERSION} AS igotify
