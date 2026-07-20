@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/jmbannon/ytdl-sub
-              tag: 2026.06.23
+              tag: 2026.07.16
             args:
               - |
                 ytdl-sub --log-level=debug --config=/config/config.yaml sub /media/youtube/subscriptions.yaml
