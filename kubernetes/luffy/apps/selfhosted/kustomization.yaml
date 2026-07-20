@@ -10,4 +10,4 @@ resources:
   - ./home-assistant/ks.yaml
   - ./it-tools/ks.yaml
   - ./karakeep/ks.yaml
-  - ./paperless/ks.yaml
+  # - ./paperless/ks.yaml
