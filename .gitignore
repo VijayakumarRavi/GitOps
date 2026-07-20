@@ -4,6 +4,7 @@ logs/
 testing/
 .vscode/
 .venv/
+node_modules/
 
 # Trash
 .DS_Store

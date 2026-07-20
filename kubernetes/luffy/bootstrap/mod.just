@@ -1,5 +1,7 @@
+set lazy
 set positional-arguments
 set quiet
+set script-interpreter := ['bash', '-euo', 'pipefail']
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 kubernetes_dir := justfile_dir() + '/kubernetes/luffy'
@@ -65,7 +67,7 @@ helmfile: crds apps
 [doc('Apply Helmfile CRDs')]
 crds:
     just log info "Running stage..." "stage" "$0"
-    if ! helmfile --kube-context admin@luffy -f "{{ bootstrap_dir }}/helmfile.d/00-crds.yaml" template -q | kubectl apply --context admin@luffy --server-side -f -; then \
+    if ! helmfile --kube-context admin@luffy -f "{{ bootstrap_dir }}/helmfile.d/00-crds.yaml" template -q | yq ea -e 'select(.kind == "CustomResourceDefinition")' | kubectl apply --context admin@luffy --server-side --field-manager bootstrap --force-conflicts -f -; then \
       just log fatal "Failed to apply crds" "stage" "$0"; \
     fi;
 

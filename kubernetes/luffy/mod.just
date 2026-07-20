@@ -10,17 +10,17 @@ kubernetes_dir := justfile_dir() + '/kubernetes/luffy'
 default:
     just -l luffy
 
-#[doc('Apply local Flux Kustomization')]
-#apply-ks ns ks:
-#    just k8s render-local-ks "{{ ns }}" "{{ ks }}" | kubectl --context admin@luffy apply --server-side --field-manager=kustomize-controller -f /dev/stdin
+[doc('Apply local Flux Kustomization')]
+apply-ks ns ks:
+    just luffy render-local-ks "{{ ns }}" "{{ ks }}" | kubectl --context admin@luffy apply --server-side --force-conflicts --field-manager=kustomize-controller -f -
 
 [doc('Browse a PVC')]
 browse-pvc namespace claim:
     kubectl --context admin@luffy browse-pvc -n {{ namespace }} -i mirror.gcr.io/alpine:latest {{ claim }}
 
-#[doc('Delete local Flux Kustomization')]
-#delete-ks ns ks:
-#    just k8s render-local-ks "{{ ns }}" "{{ ks }}" | kubectl --context admin@luffy delete -f /dev/stdin
+[doc('Delete local Flux Kustomization')]
+delete-ks ns ks:
+    just luffy render-local-ks "{{ ns }}" "{{ ks }}" | kubectl --context admin@luffy delete -f -
 
 [doc('Open a shell on a node')]
 node-shell node:
@@ -39,16 +39,30 @@ snapshot:
         kubectl --context admin@luffy -n "$ns" patch replicationsources "$name" --type merge -p '{"spec":{"trigger":{"manual":"$(date +%s)"}}}'; \
     done
 
+[doc('Trigger Kopiur Snapshotpolicy')]
+snapshot-kopiur ns name:
+    kubectl --context admin@luffy kopiur -n "{{ ns }}" snapshot now --policy "{{ name }}"
+
+[doc('Trigger all Kopiur Snapshotpolicies')]
+snapshot-kopiur-all:
+    kubectl --context admin@luffy get snapshotpolicies.kopiur.home-operations.com --no-headers -A | while read -r ns name _; do \
+        just luffy snapshot-kopiur "$ns" "$name"; \
+    done
+
 [doc('Suspend or resume VolSync')]
 volsync state:
     flux --context admin@luffy {{ state }} kustomization volsync
     flux --context admin@luffy -n system {{ state }} helmrelease volsync
     kubectl --context admin@luffy -n system scale deployment volsync --replicas {{ if state != "suspend" { "1" } else { "0" } }}
 
-[doc('Sync ExternalSecrets')]
-sync-es:
+[doc('Sync single ExternalSecret')]
+sync-es ns name:
+    kubectl --context admin@luffy -n "{{ ns }}" annotate --field-manager flux-client-side-apply --overwrite es "{{ name }}" force-sync="$(date +%s)"
+
+[doc('Sync all ExternalSecrets')]
+sync-all-es:
     kubectl --context admin@luffy get es --no-headers -A | while read -r ns name _; do \
-        kubectl --context admin@luffy -n "$ns" annotate --field-manager flux-client-side-apply --overwrite es "$name" force-sync="$(date +%s)"; \
+        just luffy sync-es "$ns" "$name"; \
     done
 
 [doc('Sync GitRepositories')]
@@ -57,16 +71,24 @@ sync-git:
         kubectl --context admin@luffy -n "$ns" annotate --field-manager flux-client-side-apply --overwrite gitrepo "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
     done
 
-[doc('Sync HelmReleases')]
-sync-hr:
+[doc('Sync single HelmRelease')]
+sync-hr ns name:
+    kubectl --context admin@luffy -n "{{ ns }}" annotate --field-manager flux-client-side-apply --overwrite hr "{{ name }}" reconcile.fluxcd.io/requestedAt="$(date +%s)" reconcile.fluxcd.io/forceAt="$(date +%s)"
+
+[doc('Sync all HelmReleases')]
+sync-all-hr:
     kubectl --context admin@luffy get hr --no-headers -A | while read -r ns name _; do \
-        kubectl --context admin@luffy -n "$ns" annotate --field-manager flux-client-side-apply --overwrite hr "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)" reconcile.fluxcd.io/forceAt="$(date +%s)"; \
+        just luffy sync-hr "$ns" "$name"; \
     done
 
-[doc('Sync Kustomizations')]
-sync-ks:
+[doc('Sync single Kustomization')]
+sync-ks ns name:
+    kubectl --context admin@luffy -n "{{ ns }}" annotate --field-manager flux-client-side-apply --overwrite ks "{{ name }}" reconcile.fluxcd.io/requestedAt="$(date +%s)"
+
+[doc('Sync all Kustomizations')]
+sync-all-ks:
     kubectl --context admin@luffy get ks --no-headers -A | while read -r ns name _; do \
-        kubectl --context admin@luffy -n "$ns" annotate --field-manager flux-client-side-apply --overwrite ks "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
+        just luffy sync-ks "$ns" "$name"; \
     done
 
 [doc('Sync OCIRepositories')]
@@ -79,9 +101,9 @@ sync-oci:
 view-secret namespace secret:
     kubectl --context admin@luffy view-secret -n {{ namespace }} {{ secret }}
 
-#[private]
-#render-local-ks ns ks:
-#    flux-local build ks --namespace "{{ ns }}" --path "{{ kubernetes_dir }}/flux/cluster" "{{ ks }}"
+[private]
+render-local-ks ns ks:
+    flate build ks --path "{{ kubernetes_dir }}" --namespace "{{ ns }}" --output yaml "{{ ks }}"
 
 [doc('Suspend apps and trigger manual backups for VolSync and Postgres')]
 stop-and-backup:
