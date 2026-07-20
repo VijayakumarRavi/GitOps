@@ -10,15 +10,21 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
+    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
-    - name: volsync
     - name: envoy-gateway-config
+    - name: external-secrets-stores
+    - name: kopiur
+    - name: kopiur-repository
+    - name: volsync
   interval: 30m
   path: "./kubernetes/robin/apps/selfhosted/adguard/app"
   postBuild:
     substitute:
       APP: *appname
+      KOPIUR_CAPACITY: 1Gi
+      KOPIUR_CLAIM: adguard
       VOLSYNC_CAPACITY: 1Gi
   prune: true
   sourceRef:

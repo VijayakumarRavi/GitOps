@@ -10,11 +10,14 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
+    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
     - name: external-secrets-stores
-    - name: volsync
+    - name: kopiur
+    - name: kopiur-repository
     - name: plex
+    - name: volsync
   interval: 30m
   path: './kubernetes/luffy/apps/media/maintainerr/app'
   postBuild:
@@ -22,6 +25,7 @@ spec:
       APP: *appname
       APP_GID: '1000'
       APP_UID: '1000'
+      KOPIUR_CLAIM: maintainerr-data
       VOLSYNC_CLAIM: maintainerr-data
   prune: true
   sourceRef:

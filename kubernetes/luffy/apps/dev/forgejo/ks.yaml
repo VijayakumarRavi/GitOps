@@ -36,14 +36,17 @@ spec:
     labels:
       app.kubernetes.io/name: forgejo
   components:
-    - ../../../../components/volsync
     - ../../../../components/anubis
+    - ../../../../components/kopiur
+    - ../../../../components/volsync
   dependsOn:
-    - name: volsync
-    - name: external-secrets-stores
     - name: crunchy-postgres-secretstore
-    - name: envoy-gateway-config
     - name: dragonfly-cluster
+    - name: envoy-gateway-config
+    - name: external-secrets-stores
+    - name: kopiur
+    - name: kopiur-repository
+    - name: volsync
   interval: 30m
   path: "./kubernetes/luffy/apps/dev/forgejo/app"
   postBuild:
@@ -52,6 +55,8 @@ spec:
       APP: forgejo
       APP_GID: "1000"
       APP_UID: "1000"
+      KOPIUR_CAPACITY: 10Gi
+      KOPIUR_CLAIM: forgejo
       VOLSYNC_CAPACITY: 10Gi
   prune: true
   sourceRef:

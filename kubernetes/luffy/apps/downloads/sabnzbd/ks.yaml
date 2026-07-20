@@ -10,15 +10,21 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
+    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
-    - name: volsync
     - name: external-secrets-stores
+    - name: kopiur
+    - name: kopiur-repository
+    - name: volsync
   interval: 30m
   path: "./kubernetes/luffy/apps/downloads/sabnzbd/app"
   postBuild:
     substitute:
       APP: *appname
+      APP_GID: "2000"
+      APP_UID: "2000"
+      KOPIUR_CLAIM: sabnzbd-config
       VOLSYNC_CLAIM: sabnzbd-config
   prune: true
   sourceRef:

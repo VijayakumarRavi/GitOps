@@ -41,7 +41,7 @@ snapshot:
 
 [doc('Trigger Kopiur Snapshotpolicy')]
 snapshot-kopiur ns name:
-    kubectl --context admin@luffy kopiur -n "{{ ns }}" snapshot now --policy "{{ name }}"
+    kubectl kopiur --context admin@luffy -n "{{ ns }}" snapshot now --policy "{{ name }}"
 
 [doc('Trigger all Kopiur Snapshotpolicies')]
 snapshot-kopiur-all:

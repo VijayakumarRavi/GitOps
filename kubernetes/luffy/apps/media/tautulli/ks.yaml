@@ -10,15 +10,22 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
+    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
     - name: external-secrets-stores
+    - name: kopiur
+    - name: kopiur-repository
     - name: volsync
   interval: 30m
   path: "./kubernetes/luffy/apps/media/tautulli/app"
   postBuild:
     substitute:
       APP: *appname
+      APP_GID: "2000"
+      APP_UID: "2000"
+      KOPIUR_CAPACITY: 2Gi
+      KOPIUR_CLAIM: tautulli-config
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_CLAIM: tautulli-config
   prune: true

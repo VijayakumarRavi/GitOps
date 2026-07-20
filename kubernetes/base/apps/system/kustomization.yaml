@@ -7,5 +7,6 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./k8tz/ks.yaml
+  - ./kopiur/ks.yaml
   - ./reloader/ks.yaml
   - ./volsync/ks.yaml

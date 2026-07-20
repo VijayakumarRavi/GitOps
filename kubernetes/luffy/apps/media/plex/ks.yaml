@@ -10,15 +10,22 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
+    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
     - name: external-secrets-stores
+    - name: kopiur
+    - name: kopiur-repository
     - name: volsync
   interval: 30m
   path: './kubernetes/luffy/apps/media/plex/app'
   postBuild:
     substitute:
       APP: *appname
+      APP_GID: '2000'
+      APP_UID: '2000'
+      KOPIUR_CAPACITY: 50Gi
+      KOPIUR_CLAIM: plex-config
       VOLSYNC_CAPACITY: 50Gi
       VOLSYNC_CLAIM: plex-config
   prune: true
@@ -41,11 +48,14 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
+    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
     - name: external-secrets-stores
-    - name: volsync
+    - name: kopiur
+    - name: kopiur-repository
     - name: plex
+    - name: volsync
   interval: 30m
   path: './kubernetes/luffy/apps/media/plex/trakt-sync'
   postBuild:
@@ -53,6 +63,7 @@ spec:
       APP: *appname
       APP_GID: '1000'
       APP_UID: '1000'
+      KOPIUR_CLAIM: plex-trakt-sync-config
       VOLSYNC_CLAIM: plex-trakt-sync-config
   prune: true
   sourceRef:

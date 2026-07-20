@@ -10,6 +10,7 @@ resources:
   - ./envoy-gateway.yaml
   - ./fluent-bit.yaml
   - ./grafana.yaml
+  - ./kopiur.yaml
   - ./silence-operator.yaml
   - ./tuppr.yaml
   - ./victoria-logs.yaml

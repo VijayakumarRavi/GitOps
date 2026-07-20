@@ -10,15 +10,21 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
+    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
-    - name: volsync
     - name: external-secrets-stores
+    - name: kopiur
+    - name: kopiur-repository
+    - name: volsync
   interval: 30m
   path: ./kubernetes/luffy/apps/downloads/prowlarr/app
   postBuild:
     substitute:
       APP: *appname
+      APP_GID: "568"
+      APP_UID: "568"
+      KOPIUR_CLAIM: prowlarr-config
       VOLSYNC_CLAIM: prowlarr-config
   prune: true
   sourceRef:
