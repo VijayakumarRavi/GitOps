@@ -10,15 +10,19 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
+    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
     - name: external-secrets-stores
+    - name: kopiur
+    - name: kopiur-repository
     - name: volsync
   interval: 30m
   path: "./kubernetes/luffy/apps/monitoring/uptime/app"
   postBuild:
     substitute:
       APP: *appname
+      KOPIUR_CLAIM: uptime-config
       VOLSYNC_CLAIM: uptime-config
   prune: true
   sourceRef:

@@ -10,10 +10,14 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
+    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
-    - name: volsync
     - name: envoy-gateway-config
+    - name: external-secrets-stores
+    - name: kopiur
+    - name: kopiur-repository
+    - name: volsync
   interval: 30m
   path: "./kubernetes/luffy/apps/selfhosted/home-assistant/app"
   postBuild:
@@ -21,6 +25,10 @@ spec:
       APP: *appname
       APP_GID: "65533"
       APP_UID: "65534"
+      KOPIUR_CAPACITY: 8Gi
+      KOPIUR_CLAIM: home-assistant-config
+      KOPIUR_PGID: "65533"
+      KOPIUR_PUID: "65534"
       VOLSYNC_CAPACITY: 8Gi
       VOLSYNC_CLAIM: home-assistant-config
   prune: true

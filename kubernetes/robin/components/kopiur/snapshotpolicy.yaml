@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kopiur.home-operations.com/snapshotpolicy_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: ${APP}
+spec:
+  compression:
+    compressor: zstd
+  credentialProjection:
+    enabled: true
+  mover:
+    cache:
+      capacity: ${KOPIUR_CAPACITY:=5Gi}
+      mode: Ephemeral
+      storageClassName: ${KOPIUR_CACHE_STORAGECLASS:=openebs-hostpath}
+    securityContext:
+      runAsGroup: ${KOPIUR_PGID:=1000}
+      runAsUser: ${KOPIUR_PUID:=1000}
+  repository:
+    kind: ClusterRepository
+    name: idrive-e2
+  retention:
+    keepDaily: 7
+    keepHourly: 24
+    keepLatest: 3
+    keepWeekly: 4
+  sources:
+    - pvc:
+        name: ${KOPIUR_CLAIM:-${APP}}
+  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=csi-ceph-blockpool}

@@ -1,0 +1,40 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kopiur.home-operations.com/clusterrepository_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: ClusterRepository
+metadata:
+  name: idrive-e2
+spec:
+  allowedNamespaces:
+    all: true
+  backend:
+    s3:
+      auth:
+        secretRef:
+          name: kopiur-idrive-e2-secret
+          namespace: system
+      bucket: backup
+      endpoint: s3.us-west-1.idrivee2.com
+      prefix: kopiur/
+      region: us-west-1
+  credentialProjection:
+    allowed: true
+  encryption:
+    passwordSecretRef:
+      key: KOPIA_PASSWORD
+      name: kopiur-idrive-e2-secret
+      namespace: system
+  identityDefaults:
+    hostnameExpr: "namespace + '.${CLUSTER_NAME}'"
+    usernameExpr: policyName
+  moverDefaults:
+    securityContext:
+      runAsGroup: 1000
+      runAsUser: 1000
+  server:
+    auth:
+      generate: {}
+    namespace: system
+    service:
+      port: 51515
+      type: ClusterIP

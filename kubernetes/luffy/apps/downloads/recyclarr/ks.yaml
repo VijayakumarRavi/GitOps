@@ -10,14 +10,19 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
+    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
     - name: external-secrets-stores
+    - name: kopiur
+    - name: kopiur-repository
+    - name: volsync
   interval: 30m
   path: "./kubernetes/luffy/apps/downloads/recyclarr/app"
   postBuild:
     substitute:
       APP: *appname
+      KOPIUR_CLAIM: recyclarr-config
       VOLSYNC_CLAIM: recyclarr-config
   prune: true
   sourceRef:

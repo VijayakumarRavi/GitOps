@@ -10,15 +10,19 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
+    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
-    - name: volsync
     - name: external-secrets-stores
+    - name: kopiur
+    - name: kopiur-repository
+    - name: volsync
   interval: 30m
   path: "./kubernetes/luffy/apps/downloads/sonarr/app"
   postBuild:
     substitute:
       APP: *appname
+      KOPIUR_CLAIM: sonarr-config
       VOLSYNC_CLAIM: sonarr-config
   prune: true
   sourceRef:
