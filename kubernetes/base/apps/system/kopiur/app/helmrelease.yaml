@@ -9,7 +9,11 @@ spec:
     kind: OCIRepository
     name: kopiur
     namespace: flux-system
+  install:
+    crds: CreateReplace
   interval: 1h
+  upgrade:
+    crds: CreateReplace
   values:
     features:
       credentialProjection:
