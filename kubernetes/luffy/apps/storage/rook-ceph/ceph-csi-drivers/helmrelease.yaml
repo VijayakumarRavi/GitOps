@@ -15,7 +15,16 @@ spec:
       namespace: storage
     drivers:
       cephfs:
-        enabled: false
+        enabled: true
+        name: rook-ceph.cephfs.csi.ceph.com
+        clusterName: storage
+        fsGroupPolicy: File
+        snapshotPolicy: volumeSnapshot
+        controllerPlugin:
+          replicas: 2
+          priorityClassName: system-cluster-critical
+        nodePlugin:
+          priorityClassName: system-node-critical
       nfs:
         enabled: false
       nvmeof:
