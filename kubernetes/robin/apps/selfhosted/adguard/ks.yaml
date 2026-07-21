@@ -26,6 +26,7 @@ spec:
       KOPIUR_CAPACITY: 1Gi
       KOPIUR_CLAIM: adguard
       VOLSYNC_CAPACITY: 1Gi
+      VOLSYNC_CLAIM: adguard
   prune: true
   sourceRef:
     kind: GitRepository

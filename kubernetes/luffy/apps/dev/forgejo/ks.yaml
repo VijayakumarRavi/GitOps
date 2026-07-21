@@ -58,6 +58,7 @@ spec:
       KOPIUR_CAPACITY: 10Gi
       KOPIUR_CLAIM: forgejo
       VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CLAIM: forgejo
   prune: true
   sourceRef:
     kind: GitRepository

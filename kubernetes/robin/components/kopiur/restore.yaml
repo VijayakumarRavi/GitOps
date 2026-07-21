@@ -3,7 +3,7 @@
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: Restore
 metadata:
-  name: ${APP}
+  name: ${KOPIUR_CLAIM:-${APP}}
 spec:
   credentialProjection:
     enabled: true
@@ -15,7 +15,7 @@ spec:
     onMissingSnapshot: Continue
   source:
     fromPolicy:
-      name: ${APP}
+      name: ${KOPIUR_CLAIM:-${APP}}
       offset: 0
   target:
     populator: {}

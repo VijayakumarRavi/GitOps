@@ -25,6 +25,7 @@ spec:
       KOPIUR_CAPACITY: 2Gi
       KOPIUR_CLAIM: freshrss
       VOLSYNC_CAPACITY: 2Gi
+      VOLSYNC_CLAIM: freshrss
   prune: true
   sourceRef:
     kind: GitRepository
