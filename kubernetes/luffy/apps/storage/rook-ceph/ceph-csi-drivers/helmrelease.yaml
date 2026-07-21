@@ -16,7 +16,7 @@ spec:
     drivers:
       cephfs:
         enabled: true
-        name: rook-ceph.cephfs.csi.ceph.com
+        name: storage.cephfs.csi.ceph.com
         clusterName: storage
         fsGroupPolicy: File
         snapshotPolicy: volumeSnapshot
@@ -31,7 +31,7 @@ spec:
         enabled: false
       rbd:
         enabled: true
-        name: rook-ceph.rbd.csi.ceph.com
+        name: storage.rbd.csi.ceph.com
         clusterName: storage
         fsGroupPolicy: File
         snapshotPolicy: volumeSnapshot
