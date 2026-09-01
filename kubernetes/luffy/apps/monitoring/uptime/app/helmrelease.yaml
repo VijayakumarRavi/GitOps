@@ -28,7 +28,7 @@ spec:
           uptime:
             image:
               repository: ghcr.io/louislam/uptime-kuma
-              tag: 2.4.0-slim-rootless
+              tag: 2.5.3-slim-rootless
             ports:
               - containerPort: 3001
                 name: http
