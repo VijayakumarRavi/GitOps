@@ -1,14 +1,13 @@
 ---
 name: Renovate
 
-"on":
+on:
   push:
-    branches: ["master"]
+    branches: ['master']
     paths:
-      - .github/renovate.json5
-      - .github/renovate/**.json5
+      - renovate.json
   schedule:
-    - cron: "0 * * * *"
+    - cron: '0 * * * *'
   workflow_dispatch:
     inputs:
       dryRun:
@@ -26,40 +25,35 @@ name: Renovate
         required: true
       version:
         description: Renovate Version
+        type: string
         default: latest
         required: true
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  group: ${{ forgejo.workflow }}-${{ forgejo.event.number || forgejo.ref }}
   cancel-in-progress: true
 
 jobs:
   renovate:
     name: Renovate
-    runs-on: ubuntu-latest
+    runs-on: docker
     steps:
-      - name: Generate Token
-        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
-        id: app-token
-        with:
-          app-id: ${{ secrets.BOT_APP_ID }}
-          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
-
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ secrets.RENOVATE_TOKEN }}
 
       - name: Renovate
         uses: https://github.com/renovatebot/github-action@eb932558ad942cccfd8211cf535f17ff183a9f74 # v46.1.9
         env:
           LOG_LEVEL: ${{ inputs.logLevel || 'debug' }}
           RENOVATE_AUTODISCOVER: true
-          RENOVATE_AUTODISCOVER_FILTER: ${{ github.repository }}
+          RENOVATE_AUTODISCOVER_FILTER: ${{ forgejo.repository }}
           RENOVATE_DRY_RUN: ${{ inputs.dryRun }}
           RENOVATE_INTERNAL_CHECKS_FILTER: strict
-          RENOVATE_PLATFORM: github
-          RENOVATE_PLATFORM_COMMIT: true
+          RENOVATE_PLATFORM: forgejo
+          RENOVATE_ENDPOINT: ${{ forgejo.serverUrl }}
+          RENOVATE_GITHUB_COM_TOKEN: ${{ secrets.RENOVATE_GITHUB_COM_TOKEN }}
         with:
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ secrets.RENOVATE_TOKEN }}
           renovate-version: ${{ inputs.version || 'latest' }}
