@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
-      version: 4.56.1
+      version: 4.56.3
   interval: 30m
   values:
     fullnameOverride: node-exporter
