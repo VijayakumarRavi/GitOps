@@ -42,7 +42,7 @@ releases:
 
     values:
       - templates/values_luffy.yaml.gotmpl
-    version: 1.46.2
+    version: 1.47.0
   - chart: oci://ghcr.io/spegel-org/helm-charts/spegel
     name: spegel
     namespace: system
