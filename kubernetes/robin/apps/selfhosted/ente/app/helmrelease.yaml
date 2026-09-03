@@ -21,7 +21,7 @@ spec:
           server:
             image:
               repository: ghcr.io/ente/server
-              tag: latest@sha256:e9e06eb01834c38f41a3a09f9a64885b631346ce0005ccff2153faea403bd6e2
+              tag: latest@sha256:447547e9c4011d12b8e4e4a3a9c33a7828d9be791521024227b83f4b2888fafc
             env:
               - name: HOST
                 value: "::"
