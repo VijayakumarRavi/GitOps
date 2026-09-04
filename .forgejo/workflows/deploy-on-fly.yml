@@ -2,6 +2,20 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Deploy Fly.io Apps on Dependency Updates
 "on":
+  workflow_dispatch:
+    inputs:
+      app:
+        description: App to deploy
+        type: choice
+        default: all
+        options:
+          - all
+          - authfly
+          - baovault
+          - gotifyfly
+          - vaultfly
+          - atticfly
+        required: true
   push:
     paths: ['fly.io/**']
     branches: ['master']
@@ -35,6 +49,16 @@ jobs:
       - name: Determine Modified Files
         id: changes
         run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TARGET_APP="${{ inputs.app || 'all' }}"
+            if [ "$TARGET_APP" = "all" ] || [ "$TARGET_APP" = "${{ matrix.app }}" ]; then
+              echo "modified=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "modified=false" >> "$GITHUB_OUTPUT"
+            fi
+            exit 0
+          fi
+
           echo "Modified Files:"
           git diff --name-only HEAD~1 HEAD
 
@@ -55,5 +79,4 @@ jobs:
             --no-public-ips \
             --strategy immediate \
             --no-cache \
-            --config fly.io/${{ matrix.app }}/fly.toml \
             fly.io/${{ matrix.app }}/
