@@ -41,4 +41,3 @@ soft_limit = 1000
 cpu_kind = 'shared'
 cpus = 2
 memory_mb = 512
-
