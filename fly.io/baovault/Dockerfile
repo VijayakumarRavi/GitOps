@@ -1,5 +1,5 @@
 ARG BAOVAULT_VERSION=2.5.5
-ARG CLOUDFLARED_VERSION=2026.7.2
+ARG CLOUDFLARED_VERSION=2026.8.3
 
 # Cloudflared stage to fetch the latest cloudflared package
 FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
