@@ -6,7 +6,7 @@ FROM ghcr.io/gotify/server:${GOTIFY_VERSION} AS gotify
 FROM ghcr.io/androidseb25/igotify-notification-assist:${IGOTIFY_VERSION} AS igotify
 FROM cloudflare/cloudflared:${CLOUDFLARED_VERSION} as cloudflared
 
-FROM mcr.microsoft.com/dotnet/aspnet:10.0
+FROM mcr.microsoft.com/dotnet/aspnet:11.0
 
 WORKDIR /data
 
