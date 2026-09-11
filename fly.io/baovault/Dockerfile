@@ -1,4 +1,4 @@
-ARG BAOVAULT_VERSION=2.5.5
+ARG BAOVAULT_VERSION=2.6.2
 ARG CLOUDFLARED_VERSION=2026.7.2
 
 # Cloudflared stage to fetch the latest cloudflared package
