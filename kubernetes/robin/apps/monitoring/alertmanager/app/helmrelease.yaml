@@ -21,7 +21,7 @@ spec:
           alertmanager:
             image:
               repository: quay.io/prometheus/alertmanager
-              tag: v0.33.1
+              tag: v0.34.0
             args:
               - "--storage.path=/alertmanager"
               - "--config.file=/etc/alertmanager/alertmanager.yml"
